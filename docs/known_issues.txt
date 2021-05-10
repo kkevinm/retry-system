@@ -1,0 +1,6 @@
+- !display_save_counter option is not implemented yet.
+- May not work properly in special levels (Intro, Bonus Game, Yoshi Wings), needs testing.
+- There may be issues related to "No Yoshi" intros in some situations.
+- There may be issues with Layer 2 interaction on the first frame when respawning.
+- May cause graphical glitches in mode 7 bosses.
+- Missing a bunch of doc files (documentation, FAQ, troubleshooting, ObjecTool info).

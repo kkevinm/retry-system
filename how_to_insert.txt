@@ -1,0 +1,75 @@
+Q: How to I apply this to my ROM?
+A: Inserting this patch should be relatively simple in most cases.
+- Copy the "asm/retry.asm" file in UberASM Tool's "library" folder.
+- Copy all the files inside the "asm/gamemode/" folder in UberASM Tool's "gamemode" folder.
+- Copy the "asm/retry_config" folder inside UberASM Tool's top folder (so it should be at the same level as "level", "gamemode", etc.).
+- Copy this inside UberASM Tool's "list.txt", under "gamemode:":
+
+    03 retry_gm03.asm
+    0C retry_gm0C.asm
+    0F retry_gm0F.asm
+    10 retry_gm10_16_19.asm
+    11 retry_gm11.asm
+    12 retry_gm12.asm
+    13 retry_gm13.asm
+    14 retry_gm14.asm
+    16 retry_gm10_16_19.asm
+    19 retry_gm10_16_19.asm
+
+- Make sure you've edited at least one level in Lunar Magic.
+- Run UberASM Tool.
+
+If you want to change the settings, open "retry_config/settings.asm", make the edits you want and rerun UberASM Tool.
+
+Q: I'm already using another code in one of these gamemodes! What do I do?
+A: If you're already using some other codes in one of these gamemodes, you'll need to merge them with retry's files. Let's say you have "test.asm" inserted in gamemode 14 with this content:
+
+    init:
+        stz $0DBF|!addr
+        rtl
+
+    main:
+        inc $19
+        rtl
+
+and you want to merge it with retry's "retry_gm14.asm". Open this file, and see what labels it uses (in this case, it's "main" and "nmi"). For each label, if the other file uses the same label, then you need to copy the line with "jsl" in the other file. In this example, retry's file "main" label is also used in the "test.asm" file, so you need to copy "jsl retry_in_level_main" under "main" in "test.asm". The other label (nmi) is not used, so in this case you copy the entire block (starting from the label itself until "rtl" included) inside "test.asm". The end result is this (in "test.asm"):
+
+    init:
+        stz $0DBF|!addr
+        rtl
+
+    main:
+        jsl retry_in_level_main
+        inc $19
+        rtl
+
+    nmi:
+        jsl retry_nmi_level
+        rtl
+
+This is a similar method as what's explained in smwcentral's FAQ (https://www.smwcentral.net/?p=faq&page=1515827-uberasm) but skipping the whole library step (since retry's core files are already in library). If you want you can follow that (so, in this example, move "test.asm" in the library folder, then create a new file, let's say "gm14.asm", where you jsl to all the labels in both files, and then insert this new file in gamemode 14). The end result would be this (in "gm14.asm"):
+
+    macro call_library(i)
+        PHB
+        LDA.b #<i>>>16
+        PHA
+        PLB
+        JSL <i>
+        PLB
+    endmacro
+
+    init:
+        %call_library(test_init)
+        rtl
+
+    main:
+        jsl retry_in_level_main
+        %call_library(test_main)
+        rtl
+
+    nmi:
+        jsl retry_nmi_level
+        rtl
+
+Note that %call_library is not necessary for retry's files.
+Once UberASM Tool will add support for multiple files in the same level/gamemode, you won't need to worry about this.

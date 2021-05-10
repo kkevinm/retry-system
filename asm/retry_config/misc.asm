@@ -1,0 +1,127 @@
+; Miscellaneous stuff used by retry.
+; You shouldn't edit this file.
+
+; Read death time from ROM.
+!death_time #= read1($00F61C)
+
+; Read death pose value from ROM.
+!death_pose #= read1($00D0B9)
+
+; Read death song number from ROM.
+!death_song #= read1($00F60B)
+
+; Read what button exits the level while the game is paused from ROM (usually, select).
+!exit_level_buttons_addr #= read1($00A25C)
+!exit_level_buttons_bits #= read1($00A25E)
+
+; OW translevel number table.
+if !sa1
+    !7ED000 = $40D000
+else
+    !7ED000 = $7ED000
+endif
+
+; Address for the custom midway amount.
+!ram_cust_obj_num = !ram_cust_obj_data+(!max_custom_midway_num*4)
+
+; Address for the custom midway entrance value.
+!ram_cust_obj_entr = !ram_cust_obj_data+(!max_custom_midway_num*2)
+
+; Detect Lunar Magic v3.0+.
+if (((read1($0FF0B4)-'0')*100)+((read1($0FF0B4+2)-'0')*10)+(read1($0FF0B4+3)-'0')) > 253
+    !lm3 = 1
+else
+    !lm3 = 0
+endif
+
+; Detect AddmusicK.
+if read1($008075) == $5C
+    !amk = 1
+else
+    !amk = 0
+endif
+
+; Detect ObjecTool.
+if read1($0DA106) == $5C
+    !object_tool = 1
+else
+    !object_tool = 0
+endif
+
+; Detect the SRAM Plus patch.
+if read1($009B42) == $04
+    !sram_plus = 1
+else
+    !sram_plus = 0
+endif
+
+; Detect the BW-RAM Plus patch.
+if read1($009BD2) == $5C
+    !bwram_plus = 1
+else
+    !bwram_plus = 0
+endif
+
+; Detect if using PIXI's 255 sprite per level feature.
+if read1($01AC9C) == $5C && read3(read3($01AC9C+1)+5) == $7FAF00
+    !255_sprites_per_level = 1
+else
+    !255_sprites_per_level = 0
+endif
+
+if !sa1
+    !255_sprites_per_level = 1
+endif
+
+; Define the sprites load table address.
+if !255_sprites_per_level
+    %define_sprite_table(sprite_load_table, $7FAF00, $418A00)
+else
+    %define_sprite_table(sprite_load_table, $1938, $418A00)
+endif
+
+; Level number of the intro level (automatically adjusted to $01C5 when necessary).
+!intro_level = $00C5
+
+if read2($01E762) == $EAEA && read1($009EF0) != $00
+    !intro_sublevel #= !intro_level|$0100
+else
+    !intro_sublevel #= !intro_level
+endif
+
+; Detect some NMI patches.
+!alternate_nmi   = 0
+!custom_powerups = 0
+
+; Detects lx5's Custom Powerups.
+if read2($00D067|!bank) == $DEAD
+    !alternate_nmi = 1
+    !custom_powerups = 1
+    incsrc powerup_defs.asm
+endif
+
+; Detects Mario 8x8 GFX DMAer.
+if read3($00DFE2) == $DF1AB9
+    !alternate_nmi = 1
+endif
+
+; Detects 32x32 Player Tilemap.
+if read1($00F636) == $5C
+    !alternate_nmi = 1
+endif
+
+; Detects the "Individual Dragon Coins Save" patch.
+if read1($05D7AB) == $5C
+    !dcsave = 1
+else
+    !dcsave = 0
+endif
+
+; Check which channel is used for windowing HDMA, for SA-1 v1.35 (H)DMA remap compatibility.
+; It will be 7 on lorom or with SA-1 <1.35, and 1 with SA-1 >=1.35.
+!window_mask    #= read1($0092A1)
+!window_channel #= log2(!window_mask)
+
+; Set to 1 to be able to use the custom midway objects alongside ObjecTool.
+; Only do it after reading the instructions in the readme!
+!object_tool_readme = 0

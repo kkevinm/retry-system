@@ -1,0 +1,6 @@
+- worldpeace: original Retry patch.
+- lx5: bugfixes to the original Retry patch, BW-RAM+ code.
+- imamelia, 0x400: ObjecTool code.
+- Thomas: death counter code.
+- dtothefourth: a couple new features ideas.
+- KevinM: everything else.
