@@ -38,7 +38,7 @@ org $0DA415
 endif
 
 org $0DA691
-    lda.l $001EA2,x
+    lda.l $001EA2|!addr,x
 
 if read1($009BCB) == $5C
 org $00FFD8

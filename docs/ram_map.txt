@@ -32,10 +32,10 @@ Now for the actual RAM addresses (names are prefixed with "!ram_" in ram.asm, an
 ;                 ;         ;       ; when dying even if it shouldn't, to reset the level's   ;
 ;                 ;         ;       ; song's tempo.                                           ;
 ;=============================================================================================;
-; door_dest       ;   $08   ;  $02  ; On old Retry, it was used to hold the destination value ;
-;                 ;         ;       ; of doors/pipes, that would then be set to !ram_respawn. ;
-;                 ;         ;       ; This isn't needed now so it goes unused, so you can use ;
-;                 ;         ;       ; it as freeram, I guess (cleared on title screen load).  ;
+; door_dest       ;   $08   ;  $02  ; It holds the destination value for the current entrance,;
+;                 ;         ;       ; set when going to a sublevel via a door/pipe/etc. It's  ;
+;                 ;         ;       ; used to set the checkpoint to the current entrance when ;
+;                 ;         ;       ; using the 02/03 option in the checkpoint table.         ;
 ;=============================================================================================;
 ; music_backup    ;   $0A   ;  $01  ; Holds the song number that was playing right before     ;
 ;                 ;         ;       ; playing the death song. It's copied to $0DDA when dying,;

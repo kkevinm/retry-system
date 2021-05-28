@@ -40,10 +40,9 @@ init:
     bcc .skip
 
 ..set_checkpoint:
-    ; Backup the current entrance value.
-    %get_screen_number()
-    lda $19B8|!addr,x : sta !ram_respawn
-    lda $19D8|!addr,x : sta !ram_respawn+1
+    ; Set the checkpoint to the current entrance.
+    lda !ram_door_dest : sta !ram_respawn
+    lda !ram_door_dest+1 : sta !ram_respawn+1
 
     ; Update the checkpoint value.
     jsr shared_hard_save

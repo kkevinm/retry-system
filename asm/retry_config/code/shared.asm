@@ -103,7 +103,7 @@ endif
 
 .midpoint:
     ; Only save if !Midpoint = 1
-    lda $00CA2B|!bank : cmp #$22 : bne ..return
+    lda.l $00CA2B|!bank : cmp #$22 : bne ..return
 
     ; Load the address to the dcsave save buffer routine.
     rep #$20
@@ -133,4 +133,13 @@ else
     ldx $97
 ?+
 endif
+endmacro
+
+;=====================================
+; Macro to JSL to a routine that ends in RTS.
+;=====================================
+macro jsl_to_rts(routine, rtl)
+    phk : pea.w (?+)-1 : pea.w <rtl>-1
+    jml <routine>|!bank
+?+
 endmacro

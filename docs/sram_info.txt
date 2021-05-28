@@ -29,9 +29,6 @@ A: If you really need to use those, then you can add these to the "sram_table"/"
 the checkpoints is the freeram address + $20, while the death counter is the address + $E0).
 
 Then add these tables to the "sram_defaults"/"bw_ram_defaults":
-    
-    ; Death counter.
-    db $00,$00,$00,$00,$00
 
     ; Checkpoints.
     db $00,$00,$01,$00,$02,$00,$03,$00,$04,$00,$05,$00,$06,$00,$07,$00
@@ -46,3 +43,6 @@ Then add these tables to the "sram_defaults"/"bw_ram_defaults":
     db $24,$01,$25,$01,$26,$01,$27,$01,$28,$01,$29,$01,$2A,$01,$2B,$01
     db $2C,$01,$2D,$01,$2E,$01,$2F,$01,$30,$01,$31,$01,$32,$01,$33,$01
     db $34,$01,$35,$01,$36,$01,$37,$01,$38,$01,$39,$01,$3A,$01,$3B,$01
+
+    ; Death counter.
+    db $00,$00,$00,$00,$00

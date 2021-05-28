@@ -43,9 +43,8 @@ endif
 
 ..start_select_exit:
     ; Call the start+select routine.
-    phk : pea.w (+)-1 : pea.w $0084CF-1
-    jml $00A269|!bank
-+   
+    ; This should make this compatible with custom resources like Start+Select Advanced, AMK 1.0.8 Start+Select SFX, etc.
+    %jsl_to_rts($00A269, $0084CF)
     rtl
 
 .dying:

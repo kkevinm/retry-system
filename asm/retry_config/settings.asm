@@ -16,13 +16,13 @@
 ; 0 = midways won't give Mario a mushroom.
 !midway_powerup = 0
 
-; Counterbreak option reset some counters when the player dies or reloading a level.
+; Counterbreak options reset some counters when the player dies and when going to the overworld.
 !counterbreak_yoshi = 1
 !counterbreak_powerup = 1
 !counterbreak_item_box = 1
-!counterbreak_coins = 1
-!counterbreak_bonus_stars = 1
-!counterbreak_score = 1
+!counterbreak_coins = 0
+!counterbreak_bonus_stars = 0
+!counterbreak_score = 0
 
 ; If 1, the RNG values will be reset when dying or loading a level.
 !reset_rng = 1
@@ -39,7 +39,7 @@
 ; $01-$FE: custom song number, $FF = do not use this feature.
 !death_jingle_alt = $FF
 
-; SFX when selecting an option in the prompt (!option_sfx = $00 -> no SFX.
+; SFX when selecting an option in the prompt (!option_sfx = $00 -> no SFX).
 !option_sfx = $01
 !option_sfx_addr = $1DFC|!addr
 
@@ -93,6 +93,7 @@
 !no_exit_option = 0
 
 ; Set to 1 to remove the black box, but leave the options on screen.
+; TODO: add RAM for this too.
 !no_prompt_box = 0
 
 ; Set to 1 to dim the screen while the prompt is shown.
@@ -103,6 +104,7 @@
 
 ; X/Y position of the first tile in the prompt (the cursor on the first line).
 ; You should only change this if you're removing the black box.
+; TODO: add RAM for these too.
 !text_x_pos = $58
 !text_y_pos = $6F
 
