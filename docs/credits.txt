@@ -3,4 +3,5 @@
 - imamelia, 0x400: ObjecTool code.
 - Thomas: death counter code.
 - dtothefourth: a couple new features ideas.
+- BabaYegha, FYRE150: testing.
 - KevinM: everything else.

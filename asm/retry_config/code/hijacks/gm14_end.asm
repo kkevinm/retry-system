@@ -46,7 +46,13 @@ gm14_end:
 
 .no_death:
     ; Check if it's time to draw the tiles.
-    lda !ram_prompt_phase : cmp #$02 : bne .return
+    lda !ram_prompt_phase : cmp #$02 : beq .draw_prompt
+                                       bcc .return
+
+.erase_tiles:
+    ; In some cases it's needed to remove the prompt tiles from OAM after the option is chosen.
+    jsr erase_tiles
+    bra .return
 
 .draw_prompt:
     ; Draw the tiles.
@@ -227,12 +233,26 @@ assert !cursor_palette >= $08 && !cursor_palette <= $0F, "Error: \!cursor_palett
 function x_pos(offset) = (!text_x_pos+offset)
 function y_pos(offset) = (!text_y_pos+offset)
 
-!letters_num = (.letters_x_pos_end-.letters_x_pos)
+!letters_num = (prompt_oam_letters_x_pos_end-prompt_oam_letters_x_pos)
+
+erase_tiles:
+    ; Erase the prompt's OAM tiles when in Reznor/Morton/Roy/Ludwig's rooms.
+    ; This avoids the BG from glitching out when the prompt disappears.
+    lda $0D9B|!addr : cmp #$C0 : bne .return
+    lda #$F0
+    ldy.b #4*(!letters_num-1)
+.loop:
+    sta $0201|!addr,y
+    dey #4 : bpl .loop
+.return:
+    rts
 
 prompt_oam:
     ; Get as many free slots as possible at the start of $0200.
+    ; Skip this in Reznor/Morton/Roy's rooms to avoid glitching their BGs.
+    lda $0D9B|!addr : cmp #$C0 : beq +
     jsr defrag_oam
-
++
     ; Draw the letters.
     ldx.b #!letters_num-1
     ldy.b #4*(!letters_num-1)
