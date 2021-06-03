@@ -51,16 +51,8 @@ endif
     lda $0DD5|!addr : beq ..skip
                       bmi ..skip
 
-    ; Reset the custom checkpoint for the current level.
-    ; TODO: move to shared routine, add reset to $1EA2 midway bit too.
-    lda $13BF|!addr
-    rep #$30
-    and #$00FF : asl : tax
-    lsr : cmp #$0025 : bcc +
-    clc : adc #$00DC
-+   sta !ram_checkpoint,x
-    sta !ram_respawn
-    sep #$30
+    ; Remove the checkpoint for the current level.
+    jsr shared_reset_checkpoint
 
 ..skip:
     rtl

@@ -16,7 +16,7 @@ init:
 
     ; The game sets $13BF a bit later so we need to do it ourselves
     ; (unless we're in the intro level).
-    lda $13BF|!addr : beq +
+    lda $0109|!addr : bne +
     jsr shared_get_translevel
 +
     ; Don't trigger Yoshi init.

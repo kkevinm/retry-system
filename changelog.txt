@@ -27,3 +27,4 @@ v0.1.6:
     - Fixed error on SA-1 that made respawning in midway entrances not work correctly.
     - Fixed error where the midway bar for the current sublevel would respawn when leaving the current level, entering another one then going back to that sublevel (thanks FYRE150 for reporting this).
     - Added fix from original Retry involving secondary exits and "No Yoshi" intros.
+    - Added way to reset the current level's checkpoint by setting a RAM address.

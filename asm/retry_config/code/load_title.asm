@@ -31,21 +31,19 @@ init:
     sta !ram_set_checkpoint+1
 
     ; Initialize the checkpoint ram table.
-    ldx #$BE
-    ldy #$5F
--   tya : cmp #$25 : bcc +
-    clc : adc #$DC
+    rep #$30
+    ldx #$00BE
+    ldy #$005F
+-   tya : cmp #$0025 : bcc +
+    clc : adc #$00DC
 +   sta !ram_checkpoint,x
-    lda #$00 : adc #$00
-    sta !ram_checkpoint+1,x
     dex #2
     dey
     bpl -
 
     ; Set the intro level checkpoint (level 0 = intro).
-    rep #$20
     lda.w #!intro_sublevel : sta !ram_checkpoint
-    sep #$20
+    sep #$30
 
     ; Call the custom load title routine.
     php : phb : phk : plb

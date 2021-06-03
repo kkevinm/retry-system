@@ -62,7 +62,38 @@ hard_save:
     lda !ram_respawn : sta !ram_checkpoint,x
     sep #$20
 
+    plx
 if !save_on_checkpoint
+    jmp save_game
+else
+    rts
+endif
+
+;=====================================
+; Routine to remove the current level's checkpoint.
+;=====================================
+reset_checkpoint:
+    phx
+    lda $13BF|!addr
+    rep #$30
+    and #$00FF : asl : tax
+    lsr : cmp #$0025 : bcc +
+    clc : adc #$00DC
++   sta !ram_checkpoint,x
+    sta !ram_respawn
+    sep #$30
+    ldx $13BF|!addr
+    lda $1EA2|!addr,x : and #~$40 : sta $1EA2|!addr,x
+    plx
+    rts
+
+;=====================================
+; Routine to save the game.
+;=====================================
+save_game:
+    phx
+    phy
+
     ; Set up vanilla SRAM buffer.
     phb
     rep #$30
@@ -75,8 +106,8 @@ if !save_on_checkpoint
 
     ; Save to SRAM/BW-RAM.
     jsl $009BC9|!bank
-endif
 
+    ply
     plx
     rts
 

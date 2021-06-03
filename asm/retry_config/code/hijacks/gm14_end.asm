@@ -8,8 +8,6 @@ pullpc
 
 ;=====================================
 ; gm14_end routine
-;
-;
 ;=====================================
 gm14_end:
     ; Preserve X and Y and set DBR.
@@ -70,6 +68,26 @@ gm14_end:
 ; set_checkpoint routine
 ;=====================================
 set_checkpoint:
+    ; If the reset value is not set, set the checkpoint.
+    lda !ram_set_checkpoint : cmp #$80 : bne .set
+
+.reset:
+    ; Otherwise, reset the checkpoint.
+    jsr shared_reset_checkpoint
+    stz $13CE|!addr
+
+if !save_on_checkpoint
+    jsr shared_save_game
+endif
+
+if !amk
+    ; Always reload the samples, just to be safe.
+    lda #$FF : sta !ram_music_backup
+endif
+
+    bra .return
+
+.set:
     ; Save individual dcsave buffers.
     ; Needed because we skip over $00F2DD, where the routine is called.
 if !dcsave
@@ -80,14 +98,14 @@ endif
     lda #$01 : sta $13CE|!addr
     
     ; Check if it's a normal or custom midway.
-    lda !ram_set_checkpoint+1 : cmp #$FF : bne .custom_destination
+    lda !ram_set_checkpoint+1 : cmp #$FF : bne ..custom_destination
 
-.normal_midway:
+..normal_midway:
     ; If it's the intro level, skip.
-    lda $0109|!addr : beq ..no_intro
+    lda $0109|!addr : beq ...no_intro
     cmp.b #!intro_level+$24 : bne .return
 
-..no_intro:
+...no_intro:
     ; Check if this midway sets the midway entrance for the sublevel or the main level.
     rep #$10
     ldx $010B|!addr
@@ -107,7 +125,7 @@ if !amk
 endif
     bra .return2
 
-.custom_destination:
+..custom_destination:
     ; Set the checkpoint destination.
     rep #$20
     lda !ram_set_checkpoint : sta !ram_respawn
