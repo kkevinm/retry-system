@@ -52,6 +52,7 @@ endif
                       bmi ..skip
 
     ; Reset the custom checkpoint for the current level.
+    ; TODO: move to shared routine, add reset to $1EA2 midway bit too.
     lda $13BF|!addr
     rep #$30
     and #$00FF : asl : tax

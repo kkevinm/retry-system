@@ -167,6 +167,7 @@ endif
 ; Handles spawning the midway if the current checkpoint wasn't from itself.
 ;=====================================
 midway_spawn:
+wdm
     ; Filter title screen, etc.
     lda $0109|!addr : beq .no_intro
     cmp.b #!intro_level+$24 : bne .spawn
@@ -197,9 +198,9 @@ midway_spawn:
 
 ...no_intro:
     rep #$20
-    and #$00FF : cmp #$0025 : bcc +
+    and #$00FF : cmp #$0025 : bcc ++
     clc : adc #$00DC
-+   bra ++
+    bra ++
 
 ..sublevel:
     rep #$20

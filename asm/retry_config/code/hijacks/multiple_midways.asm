@@ -8,12 +8,8 @@ org $05D9DA
     jml midway_entrance
 
 ; Make secondary exits compatible with "No Yoshi" intros.
-; Maybe not needed? -> check for 141d and 13CF, reset flag
-;org $05DAA3
-;   jsl no_yoshi
-
-;org $05DAA3
-;lda.l $05D78A|!bank,x
+org $05DAA3
+    jsl no_yoshi
 
 pullpc
 
@@ -59,7 +55,7 @@ mmp_main:
     tay
     asl : tax
 
-    ; If no midway was gotten, return (use the backup since $1EA2 was reset earlier).
+    ; If no midway was gotten, return.
     lda $1EA2|!addr,y : and #$40 : beq .return
 
 .midway:
@@ -106,20 +102,8 @@ midway_entrance:
 
 .midway:
     lda $1EA2|!addr,x : and #$40
-    ldx $1B93 : bne .normal
-    jml $05D9E1|!bank
-
-;reset_midway:
-    ; Restore original code.
-;    sta $1EA2|!addr,x
-;    inc $13D9|!addr
-
-    ; Reset custom checkpoint as well.
-;    txa : asl : tax
-;    lsr : cmp #$0025 : bcc +
-;    clc : adc #$00DC
-;+   sta !ram_checkpoint,x
-;    jml $048F7A|!bank
+    ldx $1B93|!addr : bne .normal
+    jml $05D9DE|!bank
 
 no_yoshi:
     ; Reset secondary exits flag.

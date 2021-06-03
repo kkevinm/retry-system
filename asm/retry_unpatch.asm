@@ -27,6 +27,9 @@ org $05D9DA
     and #$40
     beq $0E
 
+org $05DAA3
+    lda.l $05D78A|!bank,x
+
 org $00F2D8
     lda $13CD|!addr
     nop #2 ; LM edit.

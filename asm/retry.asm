@@ -46,7 +46,6 @@ endif
     %incsrc("",extra)
     %incsrc(code,load_title)
     %incsrc(code,fade_to_level)
-    %incsrc(code,level_load)
     %incsrc(code,level_init_1)
     %incsrc(code,level_init_2)
     %incsrc(code,level_transition)

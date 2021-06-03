@@ -1,8 +1,11 @@
-; Gamemode 12
+; Gamemode 11
 
 init:
     ; Better safe than sorry.
     stz $13 : stz $14
+
+    ; Reset the custom midway object counter.
+    lda #$00 : sta !ram_cust_obj_num
 
     ; Don't trigger the prompt by accident, and reset the death flag.
     lda #$00 : sta !ram_prompt_phase
@@ -11,6 +14,11 @@ init:
     ; Check if we entered from the overworld.
     lda $141A|!addr : bne .room_transition
 
+    ; The game sets $13BF a bit later so we need to do it ourselves
+    ; (unless we're in the intro level).
+    lda $13BF|!addr : beq +
+    jsr shared_get_translevel
++
     ; Don't trigger Yoshi init.
     lda #$00 : sta !ram_is_respawning
                sta !ram_hurry_up

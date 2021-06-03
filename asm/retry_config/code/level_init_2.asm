@@ -111,8 +111,6 @@ endif
     stz $36
     stz $37
 
-    ; todo: Pipe entrance stuff 
-
 if !amk
     ; Backup the music that should play.
     lda $0DDA|!addr : sta !ram_music_to_play
