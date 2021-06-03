@@ -64,7 +64,7 @@
 ; If 1, the game will automatically save everytime a new checkpoint is obtained
 ; (when touching a midway or getting a cp on a room transition).
 ; If using this, make sure there's no softlocks (for example, a level is unbeatable from one of the checkpoints).
-!save_on_checkpoint = 1
+!save_on_checkpoint = 0
 
 ; Set to 0 if you don't want the custom midway bar object.
 ; This can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the readme). Also, all slots of object 2D will be occupied by the custom midway object (but you'll still be able to use all extended objects).
