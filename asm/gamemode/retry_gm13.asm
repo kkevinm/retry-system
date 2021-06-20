@@ -1,7 +1,7 @@
 init:
-    jsl retry_level_init_2_init
+    jsl retry_level_init_3_init
     rtl
 
 main:
-    jsl retry_level_init_2_main
+    jsl retry_level_init_3_main
     rtl

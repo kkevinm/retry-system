@@ -10,9 +10,9 @@
 ; Read death song number from ROM.
 !death_song #= read1($00F60B)
 
-; Read what button exits the level while the game is paused from ROM (usually, select).
-!exit_level_buttons_addr #= read1($00A25C)
-!exit_level_buttons_bits #= read1($00A25E)
+; What button exits the level while the game is paused (by default, select).
+!exit_level_buttons_addr = $15
+!exit_level_buttons_bits = $20
 
 ; OW translevel number table.
 if !sa1

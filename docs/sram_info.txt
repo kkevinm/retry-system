@@ -20,13 +20,10 @@ Some examples of addresses that may be useful (you can find more at https://www.
 Q: I'm using SRAM/BW-RAM Plus and I want to save Retry's stuff with them. How do I do it?
 A: If you really need to use those, then you can add these to the "sram_table"/"bw_ram_table":
     
-    ; Checkpoints.
-    dl $7FB420 : dw 192     ; $40C020 on SA-1.
-    ; Death counter.
-    dl $7FB4E0 : dw 5       ; $40C0E0 on SA-1.
+    dl !ram_checkpoint    : dw 192
+    dl !ram_death_counter : dw 5
 
-(Note that if you change the freeram in "retry_config/ram.asm", you'll need to change it here too:
-the checkpoints is the freeram address + $20, while the death counter is the address + $E0).
+(Note: to have the retry ram defines available in the patch, copy the contents of "ram.asm" at the top of the sram+/bwram+ table file).
 
 Then add these tables to the "sram_defaults"/"bw_ram_defaults":
 

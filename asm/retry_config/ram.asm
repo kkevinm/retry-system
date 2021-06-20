@@ -5,10 +5,10 @@
 
 ;=====================================
 ; What freeram to use.
-; 231 + (!max_custom_midway_num*4) bytes are used.
+; 230 + (!max_custom_midway_num*4) bytes are used.
 ;=====================================
 !retry_freeram     = $7FB400
-!retry_freeram_sa1 = $40C000
+!retry_freeram_sa1 = $40A400
 
 ;=====================================
 ; What freeram is used by AMK. Shoudln't need to be changed usually.
