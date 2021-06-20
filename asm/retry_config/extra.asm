@@ -17,8 +17,8 @@ load_title:
     rts
 
 ;=====================================
-; This routine will be called when the level is reset by the retry system.
-; Unlike UberASM init routine, this won't be executed during regular level transitions or when entering from the overworld.
+; This routine will be called when the level is reset by the retry system or when entering from the overworld.
+; Unlike UberASM level init routine, this won't be executed during regular level transitions.
 ; NOTE: on SA-1 roms, this runs on the SNES cpu.
 ;=====================================
 reset:
