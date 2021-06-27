@@ -216,9 +216,6 @@ endif
     ; Reset ON/OFF status.
     stz $14AF|!addr
 
-    ; Reset bonus game sprite flag.
-    stz $1B94|!addr
-
     ; Reset Yoshi wings flag.
     stz $1B95|!addr
 
@@ -233,17 +230,21 @@ endif
 
     ; Reset Yoshi drums.
     lda #$03 : sta $1DFA|!addr
-
+    
     ; Reset some level end addresses (for Kaizo traps).
-    lda $1B94|!addr : bne +
-    ; Prevent going to the bonus game if dying, since it glitches out.
-    ; Only reset the flag if we're not currently in the bonus game, or it will softlock.
-    stz $1425|!addr
-+   rep #$20
+    rep #$20
     stz $1492|!addr
     stz $1494|!addr
     sep #$20
     stz $1B99|!addr
+
+    ; Don't go to the bonus game after a Kaizo trap to prevent it glitching out.
+    ; Don't reset it if currently in the bonus itself to prevent a softlock.
+    lda $1B94|!addr : bne +
+    stz $1425|!addr
++   
+    ; Reset bonus game sprite flag.
+    stz $1B94|!addr
 
     ; Reset RNG addresses if the current sublevel is set to do so.
     jsr shared_get_bitwise_mask

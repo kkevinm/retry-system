@@ -40,3 +40,4 @@ v0.1.8:
     - Split "gm14_end.asm" routines into multiple files inside the "code/hijacks/gm14_end" folder for more modularity.
     - Shrinked checkpoint and effect tables in half by having each value control 2 sublevels.
     - Changed !reset_rng define to a per-sublevel table to be able to have a different setting in each level (thanks Abdu for the suggestion).
+    - Fixed softlock when getting a checkpoint in the bonus game.
