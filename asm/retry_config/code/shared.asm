@@ -151,36 +151,35 @@ endif
 
 ;================================================
 ; Routine to get the checkpoint value for the current sublevel.
-; Returns the value in A (either 8 or 16 bit depending on the m flag).
+; Returns the value in A (8 bit).
 ; You should use cmp #$00 to check for 0 after calling this.
 ; X,Y and P are preserved.
 ;================================================
 get_checkpoint_value:
     phx
     php
-    rep #$30
-    lda $010B|!addr : lsr : tax
-    lda.l tables_checkpoint,x
-    bcs + : lsr #4 : +
-    and #$000F
+    rep #$10
+    ldx $010B|!addr
+    lda.l tables_checkpoint_effect,x
+    and #$0F
     plp
     plx
     rts
 
 ;================================================
 ; Routine to get the effect value for the current sublevel.
-; Returns the value in A (either 8 or 16 bit depending on the m flag).
+; Returns the value in A (8 bit).
 ; You should use cmp #$00 to check for 0 after calling this.
 ; X,Y and P are preserved.
 ;================================================
 get_effect_value:
     phx
     php
-    rep #$30
-    lda $010B|!addr : lsr : tax
-    lda.l tables_effect,x
-    bcs + : lsr #4 : +
-    and #$000F
+    rep #$10
+    ldx $010B|!addr
+    lda.l tables_checkpoint_effect,x
+    lsr #4
+    and #$0F
     plp
     plx
     rts

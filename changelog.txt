@@ -38,8 +38,8 @@ v0.1.8:
     - Added identifier string in ROM with version number.
     - Renamed !freeram to !retry_freeram to avoid naming conflicts.
     - Split "gm14_end.asm" routines into multiple files inside the "code/hijacks/gm14_end" folder for more modularity.
-    - Shrinked checkpoint and effect tables in half by having each value control 2 sublevels.
     - Changed !reset_rng define to a per-sublevel table to be able to have a different setting in each level (thanks Abdu for the suggestion).
     - Fixed softlock when getting a checkpoint in the bonus game.
     - Optimized Retry RAM reset in "load_title.asm".
-    - Fixed inconsistency with sprites movement with pipe entrances when respawning in a level.
+    - Fixed inconsistency with sprites movement with pipe entrances when respawning in a level (thanks LouisDoucet for reporting this).
+    - Merged checkpoint and effect tables into a single checkpoint_effect table, where each digit corresponds to a value in the original tables. Besides keeping the most important sublevel options in a single place, it also saves 512 bytes of space.

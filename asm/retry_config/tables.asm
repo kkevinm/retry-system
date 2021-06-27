@@ -1,109 +1,66 @@
 ; Retry table-based settings.
 
-;==========================;
-; Multiple Midway Settings ;
-;==========================;
-; The following table sets the behavior of a midway bar and level entrances (main/secondary/midway) "in each sublevel".
-; See the figures in the "midway instruction" folder.
+;=================================================;
+; Multiple Midway and Local Retry Prompt Settings ;
+;=================================================;
+; The following table controls two different behaviors for each sublevel.
+; Each $XX value refers to a sublevel. The guides at the top and right of the table should help visualize it.
+;
+; The first digit in XX is used to change the Retry behavior for the sublevel:
+;  0 = follow the global setting (!default_prompt_type)
+;  1 = prompt + play the death jingle when players die. Recommended if you want the music to restart on each death.
+;  2 = prompt + play only the sfx when players die (music won't be interrupted).
+;  3 = no prompt + play only the sfx (the fastest option; "yes" is chosen automatically).
+;        In this option, you can press start then select to exit the level.
+;  4 = no retry (as if "no" is chosen automatically). Use this to have a vanilla death sequence.
+;
+; The second digit sets the behavior of midways bars and level entrances in the sublevel (see the figures in the "midway instruction" folder):
 ;  0 = Vanilla. The midway bar in the corresponding sublevel will lead to the midway entrance of the main level.
 ;  1 = The Midway bar in the corresponding sublevel will lead to the midway entrance of this sublevel as a checkpoint.
 ;  2 = Any main/secondary/midway entrance through door/pipe/etc. whose destination is the corresponding sublevel will
 ;        trigger a checkpoint like midway bars, and the checkpoint will lead to this entrance.
 ;  3 = This option enables both the effects of 1 (midway bar) and 2 (level entrances).
 ;
-; Each $XX value in the table refers to 2 levels: each digit corresponds to a level.
-; For example, $32 as the first value means value 3 for level 000 and value 2 for level 001.
-; The first line after checkpoint: should help indicate the level number for each digit.
-;
 ; NOTE: The custom midway objects could do almost everything that you may want without using this.
 ;       However this may be easier to use for some people, and it's what original retry also uses.
-
-checkpoint:
-;       01  23  45  67  89  AB  CD  EF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 000-00F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 010-01F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 020-02F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 030-03F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 040-04F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 050-05F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 060-06F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 070-07F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 080-08F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 090-09F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0A0-0AF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0B0-0BF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0C0-0CF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0D0-0DF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0E0-0EF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0F0-0FF
-    db $00,$00,$00,$20,$00,$00,$00,$00 ; 100-10F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 110-11F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 120-12F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 130-13F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 140-14F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 150-15F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 160-16F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 170-17F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 180-18F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 190-19F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1A0-1AF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1B0-1BF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1C0-1CF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1D0-1DF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1E0-1EF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1F0-1FF
-
-;================;
-; Local Settings ;
-;================;
-; Decides the prompt type for each sublevel:
-;  0 = follow the global setting (!default_prompt_type)
-;  1 = prompt + play the death jingle when players die.
-;        Recommended if you want the music to restart on each death.
-;  2 = prompt + play only the sfx when players die (music won't be interrupted).
-;  3 = no prompt + play only the sfx (the fastest option; "yes" is chosen automatically).
-;        In this option, you can press start then select to exit the level.
-;  4 = no retry (as if "no" is chosen automatically).
-;        Use this to have a vanilla death sequence.
 ;
-; Format is the same as the checkpoint table: each digit corresponds to one sublevel.
-;
-; NOTE: you can override this at any time by setting a certain RAM address (see "docs/ram_map.txt").
+; For example, having $32 as the value for level 105 will set the value 3 for the Retry prompt
+; (no prompt + play only the sfx) and 2 for the checkpoint (any entrance to the level will set a checkpoint).
 
-effect:
-;       01  23  45  67  89  AB  CD  EF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 000-00F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 010-01F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 020-02F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 030-03F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 040-04F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 050-05F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 060-06F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 070-07F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 080-08F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 090-09F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0A0-0AF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0B0-0BF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0C0-0CF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0D0-0DF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0E0-0EF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 0F0-0FF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 100-10F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 110-11F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 120-12F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 130-13F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 140-14F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 150-15F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 160-16F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 170-17F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 180-18F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 190-19F
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1A0-1AF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1B0-1BF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1C0-1CF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1D0-1DF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1E0-1EF
-    db $00,$00,$00,$00,$00,$00,$00,$00 ; 1F0-1FF
+checkpoint_effect:
+;       0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 000-00F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 010-01F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 020-02F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 030-03F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 040-04F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 050-05F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 060-06F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 070-07F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 080-08F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 090-09F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 0A0-0AF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 0B0-0BF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 0C0-0CF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 0D0-0DF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 0E0-0EF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 0F0-0FF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 100-10F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 110-11F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 120-12F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 130-13F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 140-14F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 150-15F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 160-16F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 170-17F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 180-18F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 190-19F
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 1A0-1AF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 1B0-1BF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 1C0-1CF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 1D0-1DF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 1E0-1EF
+    db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 1F0-1FF
 
 ;=================;
 ; Echo SFX Enable ;
@@ -114,7 +71,8 @@ effect:
 ; Each digit in the table corresponds to a sublevel: if a digit is set to 1,
 ; the corresponding sublevel will have echo on SFX.
 ; For example, %10000001 as the first value means echo on for levels 000 and 007.
-; The first line after sfx_echo: should help indicate the level number for each digit.
+;
+; The guides at the top and right of the table should help visualize it.
 ;
 ; NOTE: this feature only works with AddmusicK.
 
