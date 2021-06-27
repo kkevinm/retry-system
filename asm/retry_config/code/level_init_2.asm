@@ -9,12 +9,8 @@ init:
     lda !ram_is_respawning : bne .return
     
     ; Check if we should count this entrance as a checkpoint.
-    rep #$10
-    ldx $010B|!addr
-    lda.l tables_checkpoint,x
-    sep #$10
-    cmp #$02
-    bcc .return
+    jsr shared_get_checkpoint_value
+    cmp #$02 : bcc .return
 
 ..set_checkpoint:
     ; Set the checkpoint to the current entrance.

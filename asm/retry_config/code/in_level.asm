@@ -239,19 +239,20 @@ endif
     ; Prevent going to the bonus game if dying, since it glitches out.
     ; Only reset the flag if we're not currently in the bonus game, or it will softlock.
     stz $1425|!addr
-+   stz $1492|!addr
-    stz $1493|!addr
++   rep #$20
+    stz $1492|!addr
     stz $1494|!addr
-    stz $1495|!addr
+    sep #$20
     stz $1B99|!addr
 
-if !reset_rng
-    ; Reset RNG addresses.
+    ; Reset RNG addresses if the current sublevel is set to do so.
+    jsr shared_get_bitwise_mask
+    and.l tables_reset_rng,x : beq +
+    rep #$20
     stz $148B|!addr
-    stz $148C|!addr
     stz $148D|!addr
-    stz $148E|!addr
-endif
+    sep #$20
++
 
 if !counterbreak_powerup
     ; Reset powerup.
@@ -292,7 +293,7 @@ endif
 if !amk
     lda $13C6|!addr : bne .force_reset
     lda $0DDA|!addr : cmp #$FF : beq .spec
-    lda !ram_music_to_play : sta $0DDA|!addr : bne .music_end
+    lda !ram_music_to_play : cmp $0DDA|!addr : bne .music_end
     bra .bypass
 
 .spec:

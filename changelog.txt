@@ -33,3 +33,10 @@ v0.1.7:
     - Changed the default SA-1 freeram address to avoid conflicts with lx5's DSS.
     - Fixed room checkpoints not working anymore.
     - Fixed rare start+select conflict with other patches.
+
+v0.1.8:
+    - Added identifier string in ROM with version number.
+    - Renamed !freeram to !retry_freeram to avoid naming conflicts.
+    - Split "gm14_end.asm" routines into multiple files inside the "code/hijacks/gm14_end" folder for more modularity.
+    - Shrinked checkpoint and effect tables in half by having each value control 2 sublevels.
+    - Changed !reset_rng define to a per-sublevel table to be able to have a different setting in each level (thanks Abdu for the suggestion).

@@ -180,13 +180,7 @@ midway_spawn:
 
 .checkpoint:
     ; Check if the checkpoint is for the main or sublevel.
-    phx
-    php
-    rep #$10
-    ldx $010B|!addr
-    lda.l tables_checkpoint,x
-    plp
-    plx
+    jsr shared_get_checkpoint_value
     cmp #$01 : bcs ..sublevel
 
 ..main:

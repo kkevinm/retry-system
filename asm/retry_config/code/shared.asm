@@ -1,20 +1,17 @@
-;=====================================
+;================================================
 ; Shared routines and macros.
-;=====================================
+;================================================
 
-;=====================================
+;================================================
 ; Routine to get the prompt type for the current level.
-;=====================================
+;================================================
 get_prompt_type:
     ; If the override address is set, skip the rest.
     lda !ram_prompt_override : bne .not_default
 
     ; Otherwise, if the effect for this level is set, skip the default.
-    rep #$10
-    ldx $010B|!addr
-    lda.l tables_effect,x
-    sep #$10
-    bne .not_default
+    jsr get_effect_value
+    cmp #$00 : bne .not_default
 
     ; Otheriwse, use the default value.
     lda.b #!default_prompt_type+1
@@ -22,9 +19,9 @@ get_prompt_type:
 .not_default:
     rts
 
-;=====================================
+;================================================
 ; Get translevel number the player is standing on the overworld.
-;=====================================
+;================================================
 get_translevel:
     ldy $0DD6|!addr
     lda $1F17|!addr,y : lsr #4 : sta $00
@@ -40,9 +37,9 @@ get_translevel:
     sep #$10
     rts
 
-;=====================================
+;================================================
 ; Routine to save the current level's custom checkpoint value and set the midway flag.
-;=====================================
+;================================================
 hard_save:
     ; Filter title screen, etc.
     lda $0109|!addr : beq .no_intro
@@ -69,9 +66,9 @@ else
     rts
 endif
 
-;=====================================
+;================================================
 ; Routine to remove the current level's checkpoint.
-;=====================================
+;================================================
 reset_checkpoint:
     phx
     lda $13BF|!addr
@@ -87,9 +84,9 @@ reset_checkpoint:
     plx
     rts
 
-;=====================================
+;================================================
 ; Routine to save the game.
-;=====================================
+;================================================
 save_game:
     phx
     phy
@@ -111,9 +108,9 @@ save_game:
     plx
     rts
 
-;=====================================
+;================================================
 ; Routines to reset and save the dcsave buffers.
-;=====================================
+;================================================
 if !dcsave
 dcsave:
 .init:
@@ -152,9 +149,64 @@ endif
     jml [$000D|!dp]
 endif
 
-;=====================================
+;================================================
+; Routine to get the checkpoint value for the current sublevel.
+; Returns the value in A (either 8 or 16 bit depending on the m flag).
+; You should use cmp #$00 to check for 0 after calling this.
+; X,Y and P are preserved.
+;================================================
+get_checkpoint_value:
+    phx
+    php
+    rep #$30
+    lda $010B|!addr : lsr : tax
+    lda.l tables_checkpoint,x
+    bcs + : lsr #4 : +
+    and #$000F
+    plp
+    plx
+    rts
+
+;================================================
+; Routine to get the effect value for the current sublevel.
+; Returns the value in A (either 8 or 16 bit depending on the m flag).
+; You should use cmp #$00 to check for 0 after calling this.
+; X,Y and P are preserved.
+;================================================
+get_effect_value:
+    phx
+    php
+    rep #$30
+    lda $010B|!addr : lsr : tax
+    lda.l tables_effect,x
+    bcs + : lsr #4 : +
+    and #$000F
+    plp
+    plx
+    rts
+
+;================================================
+; Routine to get the index and mask to a bitwise sublevel table.
+; Returns the index to the table in X, and the mask in A (8 bit).
+; A/X/Y should be in 8-bit mode when calling this,
+; and DBR should be set properly. Y is preserved.
+;================================================
+get_bitwise_mask:
+    phy
+    lda $010B|!addr : and #$07 : tay
+    rep #$20
+    lda $010B|!addr : lsr #3 : tax
+    sep #$20
+    lda.w .mask_table,y
+    ply
+    rts
+
+.mask_table:
+    db $80,$40,$20,$10,$08,$04,$02,$01
+
+;================================================
 ; Macro to get current screen number in X.
-;=====================================
+;================================================
 macro get_screen_number()
 if !lm3
     jsl $03BCDC|!bank
@@ -166,11 +218,23 @@ else
 endif
 endmacro
 
-;=====================================
+;================================================
 ; Macro to JSL to a routine that ends in RTS.
-;=====================================
+;================================================
 macro jsl_to_rts(routine, rtl)
     phk : pea.w (?+)-1 : pea.w <rtl>-1
     jml <routine>|!bank
 ?+
+endmacro
+
+;================================================
+; Macro to JSL to a routine that ends in RTS.
+; Also sets up the DBR to the routine's bank.
+;================================================
+macro jsl_to_rts_db(routine, rtl)
+?-  pea.w (<routine>>>16)|((?-)>>16<<8)
+    plb
+    phk : pea.w (?+)-1 : pea.w <rtl>-1
+    jml <routine>|!bank
+?+  plb
 endmacro

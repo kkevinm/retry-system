@@ -58,30 +58,14 @@ endif
 if !reset_dsx
     stz $06FE|!addr
 endif
-
-    ; Set/unset the SFX echo.
+    
 if !amk
-    ; $05 = SFX to reset echo.
+    ; Store $05 or $06 to $1DFA depending on the
+    ; sfx_echo setting for the current sublevel.
     ldy #$05
-
-    ; Load index to the mask table.
-    lda $010B|!addr : and #$07 : tax
-
-    ; Load mask and save it for later.
-    lda.l $018000|!bank,x : sta $00
-
-    ; Load index for the echo table.
-    rep #$20
-    lda $010B|!addr : lsr #3 : tax
-    sep #$20
-
-    ; If value & mask is 0, branch (bit is not set).
-    lda.l tables_sfx_echo,x : and $00 : beq +
-
-    ; Otherwise, use $06 = SFX to set echo.
+    jsr shared_get_bitwise_mask
+    and.l tables_sfx_echo,x : beq +
     iny
-
-    ; Finally, store to $1DFA.
 +   sty $1DFA|!addr
 endif
 
@@ -95,12 +79,8 @@ endif
 
 .room_transition:
     lda !ram_is_respawning : bne ..respawning
-    rep #$10
-    ldx $010B|!addr
-    lda.l tables_checkpoint,x
-    sep #$10
-    cmp #$02
-    bcc .normal
+    jsr shared_get_checkpoint_value
+    cmp #$02 : bcc .normal
 
 ..respawning
     ; Fix issues with the "level ender" sprite.

@@ -3,8 +3,9 @@
 ; 0 = prompt & play the vanilla death song when players die.
 ; 1 = prompt & play only the sfx when players die (music won't be interrupted).
 ; 2 = no prompt & play only the sfx (the fastest option; like "yes" is chosen automatically)
-;      In this option, you can press start then select to exit the level.
+;       In this option, you can press start then select to exit the level.
 ; 3 = no retry prompt/respawn (as if "no" is chosen automatically, use this if you only want the multi-midway feature).
+; Note: you can override this at any time by setting a certain RAM address (see "docs/ram_map.txt").
 !default_prompt_type = 1
 
 ; How many lives to start a new save file with.
@@ -23,9 +24,6 @@
 !counterbreak_coins = 0
 !counterbreak_bonus_stars = 0
 !counterbreak_score = 0
-
-; If 1, the RNG values will be reset when dying or loading a level.
-!reset_rng = 1
 
 ; If 1, it fixes the issue where some sprites don't face Mario when entering a level for the first time.
 !initial_facing_fix = 1
@@ -67,7 +65,8 @@
 !save_on_checkpoint = 0
 
 ; Set to 0 if you don't want the custom midway bar object.
-; This can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the readme). Also, all slots of object 2D will be occupied by the custom midway object (but you'll still be able to use all extended objects).
+; This can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the readme).
+; Also, all slots of object 2D will be occupied by the custom midway object (but you'll still be able to use all extended objects).
 !use_custom_midway_bar = 1
 
 ; If !use_custom_midway_bar = 1, it determines how many custom midways you can have in the same sublevel.
@@ -84,12 +83,12 @@
 ; How fast the prompt expands/shrinks. It must evenly divide 72.
 !prompt_speed = 6
 
-; If 1, room transitions will be faster than usual (by skipping the mosaic effect).
+; If 1, level transitions will be much faster than usual.
 !fast_transitions = 1
 
 ; Set to 1 if you don't want the "exit" option in the prompt.
 ; This will also allow the player to start+select when having the prompt.
-; Note that you can also change this on the fly, see "docs/ram_map.txt".
+; Note that you can also change this on the fly (see "docs/ram_map.txt").
 !no_exit_option = 0
 
 ; Set to 1 to remove the black box, but leave the options on screen.
@@ -113,30 +112,20 @@
 !cursor_palette = $08
 
 ; Tile number for the tiles used by the prompt (in SP1).
-; Default values should be fine in most cases.
-; Note: when !no_prompt_box = 0, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles. For example, !tile_curs = $24 means both $24 and $25 will be overwritten.
-if !alternate_nmi
-    ; These are used if some Mario DMA patch is used
-    ; (like 32x32 tilemap, 8x8 GFX DMA-er, lx5's Custom Powerups).
-    !tile_curs = $24
-    !tile_blk  = $26
-    !tile_r    = $34
-    !tile_e    = $35
-    !tile_t    = $36
-    !tile_y    = $37
-    !tile_x    = $0E
-    !tile_i    = $0F
-else
-    ; These are used if the Mario DMA patches are not used.
-    !tile_curs = $20
-    !tile_blk  = $22
-    !tile_r    = $30
-    !tile_e    = $31
-    !tile_t    = $32
-    !tile_y    = $33
-    !tile_x    = $4A
-    !tile_i    = $5A
-endif
+; Note: when !no_prompt_box = 0, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.
+; For example, !tile_curs = $24 means both $24 and $25 will be overwritten.
+
+; The default values should be fine in most cases, unless you're using some other patch that
+; reserves tiles in SP1, for example: Sprite Status Bar, 32x32 Player Tilemap, lx5's Custom Powerups.
+; In this case you may need to change some of them to avoid tiles being overwritten.
+!tile_curs = $20
+!tile_blk  = $22
+!tile_r    = $30
+!tile_e    = $31
+!tile_t    = $32
+!tile_y    = $33
+!tile_x    = $4A
+!tile_i    = $5A
 
 ; Where in VRAM the tiles will be uploaded to. Default should be fine in 99.69% of cases.
 ; $6000 = SP1, $6800 = SP2, $7000 = SP3, $7800 = SP4.

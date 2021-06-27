@@ -1,5 +1,8 @@
 ; Miscellaneous stuff used by retry.
-; You shouldn't edit this file.
+; You usually shouldn't edit this file.
+
+; Version number to write in ROM.
+!retry_version = "017"
 
 ; Read death time from ROM.
 !death_time #= read1($00F61C)
@@ -63,14 +66,10 @@ else
 endif
 
 ; Detect if using PIXI's 255 sprite per level feature.
-if read1($01AC9C) == $5C && read3(read3($01AC9C+1)+5) == $7FAF00
+if !sa1 || (read1($01AC9C) == $5C && read3(read3($01AC9C+1)+5) == $7FAF00)
     !255_sprites_per_level = 1
 else
     !255_sprites_per_level = 0
-endif
-
-if !sa1
-    !255_sprites_per_level = 1
 endif
 
 ; Define the sprites load table address.
@@ -89,25 +88,12 @@ else
     !intro_sublevel #= !intro_level
 endif
 
-; Detect some NMI patches.
-!alternate_nmi   = 0
-!custom_powerups = 0
-
 ; Detects lx5's Custom Powerups.
-if read2($00D067|!bank) == $DEAD
-    !alternate_nmi = 1
+if read2($00D067) == $DEAD
     !custom_powerups = 1
     incsrc powerup_defs.asm
-endif
-
-; Detects Mario 8x8 GFX DMAer.
-if read3($00DFE2) == $DF1AB9
-    !alternate_nmi = 1
-endif
-
-; Detects 32x32 Player Tilemap.
-if read1($00F636) == $5C
-    !alternate_nmi = 1
+else
+    !custom_powerups = 0
 endif
 
 ; Detects the "Individual Dragon Coins Save" patch.
