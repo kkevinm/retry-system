@@ -41,3 +41,5 @@ v0.1.8:
     - Shrinked checkpoint and effect tables in half by having each value control 2 sublevels.
     - Changed !reset_rng define to a per-sublevel table to be able to have a different setting in each level (thanks Abdu for the suggestion).
     - Fixed softlock when getting a checkpoint in the bonus game.
+    - Optimized Retry RAM reset in "load_title.asm".
+    - Fixed inconsistency with sprites movement with pipe entrances when respawning in a level.

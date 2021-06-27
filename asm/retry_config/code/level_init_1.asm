@@ -8,8 +8,8 @@ init:
     lda #$00 : sta !ram_cust_obj_num
 
     ; Don't trigger the prompt by accident, and reset the death flag.
-    lda #$00 : sta !ram_prompt_phase
-               sta !ram_is_dying
+    sta !ram_prompt_phase
+    sta !ram_is_dying
 
     ; Check if we entered from the overworld.
     lda $141A|!addr : bne .skip
@@ -21,7 +21,9 @@ init:
 +
     ; Don't trigger Yoshi init.
     lda #$00 : sta !ram_is_respawning
-               sta !ram_hurry_up
+
+    ; Reset hurry up flag.
+    sta !ram_hurry_up
 
     ; Call the custom reset routine.
     php : phb : phk : plb

@@ -2,7 +2,7 @@
 ; You usually shouldn't edit this file.
 
 ; Version number to write in ROM.
-!retry_version = "017"
+!retry_version = "018"
 
 ; Read death time from ROM.
 !death_time #= read1($00F61C)
@@ -16,6 +16,18 @@
 ; What button exits the level while the game is paused (by default, select).
 !exit_level_buttons_addr = $15
 !exit_level_buttons_bits = $20
+
+; Level number of the intro level (automatically adjusted to $01C5 when necessary).
+!intro_level = $00C5
+
+if read2($01E762) == $EAEA && read1($009EF0) != $00
+    !intro_sublevel #= !intro_level|$0100
+else
+    !intro_sublevel #= !intro_level
+endif
+
+; Level number (low byte) of the Yoshi Wings levels.
+!wings_level = read1($05DBAA)
 
 ; OW translevel number table.
 if !sa1
@@ -77,15 +89,6 @@ if !255_sprites_per_level
     %define_sprite_table(sprite_load_table, $7FAF00, $418A00)
 else
     %define_sprite_table(sprite_load_table, $1938, $418A00)
-endif
-
-; Level number of the intro level (automatically adjusted to $01C5 when necessary).
-!intro_level = $00C5
-
-if read2($01E762) == $EAEA && read1($009EF0) != $00
-    !intro_sublevel #= !intro_level|$0100
-else
-    !intro_sublevel #= !intro_level
 endif
 
 ; Detects lx5's Custom Powerups.

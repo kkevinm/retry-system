@@ -230,7 +230,7 @@ endif
 
     ; Reset Yoshi drums.
     lda #$03 : sta $1DFA|!addr
-    
+
     ; Reset some level end addresses (for Kaizo traps).
     rep #$20
     stz $1492|!addr
