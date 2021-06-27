@@ -78,10 +78,14 @@ else
 endif
 
 ; Detect if using PIXI's 255 sprite per level feature.
-if !sa1 || (read1($01AC9C) == $5C && read3(read3($01AC9C+1)+5) == $7FAF00)
+if read1($01AC9C) == $5C && read3(read3($01AC9C+1)+5) == $7FAF00
     !255_sprites_per_level = 1
 else
     !255_sprites_per_level = 0
+endif
+
+if !sa1
+    !255_sprites_per_level = 1
 endif
 
 ; Define the sprites load table address.
