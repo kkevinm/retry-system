@@ -66,8 +66,9 @@ Now for the actual RAM addresses (names are prefixed with "!ram_" in ram.asm, an
 ;                 ;         ;       ; avoid occasional flickering when updating it on the same;
 ;                 ;         ;       ; frame it finished expanding.                            ;
 ;=============================================================================================;
-; is_dying        ;   $0E   ;  $01  ; Flag set when Mario dies, then reset the frame after.   ;
-;                 ;         ;       ; It's used to skip the death music when applicable.      ;
+; is_dying        ;   $0E   ;  $01  ; Flag set when Mario dies. Used to skip the death music  ;
+;                 ;         ;       ; when applicable (but only on the first death frame) and ;
+;                 ;         ;       ; to handle the prompt/respawn. Reset on level load.      ;
 ;=============================================================================================;
 ; prompt_override ;   $0F   ;  $01  ; Can be used to override the Retry settings of the cur-  ;
 ;                 ;         ;       ; rent level. It follows the same format as the "effect"  ;

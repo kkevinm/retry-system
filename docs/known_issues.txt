@@ -1,6 +1,5 @@
-- !display_save_counter option is not implemented yet.
-- May not work properly in special levels (Intro, Bonus Game, Yoshi Wings), needs testing.
-- There may be issues related to "No Yoshi" intros in some situations.
+- !display_death_counter option is not implemented yet.
+- RAM based "No prompt box" option not implemented yet.
 - There may be issues with Layer 2 interaction on the first frame when respawning.
-- May cause graphical glitches in mode 7 bosses.
-- Missing a bunch of doc files (documentation, FAQ, troubleshooting, ObjecTool info).
+- Custom codes that call the death routine every frame (without checking for the animations locked flag) will cause the vanilla death routine to happen.
+- Missing ObjecTool info file.

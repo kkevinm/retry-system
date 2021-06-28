@@ -1,5 +1,5 @@
 Q: Can I change the prompt type in specific sublevels?
-A: Yes. Look at "effect:" in "retry_config/tables.asm".
+A: Yes. Look at "checkpoint_effect" in "retry_config/tables.asm". The first digit in each value controls the prompt type for a specific sublevel.
 
 Q: Can I change the prompt type in specific situations (not necessarily on a sublevel basis)?
 A: Yes. Additionally to the "effect" table, there's the "!ram_prompt_override" address that, when set, will replace both the table and the default option (see "retry_config/ram.asm" and "docs/ram_map.txt"). For example, you could use it to let the player choose the prompt type as they want (you still have to implement that, though, as this only handles setting the prompt type).
