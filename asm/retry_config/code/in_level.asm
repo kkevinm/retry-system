@@ -105,10 +105,9 @@ endif
     stz $1B89|!addr
 
     ; If in a special level mode (mode 7 boss), change BG color to black.
-    lda $0D9B|!addr : bpl +
+    lda $0D9B|!addr : bpl ..return
     stz $0701|!addr
     stz $0702|!addr
-+   
 ..return:
     rtl
 
@@ -127,7 +126,7 @@ endif
     lda #$00 : sta !ram_prompt_phase
 
     ; Reset the hurry up flag.
-    lda #$00 : sta !ram_hurry_up
+    sta !ram_hurry_up
 
     ; Set the destination to send Mario to.
     %get_screen_number()

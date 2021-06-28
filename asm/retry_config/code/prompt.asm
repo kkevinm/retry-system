@@ -68,7 +68,6 @@ handle_cursor:
     
 if !dim_screen
     ; Fade the brightness.
-    ;lda $13 : lsr : bcc +
     lda $0DAE|!addr : and #$F0 : sta $00
     lda $0DAE|!addr : and #$0F : cmp.b #!brightness+1 : bcc +
     dec : ora $00 : sta $0DAE|!addr

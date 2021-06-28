@@ -46,36 +46,21 @@ gm14_end:
     lda !ram_set_checkpoint : cmp #$FFFF
     sep #$20
     beq .no_checkpoint
-
-.set_checkpoint:
     jsr set_checkpoint
 
 .no_checkpoint:
-    ; Check if Mario is dying.
+    ; If Mario is dying, call the death routine.
     lda $71 : cmp #$09 : bne .no_death
-
-    ; Only do the following code once per death.
-    lda !ram_is_dying : bne .no_death
-
-.death:
-    ; Set the flag.
-    inc : sta !ram_is_dying
-
-    ; Handle dying.
     jsr death_routine
 
 .no_death:
     ; Check if it's time to draw the tiles.
     lda !ram_prompt_phase : cmp #$02 : beq .draw_prompt
                                        bcc .return
-
-.erase_tiles:
     ; In some cases it's needed to remove the prompt tiles from OAM after the option is chosen.
     jsr erase_tiles
     bra .return
-
 .draw_prompt:
-    ; Draw the tiles.
     jsr prompt_oam
 
 .return:
