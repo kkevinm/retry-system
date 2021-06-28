@@ -54,6 +54,7 @@ endif
     %incsrc(code,prompt)
     %incsrc(code,nmi)
     %incsrc(code,load_overworld)
+    %incsrc(code,fade_to_overworld)
 
 ;=====================================
 ; Load the hijacks.
@@ -65,3 +66,4 @@ endif
     %incsrc(code/hijacks,custom_midway)
     %incsrc(code/hijacks,sram)
     %incsrc(code/hijacks,hurry_up)
+    %incsrc(code/hijacks,death_counter)

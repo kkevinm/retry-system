@@ -7,6 +7,7 @@ A: Inserting this patch should be relatively simple in most cases.
 
     03 retry_gm03.asm
     0C retry_gm0C.asm
+    0D retry_gm0D.asm
     0F retry_gm0F.asm
     10 retry_gm10_16_19.asm
     11 retry_gm11.asm

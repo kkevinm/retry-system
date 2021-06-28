@@ -38,6 +38,10 @@ else
     !7ED000 = $7ED000
 endif
 
+; Stripe image table defines.
+!stripe_index = $7F837B
+!stripe_table = $7F837D
+
 ; Address for the custom midway amount.
 !ram_cust_obj_num = !ram_cust_obj_data+(!max_custom_midway_num*4)
 

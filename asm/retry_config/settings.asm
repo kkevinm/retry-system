@@ -50,10 +50,6 @@
 !room_cp_sfx = $05
 !room_cp_sfx_addr = $1DF9|!addr
 
-; If 1, a death counter will replace the lives on the status bar.
-; to-do: not implemented yet.
-!display_death_counter = 0
-
 ; If 1, a custom SRAM expansion patch will be inserted as well.
 ; By default, it will save the custom checkpoint status and death counter to SRAM.
 ; To make your own stuff saved as well, check out .save_table in retry_tables.asm.
@@ -110,6 +106,25 @@
 ; Palette row used by the letters and cursor (remember they use sprite palettes).
 !letter_palette = $08
 !cursor_palette = $08
+
+; If 1, a death counter will replace the lives on the status bar.
+; Note: this only handles the counter, if you want other stuff like "DEATHS" appear, use a status bar editor.
+!status_death_counter = 0
+
+; If 1, a death counter will be written to the Overworld border.
+; Note: this only handles the counter, if you want other stuff like "DEATHS" appear, use LM's layer 3 editor.
+!ow_death_counter = 0
+
+; Position of the death counter on the overworld.
+!ow_death_counter_x_pos = $19
+!ow_death_counter_y_pos = $02
+
+; YXPCCCTT properties of the death counter on the overworld.
+!ow_death_counter_props = $39
+
+; Tile number of the digit "0" on the overworld.
+; (assumed that the digits are stored from 0 to 9 in sequence in the GFX file).
+!ow_digit_0 = $22
 
 ; Tile number for the tiles used by the prompt (in SP1).
 ; Note: when !no_prompt_box = 0, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.

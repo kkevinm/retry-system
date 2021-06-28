@@ -65,3 +65,9 @@ org $01AD3A
 org $008E5B
     lda #$FF
     sta $1DF9|!addr
+
+if read1($008F49) == $5C
+org $008F49
+    lda $0DBE|!addr
+    inc
+endif
