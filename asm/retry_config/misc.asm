@@ -2,7 +2,7 @@
 ; You usually shouldn't edit this file.
 
 ; Version number to write in ROM.
-!retry_version = "018"
+!retry_version = "019"
 
 ; Read death time from ROM.
 !death_time #= read1($00F61C)

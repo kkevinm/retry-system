@@ -43,3 +43,6 @@ v0.1.8:
     - Optimized Retry RAM reset in "load_title.asm".
     - Fixed inconsistency with sprites movement with pipe entrances when respawning in a level (thanks LouisDoucet for reporting this).
     - Merged checkpoint and effect tables into a single checkpoint_effect table, where each digit corresponds to a value in the original tables. Besides keeping the most important sublevel options in a single place, it also saves 512 bytes of space.
+
+v0.1.9:
+    - Fixed issue where calling $00F606 in consecutive frames would trigger the death song even if disabled (thanks SuperMargot for reporting this).
