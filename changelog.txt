@@ -48,3 +48,4 @@ v0.1.9:
     - Fixed issue where calling $00F606 in consecutive frames would trigger the death song even if disabled (thanks SuperMargot for reporting this).
     - Fixed issue where dying in a level with a "No Yoshi" entrance would respawn you in the wrong sublevel (thanks Abdu for reporting this).
     - Implemented death counter display.
+    - Fixed Retry RAM reset loop only resetting the first byte (thanks BabaYegha and FYRE150 for reporting an odd issue caused by this).

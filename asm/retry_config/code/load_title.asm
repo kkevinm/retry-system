@@ -5,7 +5,7 @@ init:
     rep #$30
     ldx #$0024
     lda #$0000
--   sta !retry_freeram
+-   sta !retry_freeram,x
     dex #2 : bpl -
 
     ; Initialize "set checkpoint" handle to $FFFF.

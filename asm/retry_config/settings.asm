@@ -129,7 +129,6 @@
 ; Tile number for the tiles used by the prompt (in SP1).
 ; Note: when !no_prompt_box = 0, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.
 ; For example, !tile_curs = $24 means both $24 and $25 will be overwritten.
-
 ; The default values should be fine in most cases, unless you're using some other patch that
 ; reserves tiles in SP1, for example: Sprite Status Bar, 32x32 Player Tilemap, lx5's Custom Powerups.
 ; In this case you may need to change some of them to avoid tiles being overwritten.
