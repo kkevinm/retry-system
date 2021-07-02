@@ -49,3 +49,5 @@ v0.1.9:
     - Fixed issue where dying in a level with a "No Yoshi" entrance would respawn you in the wrong sublevel (thanks Abdu for reporting this).
     - Implemented death counter display.
     - Fixed Retry RAM reset loop only resetting the first byte (thanks BabaYegha and FYRE150 for reporting an odd issue caused by this).
+    - Optimized the Retry RAM reset code even more.
+    - Put Retry RAM reset code in gamemode 8 too. This fixes an issue where if people prevent the erase file menu to reload the title screen after erasing a file, the new save file would use the addresses saved to SRAM before the file was erased.
