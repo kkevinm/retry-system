@@ -32,6 +32,7 @@ if !ow_death_counter
     ; If the current digit is zero, turn it into an empty tile,
     ; but only if no non-zero digit has been reached yet.
     lda.l !ram_death_counter,x : bne ...normal
+    cpx.w #$0005-1 : beq ...normal
     lsr $00 : bcs ...normal
     lda.b #!empty_tile : sta.w !stripe_table,y
     lda.b #!empty_props
