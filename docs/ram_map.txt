@@ -109,6 +109,12 @@ Now for the actual RAM addresses (names are prefixed with "!ram_" in ram.asm, an
 ;                 ;         ;       ; appear at. You can write to it at any time. Note that   ;
 ;                 ;         ;       ; this address is only reset on title screen load.        ;
 ;=============================================================================================;
+; disable_box     ;   $16   ;  $01  ; If set, the Retry prompt's black box will be disabled.  ;
+;                 ;         ;       ; It's set to !no_prompt_box on title screen load, but you;
+;                 ;         ;       ; can also change it at any time. Suggested to be set if  ;
+;                 ;         ;       ; also changing !prompt_x_pos and !prompt_y_pos during    ;
+;                 ;         ;       ; gameplay.                                               ;
+;=============================================================================================;
 ; reserved        ;   $16   ;  $0A  ; Unused, but reserved for future expansion.              ;
 ;                 ;         ;       ; Usage as free ram is not recommended.                   ;
 ;=============================================================================================;

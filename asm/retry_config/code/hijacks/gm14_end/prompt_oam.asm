@@ -14,14 +14,13 @@ assert !cursor_palette >= $08 && !cursor_palette <= $0F, "Error: \!cursor_palett
 !letter_props #= ($30|((!letter_palette-8)<<1))
 !cursor_props #= ($30|((!cursor_palette-8)<<1))
 
-!letters_num = (prompt_oam_letters_x_pos_end-prompt_oam_letters_x_pos)
-
 erase_tiles:
     ; Erase the prompt's OAM tiles when in Reznor/Morton/Roy/Ludwig's rooms.
     ; This avoids the BG from glitching out when the prompt disappears.
     lda $0D9B|!addr : cmp #$C0 : bne .return
+    lda !ram_disable_box : tay
+    lda.w prompt_oam_start_index,y : asl #2 : tay
     lda #$F0
-    ldy.b #4*(!letters_num-1)
 .loop:
     sta $0201|!addr,y
     dey #4 : bpl .loop
@@ -34,10 +33,12 @@ prompt_oam:
     lda $0D9B|!addr : cmp #$C0 : beq +
     jsr defrag_oam
 +
-    ; Draw the letters.
-    ldx.b #!letters_num-1
-    ldy.b #4*(!letters_num-1)
+    ; Load starting index depending on the box being enabled/disabled.
+    lda !ram_disable_box : sta $00 : tay
+    lda.w .start_index,y : tax
+    asl #2 : tay
 
+    ; Draw the letters.
 .oam_draw_loop:
     ; Store OAM values.
     lda !ram_prompt_x_pos : clc : adc.w .letters_x_pos,x : sta $0200|!addr,y
@@ -46,7 +47,12 @@ prompt_oam:
     lda.b #!letter_props : sta $0203|!addr,y
     
     ; Store OAM size. X is always Y/4 so we can use that directly.
-    lda.w .letters_size,x : sta $0420|!addr,x
+    ; The size of the first two tiles (cursor/black) depends on the prompt box being enabled/disabled.
+    lda.w .letters_size,x
+    cpx #$02 : bcs +
+    cmp $00 : bne +
+    lda #$02
++   sta $0420|!addr,x
 
     ; Go to the next slot.
     dey #4
@@ -59,15 +65,15 @@ prompt_oam:
     ; If exit is enabled, skip.
     lda !ram_disable_exit : beq .handle_cursor
 
-if !no_prompt_box
-    ; If not box, put the "exit" tiles offscreen.
+    ; If the box is disabled, put the "exit" tiles offscreen.
+    lda !ram_disable_box : beq +
     lda #$F0
     sta $0209|!addr : sta $020D|!addr : sta $0211|!addr : sta $0215|!addr
-else
+    bra .handle_cursor
++
     ; Otherwise, turn them all into black tiles.
     lda.b #!tile_blk
     sta $020A|!addr : sta $020E|!addr : sta $0212|!addr : sta $0216|!addr
-endif
 
     ; Now handle the cursor.
 .handle_cursor:
@@ -78,25 +84,23 @@ endif
     ; Otherwise, only hide the one that's not on the selected option's line.
     lda $1B92|!addr : eor #$01 : asl #2 : tay
 
-if !no_prompt_box
-    ; If no box, just put the tile offscreen.
+    ; If the box is disabled, just put the tile offscreen.
+    lda !ram_disable_box : beq +
     lda #$F0 : sta $0201|!addr,y
-else
++
     ; Otherwise, turn into a black tile.
     lda.b #!tile_blk : sta $0202|!addr,y
-endif
     bra ..end
 
 ..hide_both:
-if !no_prompt_box
-    ; If no prompt, put both tiles offscreen.
+    ; If the box is disabled, put both tiles offscreen.
+    lda !ram_disable_box : beq +
     lda #$F0
     sta $0201|!addr : sta $0205|!addr
-else
++
     ; Otherwise, turn them into black tiles.
     lda.b #!tile_blk
     sta $0202|!addr : sta $0206|!addr
-endif
 
 ..end:
     rts
@@ -116,6 +120,11 @@ endif
 ; In summary, if !no_promp_box = 1, 11 slots are used, otherwise 15.
 ;=====================================
 
+; Index to start from in the below tables when the prompt box is enabled/disabled.
+.start_index:
+    db .letters_x_pos_end-.letters_x_pos-1
+    db .letters_x_pos_box-.letters_x_pos-1
+
 ; X position offset of each letter on the screen.
 .letters_x_pos:
     db $00 ; Black / Cursor
@@ -129,12 +138,11 @@ endif
     db $20 ; T
     db $28 ; R
     db $30 ; Y
-if not(!no_prompt_box)
+..box:
     db $E0 ; Black
     db $F0 ; Black
     db $E0 ; Black
     db $F0 ; Black
-endif
 ..end:
 
 ; Y position offset of each letter on the screen.
@@ -150,12 +158,11 @@ endif
     db $00 ; T
     db $00 ; R
     db $00 ; Y
-if not(!no_prompt_box)
+..box:
     db $00 ; Black
     db $00 ; Black
     db $10 ; Black
     db $10 ; Black
-endif
 ..end:
 
 ; Tile number for each letter.
@@ -163,23 +170,17 @@ endif
     db !tile_curs,!tile_curs
     db !tile_e,!tile_x,!tile_i,!tile_t
     db !tile_r,!tile_e,!tile_t,!tile_r,!tile_y
-if not(!no_prompt_box)
+..box:
     db !tile_blk,!tile_blk,!tile_blk,!tile_blk
-endif
 ..end:
 
 ; Size (8x8 or 16x16) for each letter.
 .letters_size:
-if !no_prompt_box
     db $00,$00
-else
-    db $02,$02
-endif
     db $00,$00,$00,$00
     db $00,$00,$00,$00,$00
-if not(!no_prompt_box)
+..box:
     db $02,$02,$02,$02
-endif
 ..end:
 
 ;=====================================

@@ -30,6 +30,9 @@ init:
     ; Initialize "No exit" flag.
     lda.b #!no_exit_option : sta.w !ram_disable_exit
 
+    ; Initialize "No prompt box" flag.
+    lda.b #!no_prompt_box : sta.w !ram_disable_box
+
     ; Initialize prompt position.
     lda.b #!text_x_pos : sta.w !ram_prompt_x_pos
     lda.b #!text_y_pos : sta.w !ram_prompt_y_pos

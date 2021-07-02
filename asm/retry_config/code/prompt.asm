@@ -132,10 +132,9 @@ handle_box:
     ldx $1B88|!addr
 
     ; If we shouldn't show the box, then just go to the next phase immediately.
-if not(!no_prompt_box)
+    lda !ram_disable_box : bne +
     lda $1B89|!addr : cmp.l .size,x : bne .not_finished
-endif
-
++
     ; Go to the next prompt phase.
     lda !ram_prompt_phase : inc : sta !ram_prompt_phase
 
@@ -146,17 +145,14 @@ endif
     ; Reset shrinking flag.
     stz $1B88|!addr
 
-if not(!no_prompt_box)
-    ; Reset screen settings.
+    ; If the box is enabled, reset the screen settings and disable windowing.
+    lda !ram_disable_box : bne +
     stz $41
     stz $42
     stz $43
     lda #$02 : sta $44
-
-    ; Disable windowing.
     lda.b #!window_mask : trb $0D9F|!addr
-endif
-
++
     rts
 
 .finished_expanding:
@@ -167,19 +163,18 @@ endif
     stz $1B91|!addr
     stz $1B92|!addr
 
-if !no_prompt_box
-    ; Make sprites appear above the window.
+    ; If the box is enabled, signal that we have to update its shape.
+    lda !ram_disable_box : bne +
+    lda #$01 : sta !ram_update_window
+    rts
++
+    ; Otherwise, make sprites appear above the window.
     ; This fixes an issue when dying while the level end circle is covering the screen,
     ; which would make the retry letters not appear.
     ; The sprite palettes will be glitched, but at least the letters will be visible.
     lda #$0F : trb $43
-else
-    ; If the box is enabled, signal that we have to update its shape.
-    lda #$01 : sta !ram_update_window
-endif
     rts
 
-if not(!no_prompt_box)
 .not_finished:
     ; Update the box size.
     clc : adc.l .speed,x : sta $1B89|!addr
@@ -219,7 +214,6 @@ if not(!no_prompt_box)
     db $48,$00
 .speed:
     db !prompt_speed,-!prompt_speed
-endif
 
 ;=====================================
 ; update_window routine
@@ -227,7 +221,6 @@ endif
 ; This changes the normal window shape.
 ; It's what allows the letters to go above the prompt and other sprites behind it.
 ;=====================================
-if not(!no_prompt_box)
 update_window:
     ; Only update for 1 frame.
     lda #$00 : sta !ram_update_window
@@ -250,4 +243,3 @@ update_window:
     db $0D : db $38,$C8,$FF,$00
     db $4C : db $FF,$00,$FF,$00
     db $00
-endif

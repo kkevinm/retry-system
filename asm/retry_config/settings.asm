@@ -88,7 +88,7 @@
 !no_exit_option = 0
 
 ; Set to 1 to remove the black box, but leave the options on screen.
-; TODO: add RAM for this too.
+; Note that you can also change this on the fly (see "docs/ram_map.txt").
 !no_prompt_box = 0
 
 ; Set to 1 to dim the screen while the prompt is shown.
@@ -127,7 +127,7 @@
 !ow_digit_0 = $22
 
 ; Tile number for the tiles used by the prompt (in SP1).
-; Note: when !no_prompt_box = 0, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.
+; Note: when the prompt box is enabled, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.
 ; For example, !tile_curs = $24 means both $24 and $25 will be overwritten.
 ; The default values should be fine in most cases, unless you're using some other patch that
 ; reserves tiles in SP1, for example: Sprite Status Bar, 32x32 Player Tilemap, lx5's Custom Powerups.

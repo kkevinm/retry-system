@@ -33,11 +33,10 @@ endmacro
 ; Load the letters gfx.
 ;=====================================
 retry_gfx:
-if !no_prompt_box
-    %incbin(gfx,letters2)
-else
+.box:
     %incbin(gfx,letters1)
-endif
+.no_box:
+    %incbin(gfx,letters2)
 
 ;=====================================
 ; Load the ASM files.
