@@ -182,8 +182,6 @@ save:
 ; You can do "db $XX,$XX,..." for 1 byte values, "dw $XXXX,$XXXX,..." for 2 bytes values and "dl $XXXXXX,$XXXXXX,..." for 3 bytes values.
 ; The amount of values of each entry should correspond to the dw $XXXX value in the save table
 ; (for example, the checkpoint values are 192, and the death counter values are 5).
-;
-; NOTE: make sure to keep the ".end:" at the end of the table!
 
 sram_defaults:
     
