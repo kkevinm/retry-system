@@ -142,7 +142,7 @@
 !tile_i    = $5A
 
 ; Where in VRAM the tiles will be uploaded to. Default should be fine in 99.69% of cases.
-; $6000 = SP1, $6800 = SP2, $7000 = SP3, $7800 = SP4.
+; $6000 = SP1/SP2, $7000 = SP3/SP4.
 !base_vram = $6000
 
 ; Reset DSX sprites on reload.

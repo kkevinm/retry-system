@@ -9,8 +9,11 @@ init:
 ; Draw the death counter in the Overworld.
 .death_counter:
 if !ow_death_counter
+    ; Set the DBR to $7F to use the stripe table with ,y.
     pea.w (!stripe_table>>16)|(init>>16<<8)
     plb
+
+    ; Write the stripe image header.
     rep #$30
     ldy.w !stripe_index
     lda.w #$5000|(!ow_death_counter_y_pos<<5)|!ow_death_counter_x_pos
@@ -19,26 +22,39 @@ if !ow_death_counter
     lda.w #($05*2)-1
     xba : sta.w !stripe_table,y
     iny #2
+
+    ; Loop through all digits in the death counter
+    ; and write them to the stripe image table.
     ldx #$0000
     sep #$20
     stz $00
+    
 ..stripe_loop:
-    lda.l !ram_death_counter,x : bne +
-    lsr $00 : bcs +
+    ; If the current digit is zero, turn it into an empty tile,
+    ; but only if no non-zero digit has been reached yet.
+    lda.l !ram_death_counter,x : bne ...normal
+    lsr $00 : bcs ...normal
     lda.b #!empty_tile : sta.w !stripe_table,y
     lda.b #!empty_props
-    bra ++
-+   clc : adc.b #!ow_digit_0 : sta.w !stripe_table,y
+    bra +
+
+...normal:
+    clc : adc.b #!ow_digit_0 : sta.w !stripe_table,y
     lda #$01 : sta $00
     lda.b #!ow_death_counter_props
-++  sta.w !stripe_table+1,y
++   sta.w !stripe_table+1,y
+
+...next:
     iny #2
     inx
     cpx #$0005 : bcc ..stripe_loop
-..end:
+
+...end:
+    ; Write the terminator and update the stripe index.
     lda #$FF : sta.w !stripe_table,y
     sty.w !stripe_index
     sep #$10
+    
     plb
 endif
 
