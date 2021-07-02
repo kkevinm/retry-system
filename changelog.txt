@@ -54,3 +54,6 @@ v0.1.9:
     - Removed code to reset the !ram_prompt_override and !ram_disable_exit addresses on overworld load.
     - Added !ram_prompt_x_pos and !ram_prompt_y_pos to change the prompt position at runtime.
     - Added !ram_disable_box to be able to enable/disable the Retry prompt box at runtime. A bunch of code in nmi.asm, prompt_oam.asm and prompt.asm was rewritten to account for this.
+
+v0.2:
+    - Fixed issue with the Retry prompt not appearing when !no_prompt_box = 1 and setting !ram_disable_box to #$00.

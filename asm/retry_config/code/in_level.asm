@@ -7,13 +7,10 @@ else
 endif
 
 main:
-if not(!no_prompt_box)
     ; Update the window HDMA when the flag is set.
     lda !ram_update_window : beq +
     jsr prompt_update_window
 +
-endif
-
     ; If the game is paused, skip.
     lda $13D4|!addr : bne .paused
 
