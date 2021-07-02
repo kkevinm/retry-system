@@ -5,8 +5,7 @@ A: Inserting this patch should be relatively simple in most cases.
 - Copy the "asm/retry_config" folder inside UberASM Tool's top folder (so it should be at the same level as "level", "gamemode", etc.).
 - Copy this inside UberASM Tool's "list.txt", under "gamemode:":
 
-    03 retry_gm03_08.asm
-    08 retry_gm03_08.asm
+    03 retry_gm03.asm
     0C retry_gm0C.asm
     0D retry_gm0D.asm
     0F retry_gm0F.asm

@@ -156,9 +156,9 @@ reset_rng:
     db %11111111,%11111111 ; 1E0-1EF
     db %11111111,%11111111 ; 1F0-1FF
 
-;============;
-; Save Table ;
-;============;
+;=====================================;
+; Save and SRAM default values tables ;
+;=====================================;
 ; This table can be used to save custom values to SRAM, so they can persist when the console is turned off. By default it saves the custom checkpoint ram and the death counter.
 ; Each line is formatted as follows:
 ;  dl $XXXXXX = what RAM address to save. Make sure it's always 3 bytes long (i.e. use $7E0019 instead of $19 or $0019).
@@ -167,10 +167,43 @@ reset_rng:
 ; Make sure to always put a colon between the two elements!
 ;
 ; NOTE: make sure to keep the ".end:" at the end of the table!
+; NOTE 2: for each address you add here, you need to add the default values in the sram_defaults table below.
 
 save:
     dl !ram_checkpoint    : dw 192
     dl !ram_death_counter : dw 5
 
+    ; Feel free to add your own stuff here.
+
 
 .end:
+
+; Here you specify the default values of the addresses you want to save, for when a new save file is started.
+; You can do "db $XX,$XX,..." for 1 byte values, "dw $XXXX,$XXXX,..." for 2 bytes values and "dl $XXXXXX,$XXXXXX,..." for 3 bytes values.
+; The amount of values of each entry should correspond to the dw $XXXX value in the save table
+; (for example, the checkpoint values are 192, and the death counter values are 5).
+;
+; NOTE: make sure to keep the ".end:" at the end of the table!
+
+sram_defaults:
+    
+    ; Default checkpoint values (don't edit this!).
+    db $00,$00,$01,$00,$02,$00,$03,$00,$04,$00,$05,$00,$06,$00,$07,$00
+    db $08,$00,$09,$00,$0A,$00,$0B,$00,$0C,$00,$0D,$00,$0E,$00,$0F,$00
+    db $10,$00,$11,$00,$12,$00,$13,$00,$14,$00,$15,$00,$16,$00,$17,$00
+    db $18,$00,$19,$00,$1A,$00,$1B,$00,$1C,$00,$1D,$00,$1E,$00,$1F,$00
+    db $20,$00,$21,$00,$22,$00,$23,$00,$24,$00,$01,$01,$02,$01,$03,$01
+    db $04,$01,$05,$01,$06,$01,$07,$01,$08,$01,$09,$01,$0A,$01,$0B,$01
+    db $0C,$01,$0D,$01,$0E,$01,$0F,$01,$10,$01,$11,$01,$12,$01,$13,$01
+    db $14,$01,$15,$01,$16,$01,$17,$01,$18,$01,$19,$01,$1A,$01,$1B,$01
+    db $1C,$01,$1D,$01,$1E,$01,$1F,$01,$20,$01,$21,$01,$22,$01,$23,$01
+    db $24,$01,$25,$01,$26,$01,$27,$01,$28,$01,$29,$01,$2A,$01,$2B,$01
+    db $2C,$01,$2D,$01,$2E,$01,$2F,$01,$30,$01,$31,$01,$32,$01,$33,$01
+    db $34,$01,$35,$01,$36,$01,$37,$01,$38,$01,$39,$01,$3A,$01,$3B,$01
+
+    ; Initial death counter value (don't edit this!).
+    db $00,$00,$00,$00,$00
+
+    ; Feel free to add your own stuff here.
+
+

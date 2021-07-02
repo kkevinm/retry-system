@@ -28,7 +28,8 @@ else
 endif
 
 ; Bank byte of the SRAM/BW-RAM address.
-!sram_bank = !sram_addr>>16
+!sram_bank          = (!sram_addr>>16)
+!sram_defaults_bank = (tables_sram_defaults>>16)
 
 ; How big is the save table.
 !save_table_size = (tables_save_end-tables_save)
@@ -48,21 +49,15 @@ org $009BCB
     jml save_game
 
 ; Hijack load game routine.
-org $009CF7
+org $009CF5
     jml load_game
 
 pullpc
 
 ; Some helper macros.
-macro transfer_from(bank)
+macro transfer(src,dst)
     pla
-    mvn !sram_bank,<bank>
-    bra ..next
-endmacro
-
-macro transfer_to(bank)
-    pla
-    mvn <bank>,!sram_bank
+    mvn <dst>,<src>
     bra ..next
 endmacro
 
@@ -75,8 +70,6 @@ endmacro
 
 ;=====================================
 ; save_game routine
-;
-;
 ;=====================================
 save_game:
     ; Set the DBR.
@@ -103,16 +96,16 @@ if !sa1
     cmp #$007F : beq ..use_7F
     cmp #$0040 : beq ..use_40
 ..use_41:
-    %transfer_from($41)
+    %transfer($41,!sram_bank)
 ..use_40:
-    %transfer_from($40)
+    %transfer($40,!sram_bank)
 endif
 ..use_7F:
-    %transfer_from($7F)
+    %transfer($7F,!sram_bank)
 ..use_7E:
-    %transfer_from($7E)
+    %transfer($7E,!sram_bank)
 ..use_00:
-    %transfer_from($00)
+    %transfer($00,!sram_bank)
 ..next:
     %next_iteration()
 .end:
@@ -125,10 +118,12 @@ endif
 
 ;=====================================
 ; load_game routine
-;
-;
 ;=====================================
 load_game:
+    beq load_file
+    jmp init_file
+
+load_file:
     ; phx from the original code.
     phx : phy
 
@@ -158,16 +153,16 @@ if !sa1
     cmp #$007F : beq ..use_7F
     cmp #$0040 : beq ..use_40
 ..use_41:
-    %transfer_to($41)
+    %transfer(!sram_bank,$41)
 ..use_40:
-    %transfer_to($40)
+    %transfer(!sram_bank,$40)
 endif
 ..use_7F:
-    %transfer_to($7F)
+    %transfer(!sram_bank,$7F)
 ..use_7E:
-    %transfer_to($7E)
+    %transfer(!sram_bank,$7E)
 ..use_00:
-    %transfer_to($00)
+    %transfer(!sram_bank,$00)
 ..next:
     %next_iteration()
 .end:
@@ -180,6 +175,59 @@ endif
     ; Restore original code and jump back.
     stz $0109|!addr
     jml $009CFB|!bank
+
+init_file:
+    ; Preserve X and Y.
+    phx : phy
+
+    ; Set 8 bit X/Y for the custom routine.
+    sep #$10
+
+    ; Set DBR.
+    phb : phk : plb
+
+    ; Call the custom load routine.
+    php : phb
+    jsr extra_load_new_file
+    plb : plp
+
+    rep #$30
+    lda.w #tables_sram_defaults : sta $02
+    ldx #$0000
+.loop:
+    lda.w tables_save,x : tay
+    phx : phb
+    lda.w tables_save+3,x : sta $04
+    dec : pha
+    lda.w tables_save+2,x
+    ldx $02
+    and #$00FF : beq ..use_00
+    cmp #$007E : beq ..use_7E
+if !sa1
+    cmp #$007F : beq ..use_7F
+    cmp #$0040 : beq ..use_40
+..use_41:
+    %transfer(!sram_defaults_bank,$41)
+..use_40:
+    %transfer(!sram_defaults_bank,$40)
+endif
+..use_7F:
+    %transfer(!sram_defaults_bank,$7F)
+..use_7E:
+    %transfer(!sram_defaults_bank,$7E)
+..use_00:
+    %transfer(!sram_defaults_bank,$00)
+..next:
+    %next_iteration()
+..end:
+    ; Keep 16 bit X/Y for the original code.
+    sep #$20
+
+    ; Restore DBR, Y and X.
+    plb : ply : plx
+
+    ; Jump back.
+    jml $009D22|!bank
 
 ;=====================================
 ; get_sram_addr routine.
@@ -214,7 +262,8 @@ org $009BCB
 endif
 
 if read1($009CF7) == $5C
-org $009CF7
+org $009CF5
+    bne $2B
     phx
     stz $0109|!addr
 endif

@@ -99,7 +99,7 @@ save_file:
     rts
 
 ;=====================================
-; This routine will be called every time a save file is loaded (before anything gets loaded).
+; This routine will be called every time an existing save file is loaded (before anything gets loaded).
 ; Remember you can check for the current save file in $010A.
 ;=====================================
 load_file:
@@ -107,6 +107,17 @@ load_file:
 
 
 
+    rts
+
+;=====================================
+; This routine will be called every time a new save file is loaded (before anything gets reset).
+; Remember you can check for the current save file in $010A.
+;=====================================
+load_new_file:
+    ; Feel free to put your code here.
+
+
+    
     rts
 
 ;=====================================
