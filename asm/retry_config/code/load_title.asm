@@ -30,6 +30,10 @@ init:
     ; Initialize "No exit" flag.
     lda.b #!no_exit_option : sta.w !ram_disable_exit
 
+    ; Initialize prompt position.
+    lda.b #!text_x_pos : sta.w !ram_prompt_x_pos
+    lda.b #!text_y_pos : sta.w !ram_prompt_y_pos
+
     ; Call the custom load title routine.
     php : phk : plb
     jsr extra_load_title

@@ -18,7 +18,7 @@
 ;=====================================
 ; Don't change from here.
 ;=====================================
-if !sa1
+if read1($00FFD5) == $23
     !retry_freeram = !retry_freeram_sa1
 endif
 
@@ -38,7 +38,9 @@ endif
 !ram_disable_exit    = !retry_freeram+$10 ; 1
 !ram_set_checkpoint  = !retry_freeram+$11 ; 2
 !ram_9D_backup       = !retry_freeram+$13 ; 1
-!ram_reserved        = !retry_freeram+$14 ; 12 (reserved for future expansion)
+!ram_prompt_x_pos    = !retry_freeram+$14 ; 1
+!ram_prompt_y_pos    = !retry_freeram+$15 ; 1
+!ram_reserved        = !retry_freeram+$16 ; 10 (reserved for future expansion)
 !ram_death_counter   = !retry_freeram+$20 ; 5
 !ram_checkpoint      = !retry_freeram+$25 ; 192
 !ram_cust_obj_data   = !retry_freeram+$E5 ; 1+(!max_custom_midway_num*4)

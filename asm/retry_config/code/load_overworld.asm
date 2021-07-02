@@ -38,12 +38,6 @@ if !counterbreak_score
     stz $0F38|!addr
     sep #$20
 endif
-    
-    ; Reset the prompt override address.
-    lda #$00 : sta !ram_prompt_override
-
-    ; Reset the "No exit" address.
-    lda.b #!no_exit_option : sta !ram_disable_exit
 
 ; Reset the current level's checkpoint if the level was beaten.
 .reset_checkpoint:

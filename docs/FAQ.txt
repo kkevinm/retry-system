@@ -3,14 +3,16 @@ A: Yes. Look at "checkpoint_effect" in "retry_config/tables.asm". The first digi
 
 Q: Can I change the prompt type in specific situations (not necessarily on a sublevel basis)?
 A: Yes. Additionally to the "effect" table, there's the "!ram_prompt_override" address that, when set, will replace both the table and the default option (see "retry_config/ram.asm" and "docs/ram_map.txt"). For example, you could use it to let the player choose the prompt type as they want (you still have to implement that, though, as this only handles setting the prompt type).
-Note that this address is reset to the default value when the overworld is loaded, which may be undesired in some cases (for example, if you want to make the player choose the prompt type outside of the overworld like on the title screen etc.). To change this, open "retry_config/code/load_overworld.asm" and remove the "lda #$00 : sta !ram_prompt_override" line.
+Note that this address by default is never reset outside of title screen load.
 
 Q: Can I keep the Retry prompt but remove the black box?
 A: Yes. Look at "!no_prompt_box" in "retry_config/settings.asm".
 
 Q: Can I keep the Retry prompt but remove the "exit" option?
 A: Yes. Look at "!no_exit_option" in "retry_config/settings.asm". You can also remove it only under certain circumstances by setting "!ram_disable_exit" to 1 (for more info, see "retry_config/ram.asm" and "docs/ram_map.txt". For example, you can do it in a Level ASM init to make a level not have the option.
-Note that this address is reset to the default value when the overworld is loaded, which may be undesired in some cases (for example, if you want to make the player choose if to remove the exit option globally). To change this, open "retry_config/code/load_overworld.asm" and remove the "lda.b #!no_exit_option : sta !ram_disable_exit" line.
+Note that this address by default is never reset outside of title screen load.
 
 Q: Can I change where the prompt is shown on the screen?
-A: Yes. Look at "!text_x_pos" and "!text_y_pos" in "retry_config/settings.asm". For example, using "!text_x_pos = $08" and "!text_y_pos = $D0" will place it on the lower left corner of the screen. Make sure to set "!no_prompt_box = 1", as the black box can't be move around easily.
+A: Yes. Look at "!text_x_pos" and "!text_y_pos" in "retry_config/settings.asm". For example, using "!text_x_pos = $08" and "!text_y_pos = $D0" will place it on the lower left corner of the screen.
+Additionally, you can also change it at runtime by writing to the "!ram_prompt_x_pos" and "!ram_prompt_y_pos" addresses (see "docs/ram_map.txt" for more info).
+Either way, if you want to change it you should disable the Retry box ("!no_prompt_box = 1") as its position can't be changed easily.

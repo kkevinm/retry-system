@@ -14,10 +14,6 @@ assert !cursor_palette >= $08 && !cursor_palette <= $0F, "Error: \!cursor_palett
 !letter_props #= ($30|((!letter_palette-8)<<1))
 !cursor_props #= ($30|((!cursor_palette-8)<<1))
 
-; Helper functions.
-function x_pos(offset) = (!text_x_pos+offset)
-function y_pos(offset) = (!text_y_pos+offset)
-
 !letters_num = (prompt_oam_letters_x_pos_end-prompt_oam_letters_x_pos)
 
 erase_tiles:
@@ -44,8 +40,8 @@ prompt_oam:
 
 .oam_draw_loop:
     ; Store OAM values.
-    lda.w .letters_x_pos,x : sta $0200|!addr,y
-    lda.w .letters_y_pos,x : sta $0201|!addr,y
+    lda !ram_prompt_x_pos : clc : adc.w .letters_x_pos,x : sta $0200|!addr,y
+    lda !ram_prompt_y_pos : clc : adc.w .letters_y_pos,x : sta $0201|!addr,y
     lda.w .letters_tile,x : sta $0202|!addr,y
     lda.b #!letter_props : sta $0203|!addr,y
     
@@ -120,45 +116,45 @@ endif
 ; In summary, if !no_promp_box = 1, 11 slots are used, otherwise 15.
 ;=====================================
 
-; X position of each letter on the screen.
+; X position offset of each letter on the screen.
 .letters_x_pos:
-    db x_pos($00) ; Black / Cursor
-    db x_pos($00) ; Black / Cursor
-    db x_pos($10) ; E
-    db x_pos($18) ; X
-    db x_pos($20) ; I
-    db x_pos($28) ; T
-    db x_pos($10) ; R
-    db x_pos($18) ; E
-    db x_pos($20) ; T
-    db x_pos($28) ; R
-    db x_pos($30) ; Y
+    db $00 ; Black / Cursor
+    db $00 ; Black / Cursor
+    db $10 ; E
+    db $18 ; X
+    db $20 ; I
+    db $28 ; T
+    db $10 ; R
+    db $18 ; E
+    db $20 ; T
+    db $28 ; R
+    db $30 ; Y
 if not(!no_prompt_box)
-    db x_pos($E0) ; Black
-    db x_pos($F0) ; Black
-    db x_pos($E0) ; Black
-    db x_pos($F0) ; Black
+    db $E0 ; Black
+    db $F0 ; Black
+    db $E0 ; Black
+    db $F0 ; Black
 endif
 ..end:
 
-; Y position of each letter on the screen.
+; Y position offset of each letter on the screen.
 .letters_y_pos:
-    db y_pos($00) ; Black / Cursor
-    db y_pos($10) ; Black / Cursor
-    db y_pos($10) ; E
-    db y_pos($10) ; X
-    db y_pos($10) ; I
-    db y_pos($10) ; T
-    db y_pos($00) ; R
-    db y_pos($00) ; E
-    db y_pos($00) ; T
-    db y_pos($00) ; R
-    db y_pos($00) ; Y
+    db $00 ; Black / Cursor
+    db $10 ; Black / Cursor
+    db $10 ; E
+    db $10 ; X
+    db $10 ; I
+    db $10 ; T
+    db $00 ; R
+    db $00 ; E
+    db $00 ; T
+    db $00 ; R
+    db $00 ; Y
 if not(!no_prompt_box)
-    db y_pos($00) ; Black
-    db y_pos($00) ; Black
-    db y_pos($10) ; Black
-    db y_pos($10) ; Black
+    db $00 ; Black
+    db $00 ; Black
+    db $10 ; Black
+    db $10 ; Black
 endif
 ..end:
 
