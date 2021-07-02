@@ -2,8 +2,7 @@
 
 init:
     ; Set the DBR to the freeram's bank for faster stores.
-    pea.w (!retry_freeram>>16)|(init>>16<<8)
-    plb
+    %set_dbr(!retry_freeram)
 
     ; Initialize the retry ram to 0.
     rep #$30

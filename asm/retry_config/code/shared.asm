@@ -218,6 +218,16 @@ endif
 endmacro
 
 ;================================================
+; Macro to backup the current DBR to the stack and
+; set the DBR to label's bank.
+; Note: remember to PLB when finished!
+;================================================
+macro set_dbr(label)
+?-  pea.w (<label>>>16)|((?-)>>16<<8)
+    plb
+endmacro
+
+;================================================
 ; Macro to JSL to a routine that ends in RTS.
 ;================================================
 macro jsl_to_rts(routine, rtl)
@@ -231,9 +241,7 @@ endmacro
 ; Also sets up the DBR to the routine's bank.
 ;================================================
 macro jsl_to_rts_db(routine, rtl)
-?-  pea.w (<routine>>>16)|((?-)>>16<<8)
+    %set_dbr(<routine>)
+    %jsl_to_rts(<routine>,<rtl>)
     plb
-    phk : pea.w (?+)-1 : pea.w <rtl>-1
-    jml <routine>|!bank
-?+  plb
 endmacro

@@ -10,8 +10,7 @@ init:
 .death_counter:
 if !ow_death_counter
     ; Set the DBR to $7F to use the stripe table with ,y.
-    pea.w (!stripe_table>>16)|(init>>16<<8)
-    plb
+    %set_dbr(!stripe_table)
 
     ; Write the stripe image header.
     rep #$30
