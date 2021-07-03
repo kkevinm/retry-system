@@ -17,6 +17,8 @@ A: Inserting this patch should be relatively simple in most cases.
     16 retry_gm10_16_19.asm
     19 retry_gm10_16_19.asm
 
+(note: "0D retry_gm0D.asm" is only needed if you want the death counter display on the Overworld. If you don't, then you can omit it).
+
 - Make sure you've edited at least one level in Lunar Magic.
 - Run UberASM Tool.
 

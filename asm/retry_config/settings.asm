@@ -52,7 +52,7 @@
 
 ; If 1, a custom SRAM expansion patch will be inserted as well.
 ; By default, it will save the custom checkpoint status and death counter to SRAM.
-; To make your own stuff saved as well, check out .save_table in retry_tables.asm.
+; To make your own stuff saved as well, check out the "save" table in retry_tables.asm.
 !sram_feature = 1
 
 ; If 1, the game will automatically save everytime a new checkpoint is obtained

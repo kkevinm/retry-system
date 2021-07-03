@@ -261,7 +261,7 @@ org $009BCB
     ldx $010A|!addr
 endif
 
-if read1($009CF7) == $5C
+if read1($009CF5) == $5C
 org $009CF5
     bne $2B
     phx
