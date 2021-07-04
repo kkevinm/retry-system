@@ -52,7 +52,7 @@ org $009BCB
     ldx $010A|!addr
 
 org $009CF5
-	bne $2B
+    bne $2B
     phx
     stz $0109|!addr
 endif

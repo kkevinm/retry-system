@@ -1,5 +1,2 @@
-- !display_death_counter option is not implemented yet.
-- RAM based "No prompt box" option not implemented yet.
 - There may be issues with Layer 2 interaction on the first frame when respawning.
-- Custom codes that call the death routine every frame (without checking for the animations locked flag) will cause the vanilla death routine to happen.
 - Missing ObjecTool info file.
