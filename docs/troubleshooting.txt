@@ -18,11 +18,17 @@ Change that to:
 Q: I'm making the music in a level fade out using the following code (with AMK):
 	LDA #$FF
 	STA $1DFB
-but the music doesn't reload when dying! What do I do?
+but the music doesn't reload when dying!
 A: You want to also store #$FF to $0DDA, like this:
 	LDA #$FF
 	STA $1DFB
-	STA $0DDA
+	STA $0DDA	; <-
+
+--------------------------------------------------------------------------------
+
+Q: I'm using the "Single Screen" UberASM code, and sprites keep moving while Mario is dead!
+A: To fix, add this code at the very start of the Single Screen's main code:
+	LDA $71 : CMP #$09 : BNE + : RTL : +
 
 --------------------------------------------------------------------------------
 
