@@ -58,3 +58,6 @@ v0.1.9:
 v0.2:
     - Fixed issue with the Retry prompt not appearing when !no_prompt_box = 1 and setting !ram_disable_box to #$00.
     - Added SRAM initialization code for new save files and added "load_new_file" extra routine.
+
+v0.2.1:
+    - Fixed issue where choosing an option in the Retry prompt wouldn't play the sound effect.

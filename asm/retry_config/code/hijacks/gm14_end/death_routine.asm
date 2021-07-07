@@ -45,6 +45,10 @@ endif
     ; Don't play the death song.
     stz $1DFB|!addr
 
+    ; Only play the death SFX once per death.
+    lda !ram_is_dying : bmi .return
+    lda #$80 : sta !ram_is_dying
+
     ; Play the death SFX.
     lda.b #!death_sfx : sta !death_sfx_addr
 
