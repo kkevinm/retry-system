@@ -15,6 +15,17 @@ Change that to:
 
 --------------------------------------------------------------------------------
 
+Q: I'm making the music in a level fade out using the following code (with AMK):
+	LDA #$FF
+	STA $1DFB
+but the music doesn't reload when dying! What do I do?
+A: You want to also store #$FF to $0DDA, like this:
+	LDA #$FF
+	STA $1DFB
+	STA $0DDA
+
+--------------------------------------------------------------------------------
+
 Q: When I get the midway point in a level, sometimes Mario respawns in the main entrance rather than the midway entrance!
 A: Midway entrances only work properly if they use the "secondary method" in Lunar Magic. So if a midway doesn't seem to work, drag it around in LM while in sprite editing mode and put it back where it was (which enables the secondary method).
 
