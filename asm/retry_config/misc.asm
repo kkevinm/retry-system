@@ -116,6 +116,13 @@ else
     !dcsave = 0
 endif
 
+; Detects lx5's Dynamic Spriteset System.
+if read3($01DF78) == $535344
+    !dss = 1
+else
+    !dss = 0
+endif
+
 ; Check which channel is used for windowing HDMA, for SA-1 v1.35 (H)DMA remap compatibility.
 ; It will be 7 on lorom or with SA-1 <1.35, and 1 with SA-1 >=1.35.
 !window_mask    #= read1($0092A1)

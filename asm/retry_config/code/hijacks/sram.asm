@@ -32,7 +32,7 @@ endif
 !sram_defaults_bank = (tables_sram_defaults>>16)
 
 ; How big is the save table.
-!save_table_size = (tables_save_end-tables_save)
+!save_table_size = (tables_sram_defaults-tables_save)
 
 if !sram_feature
 
