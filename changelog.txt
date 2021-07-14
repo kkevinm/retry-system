@@ -61,3 +61,6 @@ v0.2:
 
 v0.2.1:
     - Fixed issue where choosing an option in the Retry prompt wouldn't play the sound effect.
+
+v0.2.2:
+    - Added an option to replace "Mario" with "DEATHS" in the status bar, like the standalone Death Counter patch.

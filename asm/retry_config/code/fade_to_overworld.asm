@@ -2,7 +2,7 @@
 
 ; Tile used for empty space. By default it's the border "filled" tile.
 !empty_tile  = $FE
-!empty_props = $38
+!empty_props = l3_prop(6,0)
 
 init:
 
@@ -15,11 +15,11 @@ if !ow_death_counter
     ; Write the stripe image header.
     rep #$30
     ldy.w !stripe_index
-    lda.w #$5000|(!ow_death_counter_y_pos<<5)|!ow_death_counter_x_pos
-    xba : sta.w !stripe_table,y
+    lda.w #str_header1(!ow_death_counter_x_pos,!ow_death_counter_y_pos)
+    sta.w !stripe_table,y
     iny #2
-    lda.w #($05*2)-1
-    xba : sta.w !stripe_table,y
+    lda.w #str_header2((5*2)-1,0)
+    sta.w !stripe_table,y
     iny #2
 
     ; Loop through all digits in the death counter

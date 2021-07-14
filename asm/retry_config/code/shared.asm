@@ -218,8 +218,8 @@ endif
 endmacro
 
 ;================================================
-; Macro to backup the current DBR to the stack and
-; set the DBR to label's bank.
+; Macro to push the current code's DB to the stack
+; and set the DBR to label's bank.
 ; Note: remember to PLB when finished!
 ;================================================
 macro set_dbr(label)
@@ -245,3 +245,12 @@ macro jsl_to_rts_db(routine, rtl)
     %jsl_to_rts(<routine>,<rtl>)
     plb
 endmacro
+
+;================================================
+; Utility functions for tilemap and stripe image management.
+;================================================
+function xb(x)                = (((x)&$FF)<<8)|(((x)>>8)&$FF)
+function l3_prop(pal,page)    = ($20|(((pal)&7)<<2)|((page)&1))
+function l3_tile(tile,pal)    = ((tile)|((pal)<<8))
+function str_header1(x,y)     = xb($5000|((y)<<5)|(x))
+function str_header2(len,rle) = xb((((rle)&1)<<14)|(len))

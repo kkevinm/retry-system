@@ -71,4 +71,8 @@ if read1($008F49) == $5C
 org $008F49
     lda $0DBE|!addr
     inc
+
+; Here I assume that people won't turn on the "DEATHS" display without also turning on the death counter display.
+org $008C89
+    db $30,$28,$31,$28,$32,$28,$33,$28,$34,$28,$FC,$38
 endif

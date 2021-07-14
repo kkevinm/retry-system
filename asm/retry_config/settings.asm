@@ -107,25 +107,6 @@
 !letter_palette = $08
 !cursor_palette = $08
 
-; If 1, a death counter will replace the lives on the status bar.
-; Note: this only handles the counter, if you want other stuff like "DEATHS" appear, use a status bar editor.
-!status_death_counter = 0
-
-; If 1, a death counter will be written to the Overworld border.
-; Note: this only handles the counter, if you want other stuff like "DEATHS" appear, use LM's layer 3 editor.
-!ow_death_counter = 0
-
-; Position of the death counter on the overworld.
-!ow_death_counter_x_pos = $19
-!ow_death_counter_y_pos = $02
-
-; YXPCCCTT properties of the death counter on the overworld.
-!ow_death_counter_props = $39
-
-; Tile number of the digit "0" on the overworld.
-; (assumed that the digits are stored from 0 to 9 in sequence in the GFX file).
-!ow_digit_0 = $22
-
 ; Tile number for the tiles used by the prompt (in SP1).
 ; Note: when the prompt box is enabled, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.
 ; For example, !tile_curs = $24 means both $24 and $25 will be overwritten.
@@ -141,9 +122,32 @@
 !tile_x    = $4A
 !tile_i    = $5A
 
-; Where in VRAM the tiles will be uploaded to. Default should be fine in 99.69% of cases.
+; Where in VRAM the tiles will be uploaded to. You should never need to edit this.
 ; $6000 = SP1/SP2, $7000 = SP3/SP4.
 !base_vram = $6000
+
+; If 1, a death counter will replace the lives on the status bar.
+!status_death_counter = 0
+
+; If 1, the "DEATHS" word will replace Mario's name on the status bar.
+; If you want to customize the text or its palette, look in "retry_config/code/hijacks/death_counter.asm".
+!status_death_word = 0
+
+; If 1, a death counter will be written to the Overworld border.
+; Note: this only handles the counter, if you want other stuff like "DEATHS" appear, use LM's layer 3 editor.
+!ow_death_counter = 0
+
+; Position of the death counter on the overworld.
+!ow_death_counter_x_pos = $19
+!ow_death_counter_y_pos = $02
+
+; YXPCCCTT properties of the death counter on the overworld.
+; The first digit is the palette, the second is the GFX page number (0 or 1).
+!ow_death_counter_props = l3_prop(6,1)
+
+; Tile number of the digit "0" on the overworld.
+; (assumed that the digits are stored from 0 to 9 in sequence in the GFX file).
+!ow_digit_0 = $22
 
 ; Reset DSX sprites on reload.
 !reset_dsx = 1

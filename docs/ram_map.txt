@@ -1,6 +1,6 @@
 This documents serves as a detailed reference on the purpose of the RAM addresses used by Retry, and how you can use them.
 
-First things first, Retry uses a chunk of area at $7FB400 ($40C000 on SA-1 roms) by default. If you want to change that, open "ram.asm". This is the same area used by old Retry, so it should usually be fine.
+First things first, Retry uses a chunk of area at $7FB400 ($40A400 on SA-1 roms) by default. If you want to change that, open "ram.asm". This is the same area used by old Retry, so it should usually be fine (on lorom, while on SA-1 I changed it to not conflict with lx5's DSS).
 Then, all the used addresses are defined as this freeram + <offset>, to makes it easier to manage them and have a clearer code. The first 12 addresses (offset $00-$0B) are the same as the old Retry patch: this was done intentionally so that resources that interact with old Retry should also work on this one (for example, the "Individual Dragon Coins Save" patch expects the "hurry up" flag to be 2 bytes after the "is respawning flag").
 
 Now for the actual RAM addresses (names are prefixed with "!ram_" in ram.asm, and offset is from !retry_freeram):
