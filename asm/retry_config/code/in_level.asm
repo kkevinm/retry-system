@@ -173,24 +173,26 @@ if !dcsave
     jsr shared_dcsave_init
 endif
 
-    ; Reset item memory and sprites.
+    ; Reset item memory.
     ldx #$7E
     rep #$20
-    lda #$0000
--   sta $19F8|!addr,x
-    sta $1A78|!addr,x
-    sta $1AF8|!addr,x
-    sta !sprite_load_table,x
+-   stz $19F8|!addr,x
+    stz $1A78|!addr,x
+    stz $1AF8|!addr,x
     dex #2
     bpl -
 
-    ; If using the expanded sprites load table, reset the higher addresses too.
-if !255_sprites_per_level
+    ; Reset the sprite load index table.
+    ; Change DBR to use absolute addressing (saves 512 cycles in the best case).
+    %set_dbr(!sprite_load_table)
     ldx #$7E
--   sta !sprite_load_table+$80,x
+-   stz.w !sprite_load_table,x
+if !255_sprites_per_level
+    stz.w !sprite_load_table+$80,x
+endif
     dex #2
     bpl -
-endif
+    plb
 
     ; Reset various timers.
     stz $1497|!addr
