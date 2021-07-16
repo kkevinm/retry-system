@@ -65,3 +65,4 @@ v0.2.1:
 v0.2.2:
     - Added an option to replace "Mario" with "DEATHS" in the status bar, like the standalone Death Counter patch.
     - Optimized sprite load index table reset loop.
+    - Fixed issue where calling $00F606 in consecutive frames could make the level's music restart even if it didn't change (similar fix to v0.1.9).

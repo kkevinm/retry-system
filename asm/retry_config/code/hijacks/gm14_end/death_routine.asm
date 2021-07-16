@@ -45,16 +45,16 @@ endif
     ; Don't play the death song.
     stz $1DFB|!addr
 
+    ; Undo the $0DDA change.
+    ; This ensures the song won't be reloaded if it's the same after respawning.
+    lda !ram_music_backup : sta $0DDA|!addr
+
     ; Only play the death SFX once per death.
     lda !ram_is_dying : bmi .return
     lda #$80 : sta !ram_is_dying
 
     ; Play the death SFX.
     lda.b #!death_sfx : sta !death_sfx_addr
-
-    ; Undo the $0DDA change.
-    ; This ensures the song won't be reloaded if it's the same after respawning.
-    lda !ram_music_backup : sta $0DDA|!addr
 
 .return:
     rts
