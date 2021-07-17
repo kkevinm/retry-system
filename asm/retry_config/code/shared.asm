@@ -207,7 +207,7 @@ get_bitwise_mask:
 ; Macro to get current screen number in X.
 ;================================================
 macro get_screen_number()
-if !lm3
+if read3($03BCDC) != $FFFFFF
     jsl $03BCDC|!bank
 else
     ldx $95
