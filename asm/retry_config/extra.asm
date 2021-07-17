@@ -124,6 +124,7 @@ load_new_file:
 ; This routine will be called at the end of the game loop during gamemode 14,
 ; just before retry draws the prompt and AddmusicK's code runs.
 ; If you have other patches that hijack $00A2EA, you could try to put their freespace code in this routine to solve the conflict.
+; NOTE: on SA-1 roms, this runs on the SNES cpu.
 ;=====================================
 gm14_end:
     ; Feel free to put your code here.

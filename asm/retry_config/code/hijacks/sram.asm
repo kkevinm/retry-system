@@ -105,7 +105,7 @@ endif
 ..use_7E:
     %transfer($7E,!sram_bank)
 ..use_00:
-    %transfer($00,!sram_bank)
+    %transfer($00|!bank8,!sram_bank)
 ..next:
     %next_iteration()
 .end:
@@ -162,7 +162,7 @@ endif
 ..use_7E:
     %transfer(!sram_bank,$7E)
 ..use_00:
-    %transfer(!sram_bank,$00)
+    %transfer(!sram_bank,$00|!bank8)
 ..next:
     %next_iteration()
 .end:
@@ -216,7 +216,7 @@ endif
 ..use_7E:
     %transfer(!sram_defaults_bank,$7E)
 ..use_00:
-    %transfer(!sram_defaults_bank,$00)
+    %transfer(!sram_defaults_bank,$00|!bank8)
 ..next:
     %next_iteration()
 ..end:
