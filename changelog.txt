@@ -73,3 +73,4 @@ v0.2.3:
     - Changed settings.asm formatting to be a bit easier to use.
     - Optimized defrag_oam routine by using the direct page (saves 2048 cycles in the best case!).
     - Small speed improvement for SRAM saving/loading on FastROM.
+    - Optimized prompt windowing code by using the direct page.
