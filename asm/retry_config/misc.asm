@@ -128,6 +128,10 @@ endif
 !window_mask    #= read1($0092A1)
 !window_channel #= log2(!window_mask)
 
+; Where in VRAM the prompt tiles will be uploaded to. You should never need to edit this.
+; $6000 = SP1/SP2, $7000 = SP3/SP4.
+!base_vram = $6000
+
 ; Set to 1 to be able to use the custom midway objects alongside ObjecTool.
 ; Only do it after reading the instructions in the readme!
 !object_tool_readme = 0
