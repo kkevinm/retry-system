@@ -204,18 +204,20 @@ get_bitwise_mask:
     db $80,$40,$20,$10,$08,$04,$02,$01
 
 ;================================================
-; Macro to get current screen number in X.
+; Routine to get current screen number in X.
+; If Lunar Magic 3.0+ is used, it may overwrite Y.
 ;================================================
-macro get_screen_number()
-if read3($03BCDC) != $FFFFFF
+get_screen_number:
+if !lm3
+    lda.l $03BCDC|!bank : cmp #$FF : beq +
     jsl $03BCDC|!bank
-else
-    ldx $95
-    lda $5B : lsr : bcc ?+
-    ldx $97
-?+
+    rts
++
 endif
-endmacro
+    ldx $95
+    lda $5B : lsr : bcc +
+    ldx $97
++   rts
 
 ;================================================
 ; Macro to push the current code's DB to the stack

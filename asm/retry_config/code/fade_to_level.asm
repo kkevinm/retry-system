@@ -18,7 +18,7 @@ init:
     lda $9D : sta !ram_9D_backup
 
     ; ...and backup the current entrance value for later.
-    %get_screen_number()
+    jsr shared_get_screen_number
     lda $19B8|!addr,x : sta !ram_door_dest
     lda $19D8|!addr,x : sta !ram_door_dest+1
 

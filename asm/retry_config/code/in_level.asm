@@ -126,7 +126,7 @@ endif
     sta !ram_hurry_up
 
     ; Set the destination to send Mario to.
-    %get_screen_number()
+    jsr shared_get_screen_number
     lda !ram_respawn : sta $19B8|!addr,x
     lda !ram_respawn+1 : ora #$04 : sta $19D8|!addr,x
 
