@@ -180,30 +180,27 @@ handle_box:
     clc : adc.l .speed,x : sta $1B89|!addr
 
     ; Update the windowing tables.
-    phd
-    pea.w $04F0|!addr : pld
     rep #$30
     ldx #$016E
     lda #$00FF
--   sta $00,x
+-   sta $04F0|!addr,x
     dex #2
     bpl -
     sep #$30
 
     lda $1B89|!addr : clc : adc #$80 : xba
-    lda $1B89|!addr : lsr : adc $1B89|!addr : lsr : and #$FE : tay
+    lda $1B89|!addr : lsr : adc $1B89|!addr : lsr : and #$FE : tax
     lda #$80 : sec : sbc $1B89|!addr
     rep #$20
-    ldx #$48
--   cpx #$00
+    ldy #$48
+-   cpy #$00
     bmi +
-    sta $58,x
-+   sta $0590|!addr,y
-    dex #2
+    sta $0548|!addr,y
++   sta $0590|!addr,x
     dey #2
+    dex #2
     bpl -
     sep #$20
-    pld
 
     ; Change screen settings.
     lda #$AA : sta $41 : sta $42

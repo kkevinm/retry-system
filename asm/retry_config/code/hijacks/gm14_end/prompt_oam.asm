@@ -191,48 +191,43 @@ prompt_oam:
 ; This allows the letters to be drawn with max priority w.r.t. everything else, and to not overwrite other tiles.
 ;=====================================
 defrag_oam:
-    ; Set the direct page to $0200 to have fast access to the OAM tables.
-    phd
-    pea.w $0200|!addr : pld
-
     ; Since we scan both $0200 and $0300, we need 16 bit indexes.
     rep #$10
-    ; X: index in the original OAM table.
-    ldx #$01FC
-    ; Y: index in the rearranged table.
+    ; Y: index in the original OAM table.
     ldy #$01FC
+    ; X: index in the rearranged table.
+    ldx #$01FC
 .loop:
     ; If the slot is free, go to the next one.
-    lda $01,x : cmp #$F0 : beq ..next
+    lda $0201|!addr,y : cmp #$F0 : beq ..next
 
-    ; Otherwise, copy the X slot in the Y slot...
+    ; Otherwise, copy the Y slot in the X slot...
     rep #$20
-    lda $00,x : sta $0200|!addr,y
-    lda $02,x : sta $0202|!addr,y
+    lda $0200|!addr,y : sta $0200|!addr,x
+    lda $0202|!addr,y : sta $0202|!addr,x
 
-    ; ...and mark the X slot as free.
-    lda #$F0F0 : sta $00,x
+    ; ...and mark the Y slot as free.
+    lda #$F0F0 : sta $0200|!addr,y
 
     phx : phy
 
     ; Compute the indexes in $0420.
-    txa : lsr #2 : tax
     tya : lsr #2 : tay
+    txa : lsr #2 : tax
 
     ; Copy the entry in $0420 as well.
     sep #$20
-    lda $0420|!addr,x : sta $0420|!addr,y
+    lda $0420|!addr,y : sta $0420|!addr,x
 
     ply : plx
 
     ; Go to the next slot in the rearranged table.
-    dey #4
+    dex #4
 
 ..next:
     ; Go to the next slot in the original table, and loop back if not the end.
-    dex #4 : bpl .loop
+    dey #4 : bpl .loop
 
-..end:
+.end:
     sep #$10
-    pld
     rts
