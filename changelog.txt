@@ -72,3 +72,6 @@ v0.2.3:
     - Change get_screen_number macro to a subroutine and made it check for LM3's $03BCDC routine installation at runtime, for more robustness.
     - Changed settings.asm formatting to be a bit easier to use.
     - Small speed improvement for SRAM saving/loading on FastROM.
+
+v0.2.4:
+    - Fixed issue that would prevent the Game Over music from playing when running out of lives (with !lose_lives = 1) and play the death SFX during the Game Over screen (thanks to simon.caio for reporting this).
