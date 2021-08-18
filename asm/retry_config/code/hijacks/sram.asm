@@ -39,7 +39,7 @@ if !sram_feature
 pushpc
 
 ; Change SRAM size in the header.
-if not(!sa1)
+if read1($00FFD8) < !sram_size
 org $00FFD8
     db !sram_size
 endif

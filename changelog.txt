@@ -1,4 +1,4 @@
-v0.1:
+v0.1.0:
     - Initial version.
 
 v0.1.1:
@@ -55,7 +55,7 @@ v0.1.9:
     - Added !ram_prompt_x_pos and !ram_prompt_y_pos to change the prompt position at runtime.
     - Added !ram_disable_box to be able to enable/disable the Retry prompt box at runtime. A bunch of code in nmi.asm, prompt_oam.asm and prompt.asm was rewritten to account for this.
 
-v0.2:
+v0.2.0:
     - Fixed issue with the Retry prompt not appearing when !no_prompt_box = 1 and setting !ram_disable_box to #$00.
     - Added SRAM initialization code for new save files and added "load_new_file" extra routine.
 
@@ -75,3 +75,4 @@ v0.2.3:
 
 v0.2.4:
     - Fixed issue that would prevent the Game Over music from playing when running out of lives (with !lose_lives = 1) and play the death SFX during the Game Over screen (thanks to simon.caio for reporting this).
+    - Fixed game crash when using the VWF Dialogues patch, due to Retry overwriting the SRAM size even when it was set to a larger size by an external resource (thanks to simon.caio for reporting this).
