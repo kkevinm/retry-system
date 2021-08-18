@@ -76,3 +76,4 @@ v0.2.3:
 v0.2.4:
     - Fixed issue that would prevent the Game Over music from playing when running out of lives (with !lose_lives = 1) and play the death SFX during the Game Over screen (thanks to simon.caio for reporting this).
     - Fixed game crash when using the VWF Dialogues patch, due to Retry overwriting the SRAM size even when it was set to a larger size by an external resource (thanks to simon.caio for reporting this).
+    - Made some space and cycle optimizations to the NMI routine.

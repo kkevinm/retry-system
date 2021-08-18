@@ -36,12 +36,13 @@ level:
     rep #$20
     lda.w .gfx_addr,y : sta $00
 
-.loop:
+    ; These values are the same for all uploads, so put them out of the loop.
     ldy.b #$80 : sty $2115
     lda.w #$1801 : sta $4320
+    ldy.b #retry_gfx>>16 : sty $4324
+.loop:
     lda.w .dest,x : sta $2116
     lda.w .src,x : clc : adc $00 : sta $4322
-    ldy.b #retry_gfx>>16 : sty $4324
     ; All uploads are 8x8 except the cursor,
     ; which is 16x8 only when the prompt box is enabled.
     lda.w #gfx_size(1)
@@ -56,11 +57,8 @@ level:
 
     ; If the box is enabled, transfer the black tiles too.
     ldy $02 : bne .return
-    ldy.b #$80 : sty $2115
-    lda.w #$1801 : sta $4320
     lda.w #vram_addr(!tile_blk) : sta $2116
     lda.w #retry_gfx_box+gfx_size(7) : sta $4322
-    ldy.b #retry_gfx>>16 : sty $4324
     lda.w #gfx_size(2) : sta $4325
     ldy.b #$04 : sty $420B
 
