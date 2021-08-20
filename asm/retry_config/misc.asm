@@ -4,7 +4,7 @@
 ; Retry version number (Va.b.c) to write in ROM.
 !version_a = 0
 !version_b = 2
-!version_c = 4
+!version_c = 5
 
 ; Read death time from ROM.
 !death_time #= read1($00F61C)
@@ -131,7 +131,3 @@ endif
 ; Where in VRAM the prompt tiles will be uploaded to. You should never need to edit this.
 ; $6000 = SP1/SP2, $7000 = SP3/SP4.
 !base_vram = $6000
-
-; Set to 1 to be able to use the custom midway objects alongside ObjecTool.
-; Only do it after reading the instructions in the readme!
-!object_tool_readme = 0

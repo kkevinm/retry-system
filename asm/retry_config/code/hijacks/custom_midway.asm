@@ -4,10 +4,6 @@
 ; Custom midway code by worldpeace.
 ;=====================================
 
-if !use_custom_midway_bar && !object_tool && not(!object_tool_readme)
-    error "Warning: you're using the custom midway bar object feature alongside ObjecTool. Check the related instructions in the readme. Insertion aborted."
-endif
-
 if !use_custom_midway_bar
 
 pushpc
@@ -42,13 +38,29 @@ new_norm_objects:
     tya : clc : adc $65 : sta $65
     lda $66 : adc #$00 : sta $66
 
+if !object_tool
+    ; If ObjecTool is inserted, we jump to its code
+    ; if the custom object number is $52-$FF.
+    lda $5A : cmp #$52 : bcc +
+
+    ; Jump to ObjecTool's custom normal objects code.
+    ; This jumps in the middle of the NewNormObjects routine, right before PHB : PHK : PLB,
+    ; assuming the code won't change in future updates.
+    rep #$20
+    lda.l $0DA107|!bank : clc : adc.w #68 : sta $00
+    sep #$20
+    lda.l $0DA109|!bank : sta $02
+    jml [$0000|!dp]
++
+endif
+
     ; We only care about object 2D.
-    jsr object_2D
+    jsr custom_midway
 
     ; Jump back to an rts.
     jml $0DA53C|!bank
 
-object_2D:
+custom_midway:
     ; Backup $59 ($58-$59 used for entrance info).
     lda $59 : pha
     stz $59
@@ -129,4 +141,3 @@ pullpc
 endif
 
 endif
-

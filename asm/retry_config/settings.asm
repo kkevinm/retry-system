@@ -85,8 +85,7 @@
 ; These objects allow you to have multiple midways in the same level, each with a different entrance.
 ; For more info on how to use them, check out "docs/midway_instruction/".
 ;
-; Note: this can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the readme).
-; Also, all slots of object 2D will be occupied by the custom midway object (but you'll still be able to use all extended objects).
+; Note: this can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the "objectool_info.txt" file).
     !use_custom_midway_bar = 1
 
 ; If !use_custom_midway_bar = 1, it determines how many custom midways you can have in the same sublevel.
