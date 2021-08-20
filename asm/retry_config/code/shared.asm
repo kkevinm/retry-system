@@ -187,17 +187,15 @@ get_effect_value:
 ;================================================
 ; Routine to get the index and mask to a bitwise sublevel table.
 ; Returns the index to the table in X, and the mask in A (8 bit).
-; A/X/Y should be in 8-bit mode when calling this,
-; and DBR should be set properly. Y is preserved.
+; A/X/Y should be in 8-bit mode when calling this. Y is preserved.
 ;================================================
 get_bitwise_mask:
-    phy
-    lda $010B|!addr : and #$07 : tay
+    lda $010B|!addr : and #$07 : tax
+    lda.l .mask_table,x : pha
     rep #$20
     lda $010B|!addr : lsr #3 : tax
     sep #$20
-    lda.w .mask_table,y
-    ply
+    pla
     rts
 
 .mask_table:

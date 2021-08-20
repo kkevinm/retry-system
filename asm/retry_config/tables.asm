@@ -161,8 +161,10 @@ reset_rng:
 ;=====================================;
 ; This table can be used to save custom values to SRAM, so they can persist when the console is turned off. By default it saves the custom checkpoint ram and the death counter.
 ; Each line is formatted as follows:
-;  dl $XXXXXX = what RAM address to save. Make sure it's always 3 bytes long (i.e. use $7E0019 instead of $19 or $0019).
-;  dw $XXXX = how many bytes to save at that address (remove the $ to use a decimal value).
+;  dl $XXXXXX : dw $YYYY
+; where:
+;  $XXXXXX = what RAM address to save. Make sure it's always 3 bytes long (i.e. use $7E0019 instead of $19 or $0019).
+;  $YYYY = how many bytes to save at that address (remove the $ to use a decimal value).
 ; For example, adding "dl $7E1F3C : dw 12" will make the 1-Up checkpoints for all levels save.
 ; Make sure to always put a colon between the two elements!
 ;
@@ -181,7 +183,7 @@ save:
 
 ; Here you specify the default values of the addresses you want to save, for when a new save file is started.
 ; You can do "db $XX,$XX,..." for 1 byte values, "dw $XXXX,$XXXX,..." for 2 bytes values and "dl $XXXXXX,$XXXXXX,..." for 3 bytes values.
-; The amount of values of each entry should correspond to the dw $XXXX value in the save table
+; The amount of values of each entry should correspond to the dw $YYYY value in the save table
 ; (for example, the checkpoint values are 192, and the death counter values are 5).
 
 sram_defaults:
