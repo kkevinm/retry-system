@@ -53,7 +53,12 @@ endif
     sep #$30
 +   
 endif
-
+    
+    ; Restore the Layer 2 interaction bit if applicable.
+    lda !ram_l2_backup : beq +
+    lda #$00 : sta !ram_l2_backup
+    lda #$80 : tsb $5B
++
     ; Reset DSX sprites.
 if !reset_dsx
     stz $06FE|!addr

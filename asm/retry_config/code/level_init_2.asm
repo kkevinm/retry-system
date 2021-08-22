@@ -5,10 +5,13 @@ init:
     lda $141A|!addr : beq .return
 
 .room_transition:
-    ; If respawning from retry, skip.
-    lda !ram_is_respawning : bne .return
-    
-    ; Check if we should count this entrance as a checkpoint.
+    ; If respawning from Retry, backup the L2 interaction bit and disable it.
+    lda !ram_is_respawning : beq +
+    lda $5B : and #$80 : sta !ram_l2_backup
+    lda #$80 : trb $5B
+    rtl
++    
+    ; Otherwise, check if we should count this entrance as a checkpoint.
     jsr shared_get_checkpoint_value
     cmp #$02 : bcc .return
 
