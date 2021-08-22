@@ -1,3 +1,6 @@
+Q: Can I insert this in a ROM where I've already inserted worldpeace's Retry patch?
+A: No, doing so will result in an error when running UberASM Tool. First, you need to remove the original patch: either try to use the Unpatcher tool (at your own risk) or port your hack over to a new ROM.
+
 Q: I noticed that you don't lose lives when dying/retrying a level. Is it possible to change that?
 A: Yes. Look at the "lose_lives" table in "retry_config/tables.asm". There you can choose in which level the player will lose lives by changing the corresponding 0 to a 1. If you just don't want infinite lives anywhere, then change all the 0s to 1s.
 

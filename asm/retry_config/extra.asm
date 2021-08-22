@@ -30,6 +30,7 @@ reset:
 
 ;=====================================
 ; This routine will be executed everytime the player dies.
+; NOTE: on SA-1 roms, this runs on the SNES cpu.
 ;=====================================
 death:
     ; Feel free to put your code here.
@@ -89,7 +90,8 @@ prompt_exit:
 
 ;=====================================
 ; This routine will be called every time the game is saved (before anything gets saved).
-; Remember you can check for the current save file in $010A.
+; Remember that you can check for the current save file in $010A.
+; NOTE: on SA-1 roms, this may run on either cpu depending on what's calling the save routine.
 ;=====================================
 save_file:
     ; Feel free to put your code here.
@@ -100,7 +102,8 @@ save_file:
 
 ;=====================================
 ; This routine will be called every time an existing save file is loaded (before anything gets loaded).
-; Remember you can check for the current save file in $010A.
+; Remember that you can check for the current save file in $010A.
+; NOTE: on SA-1 roms, this runs on the SNES cpu.
 ;=====================================
 load_file:
     ; Feel free to put your code here.
@@ -111,7 +114,8 @@ load_file:
 
 ;=====================================
 ; This routine will be called every time a new save file is loaded (before anything gets reset).
-; Remember you can check for the current save file in $010A.
+; Remember that you can check for the current save file in $010A.
+; NOTE: on SA-1 roms, this runs on the SNES cpu.
 ;=====================================
 load_new_file:
     ; Feel free to put your code here.
@@ -121,8 +125,8 @@ load_new_file:
     rts
 
 ;=====================================
-; This routine will be called at the end of the game loop during gamemode 14,
-; just before retry draws the prompt and AddmusicK's code runs.
+; This routine will be called at the end of the game loop during gamemodes 7 and 14 (title screen and levels),
+; just before Rsetry draws the prompt and AddmusicK's code runs.
 ; If you have other patches that hijack $00A2EA, you could try to put their freespace code in this routine to solve the conflict.
 ; NOTE: on SA-1 roms, this runs on the SNES cpu.
 ;=====================================

@@ -1,0 +1,4 @@
+Q: How do I remove this Retry from my ROM?
+A: First, remove all of Retry's files from your UberASM Tool folders, which includes: all the "retry_gmXX.asm" files in the "gamemode" folder, "retry.asm" in the "library" folder, and the entirety of the "retry_config" folder. Also make sure to remove the gamemode files from the "list.txt".
+Then, run UberASM Tool, which will remove all of Retry's code in freespace.
+Lastly, patch the included "retry_unpatch.asm" file with Asar, to remove all of the hijacks.

@@ -1,3 +1,9 @@
+; Patching this file with Asar will remove all of Retry's hijacks.
+; Do not patch this if you don't want to remove the Retry from your ROM,
+; and do not insert it with UberASM Tool either.
+; Basically, you can ignore this file as long as you're using Retry in your ROM.
+; For more information, see "how_to_remove.txt".
+
 if read1($00FFD5) == $23
     sa1rom
     !sa1   = 1
