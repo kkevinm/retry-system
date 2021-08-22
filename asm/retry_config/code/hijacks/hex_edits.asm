@@ -4,14 +4,6 @@ pushpc
 org $009E25
     db !initial_lives-1
 
-; Enable/disable life loss on death.
-org $00D0D8
-if !lose_lives
-    dec $0DBE|!addr
-else
-    bra $01
-endif
-
 ; Initial sprite facing fix.
 ; Easier to just fix the SubHorzPos routine in bank 1 rather than updating $D1.
 org $01AD33

@@ -62,17 +62,66 @@ checkpoint_effect:
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 1E0-1EF
     db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 ; 1F0-1FF
 
-;=================;
-; Echo SFX Enable ;
-;=================;
+;==================;
+; Lose Lives table ;
+;==================;
+; This table allows you to set in which sublevels dying will cause the life counter to decrease.
+; By default it's set to all 0, meaning that the game will effectively have infinite lives,
+; which is recommended for Kaizo or very hard standard hacks.
+; Still, if your game has some easier levels or a mix of standard and Kaizo, for example, you may
+; want to keep the vanilla life system, at least in some levels, and you can do that by changing the table.
+; Note that this is independent of the Retry prompt settings: you could have a level with instant respawn and
+; no infinite lives, although that may not be recommended: usually this works better for levels with the vanilla death sequence.
+;
+; Each digit in the table corresponds to a sublevel: if a digit is set to 1,
+; the corresponding sublevel will have life loss enabled.
+; For example, %10000001 as the first value means the setting is on for levels 000 and 007.
+;
+; The guides at the top and right of the table should help visualize it.
+
+lose_lives:
+;       01234567  89ABCDEF
+    db %00000000,%00000000 ; 000-00F
+    db %00000000,%00000000 ; 010-01F
+    db %00000000,%00000000 ; 020-02F
+    db %00000000,%00000000 ; 030-03F
+    db %00000000,%00000000 ; 040-04F
+    db %00000000,%00000000 ; 050-05F
+    db %00000000,%00000000 ; 060-06F
+    db %00000000,%00000000 ; 070-07F
+    db %00000000,%00000000 ; 080-08F
+    db %00000000,%00000000 ; 090-09F
+    db %00000000,%00000000 ; 0A0-0AF
+    db %00000000,%00000000 ; 0B0-0BF
+    db %00000000,%00000000 ; 0C0-0CF
+    db %00000000,%00000000 ; 0D0-0DF
+    db %00000000,%00000000 ; 0E0-0EF
+    db %00000000,%00000000 ; 0F0-0FF
+    db %00000000,%00000000 ; 100-10F
+    db %00000000,%00000000 ; 110-11F
+    db %00000000,%00000000 ; 120-12F
+    db %00000000,%00000000 ; 130-13F
+    db %00000000,%00000000 ; 140-14F
+    db %00000000,%00000000 ; 150-15F
+    db %00000000,%00000000 ; 160-16F
+    db %00000000,%00000000 ; 170-17F
+    db %00000000,%00000000 ; 180-18F
+    db %00000000,%00000000 ; 190-19F
+    db %00000000,%00000000 ; 1A0-1AF
+    db %00000000,%00000000 ; 1B0-1BF
+    db %00000000,%00000000 ; 1C0-1CF
+    db %00000000,%00000000 ; 1D0-1DF
+    db %00000000,%00000000 ; 1E0-1EF
+    db %00000000,%00000000 ; 1F0-1FF
+
+;=======================;
+; Echo SFX Enable table ;
+;=======================;
 ; Allows you to enable echo on SFX on a sublevel basis.
 ; You can already do that easily with an UberASM init code, but it may be tedious
 ; to have to insert the same code in a lot of levels, so this table makes it easier.
-; Each digit in the table corresponds to a sublevel: if a digit is set to 1,
-; the corresponding sublevel will have echo on SFX.
-; For example, %10000001 as the first value means echo on for levels 000 and 007.
 ;
-; The guides at the top and right of the table should help visualize it.
+; Format is the same as the lose_lives table: each digit corresponds to one sublevel.
 ;
 ; NOTE: this feature only works with AddmusicK.
 
@@ -119,7 +168,7 @@ sfx_echo:
 ; By default this applies to all levels, to have consistent setups after death,
 ; but you can disable it when preferred.
 ;
-; Format is the same as the sfx_echo table: each digit corresponds to one sublevel.
+; Format is the same as the lose_lives table: each digit corresponds to one sublevel.
 
 reset_rng:
 ;       01234567  89ABCDEF

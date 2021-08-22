@@ -48,12 +48,12 @@ endif
     ; Show the death pose just to be sure.
     lda.b #!death_pose : sta $13E0|!addr
     
-if !lose_lives
+    ; Don't respawn if not infinite lives and we're about to game over.
+    jsr shared_get_bitwise_mask
+    and.l tables_lose_lives,x : beq +
     lda $0DBE|!addr : bne +
     rtl
 +
-endif
-
     ; See what retry we have to use.
     jsr shared_get_prompt_type
 
@@ -130,11 +130,11 @@ endif
     lda !ram_respawn : sta $19B8|!addr,x
     lda !ram_respawn+1 : ora #$04 : sta $19D8|!addr,x
 
-if !lose_lives
-    ; Decrement lives (if 0, we can't get here so we're safe).
+    ; If applicable, decrement lives (if 0, we can't get here so we're safe).
+    jsr shared_get_bitwise_mask
+    and.l tables_lose_lives,x : beq +
     dec $0DBE|!addr
-endif
-    
++    
     ; If Mario died on Yoshi, remove Yoshi.
     stz $0DC1|!addr
 

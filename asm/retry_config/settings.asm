@@ -8,16 +8,13 @@
 ;       In this option, you can press start then select to exit the level.
 ; 3 = no retry prompt/respawn (as if "no" is chosen automatically, use this if you only want the multi-midway feature).
 ;
-; Note: you can override on a sublevel basis using the "checkpoint_effect" table in "tables.asm". You can also override it at any time by setting a certain RAM address (see "docs/ram_map.txt").
+; Note: you can override this at any time by setting a certain RAM address (see "docs/ram_map.txt").
     !default_prompt_type = 1
 
 ;========================================================================
 
 ; How many lives to start a new save file with.
     !initial_lives = 99
-
-; Set 0 to have infinite lives.
-    !lose_lives = 0
 
 ; 0 = midways won't give Mario a mushroom.
     !midway_powerup = 0

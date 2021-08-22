@@ -81,3 +81,6 @@ v0.2.4:
 v0.2.5:
     - Added more support for ObjecTool, by only reserving Custom Normal Objects 00-51 for the custom midway bar, allowing to use Custom Normal Objects 52-FF in ObjecTool normally.
     - Added ObjecTool readme.
+
+v0.2.6:
+    - Changed !lose_lives define to a table to enable/disable infinite lives on a sublevel basis.

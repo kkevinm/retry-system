@@ -57,11 +57,18 @@ org $009CF5
     stz $0109|!addr
 endif
 
+org $009E25
+    db $04
+
 org $01AD33
     db $D1
 
 org $01AD3A
     db $D2
+
+org $00D0D8
+    dec $0DBE|!addr
+    bpl $09
 
 org $008E5B
     lda #$FF
