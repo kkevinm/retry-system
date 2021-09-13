@@ -36,7 +36,7 @@ To fix this, open AMK's "patch.asm" file and remove all instances of codes like 
 	CMP !SongThatYouChangedTo0
 	BEQ Something
 
-For example, if you changed !IrisOut to #$00, then you'd remove these codes:
+For example, if you changed !IrisOut to #$00, then you'd remove these codes (you can CTRL+F "!IrisOut" to find all instances in the file):
 
 	CMP !IrisOut
 	BEQ ++
