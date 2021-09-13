@@ -1,48 +1,38 @@
-v0.1.0:
-    - Initial version.
+v0.2.7:
+    - Fixed an issue where sprites would disappear when the Retry prompt was active, in case the end of the OAM table was filled (thanks to LouisDoucet for reporting this).
+    - Changed ordering on this document to list more recent versions before older ones.
 
-v0.1.1:
-    - Added sprite initial facing fix.
+v0.2.6:
+    - Changed !lose_lives define to a table to enable/disable infinite lives on a sublevel basis.
+    - Fixed issue where sometimes Mario would die or have weird interactions on the first frame after respawning in a layer 2 level (thanks to FYRE150 for reporting this).
+    - Finished "extra.asm" routines documentation.
 
-v0.1.2:
-    - Added compatibility with "Individual Dragon Coins Save" patch.
-    - Added "load_title" routine in "retry_config/extra.asm".
-    - Added "docs/sram_info.txt".
+v0.2.5:
+    - Added more support for ObjecTool, by only reserving Custom Normal Objects 00-51 for the custom midway bar, allowing to use Custom Normal Objects 52-FF in ObjecTool normally.
+    - Added ObjecTool readme.
 
-v0.1.3:
-    - Fixed bug where the prompt options wouldn't appear when dying while the level end circle was active (thanks Sweetdude for finding this in the old retry patch).
-    - Added !ram_prompt_override, that can be used to override the current level's prompt settings on the fly.
-    - Added "docs/ram_map.txt".
+v0.2.4:
+    - Fixed issue that would prevent the Game Over music from playing when running out of lives (with !lose_lives = 1) and play the death SFX during the Game Over screen (thanks to simon.caio for reporting this).
+    - Fixed game crash when using the VWF Dialogues patch, due to Retry overwriting the SRAM size even when it was set to a larger size by an external resource (thanks to simon.caio for reporting this).
+    - Made some space and cycle optimizations to the NMI routine.
 
-v0.1.4:
-    - Added !ram_disable_exit to remove the exit option on the fly (thanks Sweetdude and Abdu for the suggestion).
+v0.2.3:
+    - Fixed issue with ROMs where Lunar Magic v3.0+ was used but the routine at $03BCDC wasn't installed (thanks to SJandCharlieTheCat for reporting this).
+    - Change get_screen_number macro to a subroutine and made it check for LM3's $03BCDC routine installation at runtime, for more robustness.
+    - Changed settings.asm formatting to be a bit easier to use.
+    - Small speed improvement for SRAM saving/loading on FastROM.
 
-v0.1.5:
-    - Added !ram_set_checkpoint to make Retry easily compatible with custom midway blocks/sprites.
-    - Updated documentation.
+v0.2.2:
+    - Added an option to replace "Mario" with "DEATHS" in the status bar, like the standalone Death Counter patch.
+    - Optimized sprite load index table reset loop.
+    - Fixed issue where calling $00F606 in consecutive frames could make the level's music restart even if it didn't change (similar fix to v0.1.9).
 
-v0.1.6:
-    - Fixed room checkpoints respawning the player in the wrong sublevel sometimes (thanks FYRE150 for reporting this).
-    - Fixed graphical glitches in some of the mode 7 vanilla bosses when the prompt was active.
-    - Fixed error on SA-1 that made respawning in midway entrances not work correctly.
-    - Fixed error where the midway bar for the current sublevel would respawn when leaving the current level, entering another one then going back to that sublevel (thanks FYRE150 for reporting this).
-    - Added fix from original Retry involving secondary exits and "No Yoshi" intros.
-    - Added way to reset the current level's checkpoint by setting a RAM address.
+v0.2.1:
+    - Fixed issue where choosing an option in the Retry prompt wouldn't play the sound effect.
 
-v0.1.7:
-    - Changed the default SA-1 freeram address to avoid conflicts with lx5's DSS.
-    - Fixed room checkpoints not working anymore.
-    - Fixed rare start+select conflict with other patches.
-
-v0.1.8:
-    - Added identifier string in ROM with version number.
-    - Renamed !freeram to !retry_freeram to avoid naming conflicts.
-    - Split "gm14_end.asm" routines into multiple files inside the "code/hijacks/gm14_end" folder for more modularity.
-    - Changed !reset_rng define to a per-sublevel table to be able to have a different setting in each level (thanks Abdu for the suggestion).
-    - Fixed softlock when getting a checkpoint in the bonus game.
-    - Optimized Retry RAM reset in "load_title.asm".
-    - Fixed inconsistency with sprites movement with pipe entrances when respawning in a level (thanks LouisDoucet for reporting this).
-    - Merged checkpoint and effect tables into a single checkpoint_effect table, where each digit corresponds to a value in the original tables. Besides keeping the most important sublevel options in a single place, it also saves 512 bytes of space.
+v0.2.0:
+    - Fixed issue with the Retry prompt not appearing when !no_prompt_box = 1 and setting !ram_disable_box to #$00.
+    - Added SRAM initialization code for new save files and added "load_new_file" extra routine.
 
 v0.1.9:
     - Fixed issue where calling $00F606 in consecutive frames would trigger the death song even if disabled (thanks SuperMargot for reporting this).
@@ -55,37 +45,48 @@ v0.1.9:
     - Added !ram_prompt_x_pos and !ram_prompt_y_pos to change the prompt position at runtime.
     - Added !ram_disable_box to be able to enable/disable the Retry prompt box at runtime. A bunch of code in nmi.asm, prompt_oam.asm and prompt.asm was rewritten to account for this.
 
-v0.2.0:
-    - Fixed issue with the Retry prompt not appearing when !no_prompt_box = 1 and setting !ram_disable_box to #$00.
-    - Added SRAM initialization code for new save files and added "load_new_file" extra routine.
+v0.1.8:
+    - Added identifier string in ROM with version number.
+    - Renamed !freeram to !retry_freeram to avoid naming conflicts.
+    - Split "gm14_end.asm" routines into multiple files inside the "code/hijacks/gm14_end" folder for more modularity.
+    - Changed !reset_rng define to a per-sublevel table to be able to have a different setting in each level (thanks Abdu for the suggestion).
+    - Fixed softlock when getting a checkpoint in the bonus game.
+    - Optimized Retry RAM reset in "load_title.asm".
+    - Fixed inconsistency with sprites movement with pipe entrances when respawning in a level (thanks LouisDoucet for reporting this).
+    - Merged checkpoint and effect tables into a single checkpoint_effect table, where each digit corresponds to a value in the original tables. Besides keeping the most important sublevel options in a single place, it also saves 512 bytes of space.
 
-v0.2.1:
-    - Fixed issue where choosing an option in the Retry prompt wouldn't play the sound effect.
+v0.1.7:
+    - Changed the default SA-1 freeram address to avoid conflicts with lx5's DSS.
+    - Fixed room checkpoints not working anymore.
+    - Fixed rare start+select conflict with other patches.
 
-v0.2.2:
-    - Added an option to replace "Mario" with "DEATHS" in the status bar, like the standalone Death Counter patch.
-    - Optimized sprite load index table reset loop.
-    - Fixed issue where calling $00F606 in consecutive frames could make the level's music restart even if it didn't change (similar fix to v0.1.9).
+v0.1.6:
+    - Fixed room checkpoints respawning the player in the wrong sublevel sometimes (thanks FYRE150 for reporting this).
+    - Fixed graphical glitches in some of the mode 7 vanilla bosses when the prompt was active.
+    - Fixed error on SA-1 that made respawning in midway entrances not work correctly.
+    - Fixed error where the midway bar for the current sublevel would respawn when leaving the current level, entering another one then going back to that sublevel (thanks FYRE150 for reporting this).
+    - Added fix from original Retry involving secondary exits and "No Yoshi" intros.
+    - Added way to reset the current level's checkpoint by setting a RAM address.
 
-v0.2.3:
-    - Fixed issue with ROMs where Lunar Magic v3.0+ was used but the routine at $03BCDC wasn't installed (thanks to SJandCharlieTheCat for reporting this).
-    - Change get_screen_number macro to a subroutine and made it check for LM3's $03BCDC routine installation at runtime, for more robustness.
-    - Changed settings.asm formatting to be a bit easier to use.
-    - Small speed improvement for SRAM saving/loading on FastROM.
+v0.1.5:
+    - Added !ram_set_checkpoint to make Retry easily compatible with custom midway blocks/sprites.
+    - Updated documentation.
 
-v0.2.4:
-    - Fixed issue that would prevent the Game Over music from playing when running out of lives (with !lose_lives = 1) and play the death SFX during the Game Over screen (thanks to simon.caio for reporting this).
-    - Fixed game crash when using the VWF Dialogues patch, due to Retry overwriting the SRAM size even when it was set to a larger size by an external resource (thanks to simon.caio for reporting this).
-    - Made some space and cycle optimizations to the NMI routine.
+v0.1.4:
+    - Added !ram_disable_exit to remove the exit option on the fly (thanks Sweetdude and Abdu for the suggestion).
 
-v0.2.5:
-    - Added more support for ObjecTool, by only reserving Custom Normal Objects 00-51 for the custom midway bar, allowing to use Custom Normal Objects 52-FF in ObjecTool normally.
-    - Added ObjecTool readme.
+v0.1.3:
+    - Fixed bug where the prompt options wouldn't appear when dying while the level end circle was active (thanks Sweetdude for finding this in the old retry patch).
+    - Added !ram_prompt_override, that can be used to override the current level's prompt settings on the fly.
+    - Added "docs/ram_map.txt".
 
-v0.2.6:
-    - Changed !lose_lives define to a table to enable/disable infinite lives on a sublevel basis.
-    - Fixed issue where sometimes Mario would die or have weird interactions on the first frame after respawning in a layer 2 level (thanks to FYRE150 for reporting this).
-    - Finished "extra.asm" routines documentation.
+v0.1.2:
+    - Added compatibility with "Individual Dragon Coins Save" patch.
+    - Added "load_title" routine in "retry_config/extra.asm".
+    - Added "docs/sram_info.txt".
 
-v0.2.7:
-    - Fixed an issue where sprites would disappear when the Retry prompt was active, in case the end of the OAM table was filled (thanks to LouisDoucet for reporting this).
+v0.1.1:
+    - Added sprite initial facing fix.
+
+v0.1.0:
+    - Initial version.
