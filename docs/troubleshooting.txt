@@ -83,5 +83,5 @@ Note 3: this address is only checked while in a level, but you can also set it i
 
 --------------------------------------------------------------------------------
 
-Q: I patched the 32x32 Player Tilemap patch / lx5's Custom Powerups and I get glitched graphics when dying! What do I do?
+Q: I patched the 32x32 Player Tilemap patch / lx5's Custom Powerups / lx5's Dynamic Spriteset System (DSS) / DKCR Status Bar (or other sprite status bars) and I get glitched graphics when dying! What do I do?
 A: Those patches have a high chance of using the same spots in SP1 for their dynamic tiles as the Retry prompt. To fix it, open "settings.asm" and towards the bottom you'll see a bunch of !tile_... defines. You need to edit some of those to other free spots in SP1 that aren't used by other patches.
