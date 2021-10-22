@@ -19,7 +19,7 @@
 ; 0 = midways won't give Mario a mushroom.
     !midway_powerup = 0
 
-; Counterbreak options reset some counters when the player dies and when going to the overworld.
+; Counterbreak options reset the corresponding counters/items when the player dies and when going to the overworld. Useful for Kaizo and collab hacks.
     !counterbreak_yoshi = 1
     !counterbreak_powerup = 1
     !counterbreak_item_box = 1
