@@ -26,12 +26,16 @@ level:
 
     ; Loop to upload all the tiles.
     ; If the exit option is disabled, we skip the XI tiles.
-    lda !ram_disable_exit : tay
+    lda !ram_disable_exit : beq +
+    lda #$01
++   tay
     ldx.w .index,y
 
     ; Set GFX address depending on the box being enabled or not.
     ; Additionally the disable box flag is copied to $02 for later.
-    lda !ram_disable_box : sta $02
+    lda !ram_disable_box : beq +
+    lda #$01
++   sta $02
     asl : tay
     rep #$20
     lda.w .gfx_addr,y : sta $00
