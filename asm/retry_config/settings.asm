@@ -124,7 +124,6 @@
 ; 0 = the cursor is static
 ; 1 = the cursor blinks like in vanilla menus
 ; 2 = the cursor oscillates slowly right and left
-;     Note: this option only works properly when the black box is disabled
     !cursor_setting = 1
 
 ; How fast the cursor oscillates (only used when !cursor_setting = 2)

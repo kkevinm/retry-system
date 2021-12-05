@@ -11,9 +11,9 @@ assert !cursor_palette >= $08 && !cursor_palette <= $0F, "Error: \!cursor_palett
 ;
 ; This routine draws the Retry prompt tiles on the screen.
 ; The prompt will be drawn using as few OAM slots as possible:
-; - If box and exit are enabled, 15 slots will be used.
+; - If box and exit are enabled, 15 slots will be used (16 if using the oscillating cursor).
 ; - If box is disabled but exit is enabled, 11 slots will be used.
-; - If box is enabled but exit is disabled, 8 slots will be used.
+; - If box is enabled but exit is disabled, 8 slots will be used (9 if using the oscillating cursor).
 ; - If box and exit are disabled, 6 slots will be used.
 ; Before drawing, all the currently used OAM slots are moved at the end of the OAM table, then the new tiles are written from the start.
 ; This ensures that in most cases Retry won't overwrite other sprites, and that it will always have max priority w.r.t. other sprite tiles
@@ -96,10 +96,35 @@ handle_cursor:
     
     ; Hide and offset the cursor.
     ldx $01
+    lda $00 : and #$01 : bne .hide
+
 if !cursor_setting == 2
+    ; If the box is enabled...
+    lda !ram_disable_box : bne +
+
+    ; Draw an additional black tile under the cursor.
+    rep #$20
+    lda $0200|!addr,x : sta $0200|!addr,y
+    lda.w #(!l_props<<8)|(!tile_blk) : sta $0202|!addr,y
+    sep #$20
+
+    ; Make the black tile 16x16 and increase the OAM index.
+    phy
+    tya : lsr #2 : tay
+    lda #$02 : sta $0420|!addr,y
+    ply
+    iny #4
++   
+    ; Apply the X offset to the cursor
     lda $0200|!addr,x : clc : adc $02 : sta $0200|!addr,x
+
+    ; Make the cursor 8x8.
+    txa : lsr #2 : tax
+    stz $0420|!addr,x
 endif
-    lda $00 : and #$01 : beq .return
+    rts
+
+.hide:
     lda !ram_disable_box : beq +
     lda #$F0 : sta $0201|!addr,x
     rts
@@ -119,10 +144,16 @@ erase_tiles:
 
     ; Find how many tiles we need to erase.
     lda.b #(letters_retry_end-letters_retry)/5 : sta $00
+    
     lda !ram_disable_exit : bne +
     lda $00 : clc : adc.b #(letters_exit_end-letters_exit)/5 : sta $00
-+   lda !ram_disable_box : bne +
-    lda $00 : clc : adc.b #(letters_box_end-letters_box)/5 : sta $00
++   
+    lda !ram_disable_box : bne +
+    lda $00 : clc : adc.b #(letters_box_end-letters_box)/5
+if !cursor_setting == 2
+    inc
+endif
+    sta $00
 +   
     ; Put all the tiles offscreen.
     lda $00 : dec : asl #2 : tay
