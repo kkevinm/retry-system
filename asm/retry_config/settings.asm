@@ -115,6 +115,13 @@
 ; Only used if !dim_screen = 1. Can go from 0 to 16, 16 = max brightness, 0 = black.
     !brightness = 8
 
+; This defines a button that will count as hitting "Exit" on the menu while the prompt is shown.
+; It could be handy if you disabled the exit option, but still want a quick way of exiting the level.
+; By default it's "Select", set !exit_button = $00 to disable this.
+; For more information on these values, see $7E0016 on the SMWCentral RAM Map.
+    !exit_button = %00100000
+    !exit_button_address = $16
+
 ; X/Y position of the first tile in the prompt (the cursor on the first line).
 ; You should only change this if you're removing the black box.
 ; Note: you can also change these on the fly (see "docs/ram_map.txt").

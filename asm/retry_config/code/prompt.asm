@@ -73,7 +73,12 @@ if !dim_screen
     dec : ora $00 : sta $0DAE|!addr
 +
 endif
-
+    
+    ; If the exit button is pressed, go to the exiting prompt phase.
+    lda !exit_button_address : and.b #!exit_button : beq +
+    lda #$01 : sta $1B92|!addr
+    bra .selected
++
     ; If B, Start or A are not pressed, skip.
     lda $16 : and #$90 : bne .selected
     lda $18 : bpl .not_selected
