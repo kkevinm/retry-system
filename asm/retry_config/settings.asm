@@ -31,7 +31,7 @@
 ;========================================================================
 
 ; If 1, it fixes the issue where some sprites don't face Mario when entering a level for the first time.
-; It's suggested to enable the fix to make sprite behavior consistent between the first time and the next level reloads.
+; It's suggested to enable the fix to make sprite behavior consistent between the first and all the next level reloads.
     !initial_facing_fix = 1
 
 ; If 1, start+select out of a level is always possible.
