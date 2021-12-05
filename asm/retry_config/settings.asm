@@ -121,7 +121,17 @@
     !text_x_pos = $58
     !text_y_pos = $6F
 
-; Palette row used by the letters and cursor (remember they use sprite palettes).
+; 0 = the cursor is static
+; 1 = the cursor blinks like in vanilla menus
+; 2 = the cursor oscillates slowly right and left
+;     Note: this option only works properly when the black box is disabled
+    !cursor_setting = 1
+
+; How fast the cursor oscillates (only used when !cursor_setting = 2)
+; Higher = slower. Possible values: 0 to 5.
+    !cursor_oscillate_speed = 2
+
+; Palette row used by the letters and cursor (remember: they use sprite palettes).
     !letter_palette = $08
     !cursor_palette = $08
 

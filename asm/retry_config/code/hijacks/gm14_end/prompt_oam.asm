@@ -26,10 +26,16 @@ prompt_oam:
     jsr defrag_oam
 +   
     ; Store the "hide cursor" mask in $00.
+if !cursor_setting == 1
     lda $1B91|!addr : eor #$1F : and #$18 : bne +
     lda #$03
     bra ++
-+   ldx $1B92|!addr
++
+elseif !cursor_setting == 2
+    lda $1B91|!addr : lsr #!cursor_oscillate_speed : and #$07 : tax
+    lda.w .cursor_x_offset,x : sta $02
+endif
+    ldx $1B92|!addr
     lda.w .hide_cursor_mask,x
 ++  sta $00
 
@@ -61,16 +67,23 @@ prompt_oam:
 .hide_cursor_mask:
     db $02,$01
 
+if !cursor_setting == 2
+.cursor_x_offset:
+    db $FF,$00,$01,$02,$03,$02,$01,$00
+endif
+
 ;=====================================
 ; handle_cursor routine
 ;
-; This routine handles hiding the cursor when applicable, as well as setting its OAM size.
+; This routine handles hiding the cursor when applicable, as well as setting its OAM size
+; and offsetting its X position when !cursor_setting == 2.
 ; If the box is enabled, the cursor will be 16x16, and hidden by replacing it with a black tile.
 ; Otherwise, the cursor will be 8x8, and hidden by moving it offscreen.
 ;
 ; Inputs:
 ;  $00 = LSB set if the cursor should be hidden
 ;  $01 = OAM index of the cursor
+;  $02 = X offset of the cursor (when !cursor_setting == 2)
 ;=====================================
 handle_cursor:
     ; Set the OAM size.
@@ -81,9 +94,12 @@ handle_cursor:
 +   lda #$02
 ++  sta $0420|!addr,x
     
-    ; Hide the cursor.
-    lda $00 : and #$01 : beq .return
+    ; Hide and offset the cursor.
     ldx $01
+if !cursor_setting == 2
+    lda $0200|!addr,x : clc : adc $02 : sta $0200|!addr,x
+endif
+    lda $00 : and #$01 : beq .return
     lda !ram_disable_box : beq +
     lda #$F0 : sta $0201|!addr,x
     rts
