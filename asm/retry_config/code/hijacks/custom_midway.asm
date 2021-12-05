@@ -40,8 +40,10 @@ new_norm_objects:
 
 if !object_tool
     ; If ObjecTool is inserted, we jump to its code
-    ; if the custom object number is $52-$FF.
-    lda $5A : cmp #$52 : bcc +
+    ; if the custom object number is $42-$4F or $52-$FF.
+    lda $5A : cmp #$42 : bcc +
+              cmp #$50 : beq +
+              cmp #$51 : beq +
 
     ; Jump to ObjecTool's custom normal objects code.
     ; This jumps in the middle of the NewNormObjects routine, right before PHB : PHK : PLB,
