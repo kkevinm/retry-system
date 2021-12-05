@@ -177,6 +177,9 @@ reset_addresses:
     stz $1420|!addr
     stz $1422|!addr
 
+    ; Reset green star block counter.
+    lda.b #read1($0091AC) : sta $0DC0|!addr
+
     ; Reset individual dcsave buffers.
 if !dcsave
     jsr shared_dcsave_init
