@@ -12,9 +12,9 @@ handle_menu:
 
     ; Restore vanilla window HDMA.
     ldx #$04
--   lda.l $009277|!bank,x : sta.w $4300+(!window_channel*$10),x
+-   lda.l $009277|!bank,x : sta.w window_dma($4300),x
     dex : bpl -
-    stz.w $4307+(!window_channel*$10)
+    stz.w window_dma($4307)
 
     ; Check if we have to retry or exit.
     cpy #$00 : beq .retry
@@ -226,14 +226,19 @@ update_window:
     lda #$00 : sta !ram_update_window
 
     ; Update the HDMA table.
-    rep #$20
-    lda.w #$2604 : sta.w $4300+(!window_channel*$10)
-    lda.w #.table : sta.w $4302+(!window_channel*$10)
+    ; If exit is disabled, the second line is all filled.
+    lda !ram_disable_exit : rep #$20 : bne +
+    lda.w #.window
+    bra ++
++   lda.w #.window_no_exit
+++  sta.w window_dma($4302)
+    lda.w #$2604 : sta.w window_dma($4300)
     sep #$20
-    lda.b #.table>>16 : sta.w $4304+(!window_channel*$10)
+    lda.b #.window>>16 : sta.w window_dma($4304)
     rts
 
-.table:
+; Windowing table to use normally
+.window:
     ; all cover / layer123 cover
     db $5D : db $FF,$00,$FF,$00
     db $12 : db $38,$C8,$FF,$00
@@ -241,5 +246,15 @@ update_window:
     db $08 : db $38,$C8,$FF,$00
     db $08 : db $88,$C8,$38,$C8
     db $0D : db $38,$C8,$FF,$00
+    db $4C : db $FF,$00,$FF,$00
+    db $00
+
+; Windowing table to use when exit is disabled
+.window_no_exit:
+    ; all cover / layer123 cover
+    db $5D : db $FF,$00,$FF,$00
+    db $12 : db $38,$C8,$FF,$00
+    db $08 : db $90,$C8,$38,$C8
+    db $1D : db $38,$C8,$FF,$00
     db $4C : db $FF,$00,$FF,$00
     db $00

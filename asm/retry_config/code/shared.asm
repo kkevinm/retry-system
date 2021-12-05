@@ -247,6 +247,12 @@ macro jsl_to_rts_db(routine, rtl)
 endmacro
 
 ;================================================
+; Functions for (H)DMA address conversion
+;================================================
+function dma(addr,ch)     = ((addr)+((ch)*$10))
+function window_dma(addr) = dma(addr,!window_channel)
+
+;================================================
 ; Utility functions for tilemap and stripe image management.
 ;================================================
 function xb(x)                = (((x)&$FF)<<8)|(((x)>>8)&$FF)

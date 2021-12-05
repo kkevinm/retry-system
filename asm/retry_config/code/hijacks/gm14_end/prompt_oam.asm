@@ -13,7 +13,7 @@ assert !cursor_palette >= $08 && !cursor_palette <= $0F, "Error: \!cursor_palett
 ; The prompt will be drawn using as few OAM slots as possible:
 ; - If box and exit are enabled, 15 slots will be used.
 ; - If box is disabled but exit is enabled, 11 slots will be used.
-; - If box is enabled but exit is disabled, 10 slots will be used.
+; - If box is enabled but exit is disabled, 8 slots will be used.
 ; - If box and exit are disabled, 6 slots will be used.
 ; Before drawing, all the currently used OAM slots are moved at the end of the OAM table, then the new tiles are written from the start.
 ; This ensures that in most cases Retry won't overwrite other sprites, and that it will always have max priority w.r.t. other sprite tiles
@@ -27,10 +27,12 @@ prompt_oam:
 +   
     ; Store the "hide cursor" mask in $00.
     lda $1B91|!addr : eor #$1F : and #$18 : bne +
-    lda #%00000011 : sta $00
+    lda #$03
     bra ++
-+   lda $1B92|!addr : eor #$01 : asl : sta $00
-++  
++   ldx $1B92|!addr
+    lda.w .hide_cursor_mask,x
+++  sta $00
+
     ; Draw "RETRY"
     ldy #$00 : sty $01
     ldx.b #letters_retry-letters
@@ -49,10 +51,15 @@ prompt_oam:
     ; Draw filler tiles if the box is enabled
     lda !ram_disable_box : bne .no_box
     ldx.b #letters_box-letters
-    jsr oam_draw
+    lda !ram_disable_exit : beq +
+    ldx.b #letters_box_no_exit-letters
++   jsr oam_draw
 
 .no_box:
     rts
+
+.hide_cursor_mask:
+    db $02,$01
 
 ;=====================================
 ; handle_cursor routine
@@ -62,7 +69,7 @@ prompt_oam:
 ; Otherwise, the cursor will be 8x8, and hidden by moving it offscreen.
 ;
 ; Inputs:
-;  $00 = set if the cursor should be hidden
+;  $00 = LSB set if the cursor should be hidden
 ;  $01 = OAM index of the cursor
 ;=====================================
 handle_cursor:
@@ -75,7 +82,7 @@ handle_cursor:
 ++  sta $0420|!addr,x
     
     ; Hide the cursor.
-    lda $00 : beq .return
+    lda $00 : and #$01 : beq .return
     ldx $01
     lda !ram_disable_box : beq +
     lda #$F0 : sta $0201|!addr,x
@@ -119,7 +126,7 @@ erase_tiles:
 ;  Y = OAM index
 ;=====================================
 oam_draw:
-    ; Check for the $FF terminator.
+    ; Return if we reached the $FF terminator.
     lda.w letters,x : cmp #$FF : beq .return
 
     ; Store the X,Y positions and tile OAM properties.
@@ -134,9 +141,11 @@ oam_draw:
     tya : lsr #2 : tay
     lda.w letters+4,x : sta $0420|!addr,y
     ply
+
+    ; Go to the next tile.
     inx #5
     iny #4
-    bra .oam_draw
+    bra oam_draw
 .return:
     rts
 
@@ -146,28 +155,29 @@ oam_draw:
 letters:
 .retry:
     db $00,$00,!tile_curs,!c_props,$00 ; Black/Cursor
-    db $10,$00,!tile_r   ,!l_props,$00 ; R
-    db $18,$00,!tile_e   ,!l_props,$00 ; E
-    db $20,$00,!tile_t   ,!l_props,$00 ; T
-    db $28,$00,!tile_r   ,!l_props,$00 ; R
-    db $30,$00,!tile_y   ,!l_props,$00 ; Y
+    db $10,$00,!tile_r,   !l_props,$00 ; R
+    db $18,$00,!tile_e,   !l_props,$00 ; E
+    db $20,$00,!tile_t,   !l_props,$00 ; T
+    db $28,$00,!tile_r,   !l_props,$00 ; R
+    db $30,$00,!tile_y,   !l_props,$00 ; Y
 ..end:
     db $FF
 
 .exit:
     db $00,$10,!tile_curs,!c_props,$00 ; Black/Cursor
-    db $18,$10,!tile_e   ,!l_props,$00 ; E
-    db $20,$10,!tile_x   ,!l_props,$00 ; X
-    db $28,$10,!tile_i   ,!l_props,$00 ; I
-    db $30,$10,!tile_t   ,!l_props,$00 ; T
+    db $10,$10,!tile_e,   !l_props,$00 ; E
+    db $18,$10,!tile_x,   !l_props,$00 ; X
+    db $20,$10,!tile_i,   !l_props,$00 ; I
+    db $28,$10,!tile_t,   !l_props,$00 ; T
 ..end:
     db $FF
 
 .box:
-    db $E0,$00,!tile_blk ,!l_props,$02 ; Black
-    db $F0,$00,!tile_blk ,!l_props,$02 ; Black
-    db $E0,$10,!tile_blk ,!l_props,$02 ; Black
-    db $F0,$10,!tile_blk ,!l_props,$02 ; Black
+    db $E0,$10,!tile_blk, !l_props,$02 ; Black
+    db $F0,$10,!tile_blk, !l_props,$02 ; Black
+..no_exit:
+    db $E0,$00,!tile_blk, !l_props,$02 ; Black
+    db $F0,$00,!tile_blk, !l_props,$02 ; Black
 ..end:
     db $FF
 
