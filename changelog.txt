@@ -1,3 +1,6 @@
+v0.3.1:
+    - Made the oscillating cursor option work with the black box enabled.
+
 v0.3.0:
     - Optimized the drawing routine to use as few OAM slots as possible (min 6, max 15) depending on the current box and exit disable settings. Before, it was always either 11 or 15.
     - Now the cursor actually uses the !cursor_palette (before it used !letter_palette).
