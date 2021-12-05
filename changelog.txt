@@ -1,3 +1,8 @@
+v0.3.0:
+    - Optimized the drawing routine to use as few OAM slots as possible (min 6, max 15) depending on the current box and exit disable settings. Before, it was always either 11 or 15.
+    - Now the cursor actually uses the !cursor_palette (before it used !letter_palette).
+    - 
+
 v0.2.7:
     - Fixed an issue where sprites would disappear when the Retry prompt was active, in case the end of the OAM table was filled (thanks to LouisDoucet for reporting this).
     - Changed ordering on this document to list more recent versions before older ones.

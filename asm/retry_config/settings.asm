@@ -2,13 +2,13 @@
 ; Settings used by Retry. Feel free to change these.
 ;========================================================================
 
-; 0 = prompt & play the vanilla death song when players die.
-; 1 = prompt & play only the sfx when players die (music won't be interrupted).
-; 2 = no prompt & play only the sfx (the fastest option; like "yes" is chosen automatically)
+; 0 = retry prompt & play the vanilla death song when players die.
+; 1 = retry prompt & play only the death sfx when players die (music won't be interrupted).
+; 2 = instant retry (no prompt & play only the sfx: the fastest option; like "yes" is chosen automatically)
 ;       In this option, you can press start then select to exit the level.
-; 3 = no retry prompt/respawn (as if "no" is chosen automatically, use this if you only want the multi-midway feature).
+; 3 = no retry prompt/respawn (vanilla death: as if "no" is chosen automatically, use this if you only want the multi-midway feature).
 ;
-; Note: you can override this at any time by setting a certain RAM address (see "docs/ram_map.txt").
+; Note: you can override this per sublevel (see "tables.asm") and also at any point by setting a certain RAM address (see "docs/ram_map.txt").
     !default_prompt_type = 1
 
 ;========================================================================
@@ -17,6 +17,7 @@
     !initial_lives = 99
 
 ; 0 = midways won't give Mario a mushroom.
+; 1 = vanilla midway powerup behavior.
     !midway_powerup = 0
 
 ; Counterbreak options reset the corresponding counters/items when the player dies and when going to the overworld. Useful for Kaizo and collab hacks.
@@ -68,11 +69,10 @@
 
 ; If 1, a custom SRAM expansion patch will be inserted as well.
 ; By default, it will save the custom checkpoint status and death counter to SRAM.
-; To make your own stuff saved as well, check out the "save" table in retry_tables.asm.
+; To make your own stuff saved as well, check out the "save" table in "tables.asm".
     !sram_feature = 1
 
-; If 1, the game will automatically save everytime a new checkpoint is obtained
-; (when touching a midway or getting a cp on a room transition).
+; If 1, the game will automatically save everytime a new checkpoint is obtained (when touching a midway or getting a cp on a room transition).
 ; If using this, make sure there's no softlocks (for example, a level is unbeatable from one of the checkpoints).
     !save_on_checkpoint = 0
 
