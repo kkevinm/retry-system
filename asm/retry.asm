@@ -67,3 +67,4 @@ retry_gfx:
     %incsrc(code/hijacks,hurry_up)
     %incsrc(code/hijacks,death_counter)
     %incsrc(code/hijacks,lose_lives)
+    %incsrc(code/hijacks,initial_facing_fix)

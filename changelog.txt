@@ -3,6 +3,7 @@ v0.3.0:
     - Now the cursor actually uses the !cursor_palette (before it used !letter_palette).
     - Allow for ObjecTool custom normal objects $42-$4F along with $52-$FF, since they're never used for the custom midways (thanks to MarioFanGamer for suggesting this).
     - Added new cursor options (static, blinking, oscillating).
+    - Fixed an issue with the sprite initial facing fix that sometimes caused Yoshi to run away in the wrong direction when hit by a sprite while riding him (thanks to Abdu for reporting this).
 
 v0.2.7:
     - Fixed an issue where sprites would disappear when the Retry prompt was active, in case the end of the OAM table was filled (thanks to LouisDoucet for reporting this).

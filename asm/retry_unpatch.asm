@@ -66,11 +66,21 @@ endif
 org $009E25
     db $04
 
+if read1($01AD33) == $94
 org $01AD33
     db $D1
+endif
 
+if read1($01AD3A) == $95
 org $01AD3A
     db $D2
+endif
+
+if read1($05DA1C) == $5C
+org $05DA1C
+    cmp #$52
+    bcc $04
+endif
 
 org $00D0D8
     dec $0DBE|!addr
