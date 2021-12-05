@@ -47,7 +47,17 @@ endif
 .dying:
     ; Show the death pose just to be sure.
     lda.b #!death_pose : sta $13E0|!addr
-    
+
+    ; Force sprites to be locked.
+    lda #$01 : sta $9D
+
+    ; Skip Yoshi's hatch animation.
+    stz $18E8|!addr
+
+    ; Reset Yoshi's swallow timer.
+    ldx $18E2|!addr : beq +
+    stz !1564-1,x
++
     ; Don't respawn if not infinite lives and we're about to game over.
     jsr shared_get_bitwise_mask
     and.l tables_lose_lives,x : beq +
@@ -56,7 +66,6 @@ endif
 +
     ; See what retry we have to use.
     jsr shared_get_prompt_type
-
     cmp #$03 : bcc ..prompt
                beq ..instant
     rtl
