@@ -18,7 +18,13 @@ death_routine:
     cmp #10 : bcc +
     lda #$00 : sta !ram_death_counter,x
     dex : bpl -
-+
+    
+    ; If we got here, it means the counter overflowed back to 0, so set it to 99999.
+    ldx #$04
+    lda #$09
+-   sta !ram_death_counter,x
+    dex : bpl -
++   
     ; Call the custom death routine.
     php : phb
     jsr extra_death

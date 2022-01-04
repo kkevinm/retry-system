@@ -1,3 +1,6 @@
+v0.3.2:
+    - Made the death counter cap at 99999 deaths, instead of overflowing back to 0.
+
 v0.3.1:
     - Made the oscillating cursor option work with the black box enabled.
     - Added an optional button that can trigger the "Exit" prompt function even if the exit option is disabled (thanks to Mega for the suggestion).
