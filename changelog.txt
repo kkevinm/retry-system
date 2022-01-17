@@ -1,5 +1,6 @@
 v0.3.2:
     - Made the death counter cap at 99999 deaths, instead of overflowing back to 0.
+    - Fixed silent room checkpoint SFX sometimes not playing.
 
 v0.3.1:
     - Made the oscillating cursor option work with the black box enabled.

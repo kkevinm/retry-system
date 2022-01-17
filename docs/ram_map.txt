@@ -121,7 +121,11 @@ Now for the actual RAM addresses (names are prefixed with "!ram_" in ram.asm, an
 ;                 ;         ;       ; also changing !prompt_x_pos and !prompt_y_pos during    ;
 ;                 ;         ;       ; gameplay.                                               ;
 ;=============================================================================================;
-; reserved        ;   $18   ;  $08  ; Unused, but reserved for future expansion.              ;
+; play_sfx        ;   $18   ;  $01  ; Flag set on level transition when getting a room check- ;
+;                 ;         ;       ; point. Used to play the midway SFX during level init.   ;
+;                 ;         ;       ; Only read/written if !room_cp_sfx != $00.               ;
+;=============================================================================================;
+; reserved        ;   $19   ;  $07  ; Unused, but reserved for future expansion.              ;
 ;                 ;         ;       ; Usage as free ram is not recommended.                   ;
 ;=============================================================================================;
 ; death_counter   ;   $20   ;  $05  ; Holds the amount of deaths occurred. Each byte holds the;

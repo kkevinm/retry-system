@@ -1,6 +1,11 @@
 ; Gamemode 12
 
 init:
+    ; Reset the "play CP sfx" flag.
+if !room_cp_sfx != $00
+    lda #$00 : sta !ram_play_sfx
+endif
+
     ; Check if we entered from the overworld.
     lda $141A|!addr : beq .return
 
@@ -28,8 +33,10 @@ init:
     jsr extra_room_checkpoint
     plb : plp
 
-    ; Play the silent checkpoint SFX.
-    lda.b #!room_cp_sfx : sta !room_cp_sfx_addr
+    ; Set the "play CP sfx" flag.
+if !room_cp_sfx != $00
+    lda #$01 : sta !ram_play_sfx
+endif
 
     ; Save individual dcsave buffers.
 if !dcsave

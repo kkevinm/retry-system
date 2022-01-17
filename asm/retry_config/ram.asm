@@ -42,7 +42,8 @@ endif
 !ram_prompt_x_pos    = !retry_freeram+$15 ; 1
 !ram_prompt_y_pos    = !retry_freeram+$16 ; 1
 !ram_disable_box     = !retry_freeram+$17 ; 1
-!ram_reserved        = !retry_freeram+$18 ; 8 (reserved for future expansion)
+!ram_play_sfx        = !retry_freeram+$18 ; 1
+!ram_reserved        = !retry_freeram+$19 ; 7 (reserved for future expansion)
 !ram_death_counter   = !retry_freeram+$20 ; 5
 !ram_checkpoint      = !retry_freeram+$25 ; 192
 !ram_cust_obj_data   = !retry_freeram+$E5 ; 1+(!max_custom_midway_num*4)

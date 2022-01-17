@@ -59,6 +59,13 @@ endif
     lda #$00 : sta !ram_l2_backup
     lda #$80 : tsb $5B
 +
+    ; Play the silent checkpoint SFX if applicable.
+if !room_cp_sfx != $00
+    lda !ram_play_sfx : beq +
+    lda.b #!room_cp_sfx : sta !room_cp_sfx_addr
++
+endif
+
     ; Reset DSX sprites.
 if !reset_dsx
     stz $06FE|!addr
