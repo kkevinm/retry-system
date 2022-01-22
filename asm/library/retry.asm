@@ -43,6 +43,7 @@ retry_gfx:
 ;=====================================
     %incsrc(code,shared)
     %incsrc("",extra)
+    %incsrc("",level_end_frame)
     %incsrc(code,load_title)
     %incsrc(code,fade_to_level)
     %incsrc(code,level_init_1)
