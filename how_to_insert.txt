@@ -1,6 +1,6 @@
 Q: How to I apply this to my ROM?
 A: Inserting this patch should be relatively simple in most cases.
-- Copy the "asm/retry.asm" file in UberASM Tool's "library" folder.
+- Copy the "asm/library/retry.asm" file in UberASM Tool's "library" folder.
 - Copy all the files inside the "asm/gamemode/" folder in UberASM Tool's "gamemode" folder.
 - Copy the "asm/retry_config" folder inside UberASM Tool's top folder (so it should be at the same level as "level", "gamemode", etc.).
 - Copy this inside UberASM Tool's "list.txt", under "gamemode:":
