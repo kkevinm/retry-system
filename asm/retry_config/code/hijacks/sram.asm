@@ -33,6 +33,7 @@ endif
 
 ; How big is the save table.
 !save_table_size = (tables_sram_defaults-tables_save)
+!save_table_size_game_over = (tables_save_not_game_over-tables_save)
 
 if !sram_feature
 
@@ -65,7 +66,7 @@ macro next_iteration()
     lda $02 : clc : adc $04 : sta $02
     plb : plx
     txa : clc : adc #$0005 : tax
-    cpx.w #!save_table_size : bcc .loop
+    cpx $06 : bcc .loop
 endmacro
 
 ;=====================================
@@ -81,6 +82,7 @@ save_game:
     plb : plp
 
     jsr get_sram_addr
+    lda.w #!save_table_size : sta $06
     ldx #$0000
 .loop:
     lda.w tables_save,x : sta $00
@@ -120,24 +122,54 @@ endif
 ; load_game routine
 ;=====================================
 load_game:
-    beq load_file
+    ; Load or init the file
+    beq +
     jmp init_file
-
-load_file:
-    ; phx from the original code.
-    phx : phy
-
-    ; Set 8 bit X/Y for the custom routine.
-    sep #$10
-
-    ; Set DBR.
++   
+    ; Preserve DB, X, Y, P.
     phb : phk : plb
+    phx : phy : php
 
     ; Call the custom load routine.
+    sep #$30
     php : phb
     jsr extra_load_file
     plb : plp
 
+    ; Set the save table size.
+    rep #$30
+    lda.w #!save_table_size : sta $06
+
+    ; Load the save file.
+    jsr load_file
+
+    ; Restore DBR, P, X and Y.
+    plp : ply : plx
+    plb
+    
+    ; Restore original code and jump back.
+    phx
+    stz $0109|!addr
+    jml $009CFB|!bank
+
+load_game_over:
+    ; Preserve DB, X, Y, P.
+    phb : phk : plb
+    phx : phy : php
+
+    ; Set the save table size.
+    rep #$30
+    lda.w #!save_table_size_game_over : sta $06
+
+    ; Load the save file.
+    jsr load_file
+
+    ; Restore DBR, P, X and Y.
+    plp : ply : plx
+    plb
+    rtl
+
+load_file:
     jsr get_sram_addr
     ldx #$0000
 .loop:
@@ -166,15 +198,7 @@ endif
 ..next:
     %next_iteration()
 .end:
-    ; Keep 16 bit X/Y for the original code.
-    sep #$20
-
-    ; Restore DBR and Y.
-    plb : ply
-
-    ; Restore original code and jump back.
-    stz $0109|!addr
-    jml $009CFB|!bank
+    rts
 
 init_file:
     ; Preserve X and Y.
@@ -193,6 +217,7 @@ init_file:
 
     rep #$30
     lda.w #tables_sram_defaults : sta $02
+    lda.w #!save_table_size : sta $06
     ldx #$0000
 .loop:
     lda.w tables_save,x : tay

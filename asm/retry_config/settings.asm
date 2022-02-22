@@ -76,6 +76,10 @@
 ; If using this, make sure there's no softlocks (for example, a level is unbeatable from one of the checkpoints).
     !save_on_checkpoint = 0
 
+; If 1, the game will automatically save after getting a game over.
+; This can be useful when paired with the option of not reloading some data from SRAM after a game over (see "tables.asm"), if you want some things to retain even if the player got a game over before saving them (for example, the death counter). This ensures that they will be saved to SRAM when this happens.
+    !save_after_game_over = 1
+
 ;========================================================================
 
 ; If 1, Retry will install a custom midway object in the ROM, insertable in levels by using object 2D.

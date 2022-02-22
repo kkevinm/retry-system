@@ -300,6 +300,9 @@ endif
     lda !ram_timer+1 : sta $0F32|!addr
     lda !ram_timer+2 : sta $0F33|!addr
 
+    ; Reset timer frame counter
+    lda #$28 : sta $0F30|!addr
+
     ; Music related stuff. I don't understand most of it.
 if !amk
     lda $13C6|!addr : bne .force_reset

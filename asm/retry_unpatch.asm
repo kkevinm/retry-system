@@ -50,13 +50,17 @@ org $0DA691
     lda.l $001EA2|!addr,x
 
 if read1($009BCB) == $5C
-org $00FFD8
-    db $01
-
 org $009BCB
     plb
     ldx $010A|!addr
 
+if !sa1 == 0
+org $00FFD8
+    db $01
+endif
+endif
+
+if read1($009CF5) == $5C
 org $009CF5
     bne $2B
     phx

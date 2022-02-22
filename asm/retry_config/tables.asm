@@ -216,6 +216,8 @@ reset_rng:
 ;  $YYYY = how many bytes to save at that address (remove the $ to use a decimal value).
 ; For example, adding "dl $7E1F3C : dw 12" will make the 1-Up checkpoints for all levels save.
 ; Make sure to always put a colon between the two elements!
+; The addresses you put under ".not_game_over" will be saved like usual, but they won't be reloaded from SRAM when getting a game over.
+; This can be useful if you want some things to retain even if the player got a game over before being able to save them.
 ;
 ; NOTE: for each address you add here, you need to add the default values in the sram_defaults table below.
 ; NOTE: if using SA-1, for addresses in $7E0000-$7E1FFF you must change the bank to $40 ($400000-$401FFF).
@@ -223,10 +225,13 @@ reset_rng:
 
 save:
     dl !ram_checkpoint    : dw 192
-    dl !ram_death_counter : dw 5
-
     ; Feel free to add your own stuff here.
     
+    
+
+.not_game_over:
+    dl !ram_death_counter : dw 5
+    ; Feel free to add your own stuff here.
     
     
 
@@ -234,9 +239,9 @@ save:
 ; You can do "db $XX,$XX,..." for 1 byte values, "dw $XXXX,$XXXX,..." for 2 bytes values and "dl $XXXXXX,$XXXXXX,..." for 3 bytes values.
 ; The amount of values of each entry should correspond to the dw $YYYY value in the save table
 ; (for example, the checkpoint values are 192, and the death counter values are 5).
+; If you have some addresses after ".not_game_over" in the save table, put their default values after ".not_game_over" here too (in the same order as the other table, of course).
 
 sram_defaults:
-    
     ; Default checkpoint values (don't edit this!).
     dw $0000,$0001,$0002,$0003,$0004,$0005,$0006,$0007
     dw $0008,$0009,$000A,$000B,$000C,$000D,$000E,$000F
@@ -250,11 +255,13 @@ sram_defaults:
     dw $0124,$0125,$0126,$0127,$0128,$0129,$012A,$012B
     dw $012C,$012D,$012E,$012F,$0130,$0131,$0132,$0133
     dw $0134,$0135,$0136,$0137,$0138,$0139,$013A,$013B
-
-    ; Initial death counter value (don't edit this!).
-    db $00,$00,$00,$00,$00
-
     ; Feel free to add your own stuff here.
     
+    
+
+.not_game_over:
+    ; Initial death counter value (don't edit this!).
+    db $00,$00,$00,$00,$00
+    ; Feel free to add your own stuff here.
     
     

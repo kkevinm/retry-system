@@ -1,7 +1,7 @@
-- worldpeace: original Retry patch.
-- lx5: bugfixes to the original Retry patch, BW-RAM+ code.
-- imamelia, 0x400: ObjecTool code.
-- Thomas: death counter code.
-- dtothefourth: a couple new features ideas.
-- BabaYegha, FYRE150, Abdu, SuperMargot, simon.caio, LouisDoucet: testing and feedback.
-- KevinM: everything else.
+- Kevin: main programming and mantaining of the repository, with contributions by:
+  - worldpeace: original Retry patch.
+  - lx5: bugfixes to the original Retry patch, BW-RAM+ code.
+  - imamelia, 0x400: ObjecTool code.
+  - Thomas: death counter code.
+  - dtothefourth: a couple new features ideas.
+  - BabaYegha, FYRE150, Abdu, SuperMargot, simon.caio, LouisDoucet: testing and feedback.

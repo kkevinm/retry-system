@@ -125,6 +125,19 @@ load_new_file:
     rts
 
 ;=====================================
+; This routine will be called during the game over screen.
+; This is called after the save file data is loaded from SRAM (only the data put before ".not_game_over" in "tables.asm") but before all the data is saved again to SRAM.
+; This can be useful if you want to initialize some addresses for the game over and/or have them saved to SRAM.
+; NOTE: on SA-1 roms, this runs on the SNES cpu.
+;=====================================
+game_over:
+    ; Feel free to put your code here.
+
+
+    
+    rts
+
+;=====================================
 ; This routine will be called at the end of the game loop during gamemodes 7 and 14 (title screen and levels),
 ; just before Retry draws the prompt and AddmusicK's code runs.
 ; If you have other patches that hijack $00A2EA, you could try to put their freespace code in this routine to solve the conflict.

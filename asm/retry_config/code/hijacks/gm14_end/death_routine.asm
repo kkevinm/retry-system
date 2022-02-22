@@ -60,7 +60,9 @@ death_routine:
     lda #$80 : sta !ram_is_dying
 
     ; Play the death SFX.
+if !death_sfx != $00
     lda.b #!death_sfx : sta !death_sfx_addr
+endif
 
 .return:
     rts
