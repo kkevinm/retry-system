@@ -3,6 +3,7 @@ v0.3.3:
     - Added new section to the "save" and "sram_defaults" table to put addresses that won't be reloaded from SRAM when getting a game over, and added a "!save_after_game_over" setting to save the game after a game over. Both of these options together can help having some addresses that don't get reloaded from SRAM when getting a game over (if you want the player to retain them even if they didn't get the chance to save the game, for example individual Dragon Coins or the death counter), and ensuring that they actually get saved to SRAM right after (thanks to simon.caio for the idea).
     - Added a "game_over" routine in "extra.asm" that is called during the game over screen, which could be useful to initialize/save some addresses when getting a game over.
     - Fixed issue with the "Time Up Fix" patch where dying due to a timeout would prevent the timer from working after respawning (thanks worldpeace for reporting this).
+    - Small optimization in Death Prelude SFX.
 
 v0.3.2:
     - Made the death counter cap at 99999 deaths, instead of overflowing back to 0.
