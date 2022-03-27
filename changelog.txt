@@ -4,6 +4,7 @@ v0.3.3:
     - Added a "game_over" routine in "extra.asm" that is called during the game over screen, which could be useful to initialize/save some addresses when getting a game over.
     - Fixed issue with the "Time Up Fix" patch where dying due to a timeout would prevent the timer from working after respawning (thanks worldpeace for reporting this).
     - Small optimization in Death Prelude SFX.
+    - Fixed inconsistent sprite freezing at level start when using a pipe entrance in a level's main sublevel.
 
 v0.3.2:
     - Made the death counter cap at 99999 deaths, instead of overflowing back to 0.

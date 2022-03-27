@@ -1,9 +1,14 @@
 ; Gamemode 0F
 
 init:
-    ; If entering from the overworld, skip.
-    lda $141A|!addr : beq main
+    ; If respawning or doing a level transition, skip.
+    lda $141A|!addr : bne .transition
 
+    ; Reset the $9D backup.
+    lda #$00 : sta !ram_9D_backup
+    bra main
+
+.transition:
     ; Check if we're respawning from Retry.
     lda !ram_is_respawning : beq .not_respawning
 
