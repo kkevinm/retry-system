@@ -54,6 +54,11 @@ endif
 +   
 endif
     
+    ; If goal walk is in progress, reset the music to play.
+    ; This ensures the song will be reloaded if dying and respawning in the same sublevel.
+    lda $1493|!addr : beq +
+    lda #$FF : sta $0DDA|!addr
++   
     ; Restore the Layer 2 interaction bit if applicable.
     lda !ram_l2_backup : beq +
     lda #$00 : sta !ram_l2_backup
@@ -94,7 +99,7 @@ endif
     jsr shared_get_checkpoint_value
     cmp #$02 : bcc .normal
 
-..respawning
+..respawning:
     ; Fix issues with the "level ender" sprite.
     stz $1493|!addr
     stz $13C6|!addr
@@ -102,7 +107,6 @@ endif
     ; Reset mode 7 values.
     stz $36
     stz $37
-
 if !amk
     ; Backup the music that should play.
     lda $0DDA|!addr : sta !ram_music_to_play

@@ -159,6 +159,8 @@ endif
 
     ; Change to "Fade to level" game mode.
     lda #$0F : sta $0100|!addr
+
+    ;lda #$00 : sta $7FB000
     rtl
 
 ;=====================================
@@ -311,7 +313,9 @@ if !amk
     bra .bypass
 
 .spec:
+if !death_song != $00
     lda $1DFB|!addr : cmp.b #!death_song : beq +
+endif
 
 .force_reset:
     lda #$00 : sta !amk_freeram : sta $1DFB|!addr
@@ -331,5 +335,4 @@ else
     stz $0DDA|!addr
 endif
 .music_end:
-    stz $141A|!addr
     rts
