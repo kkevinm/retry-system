@@ -15,10 +15,13 @@ main:
     lda $13D4|!addr : bne .paused
 
     ; If Mario is dying, handle it.
-    lda !ram_is_dying : bne .dying
+    lda $71 : cmp #$09 : beq .dying
 
 .not_dying:
-    ; Backup $0DDA for later.
+    ; Otherwise, reset the dying flag...
+    lda #$00 : sta !ram_is_dying
+    
+    ; ...and backup $0DDA for later.
     lda $0DDA|!addr : sta !ram_music_backup
     rtl
 
@@ -159,8 +162,6 @@ endif
 
     ; Change to "Fade to level" game mode.
     lda #$0F : sta $0100|!addr
-
-    ;lda #$00 : sta $7FB000
     rtl
 
 ;=====================================

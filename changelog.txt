@@ -6,6 +6,7 @@ v0.3.3:
     - Small optimization in Death Prelude SFX.
     - Fixed inconsistent sprite freezing at level start when using a pipe entrance in a level's main sublevel (thanks to BabaYegha for reporting this).
     - Fixed issue where, if going through a pipe during the goal walk, getting a midway and dying afterwards, the music wouldn't restart playing when respawning (thanks to LouisDoucet for reporting this).
+    - Fixed issue where using resources that reset $71 after Mario dies (e.g. revive blocks) would cause Mario to be stuck in his death pose and animations to stay frozen (thanks to SJandCharlieTheCat for reporting this).
 
 v0.3.2:
     - Made the death counter cap at 99999 deaths, instead of overflowing back to 0.

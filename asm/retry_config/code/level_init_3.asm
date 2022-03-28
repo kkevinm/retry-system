@@ -107,6 +107,7 @@ endif
     ; Reset mode 7 values.
     stz $36
     stz $37
+    
 if !amk
     ; Backup the music that should play.
     lda $0DDA|!addr : sta !ram_music_to_play
