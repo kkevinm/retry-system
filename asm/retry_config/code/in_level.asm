@@ -1,10 +1,6 @@
 ; Gamemode 14
 
-if !fast_prompt
-    !show_prompt_time #= !death_time
-else
-    !show_prompt_time #= !death_time-$10
-endif
+!show_prompt_time #= !death_time-$10
 
 main:
     ; Update the window HDMA when the flag is set.
@@ -85,8 +81,10 @@ endif
     ; If the prompt hasn't begun yet, check if it should.
     lda !ram_prompt_phase : beq ...check_box
 
-    ; Keep Mario in the death animation.
+    ; Keep Mario locked in the death animation.
     ldx.b #!show_prompt_time : stx $1496|!addr
+    stz $7D
+    stz $76
 
     ; Handle the box expanding/shrinking.
     cmp #$04 : beq ..respawn
@@ -102,8 +100,12 @@ endif
     rtl
 
 ...check_box:
+if not(!fast_prompt)
     ; Check if it's time to show the prompt.
+    lda $16 : ora $18 : bmi +
     lda $1496|!addr : cmp.b #!show_prompt_time : bcs ..return
++
+endif
 
     ; Set letter transfer flag and change prompt phase.
     lda #$01 : sta !ram_update_request

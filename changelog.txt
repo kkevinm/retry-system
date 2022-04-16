@@ -1,5 +1,7 @@
 v0.3.4:
     - Fixed issue where using $0DAA-$0DAD to disable pressing select wouldn't stop Retry from exiting the level when holding the select button.
+    - Better handling of the !fast_prompt option in the code.
+    - Restored Retry patch feature where pressing A/B during the death animation makes the prompt show immediately (when not using !fast_prompt == 1).
 
 v0.3.3:
     - Fixed issue where the saved data wouldn't get reloaded after going to the game over screen, which could cause, for example, unsaved checkpoints to be retained after getting a game over (thanks to simon.caio for reporting this).
