@@ -4,7 +4,7 @@
 ; Retry version number (Va.b.c) to write in ROM.
 !version_a = 0
 !version_b = 3
-!version_c = 3
+!version_c = 4
 
 ; Read death time from ROM.
 !death_time #= read1($00F61C)
@@ -16,7 +16,7 @@
 !death_song #= read1($00F60B)
 
 ; What button exits the level while the game is paused (by default, select).
-!exit_level_buttons_addr = $15
+!exit_level_buttons_addr = $16
 !exit_level_buttons_bits = $20
 
 ; Level number of the intro level (automatically adjusted to $01C5 when necessary).
