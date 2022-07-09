@@ -105,6 +105,9 @@
 ; If 1, level transitions will be much faster than usual.
     !fast_transitions = 1
 
+; If 0, sprites and animations won't freeze when the prompt is shown.
+    !prompt_freeze = 1
+
 ; Set to 1 if you don't want the "exit" option in the prompt.
 ; This will also allow the player to start+select when having the prompt.
 ; Note: you can also change this on the fly (see "docs/ram_map.txt").

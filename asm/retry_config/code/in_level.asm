@@ -47,8 +47,12 @@ endif
     ; Show the death pose just to be sure.
     lda.b #!death_pose : sta $13E0|!addr
 
-    ; Force sprites to be locked.
+    ; Force sprites to be locked/not locked.
+if !prompt_freeze
     lda #$01 : sta $9D
+else
+    stz $9D
+endif
 
     ; Skip Yoshi's hatch animation.
     stz $18E8|!addr
