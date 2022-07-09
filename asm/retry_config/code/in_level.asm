@@ -162,8 +162,12 @@ endif
     ; Skip No Yoshi intros.
     stz $141D|!addr
 
-    ; Change to "Fade to level" game mode.
-    lda #$0F : sta $0100|!addr
+    ; Change to "Fade to level" game mode
+    ; (or "Fade to overworld" when on the intro level to avoid going to level 0)
+    ldy #$0F
+    lda $0109|!addr : beq +
+    ldy #$0B
++   sty $0100|!addr
     rtl
 
 ;=====================================

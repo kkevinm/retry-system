@@ -2,12 +2,13 @@ v0.3.4:
     - Fixed issue where using $0DAA-$0DAD to disable pressing select wouldn't stop Retry from exiting the level when holding the select button.
     - Better handling of the !fast_prompt option in the code.
     - Restored Retry patch feature where pressing A/B during the death animation makes the prompt show immediately (when not using !fast_prompt == 1).
+    - Fixed issue where dying in the intro level and retrying would send you to level 0 (thanks to Selicre for reporting this).
 
 v0.3.3:
     - Fixed issue where the saved data wouldn't get reloaded after going to the game over screen, which could cause, for example, unsaved checkpoints to be retained after getting a game over (thanks to simon.caio for reporting this).
     - Added new section to the "save" and "sram_defaults" table to put addresses that won't be reloaded from SRAM when getting a game over, and added a "!save_after_game_over" setting to save the game after a game over. Both of these options together can help having some addresses that don't get reloaded from SRAM when getting a game over (if you want the player to retain them even if they didn't get the chance to save the game, for example individual Dragon Coins or the death counter), and ensuring that they actually get saved to SRAM right after (thanks to simon.caio for the idea).
     - Added a "game_over" routine in "extra.asm" that is called during the game over screen, which could be useful to initialize/save some addresses when getting a game over.
-    - Fixed issue with the "Time Up Fix" patch where dying due to a timeout would prevent the timer from working after respawning (thanks worldpeace for reporting this).
+    - Fixed issue with the "Time Up Fix" patch where dying due to a timeout would prevent the timer from working after respawning (thanks to worldpeace for reporting this).
     - Small optimization in Death Prelude SFX.
     - Fixed inconsistent sprite freezing at level start when using a pipe entrance in a level's main sublevel (thanks to BabaYegha for reporting this).
     - Fixed issue where, if going through a pipe during the goal walk, getting a midway and dying afterwards, the music wouldn't restart playing when respawning (thanks to LouisDoucet for reporting this).
