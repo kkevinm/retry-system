@@ -4,6 +4,7 @@ v0.3.4:
     - Restored Retry patch feature where pressing A/B during the death animation makes the prompt show immediately (when not using !fast_prompt == 1).
     - Fixed issue where dying in the intro level and retrying would send you to level 0 (thanks to Selicre for reporting this).
     - Added !prompt_freeze setting to allow to keep sprites and animations running while the Retry prompt is shown.
+    - Added !exit_animation setting to allow to skip the death animation when using the "Exit" prompt option.
 
 v0.3.3:
     - Fixed issue where the saved data wouldn't get reloaded after going to the game over screen, which could cause, for example, unsaved checkpoints to be retained after getting a game over (thanks to simon.caio for reporting this).

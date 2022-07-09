@@ -32,17 +32,31 @@ handle_menu:
     ; Play the correct death song.
 if !amk
 if !death_jingle_alt != $FF
+if !exit_animation > 1
     lda.b #!death_time : sta $1496|!addr
+else
+    stz $1496|!addr
+endif
+if !exit_animation == 0
+    lda !ram_hurry_up : beq +
+endif
     lda.b #!death_jingle_alt : sta $1DFB|!addr
-    rts
++   rts
 endif
 else
     lda #$FF : sta $0DDA|!addr
 endif
 
+if !exit_animation > 1
     lda.b #!death_time+$1E : sta $1496|!addr
+else
+    stz $1496|!addr
+endif
+if !exit_animation == 0
+    lda !ram_hurry_up : beq +
+endif
     lda.b #!death_song : sta $1DFB|!addr
-    rts
++   rts
 .retry:
     ; Set prompt phase to "shrinking with retry selected".
     lda !ram_prompt_phase : inc : sta !ram_prompt_phase

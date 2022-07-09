@@ -7,7 +7,6 @@
 ; 2 = instant retry (no prompt & play only the sfx: the fastest option; like "yes" is chosen automatically)
 ;       In this option, you can press start then select to exit the level.
 ; 3 = no retry prompt/respawn (vanilla death: as if "no" is chosen automatically, use this if you only want the multi-midway feature).
-;
 ; Note: you can override this per sublevel (see "tables.asm") and also at any point by setting a certain RAM address (see "docs/ram_map.txt").
     !default_prompt_type = 1
 
@@ -107,6 +106,13 @@
 
 ; If 0, sprites and animations won't freeze when the prompt is shown.
     !prompt_freeze = 1
+
+; This controls what happens when hitting "Exit" on the Retry prompt:
+; 0 = exit the level immediately and don't play the death music (except when the level music is sped up).
+; 1 = exit the level immediately and play the death music (note that the vanilla song will be cut short).
+; 2 = play the death animation and music, then exit the level.
+; Note: when dying before going to Game Over, the vanilla animation will be always played regardless.
+    !exit_animation = 2
 
 ; Set to 1 if you don't want the "exit" option in the prompt.
 ; This will also allow the player to start+select when having the prompt.
