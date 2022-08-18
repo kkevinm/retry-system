@@ -1,3 +1,6 @@
+v0.3.5:
+    - Fixed insertion issue in case another UberASM code uses nested namespaces, for example Dynamic Z (thanks to Alex for reporting this).
+
 v0.3.4:
     - Fixed issue where using $0DAA-$0DAD to disable pressing select wouldn't stop Retry from exiting the level when holding the select button.
     - Better handling of the !fast_prompt option in the code.

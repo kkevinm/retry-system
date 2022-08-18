@@ -1,5 +1,6 @@
 math pri on
 math round off
+namespace nested off
 
 ; Macros to load files easily.
 macro incsrc(folder,file)
