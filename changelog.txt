@@ -1,5 +1,6 @@
 v0.3.5:
     - Fixed insertion issue in case another UberASM code uses nested namespaces, for example Dynamic Z (thanks to Alex for reporting this).
+    - Added label definition for each Retry freeram define so that they can be referenced by other UberASM codes without having to copy-paste the defines in the other files.
 
 v0.3.4:
     - Fixed issue where using $0DAA-$0DAD to disable pressing select wouldn't stop Retry from exiting the level when holding the select button.
