@@ -104,8 +104,10 @@
 ; If 1, level transitions will be much faster than usual.
     !fast_transitions = 1
 
-; If 0, sprites and animations won't freeze when the prompt is shown.
-    !prompt_freeze = 1
+; 0 = sprites and animations won't freeze when the prompt is shown.
+; 1 = sprites and most animations will freeze, but some animations will still play (for example, Magikoopa Magic's flashing).
+; 2 = sprites and all animations will freeze.
+    !prompt_freeze = 2
 
 ; This controls what happens when hitting "Exit" on the Retry prompt:
 ; 0 = exit the level immediately and don't play the death music (except when the level music is sped up).

@@ -46,12 +46,23 @@ endif
 .dying:
     ; Show the death pose just to be sure.
     lda.b #!death_pose : sta $13E0|!addr
-
-    ; Force sprites to be locked/not locked.
+    
 if !prompt_freeze
+    ; Force sprites and animations to lock.
     lda #$01 : sta $9D
+
+if !prompt_freeze == 2
+    ; Freeze animations that use $13.
+    lda !ram_prompt_phase : cmp #$06 : beq +
+    dec $13
++
+endif
 else
+    ; Force sprites and animations to run.
     stz $9D
+
+    ; Prevent timer from ticking down.
+    inc $0F30|!addr
 endif
 
     ; Skip Yoshi's hatch animation.
@@ -318,7 +329,7 @@ endif
     lda !ram_timer+2 : sta $0F33|!addr
 
     ; Reset timer frame counter
-    lda #$28 : sta $0F30|!addr
+    lda.b #!timer_ticks : sta $0F30|!addr
 
     ; Music related stuff. I don't understand most of it.
 if !amk

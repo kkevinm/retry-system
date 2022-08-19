@@ -15,6 +15,9 @@
 ; Read death song number from ROM.
 !death_song #= read1($00F60B)
 
+; Read timer seconds duration from ROM.
+!timer_ticks #= read1($008D8B)
+
 ; What button exits the level while the game is paused (by default, select).
 !exit_level_buttons_addr = $16
 !exit_level_buttons_bits = $20
