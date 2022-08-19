@@ -157,6 +157,14 @@
 ; Higher = slower. Possible values: 0 to 5.
     !cursor_oscillate_speed = 2
 
+; 1 = the letters in the option selected on the Retry prompt will wave up and down.
+; Note: this is incompatible with the black box (use !no_prompt_box = 1)
+    !prompt_wave = 0
+
+; How fast the letters wave (only used when !prompt_wave = 1)
+; Higher = slower. Possible values: 0 to 5.
+    !prompt_wave_speed = 2
+
 ; Palette row used by the letters and cursor (remember: they use sprite palettes).
     !letter_palette = $08
     !cursor_palette = $08
