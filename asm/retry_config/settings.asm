@@ -41,8 +41,13 @@
 ; Otherwise, it's only possible with the instant Retry option (or if the level is already beaten like vanilla).
     !always_start_select = 0
 
-; Reset DSX sprites on reload.
+; If 1, DSX (dynamic) sprites status is reset on level load.
     !reset_dsx = 1
+
+; 0 = vanilla (Boo Rings will retain the previous positions, not recommended for Kaizo).
+; 1 = reset Boo Rings positions on death.
+; 2 = reset Boo Rings positions on death and on level load.
+    !reset_boo_rings = 1
 
 ;========================================================================
 
@@ -177,6 +182,7 @@
 ;
 ; Note: when the prompt box is enabled, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.
 ; For example, !tile_curs = $24 means both $24 and $25 will be overwritten.
+; Also, obviously these aren't used if you don't use the Retry prompt.
     !tile_curs = $20
     !tile_blk  = $22
     !tile_r    = $30

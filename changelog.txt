@@ -1,7 +1,7 @@
 v0.3.5:
     - Fixed insertion issue in case another UberASM code uses nested namespaces, for example Dynamic Z (thanks to Alex for reporting this).
     - Added label definition for each Retry freeram define so that they can be referenced by other UberASM codes without having to copy-paste the defines in the other files.
-    - Made vanilla Boo Ring's angle reset on death for consistency.
+    - - Added setting (turned on by default) for Boo Ring's position reset on death and/or on level load, useful for consistency in Kaizo levels.
     - Added optional fix for some animations still running when the Retry prompt is shown (like Magikoopa's Magic flashing), with the !prompt_freeze = 2 setting.
     - Fixed timer still ticking down while the Retry prompt is shown when using !prompt_freeze = 0.
     - Added optional fix for being able to drop the reserve item while Mario is dying or the Retry prompt is shown.

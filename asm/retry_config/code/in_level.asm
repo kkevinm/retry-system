@@ -232,8 +232,10 @@ endif
     plb
 
     ; Reset vanilla Boo rings.
+if !reset_boo_rings
     stz $0FAE|!addr
     stz $0FB0|!addr
+endif
 
     ; Reset various timers.
     stz $1497|!addr
