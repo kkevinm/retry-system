@@ -86,6 +86,12 @@ org $05DA1C
     bcc $04
 endif
 
+if read1($00C572) == $5C
+org $00C572
+    lda $15
+    and #$08
+endif
+
 org $00D0D8
     dec $0DBE|!addr
     bpl $09
