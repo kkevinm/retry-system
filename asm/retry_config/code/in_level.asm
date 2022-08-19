@@ -219,6 +219,10 @@ endif
     bpl -
     plb
 
+    ; Reset vanilla Boo rings.
+    stz $0FAE|!addr
+    stz $0FB0|!addr
+
     ; Reset various timers.
     stz $1497|!addr
     stz $1499|!addr
