@@ -5,6 +5,7 @@ v0.3.5:
     - Added optional fix for some animations still running when the Retry prompt is shown (like Magikoopa's Magic flashing), with the !prompt_freeze = 2 setting.
     - Fixed timer still ticking down while the Retry prompt is shown when using !prompt_freeze = 0.
     - Added optional fix for being able to drop the reserve item while Mario is dying or the Retry prompt is shown.
+    - Added compatibility with MarioFanGamer's "Inline Layer 3 Messages" patch (no need to use !retry = 1 in the patch).
 
 v0.3.4:
     - Fixed issue where using $0DAA-$0DAD to disable pressing select wouldn't stop Retry from exiting the level when holding the select button.

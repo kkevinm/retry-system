@@ -53,7 +53,8 @@ if !prompt_freeze
 
 if !prompt_freeze == 2
     ; Freeze animations that use $13.
-    lda !ram_prompt_phase : cmp #$06 : beq +
+    lda !ram_prompt_phase : beq +
+    cmp #$06 : beq +
     dec $13
 +
 endif
