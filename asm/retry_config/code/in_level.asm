@@ -117,6 +117,9 @@ endif
 
 ...check_box:
 if not(!fast_prompt)
+    ; If fallen in a pit, show immediately.
+    lda $81 : dec : bpl +
+
     ; Check if it's time to show the prompt.
     lda $16 : ora $18 : bmi +
     lda $1496|!addr : cmp.b #!show_prompt_time : bcs ..return

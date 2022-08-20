@@ -104,7 +104,7 @@
 ;========================================================================
 
 ; If 1, the prompt will show up immediately after dying.
-; Otherwise, it will show up midway through the death animation, but pressing A/B during it will skip it.
+; Otherwise, it will show up halfway through the death animation, but pressing A/B during it will skip it.
     !fast_prompt = 1
 
 ; How fast the prompt expands/shrinks. It must evenly divide 72.
