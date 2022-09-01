@@ -1,6 +1,7 @@
 v0.3.6:
     - Made so the Retry prompt shows up immediately when falling in a pit and not using !fast_prompt = 1.
     - Fixed cursor and letters outlines when not using the prompt box (now they're the same as in GFX28).
+    - Added !disable_hurry_up option to disable the tempo hike effect when reaching 100 seconds in a level.
 
 v0.3.5:
     - Fixed insertion issue in case another UberASM code uses nested namespaces, for example Dynamic Z (thanks to Alex for reporting this).

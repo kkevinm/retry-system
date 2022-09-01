@@ -37,6 +37,10 @@
 ; by pressing Select while Mario is dying or while the Retry prompt is shown.
     !item_box_fix = 1
 
+; If 1, it removes the "Hurry up!" SFX and tempo hike effect that happens when reaching 100 seconds on the timer.
+; If not disabled, the death song will be played when dying during the tempo hike effect (regardless of the settings), to reset the tempo of the song after respawning.
+    !disable_hurry_up = 0
+
 ; If 1, start+select out of a level is always possible.
 ; Otherwise, it's only possible with the instant Retry option (or if the level is already beaten like vanilla).
     !always_start_select = 0
