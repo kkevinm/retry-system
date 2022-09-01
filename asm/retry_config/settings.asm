@@ -1,6 +1,8 @@
-;========================================================================
-; Settings used by Retry. Feel free to change these.
-;========================================================================
+;========================================================================;
+; Settings used by Retry. Feel free to change these.                     ;
+;========================================================================;
+
+;======================== Default Retry behavior ========================;
 
 ; 0 = retry prompt & play the vanilla death song when players die.
 ; 1 = retry prompt & play only the death sfx when players die (music won't be interrupted).
@@ -10,7 +12,7 @@
 ; Note: you can override this per sublevel (see "tables.asm") and also at any point by setting a certain RAM address (see "docs/ram_map.txt").
     !default_prompt_type = 1
 
-;========================================================================
+;======================== QoL and Anti-Break ============================;
 
 ; How many lives to start a new save file with.
     !initial_lives = 99
@@ -27,7 +29,7 @@
     !counterbreak_bonus_stars = 0
     !counterbreak_score = 0
 
-;========================================================================
+;======================== QoL fixes =====================================;
 
 ; If 1, it fixes the issue where some sprites don't face Mario when entering a level for the first time.
 ; It's suggested to enable the fix to make sprite behavior consistent between the first and all the next level reloads.
@@ -41,6 +43,14 @@
 ; If not disabled, the death song will be played when dying during the tempo hike effect (regardless of the settings), to reset the tempo of the song after respawning.
     !disable_hurry_up = 0
 
+; This controls whether to freeze sprites during a level's pipe entrance.
+; It doesn't affect other entrance types.
+; 0 = don't freeze
+; 1 = freeze
+; 2 = vanilla: freeze only if sprites were frozen when exiting the previous room (e.g. if you entered a pipe, but not if you entered a door).
+;     If you experience inconsistencies, use one of the other options.
+    !pipe_entrance_freeze = 2
+
 ; If 1, start+select out of a level is always possible.
 ; Otherwise, it's only possible with the instant Retry option (or if the level is already beaten like vanilla).
     !always_start_select = 0
@@ -53,7 +63,7 @@
 ; 2 = reset Boo Rings positions on death and on level load.
     !reset_boo_rings = 1
 
-;========================================================================
+;======================== SFX ===========================================;
 
 ; What SFX to play when dying (!death_sfx = $00 -> no SFX).
 ; Only played if not playing the death song (for example, if the level uses vanilla death).
@@ -77,7 +87,7 @@
     !room_cp_sfx = $05
     !room_cp_sfx_addr = $1DF9|!addr
 
-;========================================================================
+;======================== Save and SRAM =================================;
 
 ; If 1, a custom SRAM expansion patch will be inserted as well.
 ; By default, it will save the custom checkpoint status and death counter to SRAM.
@@ -92,7 +102,7 @@
 ; This can be useful when paired with the option of not reloading some data from SRAM after a game over (see "tables.asm"), if you want some things to retain even if the player got a game over before saving them (for example, the death counter). This ensures that they will be saved to SRAM when this happens.
     !save_after_game_over = 1
 
-;========================================================================
+;======================== Custom Midways ================================;
 
 ; If 1, Retry will install a custom midway object in the ROM, insertable in levels by using object 2D.
 ; These objects allow you to have multiple midways in the same level, each with a different entrance.
@@ -105,7 +115,7 @@
 ; The more you set, the more free ram is needed (4 bytes for each).
     !max_custom_midway_num = 8
 
-;========================================================================
+;======================== Retry Prompt ==================================;
 
 ; If 1, the prompt will show up immediately after dying.
 ; Otherwise, it will show up halfway through the death animation, but pressing A/B during it will skip it.
@@ -129,8 +139,8 @@
 ; Note: when dying before going to Game Over, the vanilla animation will be always played regardless.
     !exit_animation = 2
 
-; Set to 1 if you don't want the "exit" option in the prompt.
-; This will also allow the player to start+select when having the prompt.
+; Set to 1 if you don't want the "Exit" option in the prompt.
+; This will also allow the player to Start+Select when having the prompt.
 ; Note: you can also change this on the fly (see "docs/ram_map.txt").
     !no_exit_option = 0
 
@@ -196,7 +206,7 @@
     !tile_x    = $4A
     !tile_i    = $5A
 
-;========================================================================
+;======================== Death Counter =================================;
 
 ; If 1, a death counter will replace the lives on the status bar.
     !status_death_counter = 0
