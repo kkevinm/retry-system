@@ -48,10 +48,10 @@
 ; 0 = don't freeze
 ; 1 = freeze
 ; 2 = vanilla: freeze only if sprites were frozen when exiting the previous room (e.g. if you entered a pipe, but not if you entered a door).
-;     If you experience inconsistencies, use one of the other options.
+; If you experience inconsistencies, use one of the other options.
     !pipe_entrance_freeze = 2
 
-; If 1, start+select out of a level is always possible.
+; If 1, Start+Select out of a level is always possible.
 ; Otherwise, it's only possible with the instant Retry option (or if the level is already beaten like vanilla).
     !always_start_select = 0
 

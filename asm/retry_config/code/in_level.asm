@@ -23,7 +23,7 @@ main:
 
 .paused:
 if not(!always_start_select)
-    ; Check if the prompt type requires start+select always active.
+    ; Check if the prompt type requires Start+Select always active.
     jsr shared_get_prompt_type
     cmp #$04 : bcs .not_dying
     tay
@@ -31,6 +31,9 @@ if not(!always_start_select)
     cpy #$03 : bcc .not_dying
 +
 endif
+    
+    ; If we're in the intro level, don't Start+Select.
+    lda $0109|!addr : bne .not_dying
 
     ; Check if the correct button was pressed.
     lda.b !exit_level_buttons_addr
@@ -38,9 +41,9 @@ endif
     beq .not_dying
 
 ..start_select_exit:
-    ; Call the start+select routine.
+    ; Call the Start+Select routine.
     ; This should make this compatible with custom resources like Start+Select Advanced, AMK 1.0.8 Start+Select SFX, etc.
-    %jsl_to_rts($00A269, $0084CF)
+    %jsl_to_rts($00A269,$0084CF)
     rtl
 
 .dying:
