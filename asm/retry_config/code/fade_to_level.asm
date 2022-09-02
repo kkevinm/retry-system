@@ -38,5 +38,14 @@ if !fast_transitions
     ; Reset the mosaic timer.
     stz $0DB1|!addr
 endif
+    
+    ; If in the door animation, call the extra routine.
+    lda $71 : cmp #$0D : bne .return
+    phb : phk : plb
+    php
+    jsr extra_door_animation
+    plp
+    plb
 
+.return:
     rtl

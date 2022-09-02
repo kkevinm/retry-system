@@ -4,6 +4,7 @@ v0.3.6:
     - Added !disable_hurry_up option to disable the tempo hike effect when reaching 100 seconds in a level.
     - Added !pipe_entrance_freeze option to force lock/unlock sprites during pipe entrances and avoid possible inconsistencies of the vanilla method (default is vanilla for consistency with previous versions).
     - Added !ram_midways_override address that can be used to override midways (prevent midways from spawning and/or prevent room checkpoints to work). Inspired by the "No midways" mode in the hack "Sure Shot".
+    - Added "door_animation" extra routine that will be called every frame during the fadeout when entering a door.
 
 v0.3.5:
     - Fixed insertion issue in case another UberASM code uses nested namespaces, for example Dynamic Z (thanks to Alex for reporting this).
