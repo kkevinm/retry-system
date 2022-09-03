@@ -174,9 +174,6 @@ endif
     ; If Mario died on Yoshi, remove Yoshi.
     stz $0DC1|!addr
 
-    ; Reset the death timer.
-    stz $1496|!addr
-
     ; Mark as sublevel so we skip the "Mario Start!" message.
     ; (don't do "inc $141A" so we avoid the 256 entrance glitch)
     lda #$01 : sta $141A|!addr
@@ -207,6 +204,9 @@ reset_addresses:
     ; Reset collected Yoshi coins.
     stz $1420|!addr
     stz $1422|!addr
+
+    ; Reset collected invisible 1UPs.
+    stz $1421|!addr
 
     ; Reset green star block counter.
     lda.b #read1($0091AC) : sta $0DC0|!addr
@@ -242,20 +242,17 @@ if !reset_boo_rings
     stz $0FAE|!addr
     stz $0FB0|!addr
 endif
+    
+    ; Reset scroll sprites ($1446-$1455).
+    ldx #$0E
+-   stz $1446|!addr,x
+    dex #2 : bpl -
 
-    ; Reset various timers.
-    stz $1497|!addr
-    stz $1499|!addr
-    stz $149B|!addr
-    stz $149D|!addr
-    stz $149F|!addr
-    stz $14A1|!addr
-    stz $14A3|!addr
-    stz $14A5|!addr
-    stz $14A7|!addr
-    stz $14A9|!addr
+    ; Reset various timers and end-level addresses ($1492-$14AB).
+    ldx #$18
+-   stz $1492|!addr,x
+    dex #2 : bpl -
     sep #$20
-    stz $14AB|!addr
 
     ; Reset directional coin flag.
     stz $1432|!addr
@@ -278,11 +275,7 @@ endif
     ; Reset Yoshi drums.
     lda #$03 : sta $1DFA|!addr
 
-    ; Reset some level end addresses (for Kaizo traps).
-    rep #$20
-    stz $1492|!addr
-    stz $1494|!addr
-    sep #$20
+    ; Reset peace image flag.
     stz $1B99|!addr
 
     ; Don't go to the bonus game after a Kaizo trap to prevent it glitching out.
