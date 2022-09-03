@@ -3,6 +3,14 @@
 !show_prompt_time #= !death_time-$10
 
 main:
+if !lives_overflow_fix
+    ; Cap lives at 99, unless they're negative (about to game over).
+    lda $0DBE|!addr : bmi +
+    cmp #$62 : bcc +
+    lda #$62 : sta $0DBE|!addr
++
+endif
+
     ; Update the window HDMA when the flag is set.
     lda !ram_update_window : beq +
     jsr prompt_update_window
@@ -205,7 +213,7 @@ reset_addresses:
     stz $1420|!addr
     stz $1422|!addr
 
-    ; Reset collected invisible 1UPs.
+    ; Reset collected invisible 1-UPs.
     stz $1421|!addr
 
     ; Reset green star block counter.
@@ -217,13 +225,12 @@ if !dcsave
 endif
 
     ; Reset item memory.
-    ldx #$7E
     rep #$20
+    ldx #$7E
 -   stz $19F8|!addr,x
     stz $1A78|!addr,x
     stz $1AF8|!addr,x
-    dex #2
-    bpl -
+    dex #2 : bpl -
 
     ; Reset the sprite load index table.
     ; Change DBR to use absolute addressing (saves 512 cycles in the best case).
@@ -233,8 +240,7 @@ endif
 if !255_sprites_per_level
     stz.w !sprite_load_table+$80,x
 endif
-    dex #2
-    bpl -
+    dex #2 : bpl -
     plb
 
     ; Reset vanilla Boo rings.
@@ -252,6 +258,7 @@ endif
     ldx #$18
 -   stz $1492|!addr,x
     dex #2 : bpl -
+
     sep #$20
 
     ; Reset directional coin flag.
