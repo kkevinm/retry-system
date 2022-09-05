@@ -81,7 +81,7 @@ endif
 ;=====================================
 calc_entrance:
     ; If it's not the intro level, skip.
-    lda $13BF|!addr : bne .no_intro
+    %lda_13BF() : tax : bne .no_intro
 
     ; Set intro sublevel number as respawn point.
     rep #$20
@@ -100,7 +100,6 @@ calc_entrance:
 
 .check_midway:
     ; If the midway flag is not set, return.
-    ldx $13BF|!addr
     lda $1EA2|!addr,x : and #$40 : bne ..midway
     lda $13CE|!addr : beq .return
 

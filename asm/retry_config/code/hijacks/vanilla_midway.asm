@@ -187,7 +187,7 @@ midway_spawn:
     cmp #$01 : bcs ..sublevel
 
 ..main:
-    lda $13BF|!addr : bne ...no_intro
+    %lda_13BF() : bne ...no_intro
     rep #$20
     lda.w #!intro_sublevel
     bra ++

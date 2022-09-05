@@ -19,6 +19,7 @@ init:
     lda $0109|!addr : bne +
     lda $71 : cmp #$0A : beq +
     jsr shared_get_translevel
+    asl : tax
 +
     ; Don't trigger Yoshi init.
     lda #$00 : sta !ram_is_respawning
@@ -27,12 +28,13 @@ init:
     sta !ram_hurry_up
 
     ; Call the custom reset routine.
-    php : phb : phk : plb
+    phx : php
+    phb : phk : plb
     jsr extra_reset
-    plb : plp
+    plb
+    plp : plx
 
     ; Set the destination from the level's checkpoint value.
-    lda $13BF|!addr : asl : tax
     rep #$20
     lda !ram_checkpoint,x : sta !ram_respawn
     sep #$20

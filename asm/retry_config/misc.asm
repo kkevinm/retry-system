@@ -126,6 +126,13 @@ else
     !dss = 0
 endif
 
+; Detects the "Level Depending on Ram" and similar patches.
+if read1($05DCDD) == $22 || read1($05DCE2) == $22
+    !dynamic_ow_levels = 1
+else
+    !dynamic_ow_levels = 0
+endif
+
 ; Check which channel is used for windowing HDMA, for SA-1 v1.35 (H)DMA remap compatibility.
 ; It will be 7 on lorom or with SA-1 <1.35, and 1 with SA-1 >=1.35.
 !window_mask    #= read1($0092A1)
