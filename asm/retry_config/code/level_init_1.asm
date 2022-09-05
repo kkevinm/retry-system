@@ -15,8 +15,7 @@ init:
     lda $141A|!addr : bne .skip
 
     ; The game sets $13BF a bit later so we need to do it ourselves
-    ; Don't do it if in the intro level, or right after a "No Yoshi" cutscene.
-    lda $0109|!addr : bne +
+    ; (unless it's right after a "No Yoshi" cutscene).
     lda $71 : cmp #$0A : beq +
     jsr shared_get_translevel
     asl : tax

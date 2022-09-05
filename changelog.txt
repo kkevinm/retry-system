@@ -5,6 +5,7 @@ v0.3.7:
     - Added fix (optional, enabled by default) for the bug where Mario's lives don't cap at 99 when the status bar is nuked (this usually causes the Overworld to display a glitched amount and makes Mario have a halo).
     - Fixed issue where if a level is placed on the very left edge of the Overworld (beneath where the vanilla border is), then Retry would respawn you in level 0 when dying in that level (thanks to LouisDoucet for reporting this).
     - Added compatibility with the "Level Depending on Event" and "Level Depending on Ram Address" patches: now Retry respawning and checkpoints will work correctly when in the new levels! (as an added bonus, it adds midway support to those patches, since they don't quite work originally).
+    - Actually fixed the intro level bug from v0.3.4, which also fixes the mosaic effect not appearing when respawning in it.
 
 v0.3.6:
     - Made so the Retry prompt shows up immediately when falling in a pit and not using !fast_prompt = 1.

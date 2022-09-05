@@ -79,6 +79,10 @@ get_prompt_type:
 ; Get translevel number the player is standing on the overworld.
 ;================================================
 get_translevel:
+    lda $0109|!addr : beq .no_intro
+    lda #$00 : sta $13BF|!addr
+    rts
+.no_intro:
     ldy $0DD6|!addr
     lda $1F17|!addr,y : lsr #4 : sta $00
     lda $1F19|!addr,y : and #$F0 : ora $00 : sta $00
@@ -93,7 +97,7 @@ get_translevel:
     lda !7ED000,x : sta $13BF|!addr
     sep #$10
 if !dynamic_ow_levels
-    jmp get_new_13BF
+    jmp get_new_13BF_no_intro
 else
     rts
 endif
@@ -105,7 +109,7 @@ endif
 if !dynamic_ow_levels
 get_new_13BF:
     lda $0109|!addr : beq .no_intro
-    lda $13BF|!addr
+    lda #$00
     rts
 .no_intro:
     phb
@@ -125,7 +129,7 @@ endif
 hard_save:
     ; Filter title screen, etc.
     lda $0109|!addr : beq .no_intro
-    cmp.b #!intro_level+$24 : beq .no_intro ; bne?
+    cmp.b #!intro_level+$24 : beq .no_intro
     rts
 
 .no_intro:
