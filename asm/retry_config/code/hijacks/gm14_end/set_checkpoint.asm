@@ -111,6 +111,9 @@ calc_entrance:
     rts
 
 .2:
+    ; Get $13BF value in X.
+    %lda_13BF() : tax
+
     ; Set current sublevel number as the respawn point.
     lda $010B|!addr : sta !ram_respawn
     lda $010C|!addr : bra .no_intro_store_entrance_high
