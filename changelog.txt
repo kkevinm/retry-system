@@ -1,5 +1,6 @@
 v0.3.8:
     - Made possible to use tiles in SP3/SP4 for the Retry prompt (just add $100 to the tile numbers in the settings).
+    - Fixed camera position sometimes being inconsistent between loading a level normally and reloading it with Retry (thanks to schema_tuna for reporting and fixing this).
 
 v0.3.7:
     - Fixed collected invisible 1-UPs not resetting on death, which would allow to skip some of them after respawning (when not collecting them all).
