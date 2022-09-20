@@ -47,8 +47,7 @@
 ; If not disabled, the death song will be played when dying during the tempo hike effect (regardless of the settings), to reset the tempo of the song after respawning.
     !disable_hurry_up = 0
 
-; This controls whether to freeze sprites during a level's pipe entrance.
-; It doesn't affect other entrance types.
+; This controls whether to freeze sprites during a level's pipe entrance (it doesn't affect other entrance types).
 ; 0 = don't freeze
 ; 1 = freeze
 ; 2 = vanilla: freeze only if sprites were frozen when exiting the previous room (e.g. if you entered a pipe, but not if you entered a door).
