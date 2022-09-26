@@ -43,6 +43,10 @@
 ; (which would show a glitched amount on the OW and Mario will have a halo).
     !lives_overflow_fix = 1
 
+; If 1, it fixes the weird behavior where levels 12E-13B always use the "No Yoshi Sign 2" intro
+; regardless of the tileset / custom "No Yoshi Intro" patches.
+    !no_yoshi_intro_fix = 1
+
 ; If 1, it removes the "Hurry up!" SFX and tempo hike effect that happens when reaching 100 seconds on the timer.
 ; If not disabled, the death song will be played when dying during the tempo hike effect (regardless of the settings), to reset the tempo of the song after respawning.
     !disable_hurry_up = 0

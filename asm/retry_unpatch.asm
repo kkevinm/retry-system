@@ -80,11 +80,9 @@ org $01AD3A
     db $D2
 endif
 
-if read1($05DA1C) == $5C
 org $05DA1C
     cmp #$52
     bcc $04
-endif
 
 if read1($00C572) == $5C
 org $00C572
