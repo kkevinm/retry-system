@@ -2,6 +2,8 @@ v0.3.9:
     - Added fix (optional, enabled by default) for the weird vanilla behavior where levels 12E-13B are always forced to use the "No Yoshi Sign 2" intro regardless of their tileset (which can also mess up custom "No Yoshi Intro" patches).
     - Fixed !exit_animation = 0 or 1 behaving seemingly randomly, sometimes exiting immediately, sometimes after the prompt closed - now it will always exit when the prompt is closed (thanks to SJandCharlieTheCat for reporting this).
     - Fixed !exit_animation = 2 having incosistent timing when using different !prompt_freeze settings.
+    - Fixed vanilla "high and low" tides timer not resetting when respawning, which would cause inconsistent tide behavior between retries.
+    - Fixed vanilla layer 3 tides not stopping scrolling left when the Retry prompt is shown (only when using !prompt_freeze = 2).
 
 v0.3.8:
     - Made possible to use tiles in SP3/SP4 for the Retry prompt (just add $100 to the tile numbers in the settings).

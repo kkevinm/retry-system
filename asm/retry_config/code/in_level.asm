@@ -67,6 +67,11 @@ if !prompt_freeze == 2
     lda !ram_prompt_phase : beq +
     cmp #$05 : bcs +
     dec $13
++   
+    ; Freeze vanilla layer 3 tides.
+    lda $1403|!addr : beq +
+    lda $145E|!addr : lsr : bcs +
+    dec $22
 +
 endif
 else
@@ -297,6 +302,9 @@ endif
 
     ; Reset background scroll flag.
     stz $1B9A|!addr
+
+    ; Reset layer 3 tides timer.
+    stz $1B9D|!addr
 
     ; Reset Reznor bridge counter.
     stz $1B9F|!addr
