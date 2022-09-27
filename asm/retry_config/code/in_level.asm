@@ -65,7 +65,7 @@ if !prompt_freeze
 if !prompt_freeze == 2
     ; Freeze animations that use $13.
     lda !ram_prompt_phase : beq +
-    cmp #$06 : beq +
+    cmp #$05 : bcs +
     dec $13
 +
 endif
@@ -97,9 +97,23 @@ endif
     rtl
 
 ..prompt:
-    ; If Mario is dying because of selecting "exit", skip.
-    lda !ram_prompt_phase : cmp #$06 : beq ..return
+    ; If Mario is not dying because of selecting "Exit", skip.
+    lda !ram_prompt_phase : cmp #$06 : bne ...no_exit
 
+    ; If not supposed to run the Exit animation, end it immediately.
+if !exit_animation < 2
+    stz $1496|!addr
+    stz $76
+    stz $7D
+endif
+if !prompt_freeze == 0
+    lda $1496|!addr : bpl +
+    stz $1496|!addr
++   inc $1496|!addr
+endif
+    rtl
+
+...no_exit:
     ; Keep Mario locked in place, but only after he fully ascended during the animation.
     lda $7D : bmi +
     stz $7D
@@ -109,19 +123,31 @@ endif
     lda !ram_prompt_phase : beq ...check_box
 
     ; Keep Mario locked in the death animation.
-    ldx.b #!show_prompt_time : stx $1496|!addr
     stz $7D
     stz $76
 
-    ; Handle the box expanding/shrinking.
+    ; Handle the box shrinking.
+    cmp #$05 : bne ...no_shrink
+if !prompt_freeze == 0
+    ; This overcomes vanilla DECing $1496 twice since $9D is 0
+    inc $1496|!addr
+endif
+    bra ...handle_box
+
+...no_shrink:
+    ; Keep death timer constant during prompt activity (except shrinking).
+    ldx.b #!show_prompt_time : stx $1496|!addr
+
+    ; Handle the box expanding.
     cmp #$04 : beq ..respawn
     cmp #$02 : bne ...handle_box
 
+    ; Handle the menu cursor and options.
 ...handle_menu:
     jsr prompt_handle_menu
     rtl
 
-    ; Otherwise, expand/shrink the prompt.
+    ; Expand/shrink the prompt.
 ...handle_box:
     jsr prompt_handle_box
     rtl
