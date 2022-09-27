@@ -4,6 +4,7 @@ v0.3.9:
     - Fixed !exit_animation = 2 having incosistent timing when using different !prompt_freeze settings.
     - Fixed vanilla "high and low" tides timer not resetting when respawning, which would cause inconsistent tide behavior between retries.
     - Fixed vanilla layer 3 tides not stopping scrolling left when the Retry prompt is shown (only when using !prompt_freeze = 2).
+    - Fixed Shell-less Koopas being able to move (fall) while the Retry prompt is shown (only when using !prompt_freeze = 2).
 
 v0.3.8:
     - Made possible to use tiles in SP3/SP4 for the Retry prompt (just add $100 to the tile numbers in the settings).

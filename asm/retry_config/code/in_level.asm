@@ -72,7 +72,14 @@ if !prompt_freeze == 2
     lda $1403|!addr : beq +
     lda $145E|!addr : lsr : bcs +
     dec $22
-+
++   
+    ; Freeze Shell-less Koopas.
+    ldx.b #!sprite_slots-1
+-   lda !14C8,x : cmp #$08 : bne +
+    lda !9E,x : cmp #$04 : bcs +
+    lda !extra_bits,x : and #$08 : bne +
+    stz !sprite_speed_y,x
++   dex : bpl -
 endif
 else
     ; Force sprites and animations to run.
