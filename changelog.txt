@@ -1,3 +1,6 @@
+v0.3.9b:
+    - Fixed issue where dying in a level with a "No Yoshi" entrance would respawn you in the bonus game.
+
 v0.3.9:
     - Added fix (optional, enabled by default) for the weird vanilla behavior where levels 12E-13B are always forced to use the "No Yoshi Sign 2" intro regardless of their tileset (which can also mess up custom "No Yoshi Intro" patches).
     - Fixed !exit_animation = 0 or 1 behaving seemingly randomly, sometimes exiting immediately, sometimes after the prompt closed - now it will always exit after the prompt is closed (thanks to SJandCharlieTheCat for reporting this).
