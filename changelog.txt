@@ -1,4 +1,4 @@
-v0.3.9b:
+v0.3.10:
     - Fixed issue where dying in a level with a "No Yoshi" entrance would respawn you in the bonus game.
 
 v0.3.9:
