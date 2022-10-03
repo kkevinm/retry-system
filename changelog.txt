@@ -1,3 +1,6 @@
+v0.3.11:
+    - Changed default !pipe_entrance_freeze setting to 1 to avoid inconsistencies.
+
 v0.3.10:
     - Fixed issue where dying in a level with a "No Yoshi" entrance would respawn you in the bonus game.
 
