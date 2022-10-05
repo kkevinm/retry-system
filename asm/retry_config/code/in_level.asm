@@ -80,6 +80,9 @@ if !prompt_freeze == 2
     lda !extra_bits,x : and #$08 : bne +
     stz !sprite_speed_y,x
 +   dex : bpl -
+    
+    ; Stop earthquake.
+    stz $1887|!addr
 endif
 else
     ; Force sprites and animations to run.
