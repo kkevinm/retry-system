@@ -91,6 +91,9 @@ if !reset_boo_rings == 2
     stz $0FB0|!addr
     sep #$20
 endif
+
+    ; Reset timer frame counter
+    lda.b #!timer_ticks : sta $0F30|!addr
     
 if !amk
     ; Store $05 or $06 to $1DFA depending on the

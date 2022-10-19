@@ -1,6 +1,8 @@
 v0.3.11:
     - Changed default !pipe_entrance_freeze setting to 1 to avoid inconsistencies.
     - Fixed earthquake effect (e.g. Thwomps) still going while the Retry prompt is shown (only when using !prompt_freeze = 2).
+    - Fixed bug where if using the "Time Up Fix" patch together with a patch that skips status bar initialization code (e.g. "RAM Toggled Status Bar"), the timer wouldn't tick down after dying due to a timeout in a level without Retry (similar fix as v0.3.3 but for a much more specific case).
+    - Added define for green star block coin counter in "misc.asm" for consistency.
 
 v0.3.10:
     - Fixed issue where dying in a level with a "No Yoshi" entrance would respawn you in the bonus game.

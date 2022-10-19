@@ -18,6 +18,9 @@
 ; Read timer seconds duration from ROM.
 !timer_ticks #= read1($008D8B)
 
+; Read green star block coin count from ROM.
+!green_star_block_count #= read1($0091AC)
+
 ; What button exits the level while the game is paused (by default, select).
 !exit_level_buttons_addr = $16
 !exit_level_buttons_bits = $20

@@ -254,7 +254,7 @@ reset_addresses:
     stz $1421|!addr
 
     ; Reset green star block counter.
-    lda.b #read1($0091AC) : sta $0DC0|!addr
+    lda.b #!green_star_block_count : sta $0DC0|!addr
 
     ; Reset individual dcsave buffers.
 if !dcsave
@@ -376,9 +376,6 @@ endif
     lda !ram_timer+0 : sta $0F31|!addr
     lda !ram_timer+1 : sta $0F32|!addr
     lda !ram_timer+2 : sta $0F33|!addr
-
-    ; Reset timer frame counter
-    lda.b #!timer_ticks : sta $0F30|!addr
 
     ; Music related stuff. I don't understand most of it.
 if !amk
