@@ -4,4 +4,4 @@
   - imamelia, 0x400: ObjecTool code.
   - Thomas: death counter code.
   - dtothefourth: a couple new features ideas.
-  - BabaYegha, FYRE150, Abdu, SuperMargot, simon.caio, LouisDoucet, SJandCharlieTheCat, Koopster, schema_tuna, Alex, Selicre): testing and feedback.
+  - BabaYegha, FYRE150, Abdu, margot, simon.caio, LouisDoucet, SJandCharlieTheCat, Koopster, schema_tuna, Alex, Selicre: testing and feedback.
