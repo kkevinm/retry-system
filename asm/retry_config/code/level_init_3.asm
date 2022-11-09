@@ -94,16 +94,6 @@ endif
 
     ; Reset timer frame counter
     lda.b #!timer_ticks : sta $0F30|!addr
-    
-if !amk
-    ; Store $05 or $06 to $1DFA depending on the
-    ; sfx_echo setting for the current sublevel.
-    ldy #$05
-    jsr shared_get_bitwise_mask
-    and.l tables_sfx_echo,x : beq +
-    iny
-+   sty $1DFA|!addr
-endif
 
     ; If not entering from the overworld, skip.
     lda $141A|!addr : bne .room_transition
@@ -140,6 +130,16 @@ main:
 if !fast_transitions
     ; Reset the mosaic timer.
     stz $0DB1|!addr
+endif
+
+if !amk
+    ; Store $05 or $06 to $1DFA depending on the
+    ; sfx_echo setting for the current sublevel.
+    ldy #$05
+    jsr shared_get_bitwise_mask
+    and.l tables_sfx_echo,x : beq +
+    iny
++   sty $1DFA|!addr
 endif
 
     rtl
