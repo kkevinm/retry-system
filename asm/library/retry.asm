@@ -57,6 +57,7 @@ retry_gfx:
     %incsrc(code,load_overworld)
     %incsrc(code,fade_to_overworld)
     %incsrc(code,game_over)
+    %incsrc(code,time_up)
 
 ;=====================================
 ; Load the hijacks.

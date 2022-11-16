@@ -7,6 +7,7 @@ v0.3.11:
     - Added !enter_level_sfx setting (disabled by default) to play a SFX when entering a level from the Overworld, similarly to SMB3.
     - Added !retry_death_animation setting (disabled by default) to allow to play the full death animation before showing the Retry prompt and/or before instantly respawning (thanks to KaizoFish for the suggestion).
     - Added !death_camera_lock setting (enabled by default) to stop the camera from scrolling while dying (including the "Exit" animation or the death animation enabled by !retry_death_animation).
+    - Added !time_up_fix setting (enabled by default) to prevent the "TIME UP!" message from appearing after dying in a level with timer set to 0 (similar fix as Alcaro's, but handled with UberASM). Note that a new gamemode file was added ("retry_gm15.asm") to make it work.
 
 v0.3.10:
     - Fixed issue where dying in a level with a "No Yoshi" entrance would respawn you in the bonus game.

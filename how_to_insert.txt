@@ -14,6 +14,7 @@ A: Inserting this patch should be relatively simple in most cases.
     12 retry_gm12.asm
     13 retry_gm13.asm
     14 retry_gm14.asm
+    15 retry_gm15.asm
     16 retry_gm16.asm
     19 retry_gm19.asm
 

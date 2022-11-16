@@ -39,6 +39,10 @@
 ; It's suggested to enable the fix to make sprite behavior consistent between the first and all the next level reloads.
     !initial_facing_fix = 1
 
+; If 1, it fixes the issue where dying in a level with the timer set to 0
+; shows the "TIME UP!" message when exiting the level.
+    !time_up_fix = 1
+
 ; If 1, it fixes the issue where you can drop the reserve item in the item box
 ; by pressing Select while Mario is dying or while the Retry prompt is shown.
     !item_box_fix = 1
