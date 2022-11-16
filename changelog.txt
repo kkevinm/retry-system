@@ -4,6 +4,9 @@ v0.3.11:
     - Fixed bug where if using the "Time Up Fix" patch together with a patch that skips status bar initialization code (e.g. "RAM Toggled Status Bar"), the timer wouldn't tick down after dying due to a timeout in a level without Retry (similar fix as v0.3.3 but for a much more specific case).
     - Added define for green star block coin counter in "misc.asm" for consistency.
     - Fixed issue where the "Enable SFX echo" feature wouldn't work during a level transition that changes song, if the song had a high echo buffer (note: it can still happen if using !fast_transitions = 1 with songs with echo delay $0C or higher - in this case the SFX echo will be enabled after a room transition/respawn).
+    - Added !enter_level_sfx setting (disabled by default) to play a SFX when entering a level from the Overworld, similarly to SMB3.
+    - Added !retry_death_animation setting (disabled by default) to allow to play the full death animation before showing the Retry prompt and/or before instantly respawning (thanks to KaizoFish for the suggestion).
+    - Added !death_camera_lock setting (enabled by default) to stop the camera from scrolling while dying (including the "Exit" animation or the death animation enabled by !retry_death_animation).
 
 v0.3.10:
     - Fixed issue where dying in a level with a "No Yoshi" entrance would respawn you in the bonus game.
@@ -42,7 +45,7 @@ v0.3.6:
 v0.3.5:
     - Fixed insertion issue in case another UberASM code uses nested namespaces, for example Dynamic Z (thanks to Alex for reporting this).
     - Added label definition for each Retry freeram define so that they can be referenced by other UberASM codes without having to copy-paste the defines in the other files.
-    - - Added setting (turned on by default) for Boo Ring's position reset on death and/or on level load, useful for consistency in Kaizo levels.
+    - Added setting (turned on by default) for Boo Ring's position reset on death and/or on level load, useful for consistency in Kaizo levels.
     - Added optional fix for some animations still running when the Retry prompt is shown (like Magikoopa's Magic flashing), with the !prompt_freeze = 2 setting.
     - Fixed timer still ticking down while the Retry prompt is shown when using !prompt_freeze = 0.
     - Added optional fix for being able to drop the reserve item while Mario is dying or the Retry prompt is shown.

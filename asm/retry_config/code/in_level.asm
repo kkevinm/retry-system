@@ -1,6 +1,15 @@
 ; Gamemode 14
 
+; Normally the prompt comes up $40 frames after dying
 !show_prompt_time #= !death_time-$10
+
+; If the death animation should show, set the times to the minimum possible
+if !retry_death_animation&1
+    !show_prompt_time #= 2
+endif
+if !retry_death_animation&2
+    !death_time #= 2
+endif
 
 main:
 if !lives_overflow_fix
@@ -57,7 +66,12 @@ endif
 .dying:
     ; Show the death pose just to be sure.
     lda.b #!death_pose : sta $13E0|!addr
-    
+
+    ; Disable camera Y scroll if applicable.
+if !death_camera_lock
+    stz $1412|!addr
+endif
+
 if !prompt_freeze
     ; Force sprites and animations to lock.
     lda #$01 : sta $9D
@@ -115,12 +129,15 @@ endif
     ; If Mario is not dying because of selecting "Exit", skip.
     lda !ram_prompt_phase : cmp #$06 : bne ...no_exit
 
+...exit:
     ; If not supposed to run the Exit animation, end it immediately.
 if !exit_animation < 2
     stz $1496|!addr
     stz $76
     stz $7D
 endif
+
+    ; If the game isn't locked, prevent death timer from running out.
 if !prompt_freeze == 0
     lda $1496|!addr : bpl +
     stz $1496|!addr
@@ -129,11 +146,15 @@ endif
     rtl
 
 ...no_exit:
-    ; Keep Mario locked in place, but only after he fully ascended during the animation.
+    ; Keep Mario locked in place, but only after he fully ascended during the animation
+    ; (unless the full death animation should be shown).
+if !show_prompt_time > 2
     lda $7D : bmi +
     stz $7D
     stz $76
 +
+endif
+
     ; If the prompt hasn't begun yet, check if it should.
     lda !ram_prompt_phase : beq ...check_box
 
@@ -143,8 +164,9 @@ endif
 
     ; Handle the box shrinking.
     cmp #$05 : bne ...no_shrink
-if !prompt_freeze == 0
+
     ; This overcomes vanilla DECing $1496 twice since $9D is 0
+if !prompt_freeze == 0
     inc $1496|!addr
 endif
     bra ...handle_box
@@ -157,13 +179,13 @@ endif
     cmp #$04 : beq ..respawn
     cmp #$02 : bne ...handle_box
 
-    ; Handle the menu cursor and options.
 ...handle_menu:
+    ; Handle the menu cursor and options.
     jsr prompt_handle_menu
     rtl
 
-    ; Expand/shrink the prompt.
 ...handle_box:
+    ; Expand/shrink the prompt.
     jsr prompt_handle_box
     rtl
 
@@ -190,10 +212,14 @@ endif
     lda $0D9B|!addr : bpl ..return
     stz $0701|!addr
     stz $0702|!addr
+
 ..return:
     rtl
 
 ..instant:
+    ; If fallen offscreen, respawn immediately.
+    lda $81 : dec : bpl ..respawn
+    
     ; Respawn after 4 frames so it shows the death pose.
     lda $1496|!addr : cmp.b #!death_time : bcs ..return
 
@@ -400,11 +426,12 @@ endif
     jsr shared_get_prompt_type
     cmp #$02 : bcs .music_end
 
-    ; Force AMK to reload the samples.
+    ; Don't make AMK reload the samples.
     lda #$01 : sta !amk_freeram+1
 else
     lda $0DDA|!addr : bpl .music_end
     stz $0DDA|!addr
 endif
+
 .music_end:
     rts

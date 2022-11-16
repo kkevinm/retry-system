@@ -4,6 +4,14 @@ init:
     ; If respawning or doing a level transition, skip.
     lda $141A|!addr : bne .transition
 
+if !enter_level_sfx != $00
+    ; If not loading the level from a No Yoshi intro, play the SFX.
+    lda $71 : cmp #$0A : beq +
+    lda.b #!enter_level_sfx : sta !enter_level_sfx_addr
+    lda.b #!enter_level_delay : sta $0DB1|!addr
++
+endif
+
 if !pipe_entrance_freeze == 2
     ; Reset the $9D backup.
     lda #$00 : sta !ram_9D_backup
