@@ -89,11 +89,10 @@ Now for the actual RAM addresses (offset is from !retry_freeram, size refers to 
 ;                  ;         ;       ; only if $9D was set before the transition (i.e., if a   ;
 ;                  ;         ;       ; pipe was entered, but not if a door was entered).       ;
 ;==============================================================================================;
-; l2_backup        ;   $10   ;  $01  ; Holds a backup of the "interactable layer 2" flag during;
-;                  ;         ;       ; level load when respawning. The flag is disabled for a  ;
-;                  ;         ;       ; brief period of time to avoid some jank behaviors when  ;
-;                  ;         ;       ; respawning in layer 2 levels. The flag is then restored ;
-;                  ;         ;       ; from this address before the level fades in.            ;
+; unused           ;   $10   ;  $01  ; Used to hold the layer 2 interactable flag during level ;
+;                  ;         ;       ; load to fix glitched layer 2 interaction, but it's not  ;
+;                  ;         ;       ; needed anymore. It might be used for other purposes in  ;
+;                  ;         ;       ; future versions.                                        ;
 ;==============================================================================================;
 ; prompt_override  ;   $11   ;  $01  ; Can be used to override the Retry settings of the cur-  ;
 ;                  ;         ;       ; rent level. It follows the same format as the "effect"  ;

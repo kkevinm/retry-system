@@ -5,17 +5,18 @@ init:
 if !room_cp_sfx != $00
     lda #$00 : sta !ram_play_sfx
 endif
+    
+    ; Set layer 2 interaction offsets
+    ; (prevents layer 2 interaction from glitching on level load)
+    jsl $05BC72|!bank
 
     ; Check if we entered from the overworld.
     lda $141A|!addr : beq .return
 
+    ; Check if it's a normal room transition.
+    lda !ram_is_respawning : bne .return
+
 .room_transition:
-    ; If respawning from Retry, backup the L2 interaction bit and disable it.
-    lda !ram_is_respawning : beq +
-    lda $5B : and #$80 : sta !ram_l2_backup
-    lda #$80 : trb $5B
-    rtl
-+    
     ; Otherwise, check if we should count this entrance as a checkpoint.
     jsr shared_get_checkpoint_value
     cmp #$02 : bcc .return

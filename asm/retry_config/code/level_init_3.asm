@@ -67,11 +67,6 @@ endif
     lda $1493|!addr : beq +
     lda #$FF : sta $0DDA|!addr
 +   
-    ; Restore the Layer 2 interaction bit if applicable.
-    lda !ram_l2_backup : beq +
-    lda #$00 : sta !ram_l2_backup
-    lda #$80 : tsb $5B
-+
     ; Play the silent checkpoint SFX if applicable.
 if !room_cp_sfx != $00
     lda !ram_play_sfx : beq +

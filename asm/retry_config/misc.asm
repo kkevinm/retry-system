@@ -3,8 +3,8 @@
 
 ; Retry version number (Va.b.c) to write in ROM.
 !version_a = 0
-!version_b = 3
-!version_c = 11
+!version_b = 4
+!version_c = 0
 
 ; Read death time from ROM.
 !death_time #= read1($00F61C)

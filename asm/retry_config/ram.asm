@@ -51,7 +51,7 @@ namespace off
 %retry_ram(update_window,$0D)    ; 1
 %retry_ram(is_dying,$0E)         ; 1
 %retry_ram(9D_backup,$0F)        ; 1
-%retry_ram(l2_backup,$10)        ; 1
+%retry_ram(unused,$10)           ; 1 (unused, could be used in future versions)
 %retry_ram(prompt_override,$11)  ; 1
 %retry_ram(disable_exit,$12)     ; 1
 %retry_ram(set_checkpoint,$13)   ; 2
