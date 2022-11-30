@@ -4,6 +4,7 @@ v0.4.1:
     - Improved SFX echo handling:
       - Now the SFX echo will always work the first time entering a room, even if the echo delay is very high.
       - Now the SFX echo will stay enabled even when changing music in the middle of the level (assuming the new music doesn't disable echo altogether). This is most notable for P-Switch and Starman songs, which will keep the level's echo, and thus also the SFX echo, while (and after) they play.
+    - Added !infinite_lives setting, to more easily toggle between infinite and finite lives. The lose_lives table can still be used to prevent life loss in some levels when using !infinite_lives = 0.
 
 v0.4.0:
     - Changed default !pipe_entrance_freeze setting to 1 to avoid inconsistencies.

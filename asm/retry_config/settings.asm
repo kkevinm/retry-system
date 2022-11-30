@@ -17,6 +17,11 @@
 ; How many lives to start a new save file with.
     !initial_lives = 99
 
+; If 1, lives won't decrement when dying.
+; Note: if 0, you can choose to have infinite lives in specific sublevels
+; using the "lose_lives" table in "tables.asm".
+    !infinite_lives = 1
+
 ; 0 = midways won't give Mario a mushroom.
 ; 1 = vanilla midway powerup behavior.
     !midway_powerup = 0

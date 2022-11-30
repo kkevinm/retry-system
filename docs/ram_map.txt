@@ -140,7 +140,7 @@ Now for the actual RAM addresses (offset is from !retry_freeram, size refers to 
 ;                  ;         ;       ;  s: Set if !room_cp_sfx != $00 and the current sublevel ;
 ;                  ;         ;       ;     gives a room entrance checkpoint (unless the value  ;
 ;                  ;         ;       ;     in disable_room_cp_sfx for the current sublevel is  ;
-;                  ;         ;       ;     1. Used to play the midway SFX during level init.   ;
+;                  ;         ;       ;     1). Used to play the midway SFX during level init.  ;
 ;                  ;         ;       ;  -: currently unused.                                   ;
 ;==============================================================================================;
 ; midways_override ;   $19   ;  $01  ; Can be used to override midways, preventing them from   ;

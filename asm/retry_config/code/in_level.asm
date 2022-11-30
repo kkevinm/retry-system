@@ -122,11 +122,14 @@ endif
     stz !1564-1,x
 +
     ; Don't respawn if not infinite lives and we're about to game over.
+if not(!infinite_lives)
     jsr shared_get_bitwise_mask
     and.l tables_lose_lives,x : beq +
     lda $0DBE|!addr : bne +
     rtl
 +
+endif
+
     ; See what retry we have to use.
     jsr shared_get_prompt_type
     cmp #$03 : bcc ..prompt
@@ -250,10 +253,13 @@ endif
     lda !ram_respawn+1 : ora #$04 : sta $19D8|!addr,x
 
     ; If applicable, decrement lives (if 0, we can't get here so we're safe).
+if not(!infinite_lives)
     jsr shared_get_bitwise_mask
     and.l tables_lose_lives,x : beq +
     dec $0DBE|!addr
-+    
++
+endif
+
     ; If Mario died on Yoshi, remove Yoshi.
     stz $0DC1|!addr
 

@@ -35,10 +35,13 @@ death_routine:
     lda !ram_hurry_up : bne .return
 
     ; If not infinite lives and they're over, skip retry as we're about to game over.
+if not(!infinite_lives)
     jsr shared_get_bitwise_mask
     and.l tables_lose_lives,x : beq +
     lda $0DBE|!addr : beq .return : bmi .return
 +
+endif
+
     ; If "Exit" was selected, don't disable the death music.
     lda !ram_prompt_phase : cmp #$05 : bcs .return
 

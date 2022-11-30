@@ -206,50 +206,48 @@ disable_room_cp_sfx:
 ;==================;
 ; Lose Lives table ;
 ;==================;
-; This table allows you to set in which sublevels dying will cause the life counter to decrease.
-; By default it's set to all 0, meaning that the game will effectively have infinite lives,
-; which is recommended for Kaizo or very hard standard hacks.
-; Still, if your game has some easier levels or a mix of standard and Kaizo, for example, you may
-; want to keep the vanilla life system, at least in some levels, and you can do that by changing the table.
-; Note that this is independent of the Retry prompt settings: you could have a level with instant respawn and
-; no infinite lives, although that may not be recommended: usually this works better for levels with the vanilla death sequence.
+; This table is only used when !infinite_lives = 0 in settings.asm.
+; With this, you can choose to disable life loss for specific sublevels, while keeping it for all others.
+; It could be useful for tutorial rooms, cutscenes, etc. or for harder levels in a non-Kaizo collab.
+; Note: if you just want to have infinite lives for the entire game,
+; don't use this but just set !infinite_lives = 1 in settings.asm.
 ;
 ; Format is the same as the sfx_echo table: each digit corresponds to one sublevel.
 
 lose_lives:
 ;       01234567  89ABCDEF
-    db %00000000,%00000000 ; 000-00F
-    db %00000000,%00000000 ; 010-01F
-    db %00000000,%00000000 ; 020-02F
-    db %00000000,%00000000 ; 030-03F
-    db %00000000,%00000000 ; 040-04F
-    db %00000000,%00000000 ; 050-05F
-    db %00000000,%00000000 ; 060-06F
-    db %00000000,%00000000 ; 070-07F
-    db %00000000,%00000000 ; 080-08F
-    db %00000000,%00000000 ; 090-09F
-    db %00000000,%00000000 ; 0A0-0AF
-    db %00000000,%00000000 ; 0B0-0BF
-    db %00000000,%00000000 ; 0C0-0CF
-    db %00000000,%00000000 ; 0D0-0DF
-    db %00000000,%00000000 ; 0E0-0EF
-    db %00000000,%00000000 ; 0F0-0FF
-    db %00000000,%00000000 ; 100-10F
-    db %00000000,%00000000 ; 110-11F
-    db %00000000,%00000000 ; 120-12F
-    db %00000000,%00000000 ; 130-13F
-    db %00000000,%00000000 ; 140-14F
-    db %00000000,%00000000 ; 150-15F
-    db %00000000,%00000000 ; 160-16F
-    db %00000000,%00000000 ; 170-17F
-    db %00000000,%00000000 ; 180-18F
-    db %00000000,%00000000 ; 190-19F
-    db %00000000,%00000000 ; 1A0-1AF
-    db %00000000,%00000000 ; 1B0-1BF
-    db %00000000,%00000000 ; 1C0-1CF
-    db %00000000,%00000000 ; 1D0-1DF
-    db %00000000,%00000000 ; 1E0-1EF
-    db %00000000,%00000000 ; 1F0-1FF
+    db %11111111,%11111111 ; 000-00F
+    db %11111111,%11111111 ; 010-01F
+    db %11111111,%11111111 ; 020-02F
+    db %11111111,%11111111 ; 030-03F
+    db %11111111,%11111111 ; 040-04F
+    db %11111111,%11111111 ; 050-05F
+    db %11111111,%11111111 ; 060-06F
+    db %11111111,%11111111 ; 070-07F
+    db %11111111,%11111111 ; 080-08F
+    db %11111111,%11111111 ; 090-09F
+    db %11111111,%11111111 ; 0A0-0AF
+    db %11111111,%11111111 ; 0B0-0BF
+    db %11111111,%11111111 ; 0C0-0CF
+    db %11111111,%11111111 ; 0D0-0DF
+    db %11111111,%11111111 ; 0E0-0EF
+    db %11111111,%11111111 ; 0F0-0FF
+    db %11111111,%11111111 ; 100-10F
+    db %11111111,%11111111 ; 110-11F
+    db %11111111,%11111111 ; 120-12F
+    db %11111111,%11111111 ; 130-13F
+    db %11111111,%11111111 ; 140-14F
+    db %11111111,%11111111 ; 150-15F
+    db %11111111,%11111111 ; 160-16F
+    db %11111111,%11111111 ; 170-17F
+    db %11111111,%11111111 ; 180-18F
+    db %11111111,%11111111 ; 190-19F
+    db %11111111,%11111111 ; 1A0-1AF
+    db %11111111,%11111111 ; 1B0-1BF
+    db %11111111,%11111111 ; 1C0-1CF
+    db %11111111,%11111111 ; 1D0-1DF
+    db %11111111,%11111111 ; 1E0-1EF
+    db %11111111,%11111111 ; 1F0-1FF
 
 ;=====================================;
 ; Save and SRAM default values tables ;
