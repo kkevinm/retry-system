@@ -14,11 +14,6 @@ macro incbin(folder,file)
 endmacro
 
 ;=====================================
-; Check incompatibilities.
-;=====================================
-    %incsrc(code,check_incompatibilities)
-
-;=====================================
 ; Load shared settings and defines.
 ;=====================================
     %incsrc("",misc)
@@ -26,9 +21,17 @@ endmacro
     %incsrc("",ram)
 
 ;=====================================
-; Load the retry stables.
+; Check incompatibilities.
+;=====================================
+    %incsrc(code,check_incompatibilities)
+
+;=====================================
+; Load the Retry tables.
 ;=====================================
     %incsrc("",tables)
+if !sram_feature
+    %incsrc("",sram_tables)
+endif
 
 ;=====================================
 ; Load the letters gfx.
