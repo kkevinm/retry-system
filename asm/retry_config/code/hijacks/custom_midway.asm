@@ -38,12 +38,13 @@ new_norm_objects:
     tya : clc : adc $65 : sta $65
     lda $66 : adc #$00 : sta $66
 
-if !object_tool
-    ; If ObjecTool is inserted, we jump to its code
-    ; if the custom object number is $42-$4F or $52-$FF.
-    lda $5A : cmp #$42 : bcc +
-              cmp #$50 : beq +
-              cmp #$51 : beq +
+    ; If ObjecTool is inserted...
+    lda.l $0DA106|!bank : cmp #$5C : bne .no_objectool
+
+    ; ...jump to its code if the custom object number is $42-$4F or $52-$FF.
+    lda $5A : cmp #$42 : bcc .no_objectool
+              cmp #$50 : beq .no_objectool
+              cmp #$51 : beq .no_objectool
 
     ; Jump to ObjecTool's custom normal objects code.
     ; This jumps in the middle of the NewNormObjects routine, right before PHB : PHK : PLB,
@@ -53,9 +54,8 @@ if !object_tool
     sep #$20
     lda.l $0DA109|!bank : sta $02
     jml [$0000|!dp]
-+
-endif
-    
+
+.no_objectool:
     ; If midways are overridden, don't spawn it.
     lda !ram_midways_override : and #$7F : bne .return
 
@@ -78,21 +78,21 @@ custom_midway:
 
 .secondary_entrance:
     and #$01 : ora #$02
-    bra ++
+    bra +
 
 .secondary_water_entrance:
     and #$01 : ora #$0A
-++
-    sta $59
++   sta $59
     lda $5A : and #$1E : asl #3 : tsb $59
     bra .end
 
 .main_entrance:
-    and #$01 : sta $59
-    bra .end
+    and #$01
+    bra +
 
 .midway_entrance:
-    and #$01 : ora #$08 : sta $59
+    and #$01 : ora #$08
++   sta $59
 
 .end:
     ; If there's already enough custom midway objects, return.
