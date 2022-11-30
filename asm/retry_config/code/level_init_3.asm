@@ -5,50 +5,30 @@ init:
 if !custom_powerups == 1
 if !dynamic_items == 1
     ldy $0DC2|!addr
-    lda.b #read1($02802D|!bank)
-    dec
-    sta $00
-    lda.b #read1($02802E|!bank)
-    sta $01
-    lda.b #read1($02802F|!bank)
-    sta $02
-    lda [$00],y
-    xba
+    lda.b #read1($02802D) : dec : sta $00
+    lda.b #read1($02802E) : sta $01
+    lda.b #read1($02802F) : sta $02
+    lda [$00],y : xba
     rep #$20
-    and #$FF00
-    lsr #3
-    adc.w #read2($00A38B|!bank)
-    sta !item_gfx_pointer+4
-    clc
-    adc #$0200
-    sta !item_gfx_pointer+10
+    and #$FF00 : lsr #3 : adc.w #read2($00A38B) : sta !item_gfx_pointer+4
+    clc : adc #$0200 : sta !item_gfx_pointer+10
     sep #$20
-    lda !item_gfx_refresh
-    ora #$13
-    sta !item_gfx_refresh
+    lda !item_gfx_refresh : ora #$13 : sta !item_gfx_refresh
 endif
 
-    lda #$FF
-    sta !item_gfx_oldest
-    sta !item_gfx_latest
+    lda #$FF : sta !item_gfx_oldest : sta !item_gfx_latest
 
-    lda $86
-    sta !slippery_flag_backup
+    lda $86 : sta !slippery_flag_backup
 
 .init_cloud_data
-    lda $19
-    cmp #!cloud_flower_powerup_num
-    bne +
+    lda $19 : cmp #!cloud_flower_powerup_num : bne +
 
     rep #$30
     phx
     ldx #$006C
--   lda $94
-    sta.l !collision_data_x,x
-    lda $96
-    sta.l !collision_data_x+2,x
-    dex #4
-    bpl -
+-   lda $94 : sta.l !collision_data_x,x
+    lda $96 : sta.l !collision_data_x+2,x
+    dex #4 : bpl -
     plx
     sep #$30
 +   
@@ -72,6 +52,17 @@ if !room_cp_sfx != $00
     lda !ram_play_sfx : beq +
     lda.b #!room_cp_sfx : sta !room_cp_sfx_addr
 +
+endif
+
+if !amk
+    ; Store $05 or $06 to $1DFA depending on the sfx_echo setting for the current sublevel.
+    ; Also set a flag in RAM if SFX echo is enabled.
+    ldy #$05
+    jsr shared_get_bitwise_mask
+    and.l tables_sfx_echo,x : beq +
+    iny
+    lda !ram_play_sfx : ora #$80 : sta !ram_play_sfx
++   sty $1DFA|!addr
 endif
 
     ; Reset DSX sprites.
@@ -125,16 +116,6 @@ main:
 if !fast_transitions
     ; Reset the mosaic timer.
     stz $0DB1|!addr
-endif
-
-if !amk
-    ; Store $05 or $06 to $1DFA depending on the
-    ; sfx_echo setting for the current sublevel.
-    ldy #$05
-    jsr shared_get_bitwise_mask
-    and.l tables_sfx_echo,x : beq +
-    iny
-+   sty $1DFA|!addr
 endif
 
     rtl

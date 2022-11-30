@@ -2,9 +2,7 @@
 
 init:
     ; Reset the "play CP sfx" flag.
-if !room_cp_sfx != $00
     lda #$00 : sta !ram_play_sfx
-endif
     
     ; Set layer 2 interaction offsets
     ; (prevents layer 2 interaction from glitching on level load)
@@ -37,9 +35,12 @@ endif
     jsr extra_room_checkpoint
     plb : plp
 
-    ; Set the "play CP sfx" flag.
+    ; Set the "play CP sfx" flag if applicable.
 if !room_cp_sfx != $00
+    jsr shared_get_bitwise_mask
+    and.l tables_disable_room_cp_sfx,x : bne +
     lda #$01 : sta !ram_play_sfx
++
 endif
 
     ; Save individual dcsave buffers.

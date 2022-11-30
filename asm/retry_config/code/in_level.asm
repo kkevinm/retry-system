@@ -20,6 +20,14 @@ if !lives_overflow_fix
 +
 endif
 
+if !amk
+    ; Enable SFX echo if applicable.
+    lda !ram_play_sfx : bpl +
+    lda $1DFA|!addr : bne +
+    lda #$06 : sta $1DFA|!addr
++
+endif
+
     ; Update the window HDMA when the flag is set.
     lda !ram_update_window : beq +
     jsr prompt_update_window
