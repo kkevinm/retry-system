@@ -260,9 +260,6 @@ if not(!infinite_lives)
 +
 endif
 
-    ; If Mario died on Yoshi, remove Yoshi.
-    stz $0DC1|!addr
-
     ; Mark as sublevel so we skip the "Mario Start!" message.
     ; (don't do "inc $141A" so we avoid the 256 entrance glitch)
     lda #$01 : sta $141A|!addr
@@ -361,8 +358,10 @@ endif
 
     ; Reset Reznor bridge counter.
     stz $1B9F|!addr
-
-    ; Reset Yoshi drums.
+    
+    ; Remove Yoshi.
+    stz $0DC1|!addr
+    stz $187A|!addr
     lda #$03 : sta $1DFA|!addr
 
     ; Reset peace image flag.

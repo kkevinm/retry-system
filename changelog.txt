@@ -1,3 +1,6 @@
+v0.4.2:
+    - Fixed pipe entrance timer being inconsistent when respawning if dying while riding Yoshi (thanks to gui for reporting this).
+
 v0.4.1:
     - Moved the "lose_lives" table in "tables.asm" after other tables, since it's the least important one.
     - Added "disable_room_cp_sfx" table in "tables.asm" to avoid playing the room entrance checkpoint SFX in certain sublevels.
