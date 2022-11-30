@@ -39,7 +39,7 @@ new_norm_objects:
     lda $66 : adc #$00 : sta $66
 
     ; If ObjecTool is inserted...
-    lda.l $0DA106|!bank : cmp #$5C : bne .no_objectool
+    lda.l objectool_byte : cmp #$5C : bne .no_objectool
 
     ; ...jump to its code if the custom object number is $42-$4F or $52-$FF.
     lda $5A : cmp #$42 : bcc .no_objectool
@@ -134,7 +134,7 @@ custom_midway:
 else
 
 ; Restore code, in case settings are changed.
-if read1($0DA415) == $5C && read1($0DA106) != $5C
+if read1($0DA415) == $5C && read1(objectool_byte) != $5C
 
 pushpc
 

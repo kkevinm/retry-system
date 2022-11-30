@@ -44,9 +44,7 @@ if !room_cp_sfx != $00
 endif
 
     ; Save individual dcsave buffers.
-if !dcsave
     jsr shared_dcsave_midpoint
-endif
 
 .return:
     rtl

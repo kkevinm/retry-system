@@ -9,18 +9,6 @@
 ; Read death time from ROM.
 !death_time #= read1($00F61C)
 
-; Read death pose value from ROM.
-!death_pose #= read1($00D0B9)
-
-; Read death song number from ROM.
-!death_song #= read1($00F60B)
-
-; Read timer seconds duration from ROM.
-!timer_ticks #= read1($008D8B)
-
-; Read green star block coin count from ROM.
-!green_star_block_count #= read1($0091AC)
-
 ; What button exits the level while the game is paused (by default, select).
 !exit_level_buttons_addr = $16
 !exit_level_buttons_bits = $20
@@ -33,9 +21,6 @@ if read2($01E762) == $EAEA && read1($009EF0) != $00
 else
     !intro_sublevel #= !intro_level
 endif
-
-; Level number (low byte) of the Yoshi Wings levels.
-!wings_level = read1($05DBAA)
 
 ; OW translevel number table.
 if !sa1
@@ -54,27 +39,6 @@ endif
 ; Address for the custom midway entrance value.
 !ram_cust_obj_entr = !ram_cust_obj_data+(!max_custom_midway_num*2)
 
-; Detect Lunar Magic v3.0+.
-;if read1($0FF0B4) >= $33
-;    !lm3 = 1
-;else
-;    !lm3 = 0
-;endif
-
-; Detect AddmusicK.
-if read1($008075) == $5C
-    !amk = 1
-else
-    !amk = 0
-endif
-
-; Detect ObjecTool.
-;if read1($0DA106) == $5C
-;    !object_tool = 1
-;else
-;    !object_tool = 0
-;endif
-
 ; Detect the SRAM Plus patch.
 if read1($009B42) == $04
     !sram_plus = 1
@@ -89,23 +53,8 @@ else
     !bwram_plus = 0
 endif
 
-; Detect if using PIXI's 255 sprite per level feature.
-if read1($01AC9C) == $5C && read3(read3($01AC9C+1)+5) == $7FAF00
-    !255_sprites_per_level = 1
-else
-    !255_sprites_per_level = 0
-endif
-
-if !sa1
-    !255_sprites_per_level = 1
-endif
-
 ; Define the sprites load table address.
-if !255_sprites_per_level
-    %define_sprite_table(sprite_load_table, $7FAF00, $418A00)
-else
-    %define_sprite_table(sprite_load_table, $1938, $418A00)
-endif
+%define_sprite_table(sprite_load_table, $7FAF00, $418A00)
 
 ; Detects lx5's Custom Powerups.
 if read2($00D067) == $DEAD
@@ -113,20 +62,6 @@ if read2($00D067) == $DEAD
     incsrc powerup_defs.asm
 else
     !custom_powerups = 0
-endif
-
-; Detects the "Individual Dragon Coins Save" patch.
-if read1($05D7AB) == $5C
-    !dcsave = 1
-else
-    !dcsave = 0
-endif
-
-; Detects lx5's Dynamic Spriteset System.
-if read3($01DF78) == $535344
-    !dss = 1
-else
-    !dss = 0
 endif
 
 ; Detects the "Level Depending on Ram" and similar patches.

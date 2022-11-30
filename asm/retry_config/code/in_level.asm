@@ -20,14 +20,11 @@ if !lives_overflow_fix
 +
 endif
 
-if !amk
     ; Enable SFX echo if applicable.
     lda !ram_play_sfx : bpl +
     lda $1DFA|!addr : bne +
     lda #$06 : sta $1DFA|!addr
 +
-endif
-
     ; Update the window HDMA when the flag is set.
     lda !ram_update_window : beq +
     jsr prompt_update_window
@@ -73,7 +70,7 @@ endif
 
 .dying:
     ; Show the death pose just to be sure.
-    lda.b #!death_pose : sta $13E0|!addr
+    lda.l death_pose : sta $13E0|!addr
 
     ; Disable camera Y scroll if applicable.
 if !death_camera_lock
@@ -241,6 +238,9 @@ endif
     ; Reset some addresses.
     jsr reset_addresses
 
+    ; Reset level music.
+    jsr reset_music
+
     ; Reset the prompt phase.
     lda #$00 : sta !ram_prompt_phase
 
@@ -294,12 +294,10 @@ reset_addresses:
     stz $1421|!addr
 
     ; Reset green star block counter.
-    lda.b #!green_star_block_count : sta $0DC0|!addr
+    lda.l green_star_block_count : sta $0DC0|!addr
 
     ; Reset individual dcsave buffers.
-if !dcsave
     jsr shared_dcsave_init
-endif
 
     ; Reset item memory.
     rep #$20
@@ -310,16 +308,21 @@ endif
     dex #2 : bpl -
 
     ; Reset the sprite load index table.
-    ; Change DBR to use absolute addressing (saves 512 cycles in the best case).
-    %set_dbr(!sprite_load_table)
+    ; If SA-1 or PIXI's 255 sprite per level are used, the reset loop
+    ; will use the remapped address and reset 256 entries instead of 128.
     ldx #$7E
+    lda.l sprite_load_orig : cmp #$1938 : beq .sprite_load_orig
+.sprite_load_remap:
+    %set_dbr(!sprite_load_table)
 -   stz.w !sprite_load_table,x
-if !255_sprites_per_level
     stz.w !sprite_load_table+$80,x
-endif
     dex #2 : bpl -
     plb
-
+    bra +
+.sprite_load_orig:
+    stz.w $1938,x
+    dex #2 : bpl .sprite_load_orig
++
     ; Reset vanilla Boo rings.
 if !reset_boo_rings
     stz $0FAE|!addr
@@ -416,36 +419,45 @@ endif
     lda !ram_timer+0 : sta $0F31|!addr
     lda !ram_timer+1 : sta $0F32|!addr
     lda !ram_timer+2 : sta $0F33|!addr
+    rts
 
-    ; Music related stuff. I don't understand most of it.
-if !amk
+;=====================================
+; reset_music routine
+;
+; Routine to reset music to make it play properly after respawning.
+;=====================================
+reset_music:
+    lda.l amk_byte : cmp #$5C : beq .amk
+
+.no_amk:
+    lda $0DDA|!addr : bpl .return
+    stz $0DDA|!addr
+    rts
+
+.amk:
     lda $13C6|!addr : bne .force_reset
     lda $0DDA|!addr : cmp #$FF : beq .spec
-    lda !ram_music_to_play : cmp $0DDA|!addr : bne .music_end
+    lda !ram_music_to_play : cmp $0DDA|!addr : bne .return
     bra .bypass
 
 .spec:
-if !death_song != $00
-    lda $1DFB|!addr : cmp.b #!death_song : beq +
-endif
+    lda.l death_song : beq .force_reset
+    cmp $1DFB|!addr : beq .no_reset
 
 .force_reset:
     lda #$00 : sta !amk_freeram : sta $1DFB|!addr
-    bra .music_end
-+   
-    lda !ram_music_to_play : cmp !ram_music_backup : bne .music_end
+    bra .return
+
+.no_reset:
+    lda !ram_music_to_play : cmp !ram_music_backup : bne .return
 
 .bypass:
-    lda !ram_music_to_play : cmp #$FF : beq .music_end
+    lda !ram_music_to_play : cmp #$FF : beq .return
     jsr shared_get_prompt_type
-    cmp #$02 : bcs .music_end
+    cmp #$02 : bcs .return
 
     ; Don't make AMK reload the samples.
     lda #$01 : sta !amk_freeram+1
-else
-    lda $0DDA|!addr : bpl .music_end
-    stz $0DDA|!addr
-endif
 
-.music_end:
+.return:
     rts

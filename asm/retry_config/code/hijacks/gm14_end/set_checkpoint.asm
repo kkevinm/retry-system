@@ -14,19 +14,14 @@ if !save_on_checkpoint
     jsr shared_save_game
 endif
 
-if !amk
     ; Always reload the samples, just to be safe.
     lda #$FF : sta !ram_music_backup
-endif
-
     bra .return
 
 .set:
     ; Save individual dcsave buffers.
     ; Needed because we skip over $00F2DD, where the routine is called.
-if !dcsave
     jsr shared_dcsave_midpoint
-endif
     
     ; Set midway flag, just to be safe.
     lda #$01 : sta $13CE|!addr
@@ -51,9 +46,7 @@ endif
 ...sub_midway:
     jsr calc_entrance_2
 +
-if !amk
     lda $0DDA|!addr : sta !ram_music_backup
-endif
     bra .return2
 
 ..custom_destination:
@@ -62,10 +55,8 @@ endif
     lda !ram_set_checkpoint : sta !ram_respawn
     sep #$20
 
-if !amk
     ; Always reload the samples, just to be safe.
     lda #$FF : sta !ram_music_backup
-endif
     
 .return2:
     ; Save the midway entrance as a checkpoint.

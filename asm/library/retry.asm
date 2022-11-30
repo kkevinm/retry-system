@@ -19,6 +19,7 @@ endmacro
     %incsrc("",misc)
     %incsrc("",settings)
     %incsrc("",ram)
+    %incsrc("",rom)
 
 ;=====================================
 ; Check incompatibilities.

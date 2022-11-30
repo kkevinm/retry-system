@@ -54,17 +54,17 @@ if !room_cp_sfx != $00
 +
 endif
 
-if !amk
-    ; Store $05 or $06 to $1DFA depending on the sfx_echo setting for the current sublevel.
+    ; If AMK is inserted, send the disable/enable SFX echo command
+    ; depending on the current sublevel's sfx_echo setting.
     ; Also set a flag in RAM if SFX echo is enabled.
+    lda.l amk_byte : cmp #$5C : bne +
     ldy #$05
     jsr shared_get_bitwise_mask
-    and.l tables_sfx_echo,x : beq +
+    and.l tables_sfx_echo,x : beq ++
     iny
     lda !ram_play_sfx : ora #$80 : sta !ram_play_sfx
-+   sty $1DFA|!addr
-endif
-
+++  sty $1DFA|!addr
++
     ; Reset DSX sprites.
 if !reset_dsx
     stz $06FE|!addr
@@ -79,7 +79,7 @@ if !reset_boo_rings == 2
 endif
 
     ; Reset timer frame counter
-    lda.b #!timer_ticks : sta $0F30|!addr
+    lda.l timer_ticks : sta $0F30|!addr
 
     ; If not entering from the overworld, skip.
     lda $141A|!addr : bne .room_transition
@@ -103,10 +103,8 @@ endif
     stz $36
     stz $37
     
-if !amk
     ; Backup the music that should play.
     lda $0DDA|!addr : sta !ram_music_to_play
-endif
 
 .normal:
     ; Reset the respawning flag.

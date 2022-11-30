@@ -83,7 +83,7 @@ get_tile_index:
 +   lda $9B
 ++  tax
     
-    lda.l $0FF0B4|!bank : cmp #$33
+    lda.l lm_version : cmp #$33
     rep #$20
     bcc +
     lda $13D7|!addr

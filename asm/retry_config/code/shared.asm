@@ -199,9 +199,11 @@ save_game:
 ;================================================
 ; Routines to reset and save the dcsave buffers.
 ;================================================
-if !dcsave
 dcsave:
 .init:
+    ; Return if dcsave isn't installed.
+    lda.l dcsave_byte : cmp #$5C : bne .return
+
     ; Load the address to the dcsave init wrapper routine.
     rep #$20
     lda.l $05D7AC|!bank : clc : adc #$0011 : sta $0D
@@ -214,12 +216,14 @@ if !sa1
 else
     jsl .jml
 endif
-
     rts
 
 .midpoint:
-    ; Only save if !Midpoint = 1
-    lda.l $00CA2B|!bank : cmp #$22 : bne ..return
+    ; Return if dcsave isn't installed.
+    lda.l dcsave_byte : cmp #$5C : bne .return
+
+    ; Only save if !Midpoint = 1.
+    lda.l $00CA2B|!bank : cmp #$22 : bne .return
 
     ; Load the address to the dcsave save buffer routine.
     rep #$20
@@ -230,12 +234,11 @@ endif
     ; Call the dcsave routine.
     jsl .jml
 
-..return:
+.return:
     rts
 
 .jml:
     jml [$000D|!dp]
-endif
 
 ;================================================
 ; Routine to get the checkpoint value for the current sublevel.
@@ -294,7 +297,7 @@ get_bitwise_mask:
 ; If Lunar Magic 3.0+ is used, it may overwrite Y.
 ;================================================
 get_screen_number:
-    lda.l $0FF0B4|!bank : cmp #$33 : bcc .no_lm3
+    lda.l lm_version : cmp #$33 : bcc .no_lm3
     lda.l $03BCDC|!bank : cmp #$FF : beq .no_lm3
 .lm3:
     jsl $03BCDC|!bank
