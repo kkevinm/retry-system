@@ -18,12 +18,12 @@
     !initial_lives = 99
 
 ; If 1, lives won't decrement when dying.
-; Note: if 0, you can choose to have infinite lives in specific sublevels
-; using the "lose_lives" table in "tables.asm".
+; Note: if 0, you can choose to have infinite lives in specific sublevels using the "lose_lives" table in "tables.asm".
     !infinite_lives = 1
 
 ; 0 = midways won't give Mario a mushroom.
 ; 1 = vanilla midway powerup behavior.
+; Note: you can also change this on the fly (see "docs/ram_map.txt").
     !midway_powerup = 0
 
 ; Counterbreak options reset the corresponding counters/items when the player dies and when going to the Overworld.

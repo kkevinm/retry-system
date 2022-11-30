@@ -6,6 +6,7 @@
 ;=====================================
 ; What freeram to use.
 ; 230 + (!max_custom_midway_num*4) bytes are used.
+; On SA-1, only !retry_freeram_sa1 is used.
 ;=====================================
 !retry_freeram     = $7FB400
 !retry_freeram_sa1 = $40A400
@@ -51,7 +52,7 @@ namespace off
 %retry_ram(update_window,$0D)    ; 1
 %retry_ram(is_dying,$0E)         ; 1
 %retry_ram(9D_backup,$0F)        ; 1
-%retry_ram(unused,$10)           ; 1 (unused, could be used in future versions)
+%retry_ram(midway_powerup,$10)   ; 1
 %retry_ram(prompt_override,$11)  ; 1
 %retry_ram(disable_exit,$12)     ; 1
 %retry_ram(set_checkpoint,$13)   ; 2

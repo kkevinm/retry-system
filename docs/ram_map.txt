@@ -89,10 +89,13 @@ Now for the actual RAM addresses (offset is from !retry_freeram, size refers to 
 ;                  ;         ;       ; only if $9D was set before the transition (i.e., if a   ;
 ;                  ;         ;       ; pipe was entered, but not if a door was entered).       ;
 ;==============================================================================================;
-; unused           ;   $10   ;  $01  ; Used to hold the layer 2 interactable flag during level ;
-;                  ;         ;       ; load to fix glitched layer 2 interaction, but it's not  ;
-;                  ;         ;       ; needed anymore. It might be used for other purposes in  ;
-;                  ;         ;       ; future versions.                                        ;
+; midway_powerup   ;   $10   ;  $01  ; Can be used to override the !midway_powerup setting in  ;
+;                  ;         ;       ; certain situations. If this is #$00, then midways won't ;
+;                  ;         ;       ; give a mushroom, otherwise they will.                   ;
+;                  ;         ;       ; This is only initialized on the title screen based on   ;
+;                  ;         ;       ; the !midway_powerup setting, but you can change it at   ;
+;                  ;         ;       ; any time. Just remember that you'll need to change it   ;
+;                  ;         ;       ; back to the default value if needed.                    ;
 ;==============================================================================================;
 ; prompt_override  ;   $11   ;  $01  ; Can be used to override the Retry settings of the cur-  ;
 ;                  ;         ;       ; rent level. It follows the same format as the "effect"  ;

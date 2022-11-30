@@ -60,14 +60,12 @@ midway_main:
     jsr extra_midway
     plb : plp : ply : plx
     
-    ; Make it compatible with the "SMB2-Styled Health Bar" patch or other patches that hijack here.
-    ; If they restore the powerup code, it should be an easy thing to edit out if needed.
-if !midway_powerup || read1($00F2E0) == $5C || read1($00F2E0) == $22
+    ; Only run the powerup code if applicable.
+    ; If using the "SMB2-Styled" Health Bar patch, this should prevent healing
+    ; at midways unless the flag is set.
+    lda !ram_midway_powerup : beq +
     jml $00F2E0|!bank
-else
-    ; Skip the powerup code: no need for hex editing.
-    jml $00F2E8|!bank
-endif
++   jml $00F2E8|!bank
 
 ;=====================================
 ; Routine to get a block's $7EC800 index in $04 (16 bit).

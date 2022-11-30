@@ -37,6 +37,9 @@ init:
     lda.b #!text_x_pos : sta.w !ram_prompt_x_pos
     lda.b #!text_y_pos : sta.w !ram_prompt_y_pos
 
+    ; Initialize "midway powerup" flag.
+    lda.b #!midway_powerup : sta.w !ram_midway_powerup
+
     ; Call the custom load title routine.
     php : phk : plb
     jsr extra_load_title
