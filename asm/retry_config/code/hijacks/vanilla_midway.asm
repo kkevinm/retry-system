@@ -187,20 +187,19 @@ midway_spawn:
 
 ..main:
     %lda_13BF() : bne ...no_intro
-    rep #$20
-    lda.w #!intro_sublevel
-    bra ++
+    jsr shared_get_intro_sublevel
+    bra +
 
 ...no_intro:
     rep #$20
-    and #$00FF : cmp #$0025 : bcc ++
+    and #$00FF : cmp #$0025 : bcc +
     clc : adc #$00DC
-    bra ++
+    bra +
 
 ..sublevel:
     rep #$20
     lda $010B|!addr
-++  ora #$0C00 : eor !ram_respawn : and #$FBFF
++   ora #$0C00 : eor !ram_respawn : and #$FBFF
     sep #$20
     bne .spawn
 

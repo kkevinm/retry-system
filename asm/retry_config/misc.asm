@@ -1,4 +1,4 @@
-; Miscellaneous stuff used by retry.
+; Miscellaneous stuff used by Retry.
 ; You usually shouldn't edit this file.
 
 ; Retry version number (Va.b.c) to write in ROM.
@@ -16,19 +16,6 @@
 ; Level number of the intro level (automatically adjusted to $01C5 when necessary).
 !intro_level = $00C5
 
-if read2($01E762) == $EAEA && read1($009EF0) != $00
-    !intro_sublevel #= !intro_level|$0100
-else
-    !intro_sublevel #= !intro_level
-endif
-
-; OW translevel number table.
-if !sa1
-    !7ED000 = $40D000
-else
-    !7ED000 = $7ED000
-endif
-
 ; Stripe image table defines.
 !stripe_index = $7F837B
 !stripe_table = $7F837D
@@ -38,6 +25,25 @@ endif
 
 ; Address for the custom midway entrance value.
 !ram_cust_obj_entr = !ram_cust_obj_data+(!max_custom_midway_num*2)
+
+; Define the custom sprites load table address.
+%define_sprite_table(sprite_load_table, $7FAF00, $418A00)
+
+; OW translevel number table.
+if !sa1
+    !7ED000 = $40D000
+else
+    !7ED000 = $7ED000
+endif
+
+; Check which channel is used for windowing HDMA, for SA-1 v1.35 (H)DMA remap compatibility.
+; It will be 7 on lorom or with SA-1 <1.35, and 1 with SA-1 >=1.35.
+!window_mask    #= read1($0092A1)
+!window_channel #= log2(!window_mask)
+
+; Where in VRAM the prompt tiles will be uploaded to. You should never need to edit this.
+; $6000 = SP1/SP2, $7000 = SP3/SP4.
+!base_vram = $6000
 
 ; Detect the SRAM Plus patch.
 if read1($009B42) == $04
@@ -53,9 +59,6 @@ else
     !bwram_plus = 0
 endif
 
-; Define the sprites load table address.
-%define_sprite_table(sprite_load_table, $7FAF00, $418A00)
-
 ; Detects lx5's Custom Powerups.
 if read2($00D067) == $DEAD
     !custom_powerups = 1
@@ -70,12 +73,3 @@ if read1($05DCDD) == $22 || read1($05DCE2) == $22
 else
     !dynamic_ow_levels = 0
 endif
-
-; Check which channel is used for windowing HDMA, for SA-1 v1.35 (H)DMA remap compatibility.
-; It will be 7 on lorom or with SA-1 <1.35, and 1 with SA-1 >=1.35.
-!window_mask    #= read1($0092A1)
-!window_channel #= log2(!window_mask)
-
-; Where in VRAM the prompt tiles will be uploaded to. You should never need to edit this.
-; $6000 = SP1/SP2, $7000 = SP3/SP4.
-!base_vram = $6000

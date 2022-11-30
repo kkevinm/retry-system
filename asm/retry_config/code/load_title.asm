@@ -23,7 +23,8 @@ init:
     dey : bpl -
 
     ; Set the intro level checkpoint (level 0 = intro).
-    lda.w #!intro_sublevel : sta.w !ram_checkpoint
+    jsr shared_get_intro_sublevel
+    sta.w !ram_checkpoint
     
     sep #$30
 

@@ -7,8 +7,9 @@ v0.4.1:
     - Added !infinite_lives setting, to more easily toggle between infinite and finite lives. The lose_lives table can still be used to prevent life loss in some levels when using !infinite_lives = 0.
     - Fixed compilation error introduced in v0.3.3, when using !sram_feature = 1 and the SRAM+/BW-RAM+ patch is installed in the ROM.
     - Moved Retry's SRAM tables to separate "sram_tables.asm" file for more simplicity of use and consistency, and made it insert only when using !sram_feature = 1 to save some ROM space.
-    - Changed ObjecTool code check to runtime, so it works fine if ObjecTool is patched after Retry.
-    - Changed Lunar Magic v3.0+ code check to runtime, so it works fine if LM is upgraded after patching Retry.
+    - Changed checks for ObjecTool, Lunar Magic v3.0+, Lunar Magic Sprite 19 Fix, AddmusicK, PIXI and Individual Dragon Coin from compile time to run time, so Retry should work fine if those are inserted after it.
+    - Changed most values read from ROM from compile time to runtime reads, so Retry will work fine if those are hex edited afterwards.
+    - Added "rom.asm" for label defines of ROM addresses used by Retry and refactored "misc.asm".
 
 v0.4.0:
     - Changed default !pipe_entrance_freeze setting to 1 to avoid inconsistencies.

@@ -50,9 +50,9 @@ new_norm_objects:
     ; This jumps in the middle of the NewNormObjects routine, right before PHB : PHK : PLB,
     ; assuming the code won't change in future updates.
     rep #$20
-    lda.l $0DA107|!bank : clc : adc.w #68 : sta $00
+    lda.l objectool_normal_code_address : clc : adc.w #68 : sta $00
     sep #$20
-    lda.l $0DA109|!bank : sta $02
+    lda.l objectool_normal_code_address+2 : sta $02
     jml [$0000|!dp]
 
 .no_objectool:

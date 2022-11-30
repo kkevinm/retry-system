@@ -75,8 +75,8 @@ calc_entrance:
     %lda_13BF() : tax : bne .no_intro
 
     ; Set intro sublevel number as respawn point.
-    rep #$20
-    lda.w #!intro_sublevel : sta !ram_respawn
+    jsr shared_get_intro_sublevel
+    sta !ram_respawn
     sep #$20
     bra .check_midway
 
