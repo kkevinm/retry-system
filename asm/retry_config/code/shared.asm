@@ -294,13 +294,14 @@ get_bitwise_mask:
 ; If Lunar Magic 3.0+ is used, it may overwrite Y.
 ;================================================
 get_screen_number:
-if !lm3
-    lda.l $03BCDC|!bank : cmp #$FF : beq +
+    lda.l $0FF0B4|!bank : cmp #$33 : bcc .no_lm3
+    lda.l $03BCDC|!bank : cmp #$FF : beq .no_lm3
+.lm3:
     jsl $03BCDC|!bank
     rts
-+
-endif
+.no_lm3:
     ldx $95
-    lda $5B : lsr : bcc +
+    lda $5B : lsr : bcc .return
     ldx $97
-+   rts
+.return:
+    rts

@@ -69,7 +69,7 @@ midway_main:
 
 ;=====================================
 ; Routine to get a block's $7EC800 index in $04 (16 bit).
-; It should be  run during the block interaction process.
+; It should be run during the block interaction process.
 ;=====================================
 get_tile_index:
     phy : phx : php
@@ -82,14 +82,15 @@ get_tile_index:
     bra ++
 +   lda $9B
 ++  tax
-
+    
+    lda.l $0FF0B4|!bank : cmp #$33
     rep #$20
-if !lm3
+    bcc +
     lda $13D7|!addr
-else
-    lda #$01B0
-endif
-    sta $04
+    bra ++
++   lda #$01B0
+++  sta $04
+    
     jsr .multiply
 
     lda $9A : and #$00F0 : lsr #4

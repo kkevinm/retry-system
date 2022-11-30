@@ -55,11 +55,11 @@ endif
 !ram_cust_obj_entr = !ram_cust_obj_data+(!max_custom_midway_num*2)
 
 ; Detect Lunar Magic v3.0+.
-if (((read1($0FF0B4)-'0')*100)+((read1($0FF0B4+2)-'0')*10)+(read1($0FF0B4+3)-'0')) > 253
-    !lm3 = 1
-else
-    !lm3 = 0
-endif
+;if read1($0FF0B4) >= $33
+;    !lm3 = 1
+;else
+;    !lm3 = 0
+;endif
 
 ; Detect AddmusicK.
 if read1($008075) == $5C
@@ -69,11 +69,11 @@ else
 endif
 
 ; Detect ObjecTool.
-if read1($0DA106) == $5C
-    !object_tool = 1
-else
-    !object_tool = 0
-endif
+;if read1($0DA106) == $5C
+;    !object_tool = 1
+;else
+;    !object_tool = 0
+;endif
 
 ; Detect the SRAM Plus patch.
 if read1($009B42) == $04
