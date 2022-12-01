@@ -1,3 +1,6 @@
+v0.4.3:
+    - Fixed Yoshi's tongue being able to extend/retract while the Retry prompt is active, which could also cause unintended side effects, for example revive Mario but keep the prompt active if Yoshi eats a powerup (thanks to gui for reporting this).
+
 v0.4.2:
     - Fixed pipe entrance timer being inconsistent when respawning if dying while riding Yoshi (thanks to gui for reporting this).
 

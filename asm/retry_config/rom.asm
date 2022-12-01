@@ -4,6 +4,7 @@ death_pose                    = $00D0B9|!bank
 death_song                    = $00F60B|!bank
 timer_ticks                   = $008D8B|!bank
 green_star_block_count        = $0091AC|!bank
+yoshi_tongue_extend_speed     = $01F319|!bank
 lm_version                    = $0FF0B4|!bank
 lm_get_screen_routine         = $03BCDC|!bank
 objectool_byte                = $0DA106|!bank

@@ -94,8 +94,8 @@ if !prompt_freeze == 2
 +   
     ; Freeze Shell-less Koopas.
     ldx.b #!sprite_slots-1
--   lda !14C8,x : cmp #$08 : bne +
-    lda !9E,x : cmp #$04 : bcs +
+-   lda !9E,x : cmp #$04 : bcs +
+    lda !14C8,x : cmp #$08 : bne +
     lda !extra_bits,x : and #$08 : bne +
     stz !sprite_speed_y,x
 +   dex : bpl -
@@ -117,6 +117,14 @@ endif
     ; Reset Yoshi's swallow timer.
     ldx $18E2|!addr : beq +
     stz !1564-1,x
+    ; Prevent Yoshi's tongue from extending.
+    lda !1594-1,x : cmp #$01 : bne ++
+    lda !151C-1,x : sec : sbc.l yoshi_tongue_extend_speed : bmi +
+    sta !151C-1,x
+    bra +
+++  ; Prevent Yoshi's tongue from retracting.
+    cmp #$02 : bne +
+    sta !1558-1,x
 +
     ; Don't respawn if not infinite lives and we're about to game over.
 if not(!infinite_lives)
@@ -151,6 +159,7 @@ if !prompt_freeze == 0
     stz $1496|!addr
 +   inc $1496|!addr
 endif
+
     rtl
 
 ...no_exit:
