@@ -41,9 +41,7 @@ endif
     ; and set the Yoshi Wings flag in the checkpoint RAM).
     lda $1B95|!addr : beq +
     %jsl_to_rts_db($05DBAC,$058125)
-    lda $19D8|!addr,x : and #$FE : ora $010C|!addr
-    ldy $1425|!addr : bne ++
-    ora #$80
+    lda $19D8|!addr,x : and #$FE : ora $010C|!addr : ora #$80
     bra ++
 +   jsr shared_get_screen_number
     lda $19D8|!addr,x
