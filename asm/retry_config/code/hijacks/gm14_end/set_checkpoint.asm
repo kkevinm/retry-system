@@ -55,6 +55,11 @@ endif
     lda !ram_set_checkpoint : sta !ram_respawn
     sep #$20
 
+    ; If we're in the Yoshi Wings level, set the flag if applicable.
+    ldy $1B95|!addr : beq +
+    xba : bit #$0A : bne +
+    ora #$80 : sta !ram_respawn+1
++
     ; Always reload the samples, just to be safe.
     lda #$FF : sta !ram_music_backup
     

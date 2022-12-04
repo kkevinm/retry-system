@@ -24,8 +24,9 @@ init:
 
 ..set_checkpoint:
     ; Set the checkpoint to the current entrance.
+    rep #$20
     lda !ram_door_dest : sta !ram_respawn
-    lda !ram_door_dest+1 : sta !ram_respawn+1
+    sep #$20
 
     ; Update the checkpoint value.
     jsr shared_hard_save

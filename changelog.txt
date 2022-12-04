@@ -1,5 +1,6 @@
 v0.4.3:
     - Fixed Yoshi's tongue being able to extend/retract while the Retry prompt is active, which could also cause unintended side effects, for example revive Mario but keep the prompt active if Yoshi eats a powerup (thanks to gui for reporting this).
+    - Now Retry can work properly in Yoshi Wings levels! If setting a Yoshi Wings sublevel to give a checkpoint upon entrance (or if using a custom midway set to the Yoshi Wings level's main entrance), Mario will respawn doing the "shoot up" animation with Blue Yoshi as if he just got the Yoshi Wings (also if saving the game and reloading in the level after a reset). Any other type of checkpoint gotten in the level (vanilla midway, secondary exit checkpoint, etc.) will turn the level back to normal (no Yoshi, no wings animation, pits are deadly again).
 
 v0.4.2:
     - Fixed pipe entrance timer being inconsistent when respawning if dying while riding Yoshi (thanks to gui for reporting this).

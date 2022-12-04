@@ -258,9 +258,25 @@ endif
 
     ; Set the destination to send Mario to.
     jsr shared_get_screen_number
-    lda !ram_respawn : sta $19B8|!addr,x
+    lda !ram_respawn+0 : sta $19B8|!addr,x
     lda !ram_respawn+1 : ora #$04 : sta $19D8|!addr,x
 
+    ; If the Yoshi Wings checkpoint flag is set and the destination is the
+    ; level's main entrance, also set the normal Yoshi Wings and "Carry Yoshi" flags.
+    ; Also clear the flag in the checkpoint ram to avoid a game crash.
+    bpl ...remove_yoshi
+    bit #$0A : bne ...remove_yoshi
+    and #$7F : sta $19D8|!addr,x
+    lda #$02 : sta $1B95|!addr
+    dec : sta $0DC1|!addr
+    bra +
+
+    ; Remove Yoshi, but only if not set to go to the Yoshi Wings level.
+...remove_yoshi:
+    stz $0DC1|!addr
+    stz $187A|!addr
+    lda #$03 : sta $1DFA|!addr
++
     ; If applicable, decrement lives (if 0, we can't get here so we're safe).
 if not(!infinite_lives)
     jsr shared_get_bitwise_mask
@@ -367,11 +383,6 @@ endif
 
     ; Reset Reznor bridge counter.
     stz $1B9F|!addr
-    
-    ; Remove Yoshi.
-    stz $0DC1|!addr
-    stz $187A|!addr
-    lda #$03 : sta $1DFA|!addr
 
     ; Reset peace image flag.
     stz $1B99|!addr

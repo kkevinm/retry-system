@@ -37,9 +37,18 @@ if !pipe_entrance_freeze == 2
 endif
 
     ; ...and backup the current entrance value for later.
-    jsr shared_get_screen_number
-    lda $19B8|!addr,x : sta !ram_door_dest
-    lda $19D8|!addr,x : sta !ram_door_dest+1
+    ; (if warping to Yoshi Wings, change the entrance to the correct level
+    ; and set the Yoshi Wings flag in the checkpoint RAM).
+    lda $1B95|!addr : beq +
+    %jsl_to_rts_db($05DBAC,$058125)
+    lda $19D8|!addr,x : and #$FE : ora $010C|!addr
+    ldy $1425|!addr : bne ++
+    ora #$80
+    bra ++
++   jsr shared_get_screen_number
+    lda $19D8|!addr,x
+++  sta !ram_door_dest+1
+    lda $19B8|!addr,x : sta !ram_door_dest+0 
 
 main:
 if !fast_transitions
