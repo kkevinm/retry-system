@@ -139,7 +139,8 @@ Now for the actual RAM addresses (offset is from !retry_freeram, size refers to 
 ;                  ;         ;       ; Format: e------s                                        ;
 ;                  ;         ;       ;  e: Set if the value in sfx_echo is 1 for the current   ;
 ;                  ;         ;       ;     sublevel. Used to send the SFX echo command during  ;
-;                  ;         ;       ;     level main.                                         ;
+;                  ;         ;       ;     level main. You can also set this manually in level ;
+;                  ;         ;       ;     init to enable SFX echo.                            ;
 ;                  ;         ;       ;  s: Set if !room_cp_sfx != $00 and the current sublevel ;
 ;                  ;         ;       ;     gives a room entrance checkpoint (unless the value  ;
 ;                  ;         ;       ;     in disable_room_cp_sfx for the current sublevel is  ;

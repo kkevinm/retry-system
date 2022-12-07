@@ -102,6 +102,9 @@ if !prompt_freeze == 2
     
     ; Stop earthquake.
     stz $1887|!addr
+
+    ; Stop lightning effect.
+    stz $1FFC|!addr : stz $1FFD|!addr
 endif
 else
     ; Force sprites and animations to run.
@@ -312,17 +315,12 @@ reset_addresses:
     stz $1420|!addr
     stz $1422|!addr
 
-    ; Reset collected invisible 1-UPs.
-    stz $1421|!addr
-
-    ; Reset green star block counter.
-    lda.l green_star_block_count : sta $0DC0|!addr
-
     ; Reset individual dcsave buffers.
     jsr shared_dcsave_init
 
-    ; Reset item memory.
     rep #$20
+
+    ; Reset item memory.
     ldx #$7E
 -   stz $19F8|!addr,x
     stz $1A78|!addr,x
@@ -344,13 +342,7 @@ reset_addresses:
 .sprite_load_orig:
     stz.w $1938,x
     dex #2 : bpl .sprite_load_orig
-+
-    ; Reset vanilla Boo rings.
-if !reset_boo_rings
-    stz $0FAE|!addr
-    stz $0FB0|!addr
-endif
-    
++    
     ; Reset scroll sprites ($1446-$1455).
     ldx #$0E
 -   stz $1446|!addr,x
@@ -361,7 +353,54 @@ endif
 -   stz $1492|!addr,x
     dex #2 : bpl -
 
+    ; Reset various addresses used by Bowser ($14B0-$14B9).
+    ldx #$08
+-   stz $14B0|!addr,x
+    dex #2 : bpl -
+
+    ; Reset vanilla Boo rings.
+if !reset_boo_rings
+    stz $0FAE|!addr
+    stz $0FB0|!addr
+endif
+
+    ; Reset bonus stars counter.
+if !counterbreak_bonus_stars
+    stz $0F48|!addr
+endif
+
+    ; Reset score counter.
+if !counterbreak_score
+    stz $0F34|!addr
+    stz $0F36|!addr
+    stz $0F38|!addr
+endif
+
+    ; Reset timer to the original value.
+    lda !ram_timer+0 : sta $0F31|!addr
     sep #$20
+    lda !ram_timer+2 : sta $0F33|!addr
+
+    ; Reset powerup.
+if !counterbreak_powerup
+    stz $19
+endif
+
+    ; Reset item box.
+if !counterbreak_item_box
+    stz $0DC2|!addr
+endif
+
+    ; Reset coin counter.
+if !counterbreak_coins
+    stz $0DBF|!addr
+endif
+
+    ; Reset green star block counter.
+    lda.l green_star_block_count : sta $0DC0|!addr
+
+    ; Reset collected invisible 1-UPs.
+    stz $1421|!addr
 
     ; Reset directional coin flag.
     stz $1432|!addr
@@ -375,6 +414,9 @@ endif
     ; Reset side exit flag.
     stz $1B96|!addr
 
+    ; Reset peace image flag.
+    stz $1B99|!addr
+
     ; Reset background scroll flag.
     stz $1B9A|!addr
 
@@ -383,9 +425,6 @@ endif
 
     ; Reset Reznor bridge counter.
     stz $1B9F|!addr
-
-    ; Reset peace image flag.
-    stz $1B99|!addr
 
     ; Don't go to the bonus game after a Kaizo trap to prevent it glitching out.
     ; Don't reset it if currently in the bonus itself to prevent a softlock.
@@ -402,42 +441,7 @@ endif
     stz $148B|!addr
     stz $148D|!addr
     sep #$20
-+
-
-if !counterbreak_powerup
-    ; Reset powerup.
-    stz $19
-endif
-
-if !counterbreak_item_box
-    ; Reset item box.
-    stz $0DC2|!addr
-endif
-
-if !counterbreak_coins
-    ; Reset coin counter.
-    stz $0DBF|!addr
-endif
-
-if !counterbreak_bonus_stars
-    ; Reset bonus stars counter.
-    stz $0F48|!addr
-    stz $0F49|!addr
-endif
-
-if !counterbreak_score
-    ; Reset score counter.
-    rep #$20
-    stz $0F34|!addr
-    stz $0F36|!addr
-    stz $0F38|!addr
-    sep #$20
-endif
-
-    ; Reset timer to the original value.
-    lda !ram_timer+0 : sta $0F31|!addr
-    lda !ram_timer+1 : sta $0F32|!addr
-    lda !ram_timer+2 : sta $0F33|!addr
++   
     rts
 
 ;=====================================
