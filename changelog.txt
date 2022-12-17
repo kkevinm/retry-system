@@ -3,6 +3,7 @@ v0.4.3:
     - Now Retry can work properly in Yoshi Wings levels! If setting a Yoshi Wings sublevel to give a checkpoint upon entrance (or if using a custom midway set to the Yoshi Wings level's main entrance), Mario will respawn doing the "shoot up" animation with Blue Yoshi as if he just got the Yoshi Wings (also if saving the game and reloading in the level after a reset). Any other type of checkpoint gotten in the level (vanilla midway, secondary exit checkpoint, etc.) will turn the level back to normal (no Yoshi, no wings animation, pits are deadly again).
     - Fixed some of Bowser's addresses not resetting upon Retry which could cause unintended effects, like him throwing Magikoopas immediately when re-entering the boss fight (thanks to gui for reporting this).
     - Fixed lightning effect still happening while the Retry prompt is active (only when using !prompt_freeze = 2).
+    - Moved lx5's Custom Powerups reset code out of "extra.asm".
 
 v0.4.2:
     - Fixed pipe entrance timer being inconsistent when respawning if dying while riding Yoshi (thanks to gui for reporting this).

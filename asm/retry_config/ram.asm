@@ -12,7 +12,7 @@
 !retry_freeram_sa1 = $40A400
 
 ;=====================================
-; What freeram is used by AMK. Shoudln't need to be changed usually.
+; What freeram is used by AMK. Shouldn't need to be changed usually.
 ;=====================================
 !amk_freeram = $7FB000
 
