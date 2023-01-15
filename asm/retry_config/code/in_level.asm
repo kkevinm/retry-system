@@ -105,6 +105,9 @@ if !prompt_freeze == 2
 
     ; Stop lightning effect.
     stz $1FFC|!addr : stz $1FFD|!addr
+
+    ; Stop Reappearing Boos timer.
+    inc $190A|!addr
 endif
 else
     ; Force sprites and animations to run.
