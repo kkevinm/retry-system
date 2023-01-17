@@ -115,6 +115,16 @@ else
 
     ; Prevent timer from ticking down.
     inc $0F30|!addr
+
+    ; Prevent messages from activating.
+    stz $1426|!addr
+
+    ; Disable autoscrollers.
+    lda $143E|!addr : beq ++
+    cmp #$01 : beq +
+    cmp #$0C : bne ++
++   stz $143E|!addr
+++
 endif
 
     ; Skip Yoshi's hatch animation.
