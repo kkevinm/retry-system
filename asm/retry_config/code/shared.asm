@@ -202,13 +202,13 @@ save_game:
 dcsave:
 .init:
     ; Return if dcsave isn't installed.
-    lda.l dcsave_byte : cmp #$5C : bne .return
+    lda.l !rom_dcsave_byte : cmp #$5C : bne .return
 
     ; Load the address to the dcsave init wrapper routine.
     rep #$20
-    lda.l dcsave_init_address : clc : adc #$0011 : sta $0D
+    lda.l !rom_dcsave_init_address : clc : adc #$0011 : sta $0D
     sep #$20
-    lda.l dcsave_init_address+2 : sta $0F
+    lda.l !rom_dcsave_init_address+2 : sta $0F
 
     ; Call the dcsave routine.
 if !sa1
@@ -220,16 +220,16 @@ endif
 
 .midpoint:
     ; Return if dcsave isn't installed.
-    lda.l dcsave_byte : cmp #$5C : bne .return
+    lda.l !rom_dcsave_byte : cmp #$5C : bne .return
 
     ; Only save if !Midpoint = 1.
-    lda.l dcsave_midpoint_byte : cmp #$22 : bne .return
+    lda.l !rom_dcsave_midpoint_byte : cmp #$22 : bne .return
 
     ; Load the address to the dcsave save buffer routine.
     rep #$20
-    lda.l dcsave_midpoint_address : sta $0D
+    lda.l !rom_dcsave_midpoint_address : sta $0D
     sep #$20
-    lda.l dcsave_midpoint_address+2 : sta $0F
+    lda.l !rom_dcsave_midpoint_address+2 : sta $0F
 
     ; Call the dcsave routine.
     jsl .jml
@@ -297,10 +297,10 @@ get_bitwise_mask:
 ; If Lunar Magic 3.0+ is used, it may overwrite Y.
 ;================================================
 get_screen_number:
-    lda.l lm_version : cmp #$33 : bcc .no_lm3
-    lda.l lm_get_screen_routine : cmp #$FF : beq .no_lm3
+    lda.l !rom_lm_version : cmp #$33 : bcc .no_lm3
+    lda.l !rom_lm_get_screen_routine : cmp #$FF : beq .no_lm3
 .lm3:
-    jsl lm_get_screen_routine
+    jsl !rom_lm_get_screen_routine
     rts
 .no_lm3:
     ldx $95
@@ -315,8 +315,8 @@ get_screen_number:
 ;================================================
 get_intro_sublevel:
     rep #$20
-    lda.l initial_submap : and #$00FF : beq .normal
-    lda.l sprite_19_fix_byte : cmp #$EAEA : bne .normal
+    lda.l !rom_initial_submap : and #$00FF : beq .normal
+    lda.l !rom_sprite_19_fix_byte : cmp #$EAEA : bne .normal
 .modified:
     lda.w #!intro_level|$0100
     rts

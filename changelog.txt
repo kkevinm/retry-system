@@ -3,6 +3,7 @@ v0.4.4:
     - Fixed Reappearing Boos fading in and out while the Retry prompt is active (only when !prompt_freeze = 2).
     - Fixed game crash that happened when using !prompt_freeze = 0 and dying shortly after hitting a message box.
     - Fixed vanilla autoscrollers still running when dying with !prompt_freeze = 0 (thanks to Mega for reporting this).
+    - Fixed compilation error when setting !use_custom_midway_bar = 0 (thanks to MarioFanGamer for reporting this).
 
 v0.4.3:
     - Fixed Yoshi's tongue being able to extend/retract while the Retry prompt is active, which could also cause unintended side effects, for example revive Mario but keep the prompt active if Yoshi eats a powerup (thanks to gui for reporting this).

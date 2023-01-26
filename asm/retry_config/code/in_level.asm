@@ -70,7 +70,7 @@ endif
 
 .dying:
     ; Show the death pose just to be sure.
-    lda.l death_pose : sta $13E0|!addr
+    lda.l !rom_death_pose : sta $13E0|!addr
 
     ; Disable camera Y scroll if applicable.
 if !death_camera_lock
@@ -135,7 +135,7 @@ endif
     stz !1564-1,x
     ; Prevent Yoshi's tongue from extending.
     lda !1594-1,x : cmp #$01 : bne ++
-    lda !151C-1,x : sec : sbc.l yoshi_tongue_extend_speed : bmi +
+    lda !151C-1,x : sec : sbc.l !rom_yoshi_tongue_extend_speed : bmi +
     sta !151C-1,x
     bra +
 ++  ; Prevent Yoshi's tongue from retracting.
@@ -344,7 +344,7 @@ reset_addresses:
     ; If SA-1 or PIXI's 255 sprite per level are used, the reset loop
     ; will use the remapped address and reset 256 entries instead of 128.
     ldx #$7E
-    lda.l sprite_load_orig : cmp #$1938 : beq .sprite_load_orig
+    lda.l !rom_sprite_load_orig : cmp #$1938 : beq .sprite_load_orig
 .sprite_load_remap:
     %set_dbr(!sprite_load_table)
 -   stz.w !sprite_load_table,x
@@ -410,7 +410,7 @@ if !counterbreak_coins
 endif
 
     ; Reset green star block counter.
-    lda.l green_star_block_count : sta $0DC0|!addr
+    lda.l !rom_green_star_block_count : sta $0DC0|!addr
 
     ; Reset collected invisible 1-UPs.
     stz $1421|!addr
@@ -463,7 +463,7 @@ endif
 ; Routine to reset music to make it play properly after respawning.
 ;=====================================
 reset_music:
-    lda.l amk_byte : cmp #$5C : beq .amk
+    lda.l !rom_amk_byte : cmp #$5C : beq .amk
 
 .no_amk:
     lda $0DDA|!addr : bpl .return
@@ -477,7 +477,7 @@ reset_music:
     bra .bypass
 
 .spec:
-    lda.l death_song : beq .force_reset
+    lda.l !rom_death_song : beq .force_reset
     cmp $1DFB|!addr : beq .no_reset
 
 .force_reset:

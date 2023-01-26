@@ -36,7 +36,7 @@ if !exit_animation == 2
 endif
     
     ; Handle exit music differently if AMK is inserted or not.
-    lda.l amk_byte : cmp #$5C : beq ..amk
+    lda.l !rom_amk_byte : cmp #$5C : beq ..amk
 
 ..no_amk:
     lda #$FF : sta $0DDA|!addr
@@ -55,7 +55,7 @@ endif
 if !exit_animation == 0
     lda !ram_hurry_up : beq .skip
 endif
-    lda.l death_song : sta $1DFB|!addr
+    lda.l !rom_death_song : sta $1DFB|!addr
     rts
 
 .retry:
