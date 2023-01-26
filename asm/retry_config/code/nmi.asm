@@ -31,40 +31,43 @@ level:
 +   tay
     ldx.w .index,y
 
-    ; Set GFX address depending on the box being enabled or not.
-    ; Additionally the disable box flag is copied to $02 for later.
+    ; Push GFX address depending on the box being enabled or not.
+    ; Additionally the size to upload for the cursor is pushed as well.
     lda !ram_disable_box : beq +
-    lda #$01
-+   sta $02
-    asl : tay
+    lda #$02
++   tay
     rep #$20
-    lda.w .gfx_addr,y : sta $00
+    lda.w .cursor_size,y : pha
+    lda.w .gfx_addr,y : pha
 
     ; These values are the same for all uploads, so put them out of the loop.
     ldy.b #$80 : sty $2115
     lda.w #$1801 : sta $4320
     ldy.b #retry_gfx>>16 : sty $4324
+    ldy.b #$04
 .loop:
     lda.w .dest,x : sta $2116
-    lda.w .src,x : clc : adc $00 : sta $4322
+    lda.w .src,x : clc : adc $01,s : sta $4322
     ; All uploads are 8x8 except the cursor,
     ; which is 16x8 only when the prompt box is enabled.
     lda.w #gfx_size(1)
     cpx #$00 : bne +
-    ldy $02 : bne +
-    asl
+    lda $03,s
 +   sta $4325
-    ldy.b #$04 : sty $420B
+    sty $420B
     dex #2 : bpl .loop
 ..end:
-    plb
 
     ; If the box is enabled, transfer the black tiles too.
-    ldy $02 : bne .return
+    cmp.w #gfx_size(1) : beq +
+    sta $4325
     lda.w #vram_addr(!tile_blk) : sta $2116
     lda.w #retry_gfx_box+gfx_size(7) : sta $4322
-    lda.w #gfx_size(2) : sta $4325
-    ldy.b #$04 : sty $420B
+    sty $420B
++
+    ; Realign the stack.
+    pla : pla
+    plb
 
 .return:
     sep #$20
@@ -74,6 +77,11 @@ level:
 .gfx_addr:
     dw retry_gfx_box
     dw retry_gfx_no_box
+
+; Size to upload for the cursor when the prompt box is enabled/disabled
+.cursor_size:
+    dw gfx_size(2)
+    dw gfx_size(1)
 
 ; Index in the below tables to start from when the exit option is enabled/disabled.
 .index:
