@@ -1,39 +1,6 @@
 ; Gamemode 13
 
 init:
-    ; Reset some stuff related to lx5's Custom Powerups.
-if !custom_powerups == 1
-if !dynamic_items == 1
-    ldy $0DC2|!addr
-    lda.b #read1($02802D) : dec : sta $00
-    lda.b #read1($02802E) : sta $01
-    lda.b #read1($02802F) : sta $02
-    lda [$00],y : xba
-    rep #$20
-    and #$FF00 : lsr #3 : adc.w #read2($00A38B) : sta !item_gfx_pointer+4
-    clc : adc #$0200 : sta !item_gfx_pointer+10
-    sep #$20
-    lda !item_gfx_refresh : ora #$13 : sta !item_gfx_refresh
-endif
-
-    lda #$FF : sta !item_gfx_oldest : sta !item_gfx_latest
-
-    lda $86 : sta !slippery_flag_backup
-
-.init_cloud_data
-    lda $19 : cmp #!cloud_flower_powerup_num : bne +
-
-    rep #$30
-    phx
-    ldx #$006C
--   lda $94 : sta.l !collision_data_x,x
-    lda $96 : sta.l !collision_data_x+2,x
-    dex #4 : bpl -
-    plx
-    sep #$30
-+   
-endif
-    
 if !pipe_entrance_freeze < 2
     ; If in the pipe entrance animation, lock/unlock sprites.
     lda $71 : cmp #$05 : bcc +

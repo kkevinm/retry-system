@@ -1,3 +1,8 @@
+v0.4.5:
+    - Fixed integration with lx5's Custom Powerups:
+      - Fixed compilation error when using both Retry and the Custom Powerups.
+      - Removed redundant code in "level_init_3.asm" that is already run in the Custom Powerups UberASM.
+
 v0.4.4:
     - Fixed bug where dying on the same frame as getting a midway would make the music reset (thanks to LouisDoucet for reporting this).
     - Fixed Reappearing Boos fading in and out while the Retry prompt is active (only when !prompt_freeze = 2).

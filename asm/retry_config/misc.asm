@@ -4,7 +4,7 @@
 ; Retry version number (Va.b.c) to write in ROM.
 !version_a = 0
 !version_b = 4
-!version_c = 4
+!version_c = 5
 
 ; Read death time from ROM.
 !death_time #= read1($00F61C)
@@ -62,7 +62,6 @@ endif
 ; Detects lx5's Custom Powerups.
 if read2($00D067) == $DEAD
     !custom_powerups = 1
-    incsrc powerup_defs.asm
 else
     !custom_powerups = 0
 endif
