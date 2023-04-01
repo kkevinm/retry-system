@@ -17,3 +17,4 @@
 !rom_sprite_load_orig              = $01AC9F|!bank
 !rom_initial_submap                = $009EF0|!bank
 !rom_sprite_19_fix_byte            = $01E762|!bank
+!rom_sumo_bro_lightning_y_speed    = $02DEB6|!bank

@@ -92,13 +92,19 @@ if !prompt_freeze == 2
     lda $145E|!addr : lsr : bcs +
     dec $22
 +   
-    ; Freeze Shell-less Koopas.
+    ; Freeze Shell-less Koopas and Sumo Bro's Lightning.
     ldx.b #!sprite_slots-1
--   lda !9E,x : cmp #$04 : bcs +
-    lda !14C8,x : cmp #$08 : bne +
-    lda !extra_bits,x : and #$08 : bne +
+-   lda !14C8,x : cmp #$08 : bne ++
+    lda !extra_bits,x : and #$08 : bne ++
+    lda !9E,x : cmp #$04 : bcc +
+    cmp #$2B : bne ++
+    ; Sumo Bro's Lightning
+    lda.l !rom_sumo_bro_lightning_y_speed : eor #$FF : inc : sta !AA,x
+    jsl $01801A|!bank
+    bra ++
++   ; Shell-less Koopas
     stz !sprite_speed_y,x
-+   dex : bpl -
+++  dex : bpl -
     
     ; Stop earthquake.
     stz $1887|!addr
