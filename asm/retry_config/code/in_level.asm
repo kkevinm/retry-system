@@ -26,7 +26,7 @@ endif
     lda #$06 : sta $1DFA|!addr
 +
     ; Update the window HDMA when the flag is set.
-    lda !ram_update_window : beq +
+    lda !ram_update_window : bpl +
     jsr prompt_update_window
 +
     ; If the game is paused, skip.

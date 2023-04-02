@@ -168,6 +168,11 @@
 ; 2 = sprites and all animations will freeze.
     !prompt_freeze = 2
 
+; Cooldown (max $7F) for disabling up/down when the prompt shows up, which prevents
+; selecting the "Exit" option for a few frames. Can be useful to prevent accidentally
+; pressing "Exit" when dying while pressing up/down. Set to $00 to disable this.
+    !prompt_cooldown = $10
+
 ; This controls what happens when hitting "Exit" on the Retry prompt:
 ; 0 = exit the level immediately and don't play the death music (except when the level music is sped up).
 ; 1 = exit the level immediately and play the death music (note that the vanilla song will be cut short).

@@ -73,10 +73,13 @@ Now for the actual RAM addresses (offset is from !retry_freeram, size refers to 
 ;                  ;         ;       ; to $06 to make the vanilla death animation play out and ;
 ;                  ;         ;       ; override the current Retry settings.                    ;
 ;==============================================================================================;
-; update_window    ;   $0D   ;  $01  ; Flag set during prompt handling to make the window      ;
+; update_window    ;   $0D   ;  $01  ; The MSB is set during prompt handling to make the window;
 ;                  ;         ;       ; change shape to properly show the options. Needed to    ;
 ;                  ;         ;       ; avoid occasional flickering when updating it on the same;
 ;                  ;         ;       ; frame it finished expanding.                            ;
+;                  ;         ;       ; Additionally used as a timer when the prompt opens to   ;
+;                  ;         ;       ; disable pressing up/down to move the cursor (from $00 to;
+;                  ;         ;       ; $7F, since bit $80 is used for the flag).               ;
 ;==============================================================================================;
 ; is_dying         ;   $0E   ;  $01  ; Flag set when Mario dies. Used to skip the death music  ;
 ;                  ;         ;       ; when applicable (but only on the first death frame) and ;
