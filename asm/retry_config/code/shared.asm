@@ -48,6 +48,7 @@ endmacro
 ;================================================
 function dma(addr,ch)     = ((addr)+((ch)*$10))
 function window_dma(addr) = dma(addr,!window_channel)
+function prompt_dma(addr) = dma(addr,!prompt_channel)
 
 ;================================================
 ; Utility functions for tilemap and stripe image management.

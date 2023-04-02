@@ -6,15 +6,28 @@
 !version_b = 4
 !version_c = 5
 
-; Read death time from ROM.
-!death_time #= read1($00F61C)
-
 ; What button exits the level while the game is paused (by default, select).
 !exit_level_buttons_addr = $16
 !exit_level_buttons_bits = $20
 
 ; Level number of the intro level (automatically adjusted to $01C5 when necessary).
 !intro_level = $00C5
+
+; Read death time from ROM.
+!death_time #= read1($00F61C)
+
+; Check which channel is used for windowing HDMA, for SA-1 v1.35 (H)DMA remap compatibility.
+; It will be 7 on lorom or with SA-1 <1.35, and 1 with SA-1 >=1.35.
+!window_mask    #= read1($0092A1)
+!window_channel #= log2(!window_mask)
+
+; DMA channel used to upload the Retry prompt tiles.
+; You should never need to edit this.
+!prompt_channel = 2
+
+; Where in VRAM the prompt tiles will be uploaded to.
+; You should never need to edit this.
+!sprite_vram = $6000
 
 ; Stripe image table defines.
 !stripe_index = $7F837B
@@ -35,15 +48,6 @@ if !sa1
 else
     !7ED000 = $7ED000
 endif
-
-; Check which channel is used for windowing HDMA, for SA-1 v1.35 (H)DMA remap compatibility.
-; It will be 7 on lorom or with SA-1 <1.35, and 1 with SA-1 >=1.35.
-!window_mask    #= read1($0092A1)
-!window_channel #= log2(!window_mask)
-
-; Where in VRAM the prompt tiles will be uploaded to. You should never need to edit this.
-; $6000 = SP1/SP2, $7000 = SP3/SP4.
-!base_vram = $6000
 
 ; Detect the SRAM Plus patch.
 if read1($009B42) == $04

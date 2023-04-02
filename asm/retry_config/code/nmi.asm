@@ -9,7 +9,7 @@
 ;=====================================
 
 ; Helper functions to compute addresses more compactly.
-function vram_addr(offset) = (!base_vram+(offset*$10))
+function vram_addr(offset) = (!sprite_vram+(offset*$10))
 function gfx_size(num)     = (num*$20)
 
 level:
@@ -42,27 +42,27 @@ level:
 
     ; These values are the same for all uploads, so put them out of the loop.
     ldy.b #$80 : sty $2115
-    lda.w #$1801 : sta $4320
-    ldy.b #retry_gfx>>16 : sty $4324
-    ldy.b #$04
+    lda.w #$1801 : sta.w prompt_dma($4300)
+    ldy.b #retry_gfx>>16 : sty.w prompt_dma($4304)
+    ldy.b #1<<!prompt_channel
 .loop:
     lda.w .dest,x : sta $2116
-    lda.w .src,x : clc : adc $01,s : sta $4322
+    lda.w .src,x : clc : adc $01,s : sta.w prompt_dma($4302)
     ; All uploads are 8x8 except the cursor,
     ; which is 16x8 only when the prompt box is enabled.
     lda.w #gfx_size(1)
     cpx #$00 : bne +
     lda $03,s
-+   sta $4325
++   sta.w prompt_dma($4305)
     sty $420B
     dex #2 : bpl .loop
 ..end:
 
     ; If the box is enabled, transfer the black tiles too.
     cmp.w #gfx_size(1) : beq +
-    sta $4325
+    sta.w prompt_dma($4305)
     lda.w #vram_addr(!tile_blk) : sta $2116
-    lda.w #retry_gfx_box+gfx_size(7) : sta $4322
+    lda.w #retry_gfx_box+gfx_size(7) : sta.w prompt_dma($4302)
     sty $420B
 +
     ; Realign the stack.
