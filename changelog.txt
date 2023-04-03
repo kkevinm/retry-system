@@ -4,6 +4,7 @@ v0.4.5:
       - Removed redundant code in "level_init_3.asm" that is already run in the Custom Powerups UberASM.
     - Fixed Sumo Bro's Lightning falling while the Retry prompt is active (only when !prompt_freeze = 2).
     - Added an optional !prompt_cooldown option (set to $10 frames by default) to disable pressing up/down to move the cursor for a given amount of frames after the Retry prompt has opened, to avoid accidental level exits (thanks to AmperSam for the suggestion).
+    - Fixed some mode 7 values not being reset by Retry, and added some small optimizations on level load.
 
 v0.4.4:
     - Fixed bug where dying on the same frame as getting a midway would make the music reset (thanks to LouisDoucet for reporting this).

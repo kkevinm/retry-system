@@ -52,11 +52,13 @@ endif
     lda $141A|!addr : bne .room_transition
 
     ; Backup the timer value.
+    rep #$20
     lda $0F31|!addr : sta !ram_timer+0
-    lda $0F32|!addr : sta !ram_timer+1
+    sep #$20
     lda $0F33|!addr : sta !ram_timer+2
 
 .room_transition:
+    ; Check if we're respawning or in a transition checkpoint.
     lda !ram_is_respawning : bne ..respawning
     jsr shared_get_checkpoint_value
     cmp #$02 : bcc .normal
@@ -67,8 +69,12 @@ endif
     stz $13C6|!addr
 
     ; Reset mode 7 values.
+    rep #$20
     stz $36
-    stz $37
+    stz $38
+    stz $3A
+    stz $3C
+    sep #$20
     
     ; Backup the music that should play.
     lda $0DDA|!addr : sta !ram_music_to_play
