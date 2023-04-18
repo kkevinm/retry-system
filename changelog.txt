@@ -1,3 +1,6 @@
+v0.4.6:
+    - Updated custom midway instructions with more clear guide (thanks to AmperSam for providing them).
+
 v0.4.5:
     - Fixed integration with lx5's Custom Powerups (thanks to NixKillsMyths for reporting this):
       - Fixed compilation error when using both Retry and the Custom Powerups.
