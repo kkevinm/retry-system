@@ -314,8 +314,11 @@ endif
     ; Skip No Yoshi intros.
     stz $141D|!addr
 
-    ; Change to "Fade to level" game mode
-    lda #$0F : sta $0100|!addr
+    ; Enable level teleport.
+    lda #$06 : sta $71
+    stz $88
+    stz $89
+    
     rtl
 
 ;=====================================

@@ -1,5 +1,6 @@
 v0.4.6:
     - Updated custom midway instructions with more clear guide (thanks to AmperSam for providing them).
+    - Fixed occasional respawn issues when using UberASMTool 2.0 Beta.
 
 v0.4.5:
     - Fixed integration with lx5's Custom Powerups (thanks to NixKillsMyths for reporting this):
