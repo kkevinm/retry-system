@@ -114,6 +114,16 @@ if !prompt_freeze == 2
 
     ; Stop Reappearing Boos timer.
     inc $190A|!addr
+
+    ; Freeze bonus game 1UPs
+    lda $18B8|!addr : beq +
+    ldx.b #20-1
+    lda #$01
+-   cmp $1892|!addr,x : bne ++
+    stz $1E52|!addr,x
+    stz $1E66|!addr,x
+++  dex : bpl -
++
 endif
 else
     ; Force sprites and animations to run.
