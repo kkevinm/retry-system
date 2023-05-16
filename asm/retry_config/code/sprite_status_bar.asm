@@ -1,3 +1,5 @@
+if !sprite_status_bar
+
 ; Calculates the VRAM address based on the sprite tile number.
 ; Also ensures the carry is clear.
 macro calc_vram()
@@ -471,3 +473,5 @@ endif
     db $10+!dc_counter_x_pos,!dc_counter_y_pos
     db $18+!dc_counter_x_pos,!dc_counter_y_pos
     db $20+!dc_counter_x_pos,!dc_counter_y_pos
+
+endif

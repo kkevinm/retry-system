@@ -75,9 +75,7 @@ endif
     %incsrc(code,fade_to_overworld)
     %incsrc(code,game_over)
     %incsrc(code,time_up)
-if !sprite_status_bar
     %incsrc(code,sprite_status_bar)
-endif
 
 ;=====================================
 ; Load the hijacks.
