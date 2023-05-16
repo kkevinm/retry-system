@@ -409,9 +409,9 @@ if !counterbreak_score
 endif
 
     ; Reset timer to the original value.
-    lda !ram_timer+0 : sta $0F31|!addr
+    lda !ram_timer+0 : and #$0F0F : sta $0F31|!addr
     sep #$20
-    lda !ram_timer+2 : sta $0F33|!addr
+    lda !ram_timer+2 : and #$0F : sta $0F33|!addr
 
     ; Reset powerup.
 if !counterbreak_powerup

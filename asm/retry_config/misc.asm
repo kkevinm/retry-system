@@ -3,8 +3,8 @@
 
 ; Retry version number (Va.b.c) to write in ROM.
 !version_a = 0
-!version_b = 4
-!version_c = 7
+!version_b = 5
+!version_c = 0
 
 ; What button exits the level while the game is paused (by default, select).
 !exit_level_buttons_addr = $16
@@ -75,4 +75,15 @@ if read1($05DCDD) == $22 || read1($05DCE2) == $22
     !dynamic_ow_levels = 1
 else
     !dynamic_ow_levels = 0
+endif
+
+; Detects if SA-1 MaxTile is inserted.
+if read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140
+    !maxtile = 1
+    !maxtile_buffer_max    = $6180
+    !maxtile_buffer_high   = $6190
+    !maxtile_buffer_normal = $61A0
+    !maxtile_buffer_low    = $61B0
+else
+    !maxtile = 0
 endif

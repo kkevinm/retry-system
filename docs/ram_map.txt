@@ -161,7 +161,11 @@ Now for the actual RAM addresses (offset is from !retry_freeram, size refers to 
 ;                  ;         ;       ; never cleared besides the title screen, so it's up to   ;
 ;                  ;         ;       ; you to reset it when you want midways to spawn again.   ;
 ;==============================================================================================;
-; reserved         ;   $1A   ;  $06  ; Unused, but reserved for future expansion.              ;
+; coin_backup      ;   $1A   ;  $01  ; Keeps track of the last frame's coin counter to check if;
+;                  ;         ;       ; it changed, to only upload the counter's sprite digits  ;
+;                  ;         ;       ; when necessary. Not used if !sprite_status_bar = 0.     ;
+;==============================================================================================;
+; reserved         ;   $1B   ;  $05  ; Unused, but reserved for future expansion.              ;
 ;                  ;         ;       ; Usage as free ram is not recommended.                   ;
 ;==============================================================================================;
 ; death_counter    ;   $20   ;  $05  ; Holds the amount of deaths occurred. Each byte holds the;

@@ -16,7 +16,8 @@ endmacro
 ; Macro to JSL to a routine that ends in RTS.
 ;================================================
 macro jsl_to_rts(routine, rtl)
-    phk : pea.w (?+)-1 : pea.w <rtl>-1
+    phk : pea.w (?+)-1
+    pea.w <rtl>-1
     jml <routine>|!bank
 ?+
 endmacro
@@ -323,4 +324,13 @@ get_intro_sublevel:
     rts
 .normal:
     lda.w #!intro_level
+    rts
+
+;================================================
+; Routine that updates the OAM table at $0400 using
+; the decompressed mirror at $0420.
+; Useful if you need to draw sprites during fadein.
+;================================================
+update_0400:
+    %jsl_to_rts_db($008494,$0084CF)
     rts

@@ -107,3 +107,34 @@ org $008F49
 org $008C89
     db $30,$28,$31,$28,$32,$28,$33,$28,$34,$28,$FC,$38
 endif
+
+if read1($0081F4+2) == $69
+org $0081F4
+    jsr $8DAC
+endif
+
+if read1($008275+4) == $69
+org $008275
+    lda $0D9B|!addr
+    beq $18
+endif
+
+if read1($0082E8+2) == $69
+org $0082E8
+    jsr $8DAC
+endif
+
+if read1($00985A+2) == $69
+org $00985A
+    jsr $8CFF
+endif
+
+if read1($00A5A8+2) == $69
+org $00A5A8
+    jsr $8CFF
+endif
+
+if read1($05B31B+1) == $69
+org $05B31B
+    ldy #$1C
+endif

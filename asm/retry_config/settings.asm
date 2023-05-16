@@ -247,9 +247,42 @@
     !tile_x    = $4A
     !tile_i    = $5A
 
+;======================== Sprite Status Bar =============================;
+
+; If 1, a sprite status bar will be installed allowing you to display the item box, coin/Yoshi coin counter
+; and timer in levels with sprites, which keeps layer 3 working properly.
+; The sprites use dynamic tiles, meaning you'll need to reserve some GFX space in your SP slots for them.
+; Item box, coins and timer use 1 16x16 tile each, but they only need to be reserved when actually using them,
+; and you can choose which tiles to use for each level (or to just disable any or all of them in specific levels)
+; using the tables in "sprite_status_bar_tables.asm".
+    !sprite_status_bar = 0
+
+; If 1, it disables the original game's status bar (including the IRQ) which prevents layer 3 from messing up.
+; Differently than the normal remove status bar patch, this keeps the status bar functions (lives, coins,
+; bonus stars, score, timer, reserve item) running in the background.
+; Suggested to use if you're using !sprite_status_bar = 1.
+; Don't use this if you're using similar patches such as "RAM Toggled Status Bar".
+    !remove_vanilla_status_bar = 0
+
+; General properties for sprite status bar elements.
+; These are only relevant if !sprite_status_bar = 1.
+    !item_box_x_pos     = $70
+    !item_box_y_pos     = $07
+    !timer_x_pos        = $D0
+    !timer_y_pos        = $0F
+    !coin_counter_x_pos = $D0
+    !coin_counter_y_pos = $17
+    !dc_counter_x_pos   = $9A
+    !dc_counter_y_pos   = $0F
+
+; If 1, the item box will always be drawn (if set to be drawn for the specific level).
+; Otherwise, it will only be drawn when having an item in reserve.
+; This is only relevant if !sprite_status_bar = 1.
+    !always_draw_box = 0
+
 ;======================== Death Counter =================================;
 
-; If 1, a death counter will replace the lives on the status bar.
+; If 1, a death counter will replace the lives on the (vanilla) status bar.
     !status_death_counter = 0
 
 ; If 1, the "DEATHS" word will replace Mario's name on the status bar.

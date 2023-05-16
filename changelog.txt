@@ -1,6 +1,7 @@
 v0.4.7:
     - Small documentation updates.
     - Fixed bonus game 1UPs still moving while the Retry prompt is active (only when !prompt_freeze = 2).
+    - Implemented sprite status bar that can be enabled with the !sprite_status_bar setting and configured from the settings and the tables in "sprite_status_bar_tables.asm".
 
 v0.4.6:
     - Updated custom midway instructions with more clear guide (thanks to AmperSam for providing them).

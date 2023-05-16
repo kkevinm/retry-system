@@ -13,6 +13,11 @@ function vram_addr(offset) = (!sprite_vram+(offset*$10))
 function gfx_size(num)     = (num*$20)
 
 level:
+if !sprite_status_bar
+    ; Update the sprite status bar graphics.
+    jsr sprite_status_bar_nmi
+endif
+
     ; Skip if it's not time to upload the tiles.
     lda !ram_update_request : bne .upload
     rtl

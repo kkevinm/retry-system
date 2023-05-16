@@ -45,6 +45,11 @@ gm14_end:
     jsr run_level_end_frame_code
     plb : plp
 
+if !sprite_status_bar
+    ; Draw the sprite status bar.
+    jsr sprite_status_bar_main
+endif
+
     ; If Mario is dying, call the death routine.
     lda $71 : cmp #$09 : bne .no_death
     jsr death_routine
