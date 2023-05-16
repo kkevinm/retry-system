@@ -3,6 +3,7 @@
   - lx5: bugfixes to the original Retry patch, BW-RAM+ code.
   - imamelia, 0x400: ObjecTool code.
   - Thomas: death counter code.
+  - Lui: remove status bar code.
   - dtothefourth: a couple new features ideas.
   - AmperSam: custom midways instructions.
   - BabaYegha, FYRE150, Abdu, margot, simon.caio, LouisDoucet, SJandCharlieTheCat, Koopster, schema_tuna, Alex, Selicre, Mega, worldpeace, AmperSam, NixKillsMyths: testing and feedback.
