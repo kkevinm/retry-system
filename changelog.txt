@@ -1,5 +1,6 @@
 v0.5.1:
     - Improved speed of Retry prompt drawing.
+    - Now the sprite status bar's coin counter and Yoshi Coins display use different tiles (they both look like the standard coin tile by default).
 
 v0.5.0:
     - Small documentation updates.

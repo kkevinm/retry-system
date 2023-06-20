@@ -46,7 +46,7 @@ nmi:
     lda $0F31|!addr : and #$00FF : beq +
     %store_digit_addr()
     lda $01,s : adc #$0010 : sta $2116
-    lda #$0020 : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
     ; In this case we need to upload the second digit even if 0.
@@ -56,14 +56,14 @@ nmi:
     lda $0F32|!addr : and #$00FF : beq +
 ++  %store_digit_addr()
     lda $01,s : adc #$0100 : sta $2116
-    lda #$0020 : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 +
     ; Upload the third digit.
     lda $0F33|!addr : and #$00FF
     %store_digit_addr()
     pla : adc #$0110 : sta $2116
-    lda #$0020 : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
     ; Restore X and processor state.
@@ -100,14 +100,14 @@ nmi:
     ; Upload the first digit (unless it's 0).
     lda $4214 : beq +
     %store_digit_addr()
-    lda $01,s : adc #$0010 : sta $2116
-    lda #$0020 : sta.w prompt_dma($4305)
+    lda $01,s : adc #$0100 : sta $2116
+    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 +   
     ; Upload the second digit.
     lda $4216 : %store_digit_addr()
-    pla : adc #$0100 : sta $2116
-    lda #$0020 : sta.w prompt_dma($4305)
+    pla : adc #$0110 : sta $2116
+    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
 .no_coins:
@@ -143,13 +143,13 @@ init:
     phx : sep #$10
     %calc_vram() : sta $2116 : pha
     lda.w #retry_gfx_item_box : sta.w prompt_dma($4302)
-    lda #$0040 : sta.w prompt_dma($4305)
+    lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
 
     ; Upload the second row.
     pla : adc #$0100 : sta $2116
     lda.w #retry_gfx_item_box+$40 : sta.w prompt_dma($4302)
-    lda #$0040 : sta.w prompt_dma($4305)
+    lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
 
     ; Restore X and processor state.
@@ -163,7 +163,7 @@ init:
     phx : sep #$10
     %calc_vram() : sta $2116
     lda.w #retry_gfx_timer : sta.w prompt_dma($4302)
-    lda #$0020 : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
     ; Restore X and processor state.
@@ -173,11 +173,11 @@ init:
     ; Check if we need to upload the coin tile.
     lda.l tables_coins,x : beq ..no_coins
 
-    ; Upload the coin tile.
+    ; Upload the coin tiles.
     sep #$10
     %calc_vram() : sta $2116
     lda.w #retry_gfx_coin : sta.w prompt_dma($4302)
-    lda #$0020 : sta.w prompt_dma($4305)
+    lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
 
 ..no_coins:
@@ -423,7 +423,7 @@ endif
     db $18+!coin_counter_x_pos,!coin_counter_y_pos
 
 .tile:
-    dw $0000,$0001,$0010
+    dw $0000,$0010,$0011
 
 draw_yoshi_coins:
     ; Check if we need to draw the Yoshi Coins.
@@ -433,9 +433,13 @@ draw_yoshi_coins:
     lda $13BF|!addr : lsr #3 : tay
     lda $1F2F|!addr,y : and $02 : beq +
     ldy.w #2*(5-1)
-    bra .loop
+    bra .draw
 +   lda $1422|!addr : beq .return
     dec : asl : tay
+
+.draw:
+    ; Yoshi Coin tile is one tile to the right.
+    inc $00
 
 .loop:
 if !maxtile
