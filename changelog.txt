@@ -1,3 +1,6 @@
+v0.5.1:
+    - Improved speed of Retry prompt drawing.
+
 v0.5.0:
     - Small documentation updates.
     - Fixed bonus game 1UPs still moving while the Retry prompt is active (only when !prompt_freeze = 2).
