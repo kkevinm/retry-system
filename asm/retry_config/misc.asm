@@ -29,6 +29,12 @@
 ; You should never need to edit this.
 !sprite_vram = $6000
 
+; Default amount of Yoshi Coins per level, used for the sprite status bar.
+; Note that usually this is not used, as the value is read from the ROM.
+; In case of patches editing the area around $00F346 (except for the
+; "Per Level Yoshi Coins Amount" patch) then this value will be used.
+!default_dc_amount = 5
+
 ; Stripe image table defines.
 !stripe_index = $7F837B
 !stripe_table = $7F837D

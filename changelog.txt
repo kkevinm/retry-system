@@ -1,6 +1,7 @@
 v0.5.1:
     - Improved speed of Retry prompt drawing.
     - Now the sprite status bar's coin counter and Yoshi Coins display use different tiles (they both look like the standard coin tile by default).
+    - Now the sprite status bar's Yoshi Coins counter auto detects how many coins need to be displayed in levels when having collected all of them, even if the amount is hex edited in the ROM or the "Per Level Yoshi Coins Amount" patch is used. Additionally, the counter will work properly if the amount is more than 5.
 
 v0.5.0:
     - Small documentation updates.
