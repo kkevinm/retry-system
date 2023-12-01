@@ -1,3 +1,6 @@
+v0.5.2:
+    - Now changing the X/Y position for the prompt text (from the settings or by writing to the respective RAM addresses) only works if the black box is disabled, since otherwise it looks broken.
+
 v0.5.1:
     - Improved speed of Retry prompt drawing.
     - Now the sprite status bar's coin counter and Yoshi Coins display use different tiles (they both look like the standard coin tile by default).

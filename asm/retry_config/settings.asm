@@ -203,7 +203,8 @@
     !exit_button_address = $16
 
 ; X/Y position of the first tile in the prompt (the cursor on the first line).
-; You should only change this if you're removing the black box.
+; Changing this only works if the black box is disabled (if enabled,
+; default values will be used instead).
 ; Note: you can also change these on the fly (see "docs/ram_map.txt").
     !text_x_pos = $58
     !text_y_pos = $6F
