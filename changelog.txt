@@ -1,6 +1,6 @@
 v0.5.2:
     - Now changing the X/Y position for the prompt text (from the settings or by writing to the respective RAM addresses) only works if the black box is disabled, since otherwise it looks broken.
-    - Added an "api" file containing useful routines that can be called by external UberASM files (sadly not from other library files if using standard UberASMTool). For now it only has two, one to reset the current level's checkpoint, and one to reset all checkpoints, but more can be added in the future. For information on how to use them see "retry_config/code/api.asm" (a proper doc will be added later).
+    - Added an "api" file containing useful routines that can be called by external UberASM files (sadly not from other library files if using standard UberASMTool). For now it only has two, one to reset the current level's checkpoint, and one to reset all checkpoints, but more can be added in the future. For information on how to use them see "docs/api.html".
 
 v0.5.1:
     - Improved speed of Retry prompt drawing.
