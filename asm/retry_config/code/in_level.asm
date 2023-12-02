@@ -41,6 +41,16 @@ endif
     
     ; ...and backup $0DDA for later.
     lda $0DDA|!addr : sta !ram_music_backup
+
+    ; If Mario is not dead but the prompt is displayed for some reason
+    ; (for example, revive glitch with Yoshi)...
+    lda !ram_prompt_phase : beq ..return
+
+    ; ...reset the prompt box and prevent drawing tiles
+    lda #$00 : sta !ram_prompt_phase
+    jsr prompt_handle_box_finished_shrinking
+
+..return:
     rtl
 
 .paused:
