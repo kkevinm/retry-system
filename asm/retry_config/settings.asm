@@ -281,6 +281,11 @@
 ; This is only relevant if !sprite_status_bar = 1.
     !always_draw_box = 0
 
+; If 1, when collecting all DCs in a level they'll be displayed in the status bar.
+; If 0, they won't be displayed (like in vanilla).
+; This is only relevant if !sprite_status_bar = 1.
+    !draw_all_dc_collected = 0
+
 ;======================== Death Counter =================================;
 
 ; If 1, a death counter will replace the lives on the (vanilla) status bar.
