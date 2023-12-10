@@ -1,4 +1,4 @@
-; Gamemode 14
+; Gamemodes 7, 14
 
 ; Normally the prompt comes up $40 frames after dying
 !show_prompt_time #= !death_time-$10
@@ -67,10 +67,11 @@ endif
     ; If we're in the intro level, don't Start+Select.
     lda $0109|!addr : bne .not_dying
 
+    ; If we're in the title screen, don't Start+Select.
+    lda $0100|!addr : cmp #$07 : beq .not_dying
+
     ; Check if the correct button was pressed.
-    lda.b !exit_level_buttons_addr
-    and.b #!exit_level_buttons_bits
-    beq .not_dying
+    lda.b !exit_level_buttons_addr : and.b #!exit_level_buttons_bits : beq .not_dying
 
 ..start_select_exit:
     ; Call the Start+Select routine.
@@ -181,6 +182,27 @@ endif
     jsr shared_get_prompt_type
     cmp #$03 : bcc ..prompt
                beq ..instant
+
+..vanilla:
+if !title_death_behavior != 0
+    ; If on the title screen...
+    lda $0100|!addr : cmp #$07 : bne ..return
+
+    ; ...prevent opening the file select menu.
+    stz $15 : stz $16 : stz $17 : stz $18
+
+    ; If the death animation is almost over...
+    lda $1496|!addr : cmp #$01 : bne ..return
+
+    ; ... reset stuff for reloading...
+    stz $0109|!addr
+    jsr reset_addresses
+    jsr reset_music
+
+    ; ...and reload the title screen.
+    lda #$02 : sta $0100|!addr
+endif
+
     rtl
 
 ..prompt:
@@ -334,11 +356,19 @@ endif
     ; Skip No Yoshi intros.
     stz $141D|!addr
 
+    ; Check if we need to reload a level or the title screen.
+    lda $0100|!addr : cmp #$07 : beq .title
+
     ; Enable level teleport.
+.level:
     lda #$06 : sta $71
     stz $88
     stz $89
-    
+    rtl
+
+    ; Enable title screen reloading.
+.title:
+    lda #$02 : sta $0100|!addr
     rtl
 
 ;=====================================

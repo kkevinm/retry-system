@@ -86,6 +86,14 @@
 ; 2 = reset Boo Rings positions on death and on level load.
     !reset_boo_rings = 1
 
+; This determines what happens when you die on the title screen.
+; 0 = vanilla (after dying a glitched version of the title screen will load,
+;     causing a softlock. Use this if you either don't care or want to do something
+;     custom with it.)
+; 1 = play vanilla death animation and reload title screen.
+; 2 = instantly reload the title screen.
+    !title_death_behavior = 1
+
 ;======================== SFX ===========================================;
 
 ; SFX to play when dying (!death_sfx = $00 -> no SFX).
