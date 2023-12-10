@@ -1,4 +1,4 @@
-; Gamemodes 7, 14
+; Gamemode 7, 14
 
 ; Normally the prompt comes up $40 frames after dying
 !show_prompt_time #= !death_time-$10
