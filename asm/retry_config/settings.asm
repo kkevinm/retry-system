@@ -38,7 +38,7 @@
 ;======================== QoL fixes =====================================;
 
 ; If 1, level transitions will be much faster than usual.
-    !fast_transitions = 1
+    !fast_transitions = 0
 
 ; If 1, it fixes the issue where some sprites don't face Mario when entering a level for the first time.
 ; It's suggested to enable the fix to make sprite behavior consistent between the first and all the next level reloads.
@@ -159,7 +159,7 @@
 ; If 1, the prompt will show up immediately after dying.
 ; Otherwise, it will show up halfway through (or right after, depending on !retry_death_animation)
 ; the death animation, but pressing A/B during it will skip the animation.
-    !fast_prompt = 1
+    !fast_prompt = 0
 
 ; 0 = don't play the death animation when using instant Retry or prompt
 ;     Note: for Retry prompt, part of the death animation still plays if not using !fast_prompt
