@@ -181,18 +181,19 @@ endif
     ; See what retry we have to use.
     jsr shared_get_prompt_type
     cmp #$03 : bcc ..prompt
-               beq ..instant
+               bne ..vanilla
+               jmp ..instant
 
 ..vanilla:
 if !title_death_behavior != 0
     ; If on the title screen...
-    lda $0100|!addr : cmp #$07 : bne ..return
+    lda $0100|!addr : cmp #$07 : bne ...return
 
     ; ...prevent opening the file select menu.
     stz $15 : stz $16 : stz $17 : stz $18
 
     ; If the death animation is almost over...
-    lda $1496|!addr : cmp #$01 : bne ..return
+    lda $1496|!addr : cmp #$01 : bne ...return
 
     ; ... reset stuff for reloading...
     stz $0109|!addr
@@ -203,6 +204,7 @@ if !title_death_behavior != 0
     lda #$02 : sta $0100|!addr
 endif
 
+...return:
     rtl
 
 ..prompt:
