@@ -76,7 +76,7 @@
     !always_start_select = 0
 
 ; If 1, the camera won't scroll vertically during Mario's death animation.
-    !death_camera_lock = 1
+    !death_camera_lock = 0
 
 ; If 1, DSX (dynamic) sprites status is reset on level load.
     !reset_dsx = 1
