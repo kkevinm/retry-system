@@ -1,6 +1,7 @@
 v0.5.3:
     - Fixed compilation errors when using !fast_prompt = 0 (thanks to Koopster for reporting this).
     - Changed default values for !fast_transitions, !fast_prompt and !death_camera_lock in "settings.asm" to 0.
+    - Fixed sfx echo not working sometimes when changing music in the middle of a level (for example with P-Switch or Starman).
 
 v0.5.2:
     - Now changing the X/Y position for the prompt text (from the settings or by writing to the respective RAM addresses) only works if the black box is disabled, since otherwise it looks broken (thanks to AmperSam for the suggestion).

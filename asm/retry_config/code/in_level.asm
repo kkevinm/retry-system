@@ -23,6 +23,9 @@ endif
     ; Enable SFX echo if applicable.
     lda !ram_play_sfx : bpl +
     lda $1DFA|!addr : bne +
+    ; Don't play every frame or AMK will ignore it
+    ; when changing music in the middle of a level
+    lda $13 : lsr : bcs +
     lda #$06 : sta $1DFA|!addr
 +
     ; Update the window HDMA when the flag is set.
