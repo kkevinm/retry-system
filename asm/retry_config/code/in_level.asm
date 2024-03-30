@@ -277,8 +277,10 @@ endif
 
 ...check_box:
 if not(!fast_prompt)
+if not(!retry_death_animation&1)
     ; If fallen in a pit, show immediately.
     lda $81 : dec : bpl +
+endif
 
     ; Check if it's time to show the prompt.
     lda $16 : ora $18 : bmi +
@@ -303,8 +305,10 @@ endif
     rtl
 
 ..instant:
+if not(!retry_death_animation&2)
     ; If fallen offscreen, respawn immediately.
     lda $81 : dec : bpl ..respawn
+endif
     
     ; Respawn after 4 frames so it shows the death pose.
     lda $1496|!addr : cmp.b #!death_time : bcs ..return

@@ -98,6 +98,7 @@
 
 ; SFX to play when dying (!death_sfx = $00 -> no SFX).
 ; Only played if not playing the death song (for example, it's not played if the level uses vanilla death).
+; You can change $1DF9 to $1DFB if you want a song to play on death (for example, if you want vanilla death music with instant Retry).
     !death_sfx = $20
     !death_sfx_addr = $1DF9|!addr
 
