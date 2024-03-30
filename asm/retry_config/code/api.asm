@@ -3,6 +3,20 @@
 ;================================================
 
 ;================================================
+; Routine to respawn in the level (at the current checkpoint),
+; effectively the same as dying and hitting Retry, or dying with
+; instant Retry enabled.
+;
+; Inputs: N/A
+; Outputs: N/A
+; Pre: A/X/Y 8 bits
+; Post: A/X/Y 8 bits
+; Example: JSL retry_api_respawn_in_level
+;================================================
+respawn_in_level:
+    jml in_level_main_dying_respawn
+
+;================================================
 ; Routine to save the game, which will also save the addresses
 ; defined in the sram_tables.asm file.
 ;
