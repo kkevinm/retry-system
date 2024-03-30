@@ -6,6 +6,7 @@ v0.5.3:
     - Don't show prompt immediately if falling in a pit with Retry prompt if !retry_death_animation is 1 or 3.
     - Added !no_score_sprites_on_death option (disabled by default) to removed score sprites on death, to allow to use their graphic slots in SP1 for the Retry prompt tiles.
     - Fixed Yoshi swallow timer decrementing while the Retry prompt is displayed when the frame counter has specific values (only when !prompt_freeze is not 0).
+    - Added api routine to save the game.
 
 v0.5.2:
     - Now changing the X/Y position for the prompt text (from the settings or by writing to the respective RAM addresses) only works if the black box is disabled, since otherwise it looks broken (thanks to AmperSam for the suggestion).

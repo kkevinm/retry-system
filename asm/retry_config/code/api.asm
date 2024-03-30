@@ -3,6 +3,20 @@
 ;================================================
 
 ;================================================
+; Routine to save the game, which will also save the addresses
+; defined in the sram_tables.asm file.
+;
+; Inputs: N/A
+; Outputs: N/A
+; Pre: N/A
+; Post: A/X/Y 8 bits, DB/X/Y preserved
+; Example: JSL retry_api_save_game
+;================================================
+save_game:
+    jsr shared_save_game
+    rtl
+
+;================================================
 ; Routine to remove the current level's checkpoint, meaning
 ; entering it again will load the main sublevel's entrance.
 ; Only makes sense to be called during a level gamemode.

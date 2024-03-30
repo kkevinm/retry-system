@@ -38,9 +38,21 @@
 
   <h3>Index</h3>
   <ol>
+    <li><a href="#save_game">Save game</a></li>
     <li><a href="#reset_level_checkpoint">Reset level checkpoint</a></li>
     <li><a href="#reset_all_checkpoints">Reset all checkpoints</a></li>
   </ol>
+  <br/>
+
+  <h3 id="save_game">Save game</h3>
+  <p><code>JSL retry_api_save_game</code></p>
+  <p>Call this to save the game, which will also save the addresses defined in the <code>sram_tables.asm</code> file.</p>
+  <ul>
+    <li>Inputs: <code>N/A</code></li>
+    <li>Outputs: <code>N/A</code></li>
+    <li>Preconditions: <code>N/A</code></li>
+    <li>Postconditions: <code>A/X/Y 8 bits, DB/X/Y preserved</code></li>
+  </ul>
   <br/>
 
   <h3 id="reset_level_checkpoint">Reset level checkpoint</h3>
