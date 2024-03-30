@@ -4,6 +4,7 @@ v0.5.3:
     - Fixed sfx echo not working sometimes when changing music in the middle of a level (for example with P-Switch or Starman).
     - Don't immediately respawn if falling in a pit with instant Retry if !retry_death_animation is 2 or 3.
     - Don't show prompt immediately if falling in a pit with Retry prompt if !retry_death_animation is 1 or 3.
+    - Added !no_score_sprites_on_death option (disabled by default) to removed score sprites on death, to allow to use their graphic slots in SP1 for the Retry prompt tiles.
 
 v0.5.2:
     - Now changing the X/Y position for the prompt text (from the settings or by writing to the respective RAM addresses) only works if the black box is disabled, since otherwise it looks broken (thanks to AmperSam for the suggestion).

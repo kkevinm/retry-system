@@ -30,6 +30,13 @@ death_routine:
     jsr extra_death
     plb : plp
 
+    ; Kill score sprites if the option is enabled.
+if !no_score_sprites_on_death
+    ldx.b #$06-1
+-   stz $16E1|!addr,x
+    dex : bpl -
+endif
+
     ; Reset some stuff related to lx5's Custom Powerups.
 if !custom_powerups == 1
     stz.w ($170B|!addr)+$08

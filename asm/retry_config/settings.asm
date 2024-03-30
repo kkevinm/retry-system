@@ -239,6 +239,11 @@
     !letter_palette = $08
     !cursor_palette = $08
 
+; If 1, score sprites (points, 1-Up) will be removed when dying.
+; This can be used to replace their graphics ($29, $38-$39, $44-$47, $54-$57)
+; with the Retry prompt tiles instead of having to reserve sprite tiles for the prompt.
+    !no_score_sprites_on_death = 0
+
 ; Sprite tile number for the tiles used by the prompt ($00-$FF = SP1/SP2, $100-$1FF = SP3/SP4).
 ; These will be overwritten dynamically when the prompt needs to show up.
 ; The default values should be fine in most cases, unless you're using some other patch that reserves tiles in SP1,
