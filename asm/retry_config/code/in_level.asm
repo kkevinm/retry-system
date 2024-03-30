@@ -138,6 +138,12 @@ if !prompt_freeze == 2
     stz $1E66|!addr,x
 ++  dex : bpl -
 +
+    ; Prevent swallow timer from decrementing
+    lda $18AC|!addr : beq +
+    cmp #$FF : beq +
+    lda $14 : and #$03 : bne +
+    inc $18AC|!addr
++
 endif
 else
     ; Force sprites and animations to run.
@@ -163,15 +169,17 @@ endif
     ; Reset Yoshi's swallow timer.
     ldx $18E2|!addr : beq +
     stz !1564-1,x
+
     ; Prevent Yoshi's tongue from extending.
     lda !1594-1,x : cmp #$01 : bne ++
     lda !151C-1,x : sec : sbc.l !rom_yoshi_tongue_extend_speed : bmi +
     sta !151C-1,x
     bra +
-++  ; Prevent Yoshi's tongue from retracting.
+++  
+    ; Prevent Yoshi's tongue from retracting.
     cmp #$02 : bne +
     sta !1558-1,x
-+
++   
     ; Don't respawn if not infinite lives and we're about to game over.
 if not(!infinite_lives)
     jsr shared_get_bitwise_mask
