@@ -33,6 +33,10 @@ org $05D9DA
     and #$40
     beq $0E
 
+org $05D9EC
+    rep #$10
+    lda $01
+
 org $05DAA3
     lda.l $05D78A|!bank,x
 

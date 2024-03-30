@@ -22,7 +22,7 @@ midway_main:
     ; Get the index of this tile in the map16 table.
     phx
     rep #$20
-    lda $04 : pha
+    pei ($04)
     jsr get_tile_index
     sep #$20
     
@@ -122,8 +122,8 @@ get_tile_index:
 ;   $04: a*b, 16bit (least significant), unsigned.
 ;=====================================
 .multiply
-    lda $00 : pha
-    lda $02 : pha
+    pei ($00)
+    pei ($02)
     sep #$20
 
     stz $02

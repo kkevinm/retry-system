@@ -8,6 +8,10 @@ org $05D842
 org $05D9DA
     jml midway_entrance
 
+; Make vanilla midway entrances work correctly
+org $05D9EC
+    jml vanilla_midway_destination_fix
+
 ; Make secondary exits compatible with "No Yoshi" intros.
 org $05DAA3
     jsl no_yoshi
@@ -116,6 +120,71 @@ endif
     lda $1EA2|!addr,x : and #$40
     ldx $1B93|!addr : bne .normal
     jml $05D9DE|!bank
+
+vanilla_midway_destination_fix:
+    lda $141A|!addr : beq .orig2
+    lda.l !rom_lm_midway_entrance_hack_byte : cmp #$22 : bne .orig2
+    lda !ram_is_respawning : beq .orig2
+    lda !ram_respawn+1 : and #$0A : cmp #$08 : beq .midway
+
+.orig2:
+    jmp .orig
+
+.midway:
+    pei ($03)
+    pei ($05)
+    lda.l $05D9E6|!bank : sta $05
+    rep #$30
+    lda.l $05D9E4|!bank : clc : adc #$000A : sta $03
+    lda [$03] : pha
+    inc $03
+    lda [$03] : sta $04
+    pla : sta $03
+    lda !ram_respawn : and #$01FF : tay
+    sep #$20
+
+    ; Set the screen number of midway entrance
+    lda [$03],y : and #$10 : sta $01
+    lda $F400,y : lsr #4 : ora $01 : sta $01
+
+    ; Separate midway -> already set correctly
+    lda [$03],y : bit #$20 : bne .return
+
+    ; Correct slippery/water flag for vanilla midway
+    lda #$C0 : trb $192A|!addr
+    lda $DE00,y : and #$C0 : ora $192A|!addr : sta $192A|!addr
+
+    ; Correct the camera position for vanilla midway
+    lda #$00 : xba
+    lda $F400,y : sta $02
+    and #$03 : tax
+    lda $D70C,x : sta $20
+    lda $02 : and #$0C : lsr #2 : tax
+    lda $D708,x : sta $1C
+
+    ; Correct the position if X/Y pos method 2 is used
+    lda $D97D : cmp #$22 : bne .return
+
+    ; (now compatible with LM 3.00's routine at $05DD30)
+    lda $D980 : sta $05
+    rep #$20
+    lda $D97E : clc : adc #$0004 : sta $03
+    sep #$20
+    jsl .jml
+
+.return:
+    rep #$20
+    pla : sta $05
+    pla : sta $03
+    sep #$20
+
+.orig:
+    rep #$10
+    lda $01
+    jml $05D9F0|!bank
+
+.jml:
+    jml [$0003|!dp]
 
 no_yoshi:
     ; Reset secondary exits flag.

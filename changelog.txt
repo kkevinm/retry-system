@@ -8,6 +8,7 @@ v0.5.3:
     - Fixed Yoshi swallow timer decrementing while the Retry prompt is displayed when the frame counter has specific values (only when !prompt_freeze is not 0).
     - Added api routine to save the game.
     - Added api routine to respawn in the level.
+    - Now the Retry checkpoints also work for midway and secondary entrances that use the vanilla method of setting the player's position (instead of just "Method 2"), as it was in the original Retry patch.
 
 v0.5.2:
     - Now changing the X/Y position for the prompt text (from the settings or by writing to the respective RAM addresses) only works if the black box is disabled, since otherwise it looks broken (thanks to AmperSam for the suggestion).

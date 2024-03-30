@@ -20,3 +20,4 @@
 !rom_sumo_bro_lightning_y_speed    #= $02DEB6|!bank
 !rom_dc_amount_cmp_byte            #= $00F349|!bank
 !rom_dc_perlevel_patch_byte        #= $00F346|!bank
+!rom_lm_midway_entrance_hack_byte  #= $05D9E3|!bank
