@@ -101,3 +101,12 @@ if read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140
 else
     !maxtile = 0
 endif
+
+
+; Detects if UberASM Tool 2.0+ is used.
+!uberasm2 = 0
+if defined("UberMajorVersion")
+	if !UberMajorVersion > 1
+		!uberasm2 = 1
+	endif
+endif

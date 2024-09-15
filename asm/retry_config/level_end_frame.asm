@@ -9,6 +9,7 @@
 ; NOTE: on SA-1 roms, this runs on the SNES cpu.
 ;=====================================
 
+if !uberasm2 == 0
 level000:
     rts
 
@@ -1544,3 +1545,4 @@ level1FE:
 
 level1FF:
     rts
+endif
