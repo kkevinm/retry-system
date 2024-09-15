@@ -35,7 +35,6 @@ db "Retry patch by KevinM "
 db "Version ",!version_a,!version_b,!version_c
 
 gm14_end:
-	WDM #$00
     ; Preserve X and Y and set DBR.
 	if !uberasm2 == 0
 		phx : phy
