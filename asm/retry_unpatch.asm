@@ -142,3 +142,6 @@ if read1($05B31B+1) == $69
 org $05B31B
     ldy #$1C
 endif
+
+org $009856
+    lda #$20 : sta $44
