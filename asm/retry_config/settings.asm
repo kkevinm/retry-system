@@ -26,8 +26,10 @@
 ; Note: you can also change this on the fly (see "docs/ram_map.txt").
     !midway_powerup = 0
 
-; Counterbreak options reset the corresponding counters/items when the player dies and when going to the Overworld.
+; Counterbreak options reset the corresponding counters/items when the player dies and/or when going to the Overworld.
 ; Useful for Kaizo and collab hacks.
+; 0 = disabled, 1 = enabled for both respawning and going to the Overworld
+; 2 = enabled just for respawning, 3 = enabled just for going to the Overworld
     !counterbreak_yoshi = 1
     !counterbreak_powerup = 1
     !counterbreak_item_box = 1
