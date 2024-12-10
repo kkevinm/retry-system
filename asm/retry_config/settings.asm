@@ -92,7 +92,7 @@
 ; 0 = vanilla (after dying a glitched version of the title screen will load,
 ;     causing a softlock. Use this if you either don't care or want to do something
 ;     custom with it.)
-; 1 = play vanilla death animation and reload title screen.
+; 1 = play vanilla death animation and reload title screen (note: death music only works with AddmusicK!).
 ; 2 = instantly reload the title screen.
     !title_death_behavior = 1
 
