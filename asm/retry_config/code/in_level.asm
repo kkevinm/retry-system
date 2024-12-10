@@ -211,8 +211,8 @@ if !title_death_behavior != 0
     jsr reset_addresses
     jsr reset_music
 
-    ; ...and reload the title screen.
-    lda #$02 : sta $0100|!addr
+    ; ...and set the flag to reload the title screen.
+    lda !ram_is_dying : ora #$40 : sta !ram_is_dying
 endif
 
 ...return:
@@ -383,9 +383,9 @@ endif
     stz $89
     rtl
 
-    ; Enable title screen reloading.
+    ; Set the flag to enable title screen reloading.
 .title:
-    lda #$02 : sta $0100|!addr
+    lda !ram_is_dying : ora #$40 : sta !ram_is_dying
     rtl
 
 ;=====================================

@@ -6,4 +6,4 @@
   - Lui: remove status bar code.
   - dtothefourth: a couple new features ideas.
   - AmperSam: custom midways instructions.
-  - BabaYegha, FYRE150, Abdu, margot, simon.caio, LouisDoucet, SJandCharlieTheCat, Koopster, schema_tuna, Alex, Selicre, Mega, worldpeace, AmperSam, NixKillsMyths: testing and feedback.
+  - BabaYegha, FYRE150, Abdu, margot, simon.caio, LouisDoucet, SJandCharlieTheCat, Koopster, schema_tuna, Alex, Selicre, Mega, worldpeace, AmperSam, NixKillsMyths, MiracleWater: testing and feedback.

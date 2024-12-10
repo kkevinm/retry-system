@@ -1,5 +1,6 @@
 v0.6.1:
     - Added an option for the counterbreak settings to only apply on level reload or on Overworld loading, instead of being forced for both (use values 2 and 3 for the !counterbreak_xxx settings).
+    - Fixed the !title_death_behavior setting not working when using UberASMTool 2.0 (thanks to MiracleWater for reporting this).
 
 v0.6.0:
     - Fixed compilation errors when using !fast_prompt = 0 (thanks to Koopster for reporting this).
