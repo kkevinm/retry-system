@@ -17,4 +17,4 @@ vanilla_boss_gm13:
     lda #$20 : sta $44
 
     ; Run gamemode 13 code
-    jml level_init_3_init
+    jmp level_init_3_init
