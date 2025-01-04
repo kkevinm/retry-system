@@ -22,13 +22,8 @@ org $00A2EA
 
 pullpc
 
-;================================================================================
 ; Write a small identifier string in ROM.
-; - You can check if a ROM has this patch by doing "if read4(read3($00A2EB)-33) == $72746552"
-; - You can find the 3 version number digits at read1(read3($00A2EB)-3), read1(read3($00A2EB)-2) and read1(read3($00A2EB)-1).
-;================================================================================
-db "Retry patch by KevinM "
-db "Version ",!version_a,!version_b,!version_c
+db "Retry patch v!version by KevinM"
 
 gm14_end:
     ; Preserve X and Y and set DBR.
