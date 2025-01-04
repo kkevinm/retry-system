@@ -1,6 +1,6 @@
 v0.6.2:
     - Avoid using Mario's pipe entrance state to reload a level. This can fix potential issues with custom code that checks for Mario's animation state.
-    - Moved "misc.asm" and "rom.asm" to the "code/include" folder, since these are not supposed to be edited by the user in 99.9% of cases.
+    - Moved "misc.asm" and "rom.asm" out of the "retry_config" folder, since these are not supposed to be edited by the user in 99.9% of cases.
 
 v0.6.1:
     - Added an option for the counterbreak settings to only apply on level reload or on Overworld loading, instead of being forced for both (use values 2 and 3 for the !counterbreak_xxx settings).
