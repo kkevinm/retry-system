@@ -1,5 +1,5 @@
 v0.6.2:
-    - Avoid using Mario's pipe entrance state to reload a level. This can fix potential issues with custom code that checks for Mario's animation state.
+    - Avoid using Mario's pipe entrance state to reload a level. This can fix potential issues with custom code that checks for Mario's animation state (thanks to LouisDoucet for reporting this).
     - Moved "misc.asm" and "rom.asm" out of the "retry_config" folder, since these are not supposed to be edited by the user in 99.9% of cases.
     - Added !no_prompt_draw option to not have the prompt drawn on screen for a minimalistic result. This achieves the same effect as making the included GFX files blank, but saves ROM space and avoids having to reserve sprite GFX tiles for it.
 
