@@ -36,8 +36,6 @@ save:
 ; (for example, the checkpoint values are 192, and the death counter values are 5).
 ; If you have some addresses after ".not_game_over" in the save table, put their default values after ".not_game_over" here too
 ; (in the same order as the other table, of course).
-; Note: you can use a shorthand for big addresses with all the same default values, so you don't have to write
-; "db $YY" dozens of times: rep X : db $YY where X = amount of values, $YY = value to repeat. See below for an example.
 
 sram_defaults:
     ; Default checkpoint values (don't edit this!).
@@ -59,7 +57,7 @@ sram_defaults:
 
 .not_game_over:
     ; Initial death counter value (don't edit this!).
-    rep 5 : db $00
+    db $00,$00,$00,$00,$00
     ; Feel free to add your own stuff here.
     
     
