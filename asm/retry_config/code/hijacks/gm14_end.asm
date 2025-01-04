@@ -63,6 +63,7 @@ endif
     jsr set_checkpoint
 
 .no_checkpoint:
+if not(!no_prompt_draw)
     ; Check if it's time to draw the tiles.
     lda !ram_prompt_phase : cmp #$02 : beq .draw_prompt
                                        bcc .return
@@ -71,6 +72,7 @@ endif
     bra .return
 .draw_prompt:
     jsr prompt_oam
+endif
 
 .return:
     ; Restore DBR, X and Y.

@@ -213,6 +213,12 @@
     !exit_button = %00100000
     !exit_button_address = $16
 
+; If 1, the Retry prompt won't be drawn to the screen (but still function normally).
+; Use this for a minimalistic Retry, without having to use the instant option.
+; You should also use !no_prompt_box = 1 or the black box will still appear (also you probably want !no_exit_option = 1).
+; Note that this renders all the prompt options below useless (and no sprite GFX space needs to be reserved).
+    !no_prompt_draw = 0
+
 ; X/Y position of the first tile in the prompt (the cursor on the first line).
 ; Changing this only works if the black box is disabled (if enabled,
 ; default values will be used instead).
@@ -254,7 +260,7 @@
 ; You can see the tile number in LM's 8x8 Tile Editor, by taking the value you see in the bottom left - $400 (e.g., "Tile 0x442" -> $42, "Tile 0x542" -> $142).
 ; Note: when the prompt box is enabled, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.
 ; For example, !tile_curs = $24 means both $24 and $25 will be overwritten.
-; Also, obviously these aren't used if you don't use the Retry prompt.
+; Also, obviously these aren't used if you don't use the Retry prompt or !no_prompt_draw = 1.
     !tile_curs = $20
     !tile_blk  = $22
     !tile_r    = $30
