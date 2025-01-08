@@ -247,7 +247,7 @@
     !letter_palette = $08
     !cursor_palette = $08
 
-; If 1, score sprites (points, 1-Up) will be removed when dying.
+; If 1, score sprites (points, 1-Up) will be removed when dying, if Retry prompt is enabled in the level.
 ; This can be used to replace their graphics ($29, $38-$39, $44-$47, $54-$57)
 ; with the Retry prompt tiles instead of having to reserve sprite tiles for the prompt.
     !no_score_sprites_on_death = 0

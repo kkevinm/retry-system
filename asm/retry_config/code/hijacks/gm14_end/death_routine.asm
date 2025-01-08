@@ -51,11 +51,13 @@ endif
     jsr extra_death
     plb : plp
 
-    ; Kill score sprites if the option is enabled.
+    ; Kill score sprites if the option is enabled and Retry prompt is enabled.
 if !no_score_sprites_on_death
+    jsr shared_get_prompt_type : cmp #$03 : bcs +
     ldx.b #$06-1
 -   stz $16E1|!addr,x
     dex : bpl -
++
 endif
 
     ; Reset some stuff related to lx5's Custom Powerups.
