@@ -277,7 +277,7 @@
 ; The sprites use dynamic tiles, meaning you'll need to reserve some GFX space in your SP slots for them.
 ; Item box, coins and timer use 1 16x16 tile each, but they only need to be reserved when actually using them,
 ; and you can choose which tiles to use for each level (or to just disable any or all of them in specific levels)
-; using the tables in "sprite_status_bar_tables.asm".
+; calling the API routine "configure_sprite_status_bar" in your level/gamemode UberASM (see "api.html").
     !sprite_status_bar = 0
 
 ; If 1, it disables the original game's status bar (including the IRQ) which prevents layer 3 from messing up.

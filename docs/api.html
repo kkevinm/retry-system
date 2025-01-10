@@ -42,50 +42,74 @@
     <li><a href="#save_game">Save game</a></li>
     <li><a href="#reset_level_checkpoint">Reset level checkpoint</a></li>
     <li><a href="#reset_all_checkpoints">Reset all checkpoints</a></li>
+    <li><a href="#configure_sprite_status_bar">Configure sprite status bar</a></li>
   </ol>
   <br/>
 
   <h3 id="respawn_in_level">Respawn in level</h3>
-  <p><code>JSL retry_api_respawn_in_level</code></p>
   <p>Call this to make the player respawn in the current level at the last checkpoint. This has the same effect as dying and hitting Retry, or dying with instant Retry enabled, but skipping everything related to death (animation, music, prompt, etc.).</p>
   <ul>
     <li>Inputs: <code>N/A</code></li>
     <li>Outputs: <code>N/A</code></li>
     <li>Preconditions: <code>A/X/Y 8 bits</code></li>
     <li>Postconditions: <code>A/X/Y 8 bits</code></li>
+    <li>Usage: <code>JSL retry_api_respawn_in_level</code></li>
   </ul>
   <br/>
 
   <h3 id="save_game">Save game</h3>
-  <p><code>JSL retry_api_save_game</code></p>
   <p>Call this to save the game, which will also save the addresses defined in the <code>sram_tables.asm</code> file.</p>
   <ul>
     <li>Inputs: <code>N/A</code></li>
     <li>Outputs: <code>N/A</code></li>
     <li>Preconditions: <code>N/A</code></li>
     <li>Postconditions: <code>A/X/Y 8 bits, DB/X/Y preserved</code></li>
+    <li>Usage: <code>JSL retry_api_save_game</code></li>
   </ul>
   <br/>
 
   <h3 id="reset_level_checkpoint">Reset level checkpoint</h3>
-  <p><code>JSL retry_api_reset_level_checkpoint</code></p>
   <p>Call this to reset the checkpoint in the current level. Entering the level again or respawning will load the main sublevel's entrance. Note that this won't reflect to SRAM until the game is saved.</p>
   <ul>
     <li>Inputs: <code>N/A</code></li>
     <li>Outputs: <code>N/A</code></li>
     <li>Preconditions: <code>A/X/Y 8 bits</code></li>
     <li>Postconditions: <code>A/X/Y 8 bits, DB/X/Y preserved</code></li>
+    <li>Usage: <code>JSL retry_api_reset_level_checkpoint</code></li>
   </ul>
   <br/>
 
   <h3 id="reset_all_checkpoints">Reset all checkpoints</h3>
-  <p><code>JSL retry_api_reset_all_checkpoints</code></p>
   <p>Call this to reset the checkpoint for every level in the game, effectively making it as if it were a fresh game. Note that this won't reflect to SRAM until the game is saved.</p>
   <ul>
     <li>Inputs: <code>N/A</code></li>
     <li>Outputs: <code>N/A</code></li>
     <li>Preconditions: <code>N/A</code></li>
     <li>Postconditions: <code>A/X/Y size preserved, DB/X/Y preserved</code></li>
+    <li>Usage: <code>JSL retry_api_reset_all_checkpoints</code></li>
+  </ul>
+  <br/>
+
+  <h3 id="configure_sprite_status_bar">Configure sprite status bar</h3>
+  <p><b>NOTE</b>: this routine has no effect unless <code>!sprite_status_bar = 1</code> in <code>settings.asm</code>.</p>
+  <p>Call this to configure graphics for the sprite status bar items: item box, timer and coin counter. Each item needs to have a 16x16 sprite tile reserved to it, and a palette to use.</p>
+  <p>Each item's configuration is set with a 16 bit value <code>$PTTT</code>. The first digit <code>P</code> will be the item's palette, starting from palette 8 with <code>P = 0</code> and ending with palette F with <code>P = 7</code>. <code>TTT</code> will determine the tile number: you can see this in Lunar Magic's "8x8 Tile Editor" if you hover over the desired tile (more specifically, the upper left 8x8 tile of the 16x16 tile you want to use). In the bottom bar you'll see "Tile 0xYYY": then, <code>TTT = YYY - $400</code>. For example, the Smiling Coin tile is "Tile 0x4C2", which results in <code>TTT = $4C2 - $400 = $0C2</code>. So, for example, to reserve that tile and use palette F, the full value will be <code>$70C2</code>.</p>
+  <p>If an item's value is <code>$0000</code>, the item will simply not be displayed. Note that the item values are reset to <code>$0000</code> before each sublevel is loaded (in gamemode F, to be precise), so this routine should be called either in gamemodes 10 or 11 or 12, if you want to set a global configuration, or in level init code, if you want to set a level-specific configuration. You can also do both to have a global configuration that can be overridden in some levels.</p>
+  <ul>
+    <li>Inputs: <code>A = item box, X = timer, Y = coin counter</code></li>
+    <li>Outputs: <code>N/A</code></li>
+    <li>Preconditions: <code>A/X/Y 16 bits</code></li>
+    <li>Postconditions: <code>A/X/Y size preserved, DB/X/Y preserved</code></li>
+    <li>Usage (example):
+      <div style="display: block; margin: 0px 0px 0px 50px">
+        <code>REP #$30</code><br/>
+        <code>LDA #$3080 ; Item box: palette B, tile 0x80</code><br/>
+        <code>LDX #$0088 ; Timer: palette 8, tile 0x88</code><br/>
+        <code>LDY #$00C2 ; Coin counter: palette 8, tile 0xC2</code><br/>
+        <code>JSL retry_api_configure_sprite_status_bar</code><br/>
+        <code>SEP #$30</code><br/>
+      </div>
+    </li>
   </ul>
   <br/>
 

@@ -31,9 +31,6 @@ endmacro
 if !sram_feature
     %incsrc("",sram_tables)
 endif
-if !sprite_status_bar
-    %incsrc("",sprite_status_bar_tables)
-endif
 
 ;=====================================
 ; Load the letters gfx.

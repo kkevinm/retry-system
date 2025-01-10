@@ -12,16 +12,13 @@ macro store_digit_addr()
 endmacro
 
 nmi:
-    ; Get the index for the current sublevel.
-    rep #$30
-    lda $010B|!addr : asl : tax
+    rep #$20
 
     ; Check if we need to upload the timer digits.
-    lda.l tables_timer,x : bne +
+    lda !ram_status_bar_timer_tile : bne +
     jmp .no_timer
 +
     ; Compute the VRAM address for later.
-    phx
     %calc_vram() : pha
 
     ; Only upload if the timer changed, unless Mario died
@@ -31,11 +28,9 @@ nmi:
     lda $0F30|!addr : cmp.l !rom_timer_ticks : beq +
     rep #$20
     pla
-    plx
     jmp .no_timer
 +   
     ; Setup the constant DMA parameters.
-    sep #$10
     rep #$20
     ldy #$80 : sty $2115
     lda #$1801 : sta.w prompt_dma($4300)
@@ -66,12 +61,9 @@ nmi:
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
-    ; Restore X and processor state.
-    rep #$10 : plx
-
 .no_timer:
     ; Check if we need to upload the coin counter digits.
-    lda.l tables_coins,x : beq .no_coins
+    lda !ram_status_bar_coins_tile : beq .no_coins
 
     ; Compute the VRAM address for later.
     %calc_vram() : pha
@@ -91,7 +83,6 @@ nmi:
 
     ; Setup the constant DMA parameters (also waste time for division).
     rep #$20
-    sep #$10
     ldy #$80 : sty $2115
     lda #$1801 : sta.w prompt_dma($4300)
     ldy.b #retry_gfx>>16 : sty.w prompt_dma($4304)
@@ -111,7 +102,7 @@ nmi:
     sty $420B
 
 .no_coins:
-    sep #$30
+    sep #$20
     rts
 
 init:
@@ -132,15 +123,10 @@ init:
     ldy.b #retry_gfx>>16 : sty.w prompt_dma($4304)
     ldy #$04
 
-    ; Get the index for the current sublevel.
-    rep #$10
-    lda $010B|!addr : asl : tax
-
     ; Check if we need to upload the item box tile.
-    lda.l tables_item_box,x : beq ..no_item_box
+    lda !ram_status_bar_item_box_tile : beq ..no_item_box
 
     ; Upload the first row.
-    phx : sep #$10
     %calc_vram() : sta $2116 : pha
     lda.w #retry_gfx_item_box : sta.w prompt_dma($4302)
     lda.w #gfx_size(2) : sta.w prompt_dma($4305)
@@ -152,76 +138,63 @@ init:
     lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
 
-    ; Restore X and processor state.
-    rep #$10 : plx
 ..no_item_box:
-
     ; Check if we need to upload the clock tile.
-    lda.l tables_timer,x : beq ..no_timer
+    lda !ram_status_bar_timer_tile : beq ..no_timer
 
     ; Upload the clock tile.
-    phx : sep #$10
     %calc_vram() : sta $2116
     lda.w #retry_gfx_timer : sta.w prompt_dma($4302)
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
-    ; Restore X and processor state.
-    rep #$10 : plx
 ..no_timer:
-
     ; Check if we need to upload the coin tile.
-    lda.l tables_coins,x : beq ..no_coins
+    lda !ram_status_bar_coins_tile,x : beq ..no_coins
 
     ; Upload the coin tiles.
-    sep #$10
     %calc_vram() : sta $2116
     lda.w #retry_gfx_coin : sta.w prompt_dma($4302)
     lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
 
 ..no_coins:
-    sep #$30
+    sep #$20
     rts
 
 main:
     ; Don't draw if the game is paused.
     lda $13D4|!addr : bne .return
 
-    ; Get the index for the current sublevel.
-    rep #$30
-    lda $010B|!addr : asl : tay
-
     phb : phk : plb
+    rep #$30
 if not(!maxtile)
     ldx #$0000
 endif
 
     ; Draw the item box if applicable.
-    lda.w tables_item_box,y : beq .no_item_box
-    phy : php
+    lda !ram_status_bar_item_box_tile : beq .no_item_box
+    php
     jsr convert_tile_props
     jsr draw_item_box
-    plp : ply
+    plp
 
 .no_item_box:
-    
     ; Draw the timer if applicable.
-    lda.w tables_timer,y : beq .no_timer
-    phy : php
+    lda !ram_status_bar_timer_tile : beq .no_timer
+    php
     jsr convert_tile_props
     jsr draw_timer
-    plp : ply
+    plp
 
 .no_timer:
-
     ; Draw the coins if applicable.
-    lda.w tables_coins,y : beq .no_coins
-    phy : php
+    lda !ram_status_bar_coins_tile : beq .no_coins
+    php
     jsr convert_tile_props
     jsr draw_coins
     jsr draw_yoshi_coins
-    plp : ply
+    plp
 
 .no_coins:
     sep #$30
