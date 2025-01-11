@@ -43,6 +43,7 @@
     <li><a href="#reset_level_checkpoint">Reset level checkpoint</a></li>
     <li><a href="#reset_all_checkpoints">Reset all checkpoints</a></li>
     <li><a href="#configure_sprite_status_bar">Configure sprite status bar</a></li>
+    <li><a href="#get_retry_type">Get Retry type</a></li>
   </ol>
   <br/>
 
@@ -110,6 +111,25 @@
         <code>SEP #$30</code><br/>
       </div>
     </li>
+  </ul>
+  <br/>
+
+  <h3 id="get_retry_type">Get Retry type</h3>
+  <p>Routine to get the current Retry type, i.e. if currently the level is set to have Retry prompt, instant Retry or no Retry.</p>
+  <ul>
+    <li>Inputs: <code>N/A</code></li>
+    <li>Outputs: <code>A = Retry type</code><br/>
+      This value can have one of the following values:
+      <ul>
+        <li><code>$01</code>: Retry prompt enabled & play the vanilla death song when the player dies</li>
+        <li><code>$02</code>: Retry prompt enabled & play only the death sfx when the player dies</li>
+        <li><code>$03</code>: instant Retry enabled</li>
+        <li><code>$04</code>: Retry disabled</li>
+      </ul>
+    </li>
+    <li>Preconditions: <code>A 8 bits</code></li>
+    <li>Postconditions: <code>A/X/Y size preserved, DB/X/Y preserved</code></li>
+    <li>Usage: <code>JSL retry_api_get_retry_type</code></li>
   </ul>
   <br/>
 

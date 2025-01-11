@@ -121,3 +121,22 @@ if !sprite_status_bar
     tya : sta !ram_status_bar_coins_tile
 endif
     rtl
+
+;================================================
+; Routine to get the current Retry type, i.e. if currently the level is
+; set to have Retry prompt, instant Retry or no Retry.
+; The returned value has this format:
+; - $01 = Retry prompt enabled & play the vanilla death song when the player dies
+; - $02 = Retry prompt enabled & play only the death sfx when the player dies
+; - $03 = instant Retry enabled
+; - $04 = Retry disabled
+;
+; Inputs: N/A
+; Outputs: A = Retry type
+; Pre: A 8 bits
+; Post: A/X/Y size preserved, DB/X/Y preserved
+; Example: JSL retry_api_get_retry_type
+;================================================
+get_retry_type:
+    jsr shared_get_prompt_type
+    rtl
