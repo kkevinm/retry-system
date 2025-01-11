@@ -44,6 +44,7 @@
     <li><a href="#reset_all_checkpoints">Reset all checkpoints</a></li>
     <li><a href="#configure_sprite_status_bar">Configure sprite status bar</a></li>
     <li><a href="#get_retry_type">Get Retry type</a></li>
+    <li><a href="#get_sram_variable_address">Get SRAM variable address</a></li>
   </ol>
   <br/>
 
@@ -130,6 +131,39 @@
     <li>Preconditions: <code>A 8 bits</code></li>
     <li>Postconditions: <code>A/X/Y size preserved, DB/X/Y preserved</code></li>
     <li>Usage: <code>JSL retry_api_get_retry_type</code></li>
+  </ul>
+  <br/>
+
+  <h3 id="get_sram_variable_address">Get SRAM variable address</h3>
+  <p>Routine to get the address in SRAM for a specific variable. By "variable" it's meant any of the RAM addresses that are saved to SRAM specified in the sram save table. The returned address will be coherent with the current save file loaded when this routine is called (so, make sure to not call it before a save file is loaded!).</p>
+  <p>This could be useful to read/write values in SRAM directly, for example if you need to update some SRAM value without the game being saved.</p>
+  <p><b>NOTE</b>: this will always return "variable not found" if <code>!sram_feature = 0</code>.</p>
+  <ul>
+    <li>Inputs: <code>N/A</code></li>
+    <li>Outputs:
+      <ul>
+        <li><code>Carry set = variable not found</code></li>
+        <li><code>Carry clear = variable found</code> -> SRAM address stored in <code>$00-$02</code>. In this case the value in SRAM can be accessed indirectly with the <code>LDA/STA [$00]</code> and <code>LDA/STA [$00],y</code> instructions.</li>
+      </ul>
+    </li>
+    <li>Preconditions: <code>N/A</code></li>
+    <li>Postconditions: <code>A/X/Y 8 bit and clobbered, DB preserved</code></li>
+    <li>Usage (example):
+      <div style="display: block; margin: 0px 0px 0px 50px">
+        <div style="display: block; margin: 0px 0px 0px 50px">
+          <code>JSL retry_api_get_sram_variable_address</code><br/>
+          <code>dl retry_ram_death_counter ; Variable to search for</code><br/>
+          <code>BCS not_found</code><br/>
+        </div>
+        <code>found:</code><br/>
+        <div style="display: block; margin: 0px 0px 0px 50px">
+          <code>LDY #$01</code><br/>
+          <code>LDA #$09</code><br/>
+          <code>STA [$00],y ; Set second death counter digit in SRAM to 9</code><br/>
+        </div>
+        <code>not_found:</code><br/>
+      </div>
+    </li>
   </ul>
   <br/>
 

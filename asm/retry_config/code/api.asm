@@ -140,3 +140,80 @@ endif
 get_retry_type:
     jsr shared_get_prompt_type
     rtl
+
+;================================================
+; Routine to get the address in SRAM for a specific variable.
+; By "variable" it's meant any of the RAM addresses that are saved to SRAM
+; specified in the sram save table. The returned address will be coherent
+; with the current save file loaded when this routine is called (so, make
+; sure to not call it before a save file is loaded!).
+; This could be useful to read/write values in SRAM directly, for example
+; if you need to update some SRAM value without the game being saved.
+; Note: this will always return "variable not found" if !sram_feature = 0.
+;
+; Inputs: variable address to search for in ROM right after the JSL
+;         This means the call should look like this:
+;             JSL retry_api_get_sram_variable_address
+;             dl <variable address>
+; Outputs: Carry set = variable not found
+;          Carry clear = variable found -> SRAM address stored in $00-$02
+;            In this case the value in SRAM can be accessed indirectly with the
+;            LDA/STA [$00] and LDA/STA [$00],y instructions.
+; Pre: N/A
+; Post: A/X/Y 8 bit and clobbered, DB preserved
+; Example:
+;         JSL retry_api_get_sram_variable_address
+;         dl retry_ram_death_counter ; Variable to search for
+;         BCS not_found
+;     found:
+;         LDY #$01
+;         LDA #$09
+;         STA [$00],y ; Set second death counter digit in SRAM to 9
+;     not_found:
+;         ...
+;================================================
+get_sram_variable_address:
+if !sram_feature
+    ; Use Y to read address after the routine call
+    rep #$30 : ply
+    phb : phk : plb
+    stz $00
+    ldx #$0000
+.loop:
+    ; Check if the current SRAM variables corresponds to the input
+    lda.w sram_tables_save+0,x : cmp $0001,y : bne .next
+    lda.w sram_tables_save+1,x : cmp $0002,y : bne .next
+.found:
+    ; If so, add the calculated offset to the save file SRAM address
+    jsr sram_get_sram_addr
+    clc : adc $00 : sta $00
+    sep #$20
+    lda.b #!sram_addr>>16 : sta $02
+    ; Clear carry (address found)
+    clc
+    bra .return
+.next:
+    ; Update the SRAM offset with the current variable size
+    lda.w sram_tables_save+3,x : clc : adc $00 : sta $00
+    ; Go to the next SRAM variable
+    txa : clc : adc #$0005
+    ; If at the end of the SRAM table, end
+    cmp.w #sram_tables_sram_defaults-sram_tables_save : bcs .not_found
+    tax
+    bra .loop
+.not_found:
+    ; Set carry (address not found)
+    sec
+.return:
+    plb
+    ; Make sure the code returns at the right place
+    iny #3
+    phy : sep #$30
+else
+    ; Make sure the code returns at the right place
+    rep #$20
+    lda $01,s : clc : adc #$0003 : sta $01,s
+    ; Set carry (address not found)
+    sep #$31
+endif
+    rtl
