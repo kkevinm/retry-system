@@ -23,7 +23,7 @@
 
 ; 0 = midways won't give Mario a mushroom.
 ; 1 = vanilla midway powerup behavior.
-; Note: you can also change this on the fly (see "docs/ram_map.txt").
+; Note: you can also change this on the fly (see "docs/ram.html").
     !midway_powerup = 0
 
 ; Counterbreak options reset the corresponding counters/items when the player dies and/or when going to the Overworld.
@@ -342,3 +342,10 @@
 ; Tile number of the digit "0" on the Overworld.
 ; (it's assumed that the digits are stored in order from 0 to 9 in the GFX file).
     !ow_digit_0 = $22
+
+;======================== Misc settings =================================;
+
+; If 1, the level-specific Retry settings will be loaded from the "legacy/tables.asm"
+; file instead of the "settings_local.asm" file. Use this if you prefer the old table-based
+; approach rather than the new macro-based approach.
+!use_legacy_tables = 0
