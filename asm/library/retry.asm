@@ -17,7 +17,7 @@ endmacro
     %incsrc(code/include,misc)
     %incsrc(code/include,rom)
     %incsrc("",ram)
-    %incsrc("",settings)
+    %incsrc("",settings_global)
     
 ;=====================================
 ; Check incompatibilities.
@@ -27,7 +27,12 @@ endmacro
 ;=====================================
 ; Load the Retry tables.
 ;=====================================
-    %incsrc("",tables)
+if !use_legacy_tables
+    %incsrc(legacy,tables)
+else
+    %incsrc(code/include,tables)
+    %incsrc("",settings_local)
+endif
 if !sram_feature
     %incsrc("",sram_tables)
 endif
