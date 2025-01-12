@@ -1,4 +1,4 @@
-v0.6.3:
+v0.7.0:
     - Fixed the !no_score_sprites_on_death option so it doesn't erase score sprites if the prompt is not enabled in the level.
     - Changed sprite status bar configuration to use ram addresses instead of tables, and removed the "sprite_status_bar_tables.asm" file. You can now enable and configure the status bar items using the "retry_api_configure_sprite_status_bar" API function. See "docs/api.html" for more information.
     - Expanded the ram size by 11 bytes to account for the new sprite status bar variables and possible future features. As a result of this, the ram variables !retry_ram_death_counter, !retry_ram_checkpoint and !retry_ram_cust_obj_data have been shifted compared to previous versions. See "docs/ram.html" for more information.
