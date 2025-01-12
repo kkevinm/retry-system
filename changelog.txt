@@ -4,6 +4,7 @@ v0.6.3:
     - Expanded the ram size by 11 bytes to account for the new sprite status bar variables and possible future features. As a result of this, the ram variables !retry_ram_death_counter, !retry_ram_checkpoint and !retry_ram_cust_obj_data have been shifted compared to previous versions. See "docs/ram.html" for more information.
     - Added api routine to get the current Retry type.
     - Added api routine to get SRAM address of any variable saved by Retry.
+    - Added !draw_retry_indicator setting to draw an indicator in the sprite status bar when the level has Retry enabled.
 
 v0.6.2:
     - Avoid using Mario's pipe entrance state to reload a level. This can fix potential issues with custom code that checks for Mario's animation state (thanks to LouisDoucet for reporting this).

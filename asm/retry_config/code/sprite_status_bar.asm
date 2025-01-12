@@ -160,6 +160,22 @@ init:
 
 ..no_coins:
     sep #$20
+
+if !draw_retry_indicator
+    ; Check if we need to upload the indicator tile.
+    jsr shared_get_prompt_type
+    cmp #$04 : bcs ..no_indicator
+
+    ; Upload the indicator tile.
+    rep #$20
+    lda.w #vram_addr(!retry_indicator_tile) : sta $2116
+    lda.w #retry_gfx_indicator : sta.w prompt_dma($4302)
+    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    sty $420B
+    sep #$20
+..no_indicator:
+endif
+
     rts
 
 main:
@@ -197,6 +213,16 @@ endif
     plp
 
 .no_coins:
+if !draw_retry_indicator
+    ; Draw the indicator if applicable
+    sep #$20
+    jsr shared_get_prompt_type
+    cmp #$04 : bcs .no_indicator
+    jsr draw_indicator
+
+.no_indicator:
+endif
+
     sep #$30
     plb
 
@@ -491,6 +517,42 @@ get_total_dc_amount:
     ; If detection failed, load the default amount.
     lda.b #!default_dc_amount
     rts
+endif
+
+if !draw_retry_indicator
+
+assert !retry_indicator_palette >= $08 && !retry_indicator_palette <= $0F, "Error: \!retry_indicator_palette should be between $08 and $0F."
+
+!retry_indicator_xy #= (!retry_indicator_x_pos)|(!retry_indicator_y_pos<<8)
+!retry_indicator_tp #= (!retry_indicator_tile&$1FF)|$3000|((!retry_indicator_palette-8)<<9)
+
+draw_indicator:
+if !maxtile
+    ldx !maxtile_buffer_max+0 : cpx !maxtile_buffer_max+8 : beq .return
+    rep #$20
+    lda.w #!retry_indicator_xy : sta $400000,x
+    lda.w #!retry_indicator_tp : sta $400002,x
+    sep #$20
+    dex #4 : stx !maxtile_buffer_max+0
+    ldx !maxtile_buffer_max+2
+    lda #$00 : sta $400000,x
+    dex : stx !maxtile_buffer_max+2
+else
+    jsr get_free_slot
+    rep #$20
+    lda.w #!retry_indicator_xy : sta $0200|!addr,x
+    lda.w #!retry_indicator_tp : sta $0202|!addr,x
+    phx
+    txa : lsr #2 : tax
+    sep #$20
+    stz $0420|!addr,x
+    plx
+    inx #4
+endif
+
+.return:
+    rts
+
 endif
 
 endif

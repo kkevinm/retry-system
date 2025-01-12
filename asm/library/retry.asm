@@ -49,6 +49,10 @@ if !sprite_status_bar
     %incbin(gfx,timer)
 .item_box:
     %incbin(gfx,item_box)
+if !draw_retry_indicator
+.indicator:
+    %incbin(gfx,indicator)
+endif
 endif
 
 ;=====================================

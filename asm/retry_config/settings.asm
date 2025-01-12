@@ -301,12 +301,22 @@
 ; If 1, the item box will always be drawn (if set to be drawn for the specific level).
 ; Otherwise, it will only be drawn when having an item in reserve.
 ; This is only relevant if !sprite_status_bar = 1.
-    !always_draw_box = 0
+    !always_draw_box = 1
 
 ; If 1, when collecting all DCs in a level they'll be displayed in the status bar.
 ; If 0, they won't be displayed (like in vanilla).
 ; This is only relevant if !sprite_status_bar = 1.
     !draw_all_dc_collected = 0
+
+; If !draw_retry_indicator = 1, an 8x8 indicator will be drawn on the sprite status bar
+; in levels where Retry prompt or instant Retry is enabled. This could be useful for collabs.
+; The other settings control how and where it is drawn. The tile you choose will be
+; overwritten at runtime by the indicator tile when needed.
+    !draw_retry_indicator    = 0
+    !retry_indicator_tile    = $1D
+    !retry_indicator_palette = $09
+    !retry_indicator_x_pos   = $10
+    !retry_indicator_y_pos   = $0F
 
 ;======================== Death Counter =================================;
 
