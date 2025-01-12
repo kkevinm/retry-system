@@ -425,8 +425,10 @@ endif
     dw $0000,$0010,$0011
 
 draw_yoshi_coins:
-    ; Check if we need to draw the Yoshi Coins.
+    phx
     sep #$10
+
+    ; Check if we need to draw the Yoshi Coins
     lda $13BF|!addr : and #$07 : tay
     lda.w .mask,y : sta $02
     lda $13BF|!addr : lsr #3 : tay
@@ -438,14 +440,18 @@ if !draw_all_dc_collected
     bne .shared
 endif
 
+.no_draw:
+    rep #$10
+    plx
     rts
 
 .not_all:
     ; If not all DCs collected, get their amount from $1422.
-    lda $1422|!addr : beq .return
+    lda $1422|!addr : beq .no_draw
 
 .shared:
     rep #$10
+    plx
 
     ; $0F = amount of tiles to draw
     dec : sta $0F

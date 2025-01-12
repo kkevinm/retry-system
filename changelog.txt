@@ -5,6 +5,7 @@ v0.6.3:
     - Added api routine to get the current Retry type.
     - Added api routine to get SRAM address of any variable saved by Retry.
     - Added !draw_retry_indicator setting to draw an indicator in the sprite status bar when the level has Retry enabled.
+    - Fixed potential issue when drawing Dragon Coins in the sprite status bar.
 
 v0.6.2:
     - Avoid using Mario's pipe entrance state to reload a level. This can fix potential issues with custom code that checks for Mario's animation state (thanks to LouisDoucet for reporting this).
