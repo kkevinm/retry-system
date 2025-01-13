@@ -1,43 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Retry API</title>
+  <title>Retry API - Retry System UberASM</title>
   <meta name="author" content="KevinM">
-  <style>
-    body {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-    }
-    p, li, th, td {
-      line-height: 150%;
-    }
-    code {
-      font-size: 16px;
-      padding: 2px 4px;
-      background: rgba(0,0,0,.05);
-      border-radius: 4px;
-    }
-    blockquote {
-      font-style: italic;
-    }
-    table, th, td {
-      border: 1px solid black;
-      text-align: center;
-    }
-    .no-center {
-      text-align: left;
-    }
-  </style>
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-  <h2>Retry API</h2>
+  <h1>Retry API</h1>
   <p>"Retry API" refers to a collection of routines that Retry provides that you can call from your UberASM files if needed.</p>
   <p><b>NOTE:</b> calling these routines from files in the "library" folder will result in an error, at least when using the standard UberASMTool.</p>
-
+  
   <h3>Index</h3>
-  <ol>
+  <ul>
     <li><a href="#respawn_in_level">Respawn in level</a></li>
     <li><a href="#save_game">Save game</a></li>
     <li><a href="#reset_level_checkpoint">Reset level checkpoint</a></li>
@@ -45,50 +20,50 @@
     <li><a href="#configure_sprite_status_bar">Configure sprite status bar</a></li>
     <li><a href="#get_retry_type">Get Retry type</a></li>
     <li><a href="#get_sram_variable_address">Get SRAM variable address</a></li>
-  </ol>
+  </ul>
   <br/>
 
   <h3 id="respawn_in_level">Respawn in level</h3>
+  <p><code>JSL retry_api_respawn_in_level</code></p>
   <p>Call this to make the player respawn in the current level at the last checkpoint. This has the same effect as dying and hitting Retry, or dying with instant Retry enabled, but skipping everything related to death (animation, music, prompt, etc.).</p>
   <ul>
     <li>Inputs: <code>N/A</code></li>
     <li>Outputs: <code>N/A</code></li>
     <li>Preconditions: <code>A/X/Y 8 bits</code></li>
     <li>Postconditions: <code>A/X/Y 8 bits</code></li>
-    <li>Usage: <code>JSL retry_api_respawn_in_level</code></li>
   </ul>
   <br/>
 
   <h3 id="save_game">Save game</h3>
+  <p><code>JSL retry_api_save_game</code></p>
   <p>Call this to save the game, which will also save the addresses defined in the <code>sram_tables.asm</code> file.</p>
   <ul>
     <li>Inputs: <code>N/A</code></li>
     <li>Outputs: <code>N/A</code></li>
     <li>Preconditions: <code>N/A</code></li>
     <li>Postconditions: <code>A/X/Y 8 bits, DB/X/Y preserved</code></li>
-    <li>Usage: <code>JSL retry_api_save_game</code></li>
   </ul>
   <br/>
 
   <h3 id="reset_level_checkpoint">Reset level checkpoint</h3>
+  <p><code>JSL retry_api_reset_level_checkpoint</code></p>
   <p>Call this to reset the checkpoint in the current level. Entering the level again or respawning will load the main sublevel's entrance. Note that this won't reflect to SRAM until the game is saved.</p>
   <ul>
     <li>Inputs: <code>N/A</code></li>
     <li>Outputs: <code>N/A</code></li>
     <li>Preconditions: <code>A/X/Y 8 bits</code></li>
     <li>Postconditions: <code>A/X/Y 8 bits, DB/X/Y preserved</code></li>
-    <li>Usage: <code>JSL retry_api_reset_level_checkpoint</code></li>
   </ul>
   <br/>
 
   <h3 id="reset_all_checkpoints">Reset all checkpoints</h3>
+  <p><code>JSL retry_api_reset_all_checkpoints</code></p>
   <p>Call this to reset the checkpoint for every level in the game, effectively making it as if it were a fresh game. Note that this won't reflect to SRAM until the game is saved.</p>
   <ul>
     <li>Inputs: <code>N/A</code></li>
     <li>Outputs: <code>N/A</code></li>
     <li>Preconditions: <code>N/A</code></li>
     <li>Postconditions: <code>A/X/Y size preserved, DB/X/Y preserved</code></li>
-    <li>Usage: <code>JSL retry_api_reset_all_checkpoints</code></li>
   </ul>
   <br/>
 
@@ -165,7 +140,7 @@
       </div>
     </li>
   </ul>
-  <br/>
 
+  <br/><center><a href="./index.html">Return to main page</a></center>
 </body>
 </html>

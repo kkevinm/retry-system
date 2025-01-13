@@ -1,38 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Retry RAM Map</title>
+  <title>RAM Map - Retry System UberASM</title>
   <meta name="author" content="KevinM">
-  <style>
-    body {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-    }
-    p, li, th, td {
-      line-height: 150%;
-    }
-    code {
-      font-size: 16px;
-      padding: 2px 4px;
-      background: rgba(0,0,0,.05);
-      border-radius: 4px;
-    }
-    blockquote {
-      font-style: italic;
-    }
-    table, th, td {
-      border: 1px solid black;
-      text-align: center;
-    }
-    .no-center {
-      text-align: left;
-    }
-  </style>
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-  <h2>Retry RAM Map</h2>
+  <h1>Retry RAM Map</h1>
   <p>This documents serves as a detailed reference on the purpose of the RAM addresses used by Retry, and how you can use them.</p>
 
   <h3>Overview</h3>
@@ -299,5 +274,8 @@
       <td class="no-center">Data for all the possible custom midway objects loaded in the current level, plus a counter for how many custom midways are in the level (used to prevent additional midways from spawning if reaching the <code>!max_custom_midway_num</code> value from <code>settings.asm</code>).<br>Each midway uses 4 bytes, so this uses <code>(4*!max_custom_midway_num)+1</code> bytes. For each object, there's a 2 bytes identifier (based on its index in the level's map16 data) and the destination value that this midway will set when grabbed (based on the object's extension).</td>
     </tr>
   </table>
+  <br/>
+  
+  <br/><center><a href="./index.html">Return to main page</a></center>
 </body>
 </html>
