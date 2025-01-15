@@ -20,10 +20,14 @@ else
     !sprite_slots = 12
 endif
 
+if read1($00A2EA) == $5C && read4(read3($00A2EA+1)-4) == $4D6E6976
+
 org $00A2EA
     pla
     sta $1D
     pla
+
+endif
 
 org $05D842
     lda $0109|!addr

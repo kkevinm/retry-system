@@ -78,7 +78,9 @@ endif
     ldx.b #letters_box_no_exit-letters
 +   jsr oam_draw
 
-.no_box:
+.no_box:    
+    ; Make sure $0400 is up to date
+    jsr shared_update_0400
     rts
 
 .hide_cursor_mask:

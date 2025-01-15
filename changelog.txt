@@ -1,3 +1,8 @@
+v0.7.1:
+    - Removed "level_end_frame.asm" and the "gm14_end" routine in "extra.asm", as they're now obsoleted by the UberASM Tool 2.0 "end" label.
+      NOTE: if upgrading from 0.7.0 or older to 0.7.1 or newer, you need to patch the included "retry_unpatch.asm" file with Asar BEFORE running UberASM Tool with the new Retry version, or the game will crash.
+    - Fixed issue from the previous version where the sprite status bar coin tile could be glitched.
+
 v0.7.0:
     - Fixed the !no_score_sprites_on_death option so it doesn't erase score sprites if the prompt is not enabled in the level.
     - Changed sprite status bar configuration to use ram addresses instead of tables, and removed the "sprite_status_bar_tables.asm" file. You can now enable and configure the status bar items using the "retry_api_configure_sprite_status_bar" API function. See "docs/api.html" for more information.

@@ -150,7 +150,7 @@ init:
 
 ..no_timer:
     ; Check if we need to upload the coin tile.
-    lda !ram_status_bar_coins_tile,x : beq ..no_coins
+    lda !ram_status_bar_coins_tile : beq ..no_coins
 
     ; Upload the coin tiles.
     %calc_vram() : sta $2116
@@ -187,6 +187,7 @@ main:
 if not(!maxtile)
     ldx #$0000
 endif
+    stz $02
 
     ; Draw the item box if applicable.
     lda !ram_status_bar_item_box_tile : beq .no_item_box
@@ -194,6 +195,7 @@ endif
     jsr convert_tile_props
     jsr draw_item_box
     plp
+    inc $02
 
 .no_item_box:
     ; Draw the timer if applicable.
@@ -202,6 +204,7 @@ endif
     jsr convert_tile_props
     jsr draw_timer
     plp
+    inc $02
 
 .no_timer:
     ; Draw the coins if applicable.
@@ -211,6 +214,7 @@ endif
     jsr draw_coins
     jsr draw_yoshi_coins
     plp
+    inc $02
 
 .no_coins:
 if !draw_retry_indicator
@@ -219,12 +223,27 @@ if !draw_retry_indicator
     jsr shared_get_prompt_type
     cmp #$04 : bcs .no_indicator
     jsr draw_indicator
+    inc $02
 
 .no_indicator:
 endif
-
+    
     sep #$30
     plb
+
+    ; Check if a tile was drawn
+    lda $02 : beq .return
+
+    ; If yes, always update $0400 during gamemode 14
+    lda $0100|!addr : cmp #$14 : beq .0400_update
+
+    ; Skip updating the $0400 table during mode 7 boss
+    ; initialization to avoid a game crash (???)
+    lda $0D9B|!addr : bmi .return
+
+.0400_update:
+    ; Make sure $0400 is up to date
+    jsr shared_update_0400
 
 .return:
     rts
