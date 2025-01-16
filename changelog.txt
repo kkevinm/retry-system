@@ -1,6 +1,9 @@
+v0.7.2:
+    - Updated "library/retry.asm" and "gamemode/retry_gm14.asm" files, which I forgot to update in 0.7.1 so that version gave compilation errors.
+      NOTE: if upgrading from 0.7.0 or older to 0.7.1 or newer, you need to patch the included "retry_unpatch.asm" file with Asar BEFORE running UberASM Tool with the new Retry version, or the game will crash.
+
 v0.7.1:
     - Removed "level_end_frame.asm" and the "gm14_end" routine in "extra.asm", as they're now obsoleted by the UberASM Tool 2.0 "end" label (2.0 is required to insert Retry from this version onwards).
-      NOTE: if upgrading from 0.7.0 or older to 0.7.1 or newer, you need to patch the included "retry_unpatch.asm" file with Asar BEFORE running UberASM Tool with the new Retry version, or the game will crash.
     - Fixed issue from the previous version where the sprite status bar coin tile could be glitched.
 
 v0.7.0:

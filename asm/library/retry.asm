@@ -65,7 +65,6 @@ endif
 ;=====================================
     %incsrc(code,shared)
     %incsrc("",extra)
-    %incsrc("",level_end_frame)
     %incsrc(code,load_title)
     %incsrc(code,fade_to_level)
     %incsrc(code,level_init_1)
@@ -86,7 +85,6 @@ endif
 ; Load the hijacks.
 ;=====================================
     %incsrc(code/hijacks,hex_edits)
-    %incsrc(code/hijacks,gm14_end)
     %incsrc(code/hijacks,multiple_midways)
     %incsrc(code/hijacks,vanilla_midway)
     %incsrc(code/hijacks,custom_midway)
