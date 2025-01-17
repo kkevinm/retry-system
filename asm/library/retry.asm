@@ -95,7 +95,6 @@ endif
     %incsrc(code/hijacks,sram)
     %incsrc(code/hijacks,hurry_up)
     %incsrc(code/hijacks,death_counter)
-    %incsrc(code/hijacks,lose_lives)
     %incsrc(code/hijacks,initial_facing_fix)
     %incsrc(code/hijacks,item_box_fix)
     %incsrc(code/hijacks,remove_status_bar)
