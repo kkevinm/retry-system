@@ -303,6 +303,10 @@
 ; This is only relevant if !sprite_status_bar = 1.
     !always_draw_box = 1
 
+; If 1, the item box will use an 8x8 tile instead of a 16x16 tile.
+; This is only relevant if !sprite_status_bar = 1.
+    !8x8_item_box_tile = 0
+
 ; If 1, when collecting all DCs in a level they'll be displayed in the status bar.
 ; If 0, they won't be displayed (like in vanilla).
 ; This is only relevant if !sprite_status_bar = 1.

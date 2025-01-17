@@ -53,7 +53,11 @@ if !sprite_status_bar
 .timer:
     %incbin(gfx,timer)
 .item_box:
-    %incbin(gfx,item_box)
+if !8x8_item_box_tile
+    %incbin(gfx,item_box_8x8)
+else
+    %incbin(gfx,item_box_16x16)
+endif
 if !draw_retry_indicator
 .indicator:
     %incbin(gfx,indicator)
