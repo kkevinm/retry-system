@@ -1,3 +1,6 @@
+v0.7.4:
+    - Fixed get_sram_variable_address api routine wrong result if it was called from a different bank.
+
 v0.7.3:
     - Added !8x8_item_box_tile option to have an 8x8 tile instead of a 16x16 tile for the sprite status bar item box (thanks to AmperSam for the gfx).
     - Fixed game crash if patching the infinite lives hex edit after inserting Retry.
