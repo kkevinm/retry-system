@@ -1,5 +1,6 @@
 v0.7.4:
     - Fixed get_sram_variable_address api routine wrong result if it was called from a different bank.
+    - Fixed Mario's walking pose being glitched sometimes after a level reload, which was introduced in v0.6.2 (thanks to mmBeefStew for reporting this).
 
 v0.7.3:
     - Added !8x8_item_box_tile option to have an 8x8 tile instead of a 16x16 tile for the sprite status bar item box (thanks to AmperSam for the gfx).
@@ -21,7 +22,7 @@ v0.7.0:
     - Added api routine to get SRAM address of any variable saved by Retry.
     - Added !draw_retry_indicator setting to draw an indicator in the sprite status bar when the level has Retry enabled (thanks to MiracleWater for the indicator gfx).
     - Fixed potential issue when drawing Dragon Coins in the sprite status bar.
-    - Fixed lives decrementing twice when infinite lives is disabled and Retry is enabled in a level (issue introduced in v0.6.2)
+    - Fixed lives decrementing twice when infinite lives is disabled and Retry is enabled in a level (issue introduced in v0.6.2).
     - Renamed "settings.asm" to "settings_global.asm".
     - Removed "tables.asm" and replaced it with the new "settings_local.asm". This now uses a macro-based approach to enable level-specific options, while the old table-based file can still be found under "legacy/tables.asm" for those that prefer it. Check out "docs/settings_local.html" for details.
 
