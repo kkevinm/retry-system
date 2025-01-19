@@ -1,3 +1,6 @@
+v0.7.5:
+    - Fixed !title_death_behavior setting not working anymore (issue introduced in v0.7.1).
+
 v0.7.4:
     - Fixed get_sram_variable_address api routine wrong result if it was called from a different bank.
     - Fixed Mario's walking pose being glitched sometimes after a level reload, which was introduced in v0.6.2 (thanks to mmBeefStew for reporting this).
