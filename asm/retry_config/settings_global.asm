@@ -273,11 +273,7 @@
 ;======================== Sprite Status Bar =============================;
 
 ; If 1, a sprite status bar will be installed allowing you to display the item box, coin/Yoshi coin counter
-; and timer in levels with sprites, which keeps layer 3 working properly.
-; The sprites use dynamic tiles, meaning you'll need to reserve some GFX space in your SP slots for them.
-; Item box, coins and timer use 1 16x16 tile each, but they only need to be reserved when actually using them,
-; and you can choose which tiles to use for each level (or to just disable any or all of them in specific levels)
-; calling the API routine "configure_sprite_status_bar" in your level/gamemode UberASM (see "api.html").
+; and timer in levels using sprite tiles, which keeps layer 3 working properly.
     !sprite_status_bar = 0
 
 ; If 1, it disables the original game's status bar (including the IRQ) which prevents layer 3 from messing up.
@@ -286,6 +282,17 @@
 ; Suggested to use if you're using !sprite_status_bar = 1.
 ; Don't use this if you're using similar patches such as "RAM Toggled Status Bar".
     !remove_vanilla_status_bar = 0
+
+; Default sprite tile and palette to use for each element in the status bar.
+; These settings can be overridden per-level by using the "configure_sprite_status_bar" API routine (see "docs/api.html").
+; If both !default_xxx_tile and !default_xxx_palette are $00, the item will be hidden by default.
+; These are only relevant if !sprite_status_bar = 1.
+    !default_item_box_tile        = $80
+    !default_item_box_palette     = $0B
+    !default_timer_tile           = $88
+    !default_timer_palette        = $08
+    !default_coin_counter_tile    = $C2
+    !default_coin_counter_palette = $08
 
 ; General properties for sprite status bar elements.
 ; These are only relevant if !sprite_status_bar = 1.
@@ -316,6 +323,7 @@
 ; in levels where Retry prompt or instant Retry is enabled. This could be useful for collabs.
 ; The other settings control how and where it is drawn. The tile you choose will be
 ; overwritten at runtime by the indicator tile when needed.
+; This is only relevant if !sprite_status_bar = 1.
     !draw_retry_indicator    = 0
     !retry_indicator_tile    = $1D
     !retry_indicator_palette = $09

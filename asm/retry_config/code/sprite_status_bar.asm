@@ -171,6 +171,7 @@ endif
 
 if !draw_retry_indicator
     ; Check if we need to upload the indicator tile.
+    lda $0100|!addr : cmp #$0B : bcc ..no_indicator
     jsr shared_get_prompt_type
     cmp #$04 : bcs ..no_indicator
 
@@ -228,6 +229,7 @@ endif
 if !draw_retry_indicator
     ; Draw the indicator if applicable
     sep #$20
+    lda $0100|!addr : cmp #$0B : bcc .no_indicator
     jsr shared_get_prompt_type
     cmp #$04 : bcs .no_indicator
     jsr draw_indicator

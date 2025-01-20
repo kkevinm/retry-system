@@ -89,18 +89,14 @@ reset_all_checkpoints:
 ; Routine to configure which tiles will be used by the sprite status
 ; bar. You can configure three elements: item box, timer and coin
 ; counter. Each element needs a 16x16 sprite tile to be reserved.
-; This routine can be called in each level that needs the sprite
-; status bar (with UberASM level init code), or in gamemode 10 init code
-; to have the same configuration in every level. You can also use both
-; together: setup a default global configuration with gamemode 10 code,
-; and override it with level init code for levels that need special
-; configurations. Additionally, the three elements don't need to all
-; be used: you can enable just 1 or 2 of them.
+; This routine should be called in UberASM level init code, to overwrite
+; the default settings from "settings_global.asm", in case you want
+; to hide some or all of the elements in some level or if you need to
+; change their tile or palette.
 ; Each element needs a 16 bit value that determines which 16x16 tile
-; it will use and what palette to use. The lower 9 bits are the tile
-; number, while the higher 3 bits are the palette (000 = palette 8,
-; 001 = palette 9, ..., 111 = palette F). If an element is set to
-; $0000, it won't be displayed.
+; it will use and what palette to use. The first digit is the palette
+; row to use (8-F), while the other 3 digits are the tile number
+; (000-1FF). If an element is set to $0000, it won't be displayed.
 ;
 ; Inputs: A = item box, X = timer, Y = coin counter
 ; Outputs: N/A
@@ -108,7 +104,7 @@ reset_all_checkpoints:
 ; Post: A/X/Y size preserved, DB/X/Y preserved
 ; Example:
 ;     REP #$30
-;     LDA #$3080 ; Item box: palette B, tile 0x80
+;     LDA #$B080 ; Item box: palette B, tile 0x80
 ;     LDX #$0088 ; Timer: palette 8, tile 0x88
 ;     LDY #$00C2 ; Coin counter: palette 8, tile 0xC2
 ;     JSL retry_api_configure_sprite_status_bar
@@ -116,9 +112,9 @@ reset_all_checkpoints:
 ;================================================
 configure_sprite_status_bar:
 if !sprite_status_bar
-    sta !ram_status_bar_item_box_tile
-    txa : sta !ram_status_bar_timer_tile
-    tya : sta !ram_status_bar_coins_tile
+    and #$7FFF : sta !ram_status_bar_item_box_tile
+    txa : and #$7FFF : sta !ram_status_bar_timer_tile
+    tya : and #$7FFF : sta !ram_status_bar_coins_tile
 endif
     rtl
 

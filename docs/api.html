@@ -69,9 +69,9 @@
 
   <h3 id="configure_sprite_status_bar">Configure sprite status bar</h3>
   <p><b>NOTE</b>: this routine has no effect unless <code>!sprite_status_bar = 1</code> in <code>settings.asm</code>.</p>
-  <p>Call this to configure graphics for the sprite status bar items: item box, timer and coin counter. Each item needs to have a 16x16 sprite tile reserved to it, and a palette to use.</p>
-  <p>Each item's configuration is set with a 16 bit value <code>$PTTT</code>. The first digit <code>P</code> will be the item's palette, starting from palette 8 with <code>P = 0</code> and ending with palette F with <code>P = 7</code>. <code>TTT</code> will determine the tile number: you can see this in Lunar Magic's "8x8 Tile Editor" if you hover over the desired tile (more specifically, the upper left 8x8 tile of the 16x16 tile you want to use). In the bottom bar you'll see "Tile 0xYYY": then, <code>TTT = YYY - $400</code>. For example, the Smiling Coin tile is "Tile 0x4C2", which results in <code>TTT = $4C2 - $400 = $0C2</code>. So, for example, to reserve that tile and use palette F, the full value will be <code>$70C2</code>.</p>
-  <p>If an item's value is <code>$0000</code>, the item will simply not be displayed. Note that the item values are reset to <code>$0000</code> before each sublevel is loaded (in gamemode F, to be precise), so this routine should be called either in gamemodes 10 or 11 or 12, if you want to set a global configuration, or in level init code, if you want to set a level-specific configuration. You can also do both to have a global configuration that can be overridden in some levels.</p>
+  <p>Call this in UberASM level init code to configure graphics for the sprite status bar items (item box, timer and coin counter) for a specific level. Calling this will override the default settings found in <code>settings_global.asm</code>, in case you want to hide some or all of the elements in some level or if you need to change their tile or palette.</p>
+  <p>Each item's configuration is set with a 16 bit value <code>$PTTT</code>. The first digit <code>P</code> will be the item's palette, starting from palette 8 with <code>P = 8</code> and ending with palette F with <code>P = F</code>. <code>TTT</code> will determine the tile number: you can see this in Lunar Magic's "8x8 Tile Editor" if you hover over the desired tile (more specifically, the upper left 8x8 tile of the 16x16 tile you want to use). In the bottom bar you'll see "Tile 0xYYY": then, <code>TTT = YYY - $400</code>. For example, the Smiling Coin tile is "Tile 0x4C2", which results in <code>TTT = $4C2 - $400 = $0C2</code>. So, for example, to reserve that tile and use palette F, the full value will be <code>$F0C2</code>.</p>
+  <p>If an item's value is <code>$0000</code>, the item will simply not be displayed.</p>
   <ul>
     <li>Inputs: <code>A = item box, X = timer, Y = coin counter</code></li>
     <li>Outputs: <code>N/A</code></li>
@@ -80,7 +80,7 @@
     <li>Usage (example):
       <div style="display: block; margin: 0px 0px 0px 50px">
         <code>REP #$30</code><br/>
-        <code>LDA #$3080 ; Item box: palette B, tile 0x80</code><br/>
+        <code>LDA #$B080 ; Item box: palette B, tile 0x80</code><br/>
         <code>LDX #$0088 ; Timer: palette 8, tile 0x88</code><br/>
         <code>LDY #$00C2 ; Coin counter: palette 8, tile 0xC2</code><br/>
         <code>JSL retry_api_configure_sprite_status_bar</code><br/>
