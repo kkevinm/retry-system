@@ -1,4 +1,4 @@
-; Gamemode 03
+; Gamemode 00
 
 init:
     ; Set the DBR to the freeram's bank for faster stores.

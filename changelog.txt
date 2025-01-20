@@ -1,5 +1,6 @@
 v0.7.5:
     - Fixed !title_death_behavior setting not working anymore (issue introduced in v0.7.1).
+    - Changed gamemode 3 file to gamemode 0 so that Retry still works even if the title screen is skipped with a patch.
 
 v0.7.4:
     - Fixed get_sram_variable_address api routine wrong result if it was called from a different bank.
