@@ -2,7 +2,7 @@
 ; Do not patch this if you don't want to remove the Retry from your ROM,
 ; and do not insert it with UberASM Tool either.
 ; Basically, you can ignore this file as long as you're using Retry in your ROM.
-; For more information, see "how_to_remove.txt".
+; For more information, see "docs/uninstall.html".
 
 if read1($00FFD5) == $23
     sa1rom

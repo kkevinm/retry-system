@@ -6,7 +6,7 @@
 
 ;=====================================
 ; This routine will be called when loading the title screen.
-; It can be used to reset particular RAM addresses for a new save file (see "docs/sram_info.txt").
+; It can be used to reset particular RAM addresses for a new save file (see "docs/sram_info.html").
 ; NOTE: on SA-1 roms, this runs on the SNES cpu.
 ;=====================================
 load_title:

@@ -5,6 +5,6 @@
   - Thomas: death counter code.
   - Lui: remove status bar code.
   - dtothefourth: a couple new features ideas.
-  - AmperSam: custom midways instructions, 8x8 item box gfx, testing and feedback.
+  - AmperSam: documentation, 8x8 item box gfx, testing and feedback.
   - MiracleWater: Retry indicator idea and gfx, testing and feedback.
   - BabaYegha, Fyre150, Abdu, margot, simon.caio, LouisDoucet, SJandCharlieTheCat, Koopster, schema_tuna, Alex, Selicre, Mega, worldpeace, NixKillsMyths, mmBeefStew: testing and feedback.
