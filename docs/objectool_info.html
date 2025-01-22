@@ -11,7 +11,7 @@
 <body>
 <h1>ObjecTool Information</h1>
 <p>If you want to insert custom objects using the ObjecTool patch, and you're using Retry's Custom Midway Object feature (<code>!use_custom_midway_bar = 1</code> in the settings) you'll need to make an edit before inserting the patch.</p>
-<p>Open "objectool.asm" and remove these lines (they're towards the top of the file):</p>
+<p>Open <u class="dir">objectool.asm</u> and remove these lines (they're towards the top of the file):</p>
 
 <pre>
 org $0DA415|!bank                   ; x6A615 (hijack normal object loading routine)
@@ -19,12 +19,12 @@ org $0DA415|!bank                   ; x6A615 (hijack normal object loading routi
 	NOP                             ;
 </pre>
 
-<p>After doing this, just patch "objectool.asm".</p>
+<p>After doing this, just patch <u class="dir">objectool.asm</u>.</p>
 
-<p>One thing to keep in mind is that Retry will use slots 00-41 and 50-51 of the Custom Normal Objects (i.e., objects with id 2D) for its custom midway bars, meaning that you can't use them in ObjecTool.</p>
-<p>You're free to use normal objects 42-4F and 52-FF, as well as all Custom Extended Objects available.</p>
+<p>One thing to keep in mind is that Retry will use slots <b>00-41</b> and <b>50-51</b> of the Custom Normal Objects (i.e., objects with id 2D) for its custom midway bars, meaning that you can't use them in ObjecTool.</p>
+<p>You're free to use Custom Normal Objects <b>42-4F</b> and <b>52-FF</b>, as well as all Custom Extended Objects available.</p>
 
-<p>Additionally, if you want to remove Retry's custom midway bar while keeping ObjecTool, you'll need to place back the code that you removed in "objectool.asm" (and make sure you run Retry with !use_custom_midway_bar = 0).</p>
+<p>Additionally, if you want to remove Retry's custom midway bar while keeping ObjecTool, you'll need to place back the code that you removed in <u class="dir">objectool.asm</u> (and make sure you run Retry with <code>!use_custom_midway_bar = 0</code>).</p>
 <br/><center><a href="./index.html">Return to main page</a></center>
 </body>
 </html>

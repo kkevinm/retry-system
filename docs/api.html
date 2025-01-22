@@ -79,14 +79,14 @@
 		<li>Preconditions: <code>A/X/Y 16 bits</code></li>
 		<li>Postconditions: <code>A/X/Y size preserved, DB/X/Y preserved</code></li>
 		<li>Usage (example):
-			<div style="display: block; margin: 0px 0px 0px 50px">
-				<code>REP #$30</code><br/>
-				<code>LDA #$B080 ; Item box: palette B, tile 0x80</code><br/>
-				<code>LDX #$0088 ; Timer: palette 8, tile 0x88</code><br/>
-				<code>LDY #$00C2 ; Coin counter: palette 8, tile 0xC2</code><br/>
-				<code>JSL retry_api_configure_sprite_status_bar</code><br/>
-				<code>SEP #$30</code><br/>
-			</div>
+<pre>
+	REP #$30
+	LDA #$B080 ; Item box: palette B, tile 0x80
+	LDX #$0088 ; Timer: palette 8, tile 0x88
+	LDY #$00C2 ; Coin counter: palette 8, tile 0xC2
+	JSL retry_api_configure_sprite_status_bar
+	SEP #$30
+</pre>
 		</li>
 	</ul>
 	<br/>
@@ -113,6 +113,7 @@
 	<h3 id="get_sram_variable_address">Get SRAM variable address</h3>
 	<p>Routine to get the address in SRAM for a specific variable. By "variable" it's meant any of the RAM addresses that are saved to SRAM specified in the sram save table. The returned address will be coherent with the current save file loaded when this routine is called (so, make sure to not call it before a save file is loaded!).</p>
 	<p>This could be useful to read/write values in SRAM directly, for example if you need to update some SRAM value without the game being saved.</p>
+	<p>Note that if you call this on the title screen (for example, if you need to display something based on some value saved in the three files), you will need to set <code>$010A</code> to the value of the save file you want to check (<code>0</code> for save file 1, <code>1</code> for save file 2, <code>2</code> for save file 3) before calling this.</p>
 	<p><b>NOTE</b>: this will always return "variable not found" if <code>!sram_feature = 0</code>.</p>
 	<ul>
 		<li>Inputs: <code>N/A</code></li>
@@ -125,20 +126,16 @@
 		<li>Preconditions: <code>N/A</code></li>
 		<li>Postconditions: <code>A/X/Y 8 bit and clobbered, DB preserved</code></li>
 		<li>Usage (example):
-			<div style="display: block; margin: 0px 0px 0px 50px">
-				<div style="display: block; margin: 0px 0px 0px 50px">
-					<code>JSL retry_api_get_sram_variable_address</code><br/>
-					<code>dl retry_ram_death_counter ; Variable to search for</code><br/>
-					<code>BCS not_found</code><br/>
-				</div>
-				<code>found:</code><br/>
-				<div style="display: block; margin: 0px 0px 0px 50px">
-					<code>LDY #$01</code><br/>
-					<code>LDA #$09</code><br/>
-					<code>STA [$00],y ; Set second death counter digit in SRAM to 9</code><br/>
-				</div>
-				<code>not_found:</code><br/>
-			</div>
+<pre>
+	JSL retry_api_get_sram_variable_address
+	dl retry_ram_death_counter ; Variable to search for
+	BCS not_found
+found:
+	LDY #$01
+	LDA #$09
+	STA [$00],y ; Set second death counter digit in SRAM to 9
+not_found:
+</pre>
 		</li>
 	</ul>
 

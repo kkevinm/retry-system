@@ -16,7 +16,7 @@
 
 <h4>Q: How do I add my own addresses to the save tables?</h4>
 
-<p>Open <u class="dir">retry_config/legacy/tables.asm</u> and go to the <code>save</code> table. There, you can add your own addresses to save (more info in the file). Similarly to SRAM/BW-RAM Plus, for each address you put in the table, you also need to specify its default value(s) for when a new save file is loaded in the "sram_defaults" tables.</p>
+<p>Open <u class="dir">retry_config/sram_tables.asm</u> and go to the <code>save</code> table. There, you can add your own addresses to save (more info in the file). Similarly to SRAM/BW-RAM Plus, for each address you put in the table, you also need to specify its default value(s) for when a new save file is loaded in the <code>sram_defaults</code> tables.</p>
 
 <p>Some examples of addresses that may be useful (you can find more at SMW Central's <a href="https://www.smwcentral.net/?p=memorymap&game=smw&region=ram">RAM Map</a>):</p>
 
@@ -35,16 +35,16 @@ dl $7FA660 : dw $0300   ; $40A660 on SA-1.
 (For all of these, the default values need to be all $00).
 
 <h4>Q: I'm using SRAM/BW-RAM Plus and I want to save Retry's stuff with them. How do I do it?</h4>
-<p>A: If you really need to use those, then you can add these to the "sram_table"/"bw_ram_table":</p>
+<p>A: If you really need to use those, then you can add these to the <code>sram_table</code>/<code>bw_ram_table</code>:</p>
 
 <pre>
 dl !ram_checkpoint    : dw 192
-dl !ram_death_counter : dw
+dl !ram_death_counter : dw 5
 </pre>
 
-<p>Note: to have the Retry ram defines available in the patch, copy the contents of "ram.asm" at the top of the SRAM+/BW-RAM+ table file. Also, if you're not using the death counter, you can omit the second line.</p>
+<p>Note: to have the Retry ram defines available in the patch, copy the contents of <u class="dir">ram.asm</u> at the top of the SRAM+/BW-RAM+ table file. Also, if you're not using the death counter, you can omit the second line.</p>
 
-<p>Then add these tables to the "sram_defaults"/"bw_ram_defaults":</p>
+<p>Then add these tables to the <code>sram_defaults</code>/<code>bw_ram_defaults</code>:</p>
 
 <pre>
 ; Checkpoints.
