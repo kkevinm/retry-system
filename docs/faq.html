@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Frequently Asked Questions - Retry System UberASM</title>
+<meta name="author" content="KevinM, AmperSam">
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+	<link rel="icon" href="./img/icon.png" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+
+<body>
+<h1>Frequently Asked Questions</h1>
+<br />
+
+<h4>Q: Can I insert this in a ROM where I've already inserted worldpeace's Retry patch?</h4>
+<p>No, doing so will result in an error when running UberASM Tool. First, you need to remove the original patch: either try to use the Unpatcher tool (at your own risk) or port your hack over to a new ROM.</p>
+<hr>
+
+<h4>Q: I noticed that you don't lose lives when dying/retrying a level. Is it possible to change that?</h4>
+<p>Yes. Look at the <code>lose_lives</code> table in <u class="dir">retry_config/tables.asm</u>. There you can choose in which level the player will lose lives by changing the corresponding 0 to a 1. If you just don't want infinite lives anywhere, then change all the 0s to 1s.</p>
+<hr>
+
+<h4>Q: Can I change the prompt type in specific sublevels?</h4>
+<p>Yes. Look at the <code>checkpoint_effect</code> table in <u class="dir">retry_config/tables.asm</u>. The first digit in each value controls the prompt type for a specific sublevel.</p>
+<hr>
+
+<h4>Q: Can I change the prompt type in specific situations (not necessarily on a sublevel basis)?</h4>
+<p>Yes. Additionally to the <code>effect</code> table, there's the <code>!ram_prompt_override</code> address that, when set, will replace both the table and the default option (see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>).</p>
+<p>For example, you could use it to let the player choose the prompt type as they want (you still have to implement that, though, as this only handles setting the prompt type).
+<p>Note that this address by default is never reset outside of title screen load.</p>
+<hr>
+
+<h4>Q: Can I keep the Retry prompt but remove the black box?</h4>
+<p>Yes. Look at <code>!no_prompt_box</code> in <u class="dir">retry_config/settings.asm</u>. You can also remove it only under certain circumstances by setting "!ram_disable_box" to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
+<p>Note that this address by default is never reset outside of title screen load.</p>
+<hr>
+
+<h4>Q: Can I keep the Retry prompt but remove the "exit" option?</h4>
+<p>Yes. Look at <code>!no_exit_option</code> in <u class="dir">retry_config/settings.asm</u>. You can also remove it only under certain circumstances by setting "!ram_disable_exit" to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
+<p>Note that this address by default is never reset outside of title screen load.</p>
+<hr>
+
+<h4>Q: Can I change where the prompt is shown on the screen?</h4>
+<p>Yes. Look at <code>!text_x_pos</code> and <code>!text_y_pos</code> in <u class="dir">retry_config/settings.asm</u>. For example, using "!text_x_pos = $08" and "!text_y_pos = $D0" will place it on the lower left corner of the screen.</p>
+<p>Additionally, you can also change it at runtime by writing to the "!ram_prompt_x_pos" and "!ram_prompt_y_pos" addresses (see <a href="./ram_map.html">RAM Map</a> for more info).
+<p>Either way, if you want to change it you should disable the Retry box (either by setting <code>!no_prompt_box</code> = 1" or by writing to "!ram_disable_box" at untime) as its position can't be changed easily.
+</p>
+<hr>
+
+<h4>Q: Is this compatible with the "No Overworld" UberASM?</h4>
+<p>Yes. If you want to insert it with the global code method, you don't need to do anything else. If you want to use the gamemode method, you'll need to merge the UberASM files.</p>
+<p>Merging is just a matter of adding <code>jsl NoOverworld_SkipOW</code> to <u class="dir">retry_gm0C.asm</u> (init), <code>jsl NoOverworld_PreLoadLevel</code> to <u class="dir">retry_gm10.asm</u> (init), and <code>jsl NoOverworld_DuringLevel</code> to <u class="dir">retry_gm14.asm</u> (main).</p>
+
+<br/><center><a href="./index.html">Return to main page</a></center>
+</body>
+
+</html>
