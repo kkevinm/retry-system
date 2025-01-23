@@ -39,28 +39,32 @@
 	<br/>
 
 	<h3 id="copy_files">Copy Retry Files into Project</h3>
-	<p>Now that you have UberASM Tool, you'll need to copy the Retry files into it. All the files you need can be found in Retry's <u class="dir">asm</u> folder.</p>
+	<p>Now that you have UberASM Tool, you'll need to copy the Retry files into it.</p>
+	<p>Inside the <u class="dir">asm</u>, you can find the <u class="dir">retry_install.bat</u> file, which will do all the copying for you. Just double click it, and then drag and drop your UberASM Tool folder inside the terminal window that pops up. After that, the script will copy all the files in your folder, and you should see a success message. Additionally, if Retry was already present in your UberASM Tool folder, the script will backup up its files in a separate <u class="dir">retry_old_backup</u> folder, in case you need to port your settings from the previous version (feel free to delete this folder afterwards).</p>
+	<p>If you instead want to do it manually, follow these steps:</p>
 	<ul>
 		<li>Copy the <u class="dir">retry.asm</u> file from the <u class="dir">asm/library</u> folder into UberASM Tool's <u class="dir">library</u> folder.</li>
 		<li>Copy all the files from the <u class="dir">asm/gamemode</u> folder into UberASM Tool's <u class="dir">gamemode</u> folder.</li>
-		<li>Copy the <u class="dir">asm/retry_config</u> into UberASM Tool's top folder. This means that after this step your UberASM Tool folder structure should look like this:
-			<div id="hierarchy">
-				<div class="folder">UberASM Tool Folder
-				<span class="folder">├─&nbsp;asm</span>
-				<span class="folder">├─&nbsp;gamemode</span>
-				<span class="folder">│<span class="file">└─&nbsp;<b>retry_gm*.asm</b></span></span>
-				<span class="folder">├─&nbsp;level</span>
-				<span class="folder">├─&nbsp;library</span>
-				<span class="folder">│<span class="file">└─&nbsp;<b>retry.asm</b></span></span>
-				<span class="folder">├─&nbsp;other</span>
-				<span class="folder">├─&nbsp;overworld</span>
-				<span class="folder">├─&nbsp;<b>retry_config</b></span>
-				<span class="folder">├─&nbsp;routines <i>(only present in UberASM Tool 2.0+)</i></span>
-				<span class="folder">├─&nbsp;...</span>
-				</div>
-			</div>
-		</li>
+		<li>Copy the <u class="dir">asm/retry_config</u> into UberASM Tool's top folder.</li>
 	</ul>
+	<p>After running the script or copying the files manually, your UberASM Tool folder structure should look like this:
+		<div id="hierarchy">
+			<div class="folder">UberASM Tool Folder
+			<span class="folder">├─&nbsp;asm</span>
+			<span class="folder">├─&nbsp;gamemode</span>
+			<span class="folder">│<span class="file">└─&nbsp;<b>retry_gm*.asm</b></span></span>
+			<span class="folder">├─&nbsp;level</span>
+			<span class="folder">├─&nbsp;library</span>
+			<span class="folder">│<span class="file">└─&nbsp;<b>retry.asm</b></span></span>
+			<span class="folder">├─&nbsp;other</span>
+			<span class="folder">├─&nbsp;overworld</span>
+			<span class="folder">├─&nbsp;<b>retry_config</b></span>
+			<span class="folder">├─&nbsp;retry_old_backup <i>(only present if old Retry backed up by install script)</i></span>
+			<span class="folder">├─&nbsp;routines <i>(only present in UberASM Tool 2.0+)</i></span>
+			<span class="folder">├─&nbsp;...</span>
+			</div>
+		</div>
+	</p>
 	<br/>
 
 	<h3 id="insert_files">Insert Files with UberASM Tool</h3>

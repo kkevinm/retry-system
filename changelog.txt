@@ -5,6 +5,7 @@ v0.7.5:
     - Changed configure_sprite_status_bar api routine palette format so it's easier to use (palette value to pass is [8-F] instead of [0-7]).
     - Fixed Retry indicator being drawn on the title screen.
     - Finalized documentation (thanks to AmperSam for the huge help).
+    - Added "retry_install.bat" script to automate the copying the Retry files in the UberASM Tool folders.
 
 v0.7.4:
     - Fixed get_sram_variable_address api routine wrong result if it was called from a different bank.
