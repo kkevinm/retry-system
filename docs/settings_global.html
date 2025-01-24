@@ -479,8 +479,56 @@ table tr td:nth-child(1) code {
 	<ul>
 		<li>If 1, it disables the original game's status bar (including the IRQ) which prevents layer 3 from messing up. Differently than the normal remove status bar patch, this keeps the status bar functions (lives, coins, bonus stars, score, timer, reserve item) running in the background. Suggested to use if you're using <code>!sprite_status_bar = 1</code>. Don't use this if you're using similar patches such as "RAM Toggled Status Bar".</li>
 	</ul>
+
 	<p>The following settings are only relevant if <code>!sprite_status_bar = 1</code>.</p>
-	<p>General properties for sprite status bar elements. These are only relevant if <code>!sprite_status_bar = 1</code>.</p>
+
+	<p>Default sprite tile and palette to use for each element in the status bar. These settings can be overridden per-level by using the <code>configure_sprite_status_bar</code> API routine (see <a href="./api.html">API Information</a>). If both <code>!default_xxx_tile</code> and <code>!default_xxx_palette</code> are $00, the item will be hidden by default.</p>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Value</th>
+			<th>Range</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td><code>!default_item_box_tile</code></td>
+			<td><code>$80</code></td>
+			<td><code>$000-$1FF</code></td>
+			<td>Sprite tile number used by the item box by default</td>
+		</tr>
+		<tr>
+			<td><code>!default_item_box_palette</code></td>
+			<td><code>$0B</code></td>
+			<td><code>$08-$0F</code></td>
+			<td>Palette used by the item box by default</td>
+		</tr>
+		<tr>
+			<td><code>!default_timer_tile</code></td>
+			<td><code>$88</code></td>
+			<td><code>$000-$1FF</code></td>
+			<td>Sprite tile number used by the timer by default</td>
+		</tr>
+		<tr>
+			<td><code>!default_timer_palette</code></td>
+			<td><code>$08</code></td>
+			<td><code>$08-$0F</code></td>
+			<td>Palette used by the timer by default</td>
+		</tr>
+		<tr>
+			<td><code>!default_coin_counter_tile</code></td>
+			<td><code>$C2</code></td>
+			<td><code>$000-$1FF</code></td>
+			<td>Sprite tile number used by the coin counter by default</td>
+		</tr>
+		<tr>
+			<td><code>!default_coin_counter_palette</code></td>
+			<td><code>$08</code></td>
+			<td><code>$08-$0F</code></td>
+			<td>Palette used by the coin counter by default</td>
+		</tr>
+	</table>
+
+	<p>General properties for sprite status bar elements.</p>
 	<table>
 		<tr>
 			<th width="170">Name</th>
@@ -528,6 +576,7 @@ table tr td:nth-child(1) code {
 			<td>Y-position on the screen to draw the Dragon/Yoshi coin counter</td>
 		</tr>
 	</table>
+
 	<code>!always_draw_box</code>
 	<ul>
 		<li>If 1, the item box will always be drawn (if set to be drawn for the specific level). Otherwise, it will only be drawn when having an item in reserve.</li>
