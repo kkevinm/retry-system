@@ -21,7 +21,8 @@ jobs:
           ".gitkeep"
           ".gitignore"
           ".github"
-          "Readme.md"
+          "README.md"
+          "docs/_template.html"
         )
 
         # Create args for rsync
