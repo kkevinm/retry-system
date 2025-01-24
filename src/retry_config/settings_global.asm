@@ -9,7 +9,7 @@
 ; 2 = instant retry (no prompt & play only the sfx: the fastest option; like "yes" is chosen automatically)
 ;     In this option, you can press start then select to exit the level.
 ; 3 = no retry prompt/respawn (vanilla death: as if "no" is chosen automatically, use this if you only want the multi-midway feature).
-; Note: you can override this per sublevel (see "settings_local.asm") and also at any point by setting a certain RAM address (see "doc/ram_map.html").
+; Note: you can override this per sublevel (see "settings_local.asm") and also at any point by setting a certain RAM address (see "docs/ram_map.html").
     !default_prompt_type = 1
 
 ;======================== QoL and Anti-Break ============================;
@@ -23,7 +23,7 @@
 
 ; 0 = midways won't give Mario a mushroom.
 ; 1 = vanilla midway powerup behavior.
-; Note: you can also change this on the fly (see "doc/ram_map.html").
+; Note: you can also change this on the fly (see "docs/ram_map.html").
     !midway_powerup = 0
 
 ; Counterbreak options reset the corresponding counters/items when the player dies and/or when going to the Overworld.
@@ -148,8 +148,8 @@
 
 ; If 1, Retry will install a custom midway object in the ROM, insertable in levels by using object 2D.
 ; These objects allow you to have multiple midways in the same level, each with a different entrance.
-; For more info on how to use them, check out "doc/midway_instruction.html".
-; Note: this can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the "doc/objectool_info.html" file).
+; For more info on how to use them, check out "docs/midway_instruction.html".
+; Note: this can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the "docs/objectool_info.html" file).
     !use_custom_midway_bar = 1
 
 ; If !use_custom_midway_bar = 1, it determines how many custom midways you can have in the same sublevel.
@@ -192,11 +192,11 @@
 
 ; Set to 1 if you don't want the "Exit" option in the prompt.
 ; This will also allow the player to Start+Select when having the prompt.
-; Note: you can also change this on the fly (see "doc/ram_map.html").
+; Note: you can also change this on the fly (see "docs/ram_map.html").
     !no_exit_option = 0
 
 ; Set to 1 to remove the black box, but leave the options on screen.
-; Note: you can also change this on the fly (see "doc/ram_map.html").
+; Note: you can also change this on the fly (see "docs/ram_map.html").
     !no_prompt_box = 0
 
 ; Set to 1 to dim the screen while the prompt is shown.
@@ -221,7 +221,7 @@
 ; X/Y position of the first tile in the prompt (the cursor on the first line).
 ; Changing this only works if the black box is disabled (if enabled,
 ; default values will be used instead).
-; Note: you can also change these on the fly (see "doc/ram_map.html").
+; Note: you can also change these on the fly (see "docs/ram_map.html").
     !text_x_pos = $58
     !text_y_pos = $6F
 
@@ -284,7 +284,7 @@
     !remove_vanilla_status_bar = 0
 
 ; Default sprite tile and palette to use for each element in the status bar.
-; These settings can be overridden per-level by using the "configure_sprite_status_bar" API routine (see "doc/api.html").
+; These settings can be overridden per-level by using the "configure_sprite_status_bar" API routine (see "docs/api.html").
 ; If both !default_xxx_tile and !default_xxx_palette are $00, the item will be hidden by default.
 ; These are only relevant if !sprite_status_bar = 1.
     !default_item_box_tile        = $80

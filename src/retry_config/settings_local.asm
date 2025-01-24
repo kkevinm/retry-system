@@ -8,5 +8,5 @@
 ; - %disable_room_cp_sfx(level)
 ; - %no_lose_lives(level)
 ; - %settings(level, checkpoint, retry, sfx_echo, no_reset_rng, disable_room_cp_sfx, no_lose_lives)
-; For details, check out "doc/settings_local.html".
+; For details, check out "docs/settings_local.html".
 
