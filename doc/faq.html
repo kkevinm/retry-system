@@ -36,17 +36,17 @@
 <hr>
 
 <h4>Q: Can I keep the Retry prompt but remove the black box?</h4>
-<p>Yes. Look at <code>!no_prompt_box</code> in <u class="dir">retry_config/settings.asm</u>. You can also remove it only under certain circumstances by setting <code>!ram_disable_box</code> to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
+<p>Yes. Look at <code>!no_prompt_box</code> in <u class="dir">retry_config/settings_global.asm</u>. You can also remove it only under certain circumstances by setting <code>!ram_disable_box</code> to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
 <p>Note that this address by default is never reset outside of title screen load.</p>
 <hr>
 
 <h4>Q: Can I keep the Retry prompt but remove the "exit" option?</h4>
-<p>Yes. Look at <code>!no_exit_option</code> in <u class="dir">retry_config/settings.asm</u>. You can also remove it only under certain circumstances by setting <code>!ram_disable_exit</code> to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
+<p>Yes. Look at <code>!no_exit_option</code> in <u class="dir">retry_config/settings_global.asm</u>. You can also remove it only under certain circumstances by setting <code>!ram_disable_exit</code> to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
 <p>Note that this address by default is never reset outside of title screen load.</p>
 <hr>
 
 <h4>Q: Can I change where the prompt is shown on the screen?</h4>
-<p>Yes. Look at <code>!text_x_pos</code> and <code>!text_y_pos</code> in <u class="dir">retry_config/settings.asm</u>. For example, using <code>!text_x_pos = $08</code> and <code>!text_y_pos = $D0</code> will place it on the lower left corner of the screen.</p>
+<p>Yes. Look at <code>!text_x_pos</code> and <code>!text_y_pos</code> in <u class="dir">retry_config/settings_global.asm</u>. For example, using <code>!text_x_pos = $08</code> and <code>!text_y_pos = $D0</code> will place it on the lower left corner of the screen.</p>
 <p>Additionally, you can also change it at runtime by writing to the <code>!ram_prompt_x_pos</code> and <code>!ram_prompt_y_pos</code> addresses (see <a href="./ram_map.html">RAM Map</a> for more info).
 <p>Either way, if you want to change it you should disable the Retry box (either by setting <code>!no_prompt_box = 1</code> or by writing to <code>!ram_disable_box</code> at runtime) as its position can't be changed easily.
 </p>

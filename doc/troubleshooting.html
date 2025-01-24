@@ -93,7 +93,7 @@ A: Secondary entrances that are already present in the original game won't work 
 
 <hr>
 <h4>Q: I use a custom midway block/sprite, but it doesn't seem to work!</h4>
-<p>By default Retry only works with the vanilla midway tile, but it's fairly straightforward to make it work with your own blocks/sprites. Retry has a specific RAM address that can be used to set the midway in the current level (according to the <code>checkpoint</code> table in <u class="dir">retry_config/tables.asm</u>). The address is <code>!ram_set_checkpoint</code> to have it always available in sprites/blocks, you can copy the contents of "ram.asm" into PIXI's <u class="dir">asm/sa1def.asm</u>, GPS's <u class="dir">defines.asm</u> and UberASM Tool's <u class="dir">other/macro_library.asm</u>.</p>
+<p>By default Retry only works with the vanilla midway tile, but it's fairly straightforward to make it work with your own blocks/sprites. Retry has a specific RAM address that can be used to set the midway in the current level (according to the <code>checkpoint</code> setting in <u class="dir">retry_config/settings_local.asm</u>). The address is <code>!ram_set_checkpoint</code> to have it always available in sprites/blocks, you can copy the contents of "ram.asm" into PIXI's <u class="dir">asm/sa1def.asm</u>, GPS's <u class="dir">defines.asm</u> and UberASM Tool's <u class="dir">other/macro_library.asm</u>.</p>
 <p>The system works as follows: if you set the low byte (<code>!ram_set_checkpoint</code>) to <code>#$00</code>, it will trigger the current level's midway. If the checkpoint table for this sublevel is 0, it means it will give you the midway for the main level. While if it's 2 or 3, it will give you the midway for the current sublevel.</p>
 <p>You can also set a completely custom entrance for the checkpoint, similarly to how Retry's custom midway objects work. To do this, you need to set the entire 16 bit address (<code>!ram_set_checkpoint</code> and <code>!ram_set_checkpoint+1</code>) to the entrance value you want to use. This value follows the format of $7E19B8 and $7E19D8 (where $7E19B8 should go in the first byte of the address, $7E19D8 in the second). For more info, check those addresses in SMWCentral's RAM Map. In practice, your midway block sprite should have a piece of code like this, to set the vanilla midway:</p>
 
@@ -130,7 +130,7 @@ SEP #$20
 
 <hr>
 <h4>Q: I patched the 32x32 Player Tilemap patch / lx5's Custom Powerups / lx5's Dynamic Spriteset System (DSS) / DKCR Status Bar (or other sprite status bars) and I get glitched graphics when dying! What do I do?</h4>
-<p>A: Those patches have a high chance of using the same spots in SP1 for their dynamic tiles as the Retry prompt. To fix it, open "settings.asm" and towards the bottom you'll see a bunch of !tile_... defines. You need to edit some of those to other free spots in SP1 that aren't used by other patches.</p>
+<p>A: Those patches have a high chance of using the same spots in SP1 for their dynamic tiles as the Retry prompt. To fix it, open <u class="dir">retry_config/settings_global.asm</u> and towards the bottom you'll see a bunch of <code>!tile_...</code> defines. You need to edit some of those to other free spots in SP1 that aren't used by other patches.</p>
 
 <hr>
 <h4>Q: I'm using !prompt_freeze = 0 to make sprites move while Mario is dead, but it also causes autoscrollers to keep going. How do I stop them?</h4>

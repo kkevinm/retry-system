@@ -9,7 +9,7 @@
 ; 2 = instant retry (no prompt & play only the sfx: the fastest option; like "yes" is chosen automatically)
 ;     In this option, you can press start then select to exit the level.
 ; 3 = no retry prompt/respawn (vanilla death: as if "no" is chosen automatically, use this if you only want the multi-midway feature).
-; Note: you can override this per sublevel (see "tables.asm") and also at any point by setting a certain RAM address (see "docs/ram_map.html").
+; Note: you can override this per sublevel (see "settings_local.asm") and also at any point by setting a certain RAM address (see "doc/ram_map.html").
     !default_prompt_type = 1
 
 ;======================== QoL and Anti-Break ============================;
@@ -18,12 +18,12 @@
     !initial_lives = 99
 
 ; If 1, lives won't decrement when dying.
-; Note: if 0, you can choose to have infinite lives in specific sublevels using the "lose_lives" table in "tables.asm".
+; Note: if 0, you can choose to have infinite lives in specific sublevels using the "no_lose_lives" option in "settings_local.asm".
     !infinite_lives = 1
 
 ; 0 = midways won't give Mario a mushroom.
 ; 1 = vanilla midway powerup behavior.
-; Note: you can also change this on the fly (see "docs/ram_map.html").
+; Note: you can also change this on the fly (see "doc/ram_map.html").
     !midway_powerup = 0
 
 ; Counterbreak options reset the corresponding counters/items when the player dies and/or when going to the Overworld.
@@ -89,9 +89,8 @@
     !reset_boo_rings = 1
 
 ; This determines what happens when you die on the title screen.
-; 0 = vanilla (after dying a glitched version of the title screen will load,
-;     causing a softlock. Use this if you either don't care or want to do something
-;     custom with it.)
+; 0 = vanilla (after dying a glitched version of the title screen will load, causing a softlock.
+;     Use this if you either don't care or want to do something custom with it.)
 ; 1 = play vanilla death animation and reload title screen (note: death music only works with AddmusicK!).
 ; 2 = instantly reload the title screen.
     !title_death_behavior = 1
@@ -118,7 +117,7 @@
 
 ; SFX to play when getting a checkpoint through a room transition (!room_cp_sfx = $00 -> no SFX).
 ; This is meant as a way to inform the player that they just got a room checkpoint.
-; If enabled, you can disable it in specific sublevels using the "disable_room_cp_sfx" table in "tables.asm".
+; If enabled, you can disable it in specific sublevels using the "disable_room_cp_sfx" option in "settings_local.asm".
     !room_cp_sfx = $05
     !room_cp_sfx_addr = $1DF9|!addr
 
@@ -132,7 +131,7 @@
 
 ; If 1, a custom SRAM expansion patch will be inserted as well.
 ; By default, it will save the custom checkpoint status and death counter to SRAM.
-; To make your own stuff saved as well, check out the "save" table in "tables.asm".
+; To make your own stuff saved as well, check out the "save" table in "sram_tables.asm".
     !sram_feature = 1
 
 ; If 1, the game will automatically save everytime a new checkpoint is obtained (when touching a midway or getting a cp on a room transition).
@@ -140,7 +139,7 @@
     !save_on_checkpoint = 0
 
 ; If 1, the game will automatically save after getting a game over.
-; This can be useful when paired with the option of not reloading some data from SRAM after a game over (see "tables.asm"),
+; This can be useful when paired with the option of not reloading some data from SRAM after a game over (see "sram_tables.asm"),
 ; if you want some things to retain even if the player got a game over before saving them (for example, the death counter).
 ; This ensures that they will be saved to SRAM when this happens.
     !save_after_game_over = 1
@@ -149,8 +148,8 @@
 
 ; If 1, Retry will install a custom midway object in the ROM, insertable in levels by using object 2D.
 ; These objects allow you to have multiple midways in the same level, each with a different entrance.
-; For more info on how to use them, check out "docs/midway_instruction.html".
-; Note: this can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the "docs/objectool_info.html" file).
+; For more info on how to use them, check out "doc/midway_instruction.html".
+; Note: this can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the "doc/objectool_info.html" file).
     !use_custom_midway_bar = 1
 
 ; If !use_custom_midway_bar = 1, it determines how many custom midways you can have in the same sublevel.
@@ -193,11 +192,11 @@
 
 ; Set to 1 if you don't want the "Exit" option in the prompt.
 ; This will also allow the player to Start+Select when having the prompt.
-; Note: you can also change this on the fly (see "docs/ram_map.html").
+; Note: you can also change this on the fly (see "doc/ram_map.html").
     !no_exit_option = 0
 
 ; Set to 1 to remove the black box, but leave the options on screen.
-; Note: you can also change this on the fly (see "docs/ram_map.html").
+; Note: you can also change this on the fly (see "doc/ram_map.html").
     !no_prompt_box = 0
 
 ; Set to 1 to dim the screen while the prompt is shown.
@@ -222,7 +221,7 @@
 ; X/Y position of the first tile in the prompt (the cursor on the first line).
 ; Changing this only works if the black box is disabled (if enabled,
 ; default values will be used instead).
-; Note: you can also change these on the fly (see "docs/ram_map.html").
+; Note: you can also change these on the fly (see "doc/ram_map.html").
     !text_x_pos = $58
     !text_y_pos = $6F
 
@@ -257,7 +256,8 @@
 ; The default values should be fine in most cases, unless you're using some other patch that reserves tiles in SP1,
 ; for example: Sprite Status Bar, 32x32 Player Tilemap, lx5's Custom Powerups, lx5's Dynamic Spriteset System.
 ; In this case you may need to change some of them to avoid other tiles being overwritten.
-; You can see the tile number in LM's 8x8 Tile Editor, by taking the value you see in the bottom left - $400 (e.g., "Tile 0x442" -> $42, "Tile 0x542" -> $142).
+; You can see the tile number in LM's 8x8 Tile Editor, by taking the value you see in the bottom left - $400
+; (e.g., "Tile 0x442" -> $42, "Tile 0x542" -> $142).
 ; Note: when the prompt box is enabled, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.
 ; For example, !tile_curs = $24 means both $24 and $25 will be overwritten.
 ; Also, obviously these aren't used if you don't use the Retry prompt or !no_prompt_draw = 1.
@@ -284,7 +284,7 @@
     !remove_vanilla_status_bar = 0
 
 ; Default sprite tile and palette to use for each element in the status bar.
-; These settings can be overridden per-level by using the "configure_sprite_status_bar" API routine (see "docs/api.html").
+; These settings can be overridden per-level by using the "configure_sprite_status_bar" API routine (see "doc/api.html").
 ; If both !default_xxx_tile and !default_xxx_palette are $00, the item will be hidden by default.
 ; These are only relevant if !sprite_status_bar = 1.
     !default_item_box_tile        = $80

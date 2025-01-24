@@ -1,16 +1,18 @@
 @echo off
-SetLocal EnableDelayedExpansion
+setlocal EnableDelayedExpansion
 
 set /p uber_folder="UberASM Tool folder where to install: "
-set retry_folder="."
+set uber_folder=!uber_folder:"=!
+set retry_folder=.\src
 
 echo.
 
-if exist "gamemode" if exist "library" if exist "retry_config" (
+if exist "!retry_folder!\gamemode" if exist "!retry_folder!\library" if exist "!retry_folder!\retry_config" (
     goto :retry_exist
 )
 
-set /p retry_folder="Retry asm folder to install: "
+set /p retry_folder="Retry src folder to install: "
+set retry_folder=!retry_folder:"=!
 
 if not exist "!retry_folder!" (
     echo Error: !retry_folder! does not exist^^!
@@ -21,7 +23,7 @@ if exist "!retry_folder!\gamemode" if exist "!retry_folder!\library" if exist "!
     goto :retry_exist
 )
 
-echo Error: !retry_folder! is not a Retry asm folder^^!
+echo Error: !retry_folder! is not a Retry src folder^^!
 goto :end
 
 :retry_exist
@@ -93,6 +95,7 @@ if exist "!uber_folder!\!backup_folder!" (
     echo Warning: old Retry backup found^^!
     echo If you wish to continue the installation, the old backup will be removed and replaced with the current Retry backup.
     set /p delete_backup_confirm="Continue? [y/n] "
+    set delete_backup_confirm=!delete_backup_confirm:"=!
     
     if "!delete_backup_confirm!"=="y" (
         goto :remove_old
