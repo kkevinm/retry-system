@@ -32,19 +32,19 @@ STA $212E
 
 <hr>
 
-<h4>Q: I'm making the music in a level fade out using the following code (with AMK) but the music doesn't reload when dying!</h4>
+<h4>Q: I'm making the music in a level fade out using the following code (with AddmusicK) but the music doesn't reload when dying!</h4>
 
 <pre>
 LDA #$FF
-STA $1DFB
+STA $1DFB|!addr
 </pre>
 
 <p>A: You want to also store <code>#$FF</code> to <code>$0DDA</code>, like this:</p>
 
 <pre>
 LDA #$FF
-STA $1DFB
-STA $0DDA	;<- change here
+STA $1DFB|!addr
+STA $0DDA|!addr	;<- change here
 </pre>
 
 <hr>
@@ -62,8 +62,12 @@ BEQ Something
 <pre>
 CMP !IrisOut
 BEQ ++
+</pre>
+<pre>
 CMP !IrisOut
 BEQ LevelEndMusicChange
+</pre>
+<pre>
 CMP !IrisOut
 BEQ Okay
 </pre>
@@ -75,21 +79,21 @@ BEQ Okay
 <p>A: To fix, add this code at the very start of the Single Screen's main code:</p>
 
 <pre>
-LDA $71
-CMP #$09
-BNE +
-RTL
+    LDA $71
+    CMP #$09
+    BNE +
+    RTL
 +
 </pre>
 
 
 <hr>
 <h4>Q: I set a custom midway entrance value to a secondary exit, but it doesn't work!</h4>
-A: Secondary entrances that are already present in the original game won't work properly. To make it work, delete it and remake it in LM.
+<p>A: Secondary entrances that are already present in the original game won't work properly. To make it work, delete it and remake it in Lunar Magic.</p>
 
 <hr>
 <h4>Q: When I enter a level from the overworld, it brings me to the bonus game!</h4>
-<p>A: After inserting this, make sure to start from a new save file.</p>
+<p>A: After inserting Retry for the first time, don't load a save state that you made before inserting it and make sure to start from a new save file.</p>
 
 <hr>
 <h4>Q: I use a custom midway block/sprite, but it doesn't seem to work!</h4>
@@ -134,13 +138,13 @@ SEP #$20
 
 <hr>
 <h4>Q: I'm using !prompt_freeze = 0 to make sprites move while Mario is dead, but it also causes autoscrollers to keep going. How do I stop them?</h4>
-<p>A: vanilla autoscrollers should already stop when dying with this options turned on, while custom autoscrollers need to be handled on a case-by-case basis by adding a check for Mario's state. This is usually simple to fix by adding a code like this at the beginning of your custom autoscroller:</p>
+<p>A: vanilla autoscrollers should already stop when dying with this options turned on, while custom autoscrollers need to be handled on a case-by-case basis by adding a check for Mario's state. This is usually simple to fix by adding a code like this at the beginning of your custom autoscroller's main code:</p>
 
 <pre>
-LDA $71
-CMP #$09
-BNE .run
-RTL
+    LDA $71
+    CMP #$09
+    BNE .run
+    RTL
 .run:
 </pre>
 
