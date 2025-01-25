@@ -98,13 +98,14 @@
 ;======================== SFX ===========================================;
 
 ; SFX to play when dying (!death_sfx = $00 -> no SFX).
-; Only played if not playing the death song (for example, it's not played if the level uses vanilla death).
-; You can change $1DF9 to $1DFB if you want a song to play on death (for example, if you want vanilla death music with instant Retry).
+; Only played if the death song is skipped (for example, it's not played if the level uses vanilla death).
+; You can find a suitable death sfx inside "docs/amk_resources/sfx".
     !death_sfx = $20
     !death_sfx_addr = $1DF9|!addr
 
-; The alternative death jingle which will be played after the !death_sfx when "no" is chosen in the prompt (only available when you're using AddmusicK).
+; The alternative death jingle which will be played after the !death_sfx when "Exit" is chosen in the prompt.
 ; $01-$FE: custom song number, $FF = do not use this feature.
+; You can find a suitable alt death jingle inside "docs/amk_resources/music" (to be paired with the custom sfx).
     !death_jingle_alt = $FF
 
 ; SFX to play when selecting an option in the prompt (!option_sfx = $00 -> no SFX).
