@@ -101,7 +101,7 @@
 ; Only played if the death song is skipped (for example, it's not played if the level uses vanilla death).
 ; You can find a suitable death sfx inside "docs/amk_resources/sfx".
     !death_sfx = $20
-    !death_sfx_addr = $1DF9|!addr
+    !death_sfx_addr = $1DF9
 
 ; The alternative death jingle which will be played after the !death_sfx when "Exit" is chosen in the prompt.
 ; $01-$FE: custom song number, $FF = do not use this feature.
@@ -110,22 +110,22 @@
 
 ; SFX to play when selecting an option in the prompt (!option_sfx = $00 -> no SFX).
     !option_sfx = $01
-    !option_sfx_addr = $1DFC|!addr
+    !option_sfx_addr = $1DFC
 
 ; SFX to play when the prompt cursor moves (!cursor_sfx = $00 -> no SFX).
     !cursor_sfx = $06
-    !cursor_sfx_addr = $1DFC|!addr
+    !cursor_sfx_addr = $1DFC
 
 ; SFX to play when getting a checkpoint through a room transition (!room_cp_sfx = $00 -> no SFX).
 ; This is meant as a way to inform the player that they just got a room checkpoint.
 ; If enabled, you can disable it in specific sublevels using the "disable_room_cp_sfx" option in "settings_local.asm".
     !room_cp_sfx = $05
-    !room_cp_sfx_addr = $1DF9|!addr
+    !room_cp_sfx_addr = $1DF9
 
 ; SFX to play when entering a level from the Overworld (!enter_level_sfx = $00 -> no SFX)
 ; similarly to what SMB3 does. If the SFX gets cut out, increase !enter_level_delay.
     !enter_level_sfx = $00
-    !enter_level_sfx_addr = $1DFC|!addr
+    !enter_level_sfx_addr = $1DFC
     !enter_level_delay = $02
 
 ;======================== Save and SRAM =================================;

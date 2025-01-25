@@ -37,7 +37,7 @@ endif
 if !enter_level_sfx != $00
     ; If not loading the level from a No Yoshi intro, play the SFX.
     lda $71 : cmp #$0A : beq +
-    lda.b #!enter_level_sfx : sta !enter_level_sfx_addr
+    lda.b #!enter_level_sfx : sta !enter_level_sfx_addr|!addr
     lda.b #!enter_level_delay : sta $0DB1|!addr
 +
 endif
