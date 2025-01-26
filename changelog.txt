@@ -4,8 +4,13 @@ v0.8.0:
     - Added defines to configure the sprite status bar elements globally. Now the api routine only needs to be called to overwrite the default settings.
     - Changed configure_sprite_status_bar api routine palette format so it's easier to use (palette value to pass is [8-F] instead of [0-7]).
     - Fixed Retry indicator being drawn on the title screen.
-    - Finalized documentation (thanks to AmperSam for the huge help).
     - Added "retry_install.bat" script to automate copying the Retry files in the UberASM Tool folders.
+    - Fixed switch palace message sprites getting glitched or disappearing if the sprite status bar is enabled (issue introduced in v0.7.1).
+    - Fixed sprite status bar not being drawn in the intro level by default.
+    - Added lives and bonus stars counters to the sprite status bar, which are disabled by default, but you can enable them in settings_global.asm or with the configure_sprite_status_bar API routine (thanks to AmperSam for the lives counter gfx).
+    - Changed configure_sprite_status_bar API routine format to account for the new sprite status bar items.
+    - Removed !lives_overflow_fix settings: it is now always enabled.
+    - Finalized documentation (thanks to AmperSam for the huge help).
 
 v0.7.4:
     - Fixed get_sram_variable_address api routine wrong result if it was called from a different bank.

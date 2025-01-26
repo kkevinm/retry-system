@@ -41,6 +41,11 @@ init:
     ; Initialize "midway powerup" flag.
     lda.b #!midway_powerup : sta.w !ram_midway_powerup
 
+if !sprite_status_bar
+    ; Initialize sprite status bar ram for intro level.
+    jsr sprite_status_bar_init_ram
+endif
+
     ; Call the custom load title routine.
     php : phk : plb
     jsr extra_load_title

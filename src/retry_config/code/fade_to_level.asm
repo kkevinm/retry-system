@@ -1,34 +1,8 @@
 ; Gamemode 0F
 
-macro _build_status_bar_value(name)
-    if !default_<name>_palette > $0F
-        error "Error: \!default_<name>_palette is not valid!"
-    endif
-    if !default_<name>_tile > $1FF
-        error "Error: \!default_<name>_tile is not valid!"
-    endif
-
-    !default_<name>_value #= ((!default_<name>_palette)<<12)|(!default_<name>_tile)
-    
-    if !default_<name>_value != 0 && !default_<name>_value&$8000 < $8000
-        error "Error: \!default_<name>_palette is not valid!"
-    endif
-
-    !default_<name>_value #= !default_<name>_value&$7FFF
-endmacro
-
-%_build_status_bar_value(item_box)
-%_build_status_bar_value(timer)
-%_build_status_bar_value(coin_counter)
-
 init:
 if !sprite_status_bar
-    ; Reset sprite status bar configuration.
-    rep #$20
-    lda.w #!default_item_box_value : sta !ram_status_bar_item_box_tile
-    lda.w #!default_timer_value : sta !ram_status_bar_timer_tile
-    lda.w #!default_coin_counter_value : sta !ram_status_bar_coins_tile
-    sep #$20
+    jsr sprite_status_bar_init_ram
 endif
 
     ; If respawning or doing a level transition, skip.

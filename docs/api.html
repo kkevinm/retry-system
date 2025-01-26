@@ -70,22 +70,24 @@
 
 	<h3 id="configure_sprite_status_bar">Configure sprite status bar</h3>
 	<p><b>NOTE</b>: this routine has no effect unless <code>!sprite_status_bar = 1</code> in <code>settings_global.asm</code>.</p>
-	<p>Call this in UberASM level init code to configure graphics for the sprite status bar items (item box, timer and coin counter) for a specific level. Calling this will override the default settings found in <code>settings_global.asm</code>, in case you want to hide some or all of the elements in some level or if you need to change their tile or palette.</p>
+	<p>Call this in UberASM level init code to configure graphics for the sprite status bar items (item box, timer, coin counter, lives counter, bonus stars counter) for a specific level. Calling this will override the default settings found in <code>settings_global.asm</code>, in case you want to hide some or all of the elements in some level or if you need to change their tile or palette.</p>
 	<p>Each item's configuration is set with a 16 bit value <code>$PTTT</code>. The first digit <code>P</code> will be the item's palette, starting from palette 8 with <code>P = 8</code> and ending with palette F with <code>P = F</code>. <code>TTT</code> will determine the tile number: you can see this in Lunar Magic's "8x8 Tile Editor" if you hover over the desired tile (more specifically, the upper left 8x8 tile of the 16x16 tile you want to use). In the bottom bar you'll see "Tile 0xYYY": then, <code>TTT = YYY - $400</code>. For example, the Smiling Coin tile is "Tile 0x4C2", which results in <code>TTT = $4C2 - $400 = $0C2</code>. So, for example, to reserve that tile and use palette F, the full value will be <code>$F0C2</code>.</p>
 	<p>If an item's value is <code>$0000</code>, the item will simply not be displayed.</p>
+	<p>Note that you can also just write the <code>$PTTT</code> value to the RAM address for a specific item yourself, this routine is just a shorthand so set all values at the same time. To see the RAM addresses names, see <a href="./ram_map.html">RAM Info</a>.</p>
 	<ul>
-		<li>Inputs: <code>A = item box, X = timer, Y = coin counter</code></li>
+		<li>Inputs: each item's <code>$PTTT</code> value is specified, in order, after the JSL (see example)</li>
 		<li>Outputs: <code>N/A</code></li>
 		<li>Preconditions: <code>A/X/Y 16 bits</code></li>
 		<li>Postconditions: <code>A/X/Y size preserved, DB/X/Y preserved</code></li>
 		<li>Usage (example):
 <pre>
-	REP #$30
-	LDA #$B080 ; Item box: palette B, tile 0x80
-	LDX #$0088 ; Timer: palette 8, tile 0x88
-	LDY #$00C2 ; Coin counter: palette 8, tile 0xC2
-	JSL retry_api_configure_sprite_status_bar
-	SEP #$30
+    JSL retry_api_configure_sprite_status_bar
+    dw $B080 ; Item box: palette B, tile 0x80
+    dw $8088 ; Timer: palette 8, tile 0x88
+    dw $80C2 ; Coin counter: palette 8, tile 0xC2
+    dw $904E ; Lives counter: palette 9, tile 0x4E
+    dw $90CE ; Bonus stars counter: palette 9, tile 0xCE
+    ... <- your code will continue here after the JSL
 </pre>
 		</li>
 	</ul>

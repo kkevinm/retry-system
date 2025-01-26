@@ -5,6 +5,6 @@
   - Thomas: death counter code.
   - Lui: remove status bar code.
   - dtothefourth: a couple new features ideas.
-  - AmperSam: documentation, 8x8 item box gfx, release workflow script, testing and feedback.
+  - AmperSam: documentation help, 8x8 item box gfx, lives counter gfx, release workflow script, testing and feedback.
   - MiracleWater: Retry indicator idea and gfx, testing and feedback.
   - BabaYegha, Fyre150, Abdu, margot, simon.caio, LouisDoucet, SJandCharlieTheCat, Koopster, schema_tuna, Alex, Selicre, Mega, worldpeace, NixKillsMyths, mmBeefStew: testing and feedback.

@@ -166,11 +166,6 @@ table tr td:nth-child(1) code {
 				dying or while the Retry prompt is shown.</td>
 		</tr>
 		<tr>
-			<td><code>!lives_overflow_fix</code></td>
-			<td>If 1, it fixes the bug where Mario's lives won't cap at 99 when the status bar is nuked (which would show a
-				glitched amount on the OW and Mario will have a halo).</td>
-		</tr>
-		<tr>
 			<td><code>!no_yoshi_intro_fix</code></td>
 			<td>If 1, it fixes the weird behavior where levels 12E-13B always use the "No Yoshi Sign 2" intro regardless of the
 				tileset / custom "No Yoshi Intro" patches.</td>
@@ -553,6 +548,26 @@ table tr td:nth-child(1) code {
 			<td><code>$08</code></td>
 			<td>Palette used by the coin counter by default</td>
 		</tr>
+		<tr>
+			<td><code>!default_lives_counter_tile</code></td>
+			<td><code>$00</code></td>
+			<td>Sprite tile number used by the lives counter by default (disabled by default).</td>
+		</tr>
+		<tr>
+			<td><code>!default_lives_counter_palette</code></td>
+			<td><code>$09</code></td>
+			<td>Palette used by the lives counter by default (the included GFX is tailored for vanilla palette 9, using the berry colors)</td>
+		</tr>
+		<tr>
+			<td><code>!default_bonus_stars_tile</code></td>
+			<td><code>$00</code></td>
+			<td>Sprite tile number used by the bonus stars counter by default (disabled by default)</td>
+		</tr>
+		<tr>
+			<td><code>!default_bonus_stars_palette</code></td>
+			<td><code>$00</code></td>
+			<td>Palette used by the bonus stars counter by default (the included GFX is tailored for vanilla palette 9, using the berry colors)</td>
+		</tr>
 	</table>
 
 	<p>General properties for sprite status bar elements.</p>
@@ -565,42 +580,62 @@ table tr td:nth-child(1) code {
 		<tr>
 			<td><code>!item_box_x_pos</code></td>
 			<td><code>$70</code></td>
-			<td>X-position on the screen to draw the Item Box</td>
+			<td>X position on the screen to draw the Item Box</td>
 		</tr>
 		<tr>
 			<td><code>!item_box_y_pos</code></td>
 			<td><code>$07</code></td>
-			<td>Y-position on the screen to draw the Item Box</td>
+			<td>Y position on the screen to draw the Item Box</td>
 		</tr>
 		<tr>
 			<td><code>!timer_x_pos</code></td>
 			<td><code>$D0</code></td>
-			<td>X-position on the screen to draw the timer</td>
+			<td>X position on the screen to draw the timer</td>
 		</tr>
 		<tr>
 			<td><code>!timer_y_pos</code></td>
 			<td><code>$0F</code></td>
-			<td>Y-position on the screen to draw the timer</td>
+			<td>Y position on the screen to draw the timer</td>
 		</tr>
 		<tr>
 			<td><code>!coin_counter_x_pos</code></td>
 			<td><code>$D0</code></td>
-			<td>X-position on the screen to draw the normal coin counter</td>
+			<td>X position on the screen to draw the normal coin counter</td>
 		</tr>
 		<tr>
 			<td><code>!coin_counter_y_pos</code></td>
 			<td><code>$17</code></td>
-			<td>Y-position on the screen to draw the normal coin counter</td>
+			<td>Y position on the screen to draw the normal coin counter</td>
 		</tr>
 		<tr>
 			<td><code>!dc_counter_x_pos</code></td>
 			<td><code>$9A</code></td>
-			<td>X-position on the screen to draw the Dragon/Yoshi coin counter</td>
+			<td>X position on the screen to draw the Dragon/Yoshi coin counter</td>
 		</tr>
 		<tr>
 			<td><code>!dc_counter_y_pos</code></td>
 			<td><code>$0F</code></td>
-			<td>Y-position on the screen to draw the Dragon/Yoshi coin counter</td>
+			<td>Y position on the screen to draw the Dragon/Yoshi coin counter</td>
+		</tr>
+		<tr>
+			<td><code>!lives_counter_x_pos</code></td>
+			<td><code>$10</code></td>
+			<td>X position on the screen to draw the lives counter</td>
+		</tr>
+		<tr>
+			<td><code>!lives_counter_y_pos</code></td>
+			<td><code>$0F</code></td>
+			<td>Y position on the screen to draw the lives counter</td>
+		</tr>
+		<tr>
+			<td><code>!bonus_stars_x_pos</code></td>
+			<td><code>$10</code></td>
+			<td>X position on the screen to draw the bonus stars counter</td>
+		</tr>
+		<tr>
+			<td><code>!bonus_stars_y_pos</code></td>
+			<td><code>$17</code></td>
+			<td>Y position on the screen to draw the bonus stars counter</td>
 		</tr>
 	</table>
 

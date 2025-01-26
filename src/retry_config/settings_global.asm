@@ -54,10 +54,6 @@
 ; by pressing Select while Mario is dying or while the Retry prompt is shown.
     !item_box_fix = 1
 
-; If 1, it fixes the bug where Mario's lives won't cap at 99 when the status bar is nuked
-; (which would show a glitched amount on the OW and Mario will have a halo).
-    !lives_overflow_fix = 1
-
 ; If 1, it fixes the weird behavior where levels 12E-13B always use the "No Yoshi Sign 2" intro
 ; regardless of the tileset / custom "No Yoshi Intro" patches.
     !no_yoshi_intro_fix = 1
@@ -273,8 +269,8 @@
 
 ;======================== Sprite Status Bar =============================;
 
-; If 1, a sprite status bar will be installed allowing you to display the item box, coin/Yoshi coin counter
-; and timer in levels using sprite tiles, which keeps layer 3 working properly.
+; If 1, a sprite status bar will be installed allowing you to display the item box, coins, Yoshi coins,
+; timer, lives and bonus stars using sprite tiles, which keeps layer 3 working properly.
     !sprite_status_bar = 0
 
 ; If 1, it disables the original game's status bar (including the IRQ) which prevents layer 3 from messing up.
@@ -286,25 +282,33 @@
 
 ; Default sprite tile and palette to use for each element in the status bar.
 ; These settings can be overridden per-level by using the "configure_sprite_status_bar" API routine (see "docs/api.html").
-; If both !default_xxx_tile and !default_xxx_palette are $00, the item will be hidden by default.
+; If !default_xxx_tile or !default_xxx_palette is $00, the item will be hidden by default.
 ; These are only relevant if !sprite_status_bar = 1.
-    !default_item_box_tile        = $80
-    !default_item_box_palette     = $0B
-    !default_timer_tile           = $88
-    !default_timer_palette        = $08
-    !default_coin_counter_tile    = $C2
-    !default_coin_counter_palette = $08
+    !default_item_box_tile         = $80
+    !default_item_box_palette      = $0B
+    !default_timer_tile            = $88
+    !default_timer_palette         = $08
+    !default_coin_counter_tile     = $C2
+    !default_coin_counter_palette  = $08
+    !default_lives_counter_tile    = $00
+    !default_lives_counter_palette = $09
+    !default_bonus_stars_tile      = $00
+    !default_bonus_stars_palette   = $09
 
 ; General properties for sprite status bar elements.
 ; These are only relevant if !sprite_status_bar = 1.
-    !item_box_x_pos     = $70
-    !item_box_y_pos     = $07
-    !timer_x_pos        = $D0
-    !timer_y_pos        = $0F
-    !coin_counter_x_pos = $D0
-    !coin_counter_y_pos = $17
-    !dc_counter_x_pos   = $9A
-    !dc_counter_y_pos   = $0F
+    !item_box_x_pos      = $70
+    !item_box_y_pos      = $07
+    !timer_x_pos         = $D0
+    !timer_y_pos         = $0F
+    !coin_counter_x_pos  = $D0
+    !coin_counter_y_pos  = $17
+    !dc_counter_x_pos    = $9A
+    !dc_counter_y_pos    = $0F
+    !lives_counter_x_pos = $10
+    !lives_counter_y_pos = $0F
+    !bonus_stars_x_pos   = $10
+    !bonus_stars_y_pos   = $17
 
 ; If 1, the item box will always be drawn (if set to be drawn for the specific level).
 ; Otherwise, it will only be drawn when having an item in reserve.
@@ -328,7 +332,7 @@
     !draw_retry_indicator    = 0
     !retry_indicator_tile    = $1D
     !retry_indicator_palette = $09
-    !retry_indicator_x_pos   = $10
+    !retry_indicator_x_pos   = $50
     !retry_indicator_y_pos   = $0F
 
 ;======================== Death Counter =================================;

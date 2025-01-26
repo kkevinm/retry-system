@@ -223,33 +223,61 @@
 			<td><code>$1A</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
-			<td class="left-align">Keeps track of the last frame's coin counter to check if it changed, to only upload the coin counter's sprite digits when necessary. Not used if <code>!sprite_status_bar = 0</code> in <code>settings.asm</code>.</td>
+			<td class="left-align">Keeps track of the last frame's coins value to check if it changed, to only upload the coin counter's sprite digits when necessary. Not used if <code>!sprite_status_bar = 0</code> in <code>settings.asm</code>.</td>
+		</tr>
+		<tr>
+			<td><code>lives_backup</code></td>
+			<td><code>$1B</code></td>
+			<td><code>$01</code></td>
+			<td>Internal</td>
+			<td class="left-align">Keeps track of the last frame's lives values to check if it changed, to only upload the lives counter's sprite digits when necessary. Not used if <code>!sprite_status_bar = 0</code> in <code>settings.asm</code>.</td>
+		</tr>
+		<tr>
+			<td><code>bonus_stars_backup</code></td>
+			<td><code>$1C</code></td>
+			<td><code>$01</code></td>
+			<td>Internal</td>
+			<td class="left-align">Keeps track of the last frame's bonus stars value to check if it changed, to only upload the bonus stars counter's sprite digits when necessary. Not used if <code>!sprite_status_bar = 0</code> in <code>settings.asm</code>.</td>
 		</tr>
 		<tr>
 			<td><code>status_bar_item_box_tile</code></td>
-			<td><code>$1B</code></td>
-			<td><code>$02</code></td>
-			<td>User</td>
-			<td class="left-align">Current sprite status bar item box tile number and palette. See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a>for details.</td>
-		</tr>
-		<tr>
-			<td><code>status_bar_timer_tile</code></td>
 			<td><code>$1D</code></td>
 			<td><code>$02</code></td>
 			<td>User</td>
-			<td class="left-align">Current sprite status bar timer tile number and palette. See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a>for details.</td>
+			<td class="left-align">Current sprite status bar item box tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
 		</tr>
 		<tr>
-			<td><code>status_bar_coins_tile</code></td>
+			<td><code>status_bar_timer_tile</code></td>
 			<td><code>$1F</code></td>
 			<td><code>$02</code></td>
 			<td>User</td>
-			<td class="left-align">Current sprite status bar coin counter tile number and palette. See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a>for details.</td>
+			<td class="left-align">Current sprite status bar timer tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
+		</tr>
+		<tr>
+			<td><code>status_bar_coins_tile</code></td>
+			<td><code>$21</code></td>
+			<td><code>$02</code></td>
+			<td>User</td>
+			<td class="left-align">Current sprite status bar coin counter tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
+		</tr>
+		<tr>
+			<td><code>status_bar_lives_tile</code></td>
+			<td><code>$23</code></td>
+			<td><code>$02</code></td>
+			<td>User</td>
+			<td class="left-align">Current sprite status bar lives counter tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
+		</tr>
+		<tr>
+			<td><code>status_bar_bonus_stars_tile</code></td>
+			<td><code>$25</code></td>
+			<td><code>$02</code></td>
+			<td>User</td>
+			<td class="left-align">Current sprite status bar bonus stars counter tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
 		</tr>
 		<tr>
 			<td><code>reserved</code></td>
-			<td><code>$21</code></td>
-			<td><code>$0A</code></td>
+			<td><code>$27</code></td>
+			<td><code>$04</code></td>
 			<td>Internal</td>
 			<td class="left-align">Unused, but reserved for future expansion. Usage as freeram is not recommended.</td>
 		</tr>
