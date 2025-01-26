@@ -46,10 +46,5 @@ if !sprite_status_bar
     jsr sprite_status_bar_init_ram
 endif
 
-    ; Call the custom load title routine.
-    php : phk : plb
-    jsr extra_load_title
-    plp
-
     plb
     rtl

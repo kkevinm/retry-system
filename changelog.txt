@@ -1,6 +1,7 @@
 v0.8.0:
     - Fixed !title_death_behavior setting not working anymore (issue introduced in v0.7.1).
     - Changed gamemode 3 file to gamemode 0 so that Retry still works even if the title screen is skipped with a patch.
+    - Removed "load_title" extra routine which was basically useless and not consistent anymore after the gamemode 03->00 change.
     - Added defines to configure the sprite status bar elements globally. Now the api routine only needs to be called to overwrite the default settings.
     - Changed configure_sprite_status_bar api routine palette format so it's easier to use (palette value to pass is [8-F] instead of [0-7]).
     - Fixed Retry indicator being drawn on the title screen.
