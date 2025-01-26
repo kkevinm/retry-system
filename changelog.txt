@@ -11,6 +11,7 @@ v0.8.0:
     - Added lives and bonus stars counters to the sprite status bar, which are disabled by default, but you can enable them in settings_global.asm or with the configure_sprite_status_bar API routine (thanks to AmperSam for the lives counter gfx).
     - Changed configure_sprite_status_bar API routine format to account for the new sprite status bar items.
     - Removed !lives_overflow_fix settings: it is now always enabled.
+    - Changed %disable_room_cp_sfx to %no_room_cp_sfx in settings_local.asm to keep the name consistent with other options.
     - Finalized documentation (thanks to AmperSam for the huge help).
 
 v0.7.4:

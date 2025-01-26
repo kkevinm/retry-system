@@ -148,7 +148,7 @@
 			<td><code>$11</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
-			<td class="left-align">This can be used to override the Retry settings of the current level or all levels depending on some condition (for example, if you want to let the player choose if to have instant Retry or not).<br>It follows the same format as the first digit in the <code>checkpoint_effect</code> table in <code>tables.asm</code> (if <code>$00</code>,  value in the table will be used instead). It's only reset on title screen load, meaning that its effect will last until you set it back to <code>$00</code> yourself.</td>
+			<td class="left-align">This can be used to override the Retry settings of the current level or all levels depending on some condition (for example, if you want to let the player choose if to have instant Retry or not).<br>It follows the same format as the <code>%retry</code> setting in <u class="dir">settings_local.asm</u> (see <a href="./settings_local.html#retry">Local Settings - %retry</a> for details). If this is set to <code>$00</code>, the value in the local settings will be used instead, or the default value in <u class="dir">settings_global.asm</u> if there's no local setting for the current sublevel. It's only reset on title screen load, meaning that its effect will last until you set it back to <code>$00</code> yourself.</td>
 		</tr>
 		<tr>
 			<td><code>disable_exit</code></td>
@@ -198,8 +198,8 @@
 			<td>Internal</td>
 			<td class="left-align">Bitwise mask set on level load for different purposes.<br>Format: <code>e------s</code>.
 				<ul>
-					<li><code>e</code>: set if the value in the <code>sfx_echo</code> table in <code>tables.asm</code> is <code>1</code> for the current sublevel. Used to send the SFX echo command during level main. You can also set this manually in level init to enable SFX echo.</li>
-					<li><code>s</code>: Set if <code>!room_cp_sfx</code> is not <code>$00</code> and the current sublevel gives a room entrance checkpoint (unless the value in the <code>disable_room_cp_sfx</code> table in <code>tables.asm</code> for the current sublevel is <code>1</code>). Used to play the midway SFX during level init.</li>
+					<li><code>e</code>: set if using the <code>%sfx_echo</code> setting in <u class="dir">settings_local.asm</u> for the current sublevel (see <a href="./settings_local.html#sfx_echo">Local Settings - %sfx_echo</a>. Used to send the SFX echo command during level main. You can also set this manually in level init to enable SFX echo.</li>
+					<li><code>s</code>: Set if <code>!room_cp_sfx</code> is not <code>$00</code> and the current sublevel gives a room entrance checkpoint (unless using the <code>%no_room_cp_sfx</code> setting in <u class="dir">settings_local.asm</u>, see <a href="./settings_local.html#no_room_cp_sfx">Local Settings - %no_room_cp_sfx</a> for details). Used to play the midway SFX during level init.</li>
 					<li><code>-</code>: currently unused.</li>
 				</ul>
 			</td>
@@ -212,7 +212,7 @@
 			<td class="left-align">This can be used to prevents midways and/or checkpoints from functioning. Changing this will take effect on the next level load. Possible values to use are as follows:
 				<ul>
 					<li><code>$01</code>: all future midway objects (both vanilla and Retry's custom objects) won't spawn.</li>
-					<li><code>$80</code>: all future silent checkpoints (i.e. checkpoints enabled by using <code>$02</code> or <code>$03</code> in the <code>checkpoint_effect</code> table in <code>tables.asm</code>) won't activate.</li>
+					<li><code>$80</code>: all future automatic room checkpoints (i.e. checkpoints enabled by using <code>%checkpoint(xxx,2)</code> or <code>%checkpoint(xxx,3)</code> in <u class="dir">settings_local.asm</u>) won't activate.</li>
 					<li><code>$81</code>: enables the effect of both <code>$01</code> and <code>$80</code> (all midways and checkpoints won't work).</li>
 				</ul>
 				Note that this is only reset on the title screen, so it's up to you to set it back to <code>$00</code> when needed.

@@ -114,7 +114,7 @@
 
 ; SFX to play when getting a checkpoint through a room transition (!room_cp_sfx = $00 -> no SFX).
 ; This is meant as a way to inform the player that they just got a room checkpoint.
-; If enabled, you can disable it in specific sublevels using the "disable_room_cp_sfx" option in "settings_local.asm".
+; If enabled, you can disable it in specific sublevels using the "no_room_cp_sfx" option in "settings_local.asm".
     !room_cp_sfx = $05
     !room_cp_sfx_addr = $1DF9
 
