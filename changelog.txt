@@ -1,3 +1,6 @@
+v0.8.1:
+    - Fixed vanilla midway entrances not working with Retry when the Lunar Magic alternate entrance method patch isn't applied (thanks to LouisDoucet for reporting this).
+
 v0.8.0:
     - Fixed !title_death_behavior setting not working anymore (issue introduced in v0.7.1).
     - Changed gamemode 3 file to gamemode 0 so that Retry still works even if the title screen is skipped with a patch.
