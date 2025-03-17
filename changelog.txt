@@ -1,5 +1,6 @@
 v0.8.1:
     - Fixed vanilla midway entrances not working with Retry when the Lunar Magic alternate entrance method patch isn't applied (thanks to LouisDoucet for reporting this).
+    - Fixed hardlock when dying on the same frame that a message box has finished opening, when using the Retry prompt (thanks to AmperSam for reporting this).
 
 v0.8.0:
     - Fixed !title_death_behavior setting not working anymore (issue introduced in v0.7.1).
