@@ -49,6 +49,7 @@
 	<h3 id="reset_level_checkpoint">Reset level checkpoint</h3>
 	<p><code>JSL retry_api_reset_level_checkpoint</code></p>
 	<p>Call this to reset the checkpoint in the current level. Entering the level again or respawning will load the main sublevel's entrance. Note that this won't reflect to SRAM until the game is saved.</p>
+	<p><b>NOTE</b>: this can be also called outside of a level if you want to reset a specific level's checkpoint. Just make sure that <code>$13BF</code> has the level number you want before calling this.</p>
 	<ul>
 		<li>Inputs: <code>N/A</code></li>
 		<li>Outputs: <code>N/A</code></li>

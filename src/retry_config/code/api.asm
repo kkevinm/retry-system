@@ -33,7 +33,9 @@ save_game:
 ;================================================
 ; Routine to remove the current level's checkpoint, meaning
 ; entering it again will load the main sublevel's entrance.
-; Only makes sense to be called during a level gamemode.
+; Note: this can be also called outside of a level if you want to
+; reset a specific level's checkpoint. Just make sure that $13BF
+; has the level number you want before calling this.
 ;
 ; Inputs: N/A
 ; Outputs: N/A
