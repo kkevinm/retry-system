@@ -19,6 +19,7 @@
 		<li>Added new option for the !title_death_behavior global settings: instant Retry and play the death music (title screen music will restart).</li>
 		<li>Added !counterbreak_lives option to reset the lives to the initial value when respawning and/or going to the Overworld.</li>
 		<li>Added !prompt_show_delay option in "settings_global.asm" to adjust how fast the Retry prompt shows up. Also the default value is more similar to the original Retry patch compared to previous versions.</li>
+		<li>Added !default_coin_counter_behavior to only display either coins or dragon coins in the sprite status bar. Adjusted configure_sprite_status_bar api routine to do the same.</li>
 	</ul>
 	<p><b>NOTE</b>: if upgrading from 0.8.1 or older to 0.8.2 or newer, pay attention if you have used the "vanilla death" prompt option, as it its value changed to account for the new "instant Retry & play death music" option. In details:
 		<ul>

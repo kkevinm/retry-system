@@ -100,6 +100,8 @@ reset_all_checkpoints:
 ; it will use and what palette to use. The first digit is the palette
 ; row to use (8-F), while the other 3 digits are the tile number
 ; (000-1FF). If an element is set to $0000, it won't be displayed.
+; For the coin counter, you can add $0200 to the value to only display
+; dragon coins, or add $0400 to only display coins.
 ;
 ; Inputs: for each item, in order, you write the value after the JSL
 ;         in the format described above (see example)

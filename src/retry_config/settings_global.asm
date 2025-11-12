@@ -335,6 +335,11 @@
 ; This is only relevant if !sprite_status_bar = 1.
     !draw_all_dc_collected = 0
 
+; 0 = draw both coins and dragon coins by default (if _tile and _palette are valid)
+; 1 = don't draw coins by default (only dragon coins)
+; 2 = don't draw dragon coins by default (only coins)
+    !default_coin_counter_behavior = 0
+
 ; If !draw_retry_indicator = 1, an 8x8 indicator will be drawn on the sprite status bar
 ; in levels where Retry prompt or instant Retry is enabled. This could be useful for collabs.
 ; The other settings control how and where it is drawn. The tile you choose will be
