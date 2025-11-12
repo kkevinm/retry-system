@@ -55,10 +55,10 @@ main:
 if not(!always_start_select)
     ; Check if the prompt type requires Start+Select always active.
     jsr shared_get_prompt_type
-    cmp #$04 : bcs .not_dying
+    cmp.b #!retry_type_vanilla : bcs .not_dying
     tay
     lda !ram_disable_exit : bne +
-    cpy #$03 : bcc .not_dying
+    cpy.b #!retry_type_prompt_max+1 : bcc .not_dying
 +
 endif
     
@@ -100,9 +100,9 @@ endif
 
     ; See what retry we have to use.
     jsr shared_get_prompt_type
-    cmp #$03 : bcc ..prompt
-               bne ..vanilla
-               jmp ..instant
+    cmp.b #!retry_type_prompt_max+1 : bcc ..prompt
+    cmp.b #!retry_type_vanilla : beq ..vanilla
+    jmp ..instant
 
 ..vanilla:
 if !title_death_behavior != 0
@@ -116,7 +116,6 @@ if !title_death_behavior != 0
     lda $1496|!addr : cmp #$01 : bne ...return
 
     ; ... reset stuff for reloading...
-    stz $0109|!addr
     jsr reset_addresses
     jsr reset_music
 
@@ -280,6 +279,9 @@ if !title_death_behavior != 0
     lda $0100|!addr : cmp #$0F : bcs ..reload_level
 
 ..reload_title_screen:
+    ; Make sure everything is reloaded
+    stz $0109|!addr
+
     ; Set the flag to reload the title screen.
     lda #$60 : sta !ram_is_dying
     rtl
@@ -569,9 +571,11 @@ reset_music:
 .bypass:
     lda !ram_music_to_play : cmp #$FF : beq .return
     jsr shared_get_prompt_type
-    cmp #$02 : bcs .return
+    cmp.b #!retry_type_prompt_death_song : beq ..reload_samples
+    cmp.b #!retry_type_instant_death_song : bne .return
 
-    ; Don't make AMK reload the samples.
+..reload_samples:
+    ; Make AMK reload the samples.
     lda #$01 : sta !amk_freeram+1
 
 .return:

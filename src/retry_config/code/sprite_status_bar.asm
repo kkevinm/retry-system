@@ -332,7 +332,7 @@ if !draw_retry_indicator
     ; Check if we need to upload the indicator tile.
     lda $0100|!addr : cmp #$0B : bcc ..no_indicator
     jsr shared_get_prompt_type
-    cmp #$04 : bcs ..no_indicator
+    cmp.b #!retry_type_vanilla : bcs ..no_indicator
 
     ; Upload the indicator tile.
     rep #$20
@@ -418,7 +418,7 @@ if !draw_retry_indicator
     sep #$20
     lda $0100|!addr : cmp #$0B : bcc .no_indicator
     jsr shared_get_prompt_type
-    cmp #$04 : bcs .no_indicator
+    cmp.b #!retry_type_vanilla : bcs .no_indicator
 .indicator:
     jsr draw_indicator
     inc $02

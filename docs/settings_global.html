@@ -51,7 +51,7 @@ table tr td:nth-child(1) code {
 		</tr>
 		<tr>
 			<td><code>0</code></td>
-			<td>Retry prompt & play the vanilla death song when players die.</td>
+			<td>Retry prompt & play the death song when players die (music restarts on every death).</td>
 		</tr>
 		<tr>
 			<td><code>1</code></td>
@@ -59,17 +59,18 @@ table tr td:nth-child(1) code {
 		</tr>
 		<tr>
 			<td><code>2</code></td>
-			<td>
-				Instant retry (no prompt & play only the sfx: the fastest option; like "yes" is chosen automatically). In this option, you can press start then select to exit the level.
-			</td>
+			<td>Instant retry & play only the death sfx when players die (no prompt & music won't be interrupted).</td>
 		</tr>
 		<tr>
 			<td><code>3</code></td>
-			<td>
-				No retry prompt/respawn (vanilla death: as if "no" is chosen automatically, use this if you only want the multi-midway feature). Note: you can override this per sublevel (see <a href="./settings_local.html#checkpoint">Local Settings - %checkpoint</a>) and also at any point by setting a certain RAM address (see <a href="./ram_map.html">RAM Info</a> page for details).
-			</td>
+			<td>Instant retry & play the death song when players die (no prompt & music restarts on every death).</td>
+		</tr>
+		<tr>
+			<td><code>4</code></td>
+			<td>No retry prompt/respawn (vanilla death).</td>
 		</tr>
 	</table>
+	<p>Note: you can override this per sublevel (see <a href="./settings_local.html#checkpoint">Local Settings - %checkpoint</a>) and also at any point by setting a certain RAM address (see <a href="./ram_map.html">RAM Info</a> page for details).</p>
 	<br/>
 
 <!-- QoL -->
@@ -151,48 +152,39 @@ table tr td:nth-child(1) code {
 		</tr>
 		<tr>
 			<td><code>!initial_facing_fix</code></td>
-			<td>If 1, it fixes the issue where some sprites don't face Mario when entering a level for the first time. It's
-				suggested to enable the fix to make sprite behavior consistent between the first and all the next level reloads.
+			<td>If 1, it fixes the issue where some sprites don't face Mario when entering a level for the first time. It's suggested to enable the fix to make sprite behavior consistent between the first and all the next level reloads.
 			</td>
 		</tr>
 		<tr>
 			<td><code>!time_up_fix</code></td>
-			<td>If 1, it fixes the issue where dying in a level with the timer set to 0 shows the "TIME UP!" message when
-				exiting the level.</td>
+			<td>If 1, it fixes the issue where dying in a level with the timer set to 0 shows the "TIME UP!" message when exiting the level.</td>
 		</tr>
 		<tr>
 			<td><code>!item_box_fix</code></td>
-			<td>If 1, it fixes the issue where you can drop the reserve item in the item box by pressing Select while Mario is
-				dying or while the Retry prompt is shown.</td>
+			<td>If 1, it fixes the issue where you can drop the reserve item in the item box by pressing Select while Mario is dying or while the Retry prompt is shown.</td>
 		</tr>
 		<tr>
 			<td><code>!no_yoshi_intro_fix</code></td>
-			<td>If 1, it fixes the weird behavior where levels 12E-13B always use the "No Yoshi Sign 2" intro regardless of the
-				tileset / custom "No Yoshi Intro" patches.</td>
+			<td>If 1, it fixes the weird behavior where levels 12E-13B always use the "No Yoshi Sign 2" intro regardless of the tileset / custom "No Yoshi Intro" patches.</td>
 		</tr>
 		<tr>
 			<td><code>!disable_hurry_up</code></td>
-			<td>If 1, it removes the "Hurry up!" SFX and tempo hike effect that happens when reaching 100 seconds on the timer.
-				If not disabled, the death song will be played when dying during the tempo hike effect (regardless of the
-				settings), to reset the tempo of the song after respawning.</td>
+			<td>If 1, it removes the "Hurry up!" SFX and tempo hike effect that happens when reaching 100 seconds on the timer. If not disabled, the death song will be played when dying during the tempo hike effect (regardless of the settings), to reset the tempo of the song after respawning.</td>
 		</tr>
 		<tr>
 			<td><code>!pipe_entrance_freeze</code></td>
 			<td>
-				This controls whether to freeze sprites during a level's pipe entrance (it doesn't affect other entrance
-				types).
-				0 = don't freeze
-				1 = freeze (recommended)
-				2 = vanilla: freeze only if sprites were frozen when exiting the previous room (e.g. if you entered a pipe,
-				but not if you entered a door).
-				This can be inconsistent if exiting and re-entering the level.
+				This controls whether to freeze sprites during a level's pipe entrance (it doesn't affect other entrance types).
+				<ul>
+					<li>0 = don't freeze</li>
+					<li>1 = freeze (recommended)</li>
+					<li>2 = vanilla: freeze only if sprites were frozen when exiting the previous room (e.g. if you entered a pipe,	but not if you entered a door). This can be inconsistent if exiting and re-entering the level.</li>
+				</ul>
 			</td>
 		</tr>
 		<tr>
 			<td><code>!always_start_select</code></td>
-			<td>If 1, Start+Select out of a level is always possible. Otherwise, it's only possible with the instant Retry
-				option, or with the Retry prompt with the "Exit" option disabled, or if the level is already beaten like
-				vanilla.</td>
+			<td>If 1, Start+Select out of a level is always possible. Otherwise, it's only possible with the instant Retry option, or with the Retry prompt with the "Exit" option disabled, or if the level is already beaten like vanilla.</td>
 		</tr>
 		<tr>
 			<td><code>!death_camera_lock</code></td>
@@ -221,6 +213,7 @@ table tr td:nth-child(1) code {
 					<li>0 = vanilla (after dying a glitched version of the title screen will load, causing a softlock. Use this if you either don't care or want to do something custom with it.)</li>
 					<li>1 = play vanilla death animation and reload title screen (note: death music only works with AddmusicK!).</li>
 					<li>2 = instantly reload the title screen.</li>
+					<li>3 = instantly reload the title screen and play the death music (title screen music will restart).</li>
 				</ul>
 			</td>
 		</tr>
@@ -369,7 +362,6 @@ table tr td:nth-child(1) code {
 	<code>!exit_animation</code>
 	<p>This controls what happens when hitting "Exit" on the Retry prompt. Note: when dying before going to Game Over, the vanilla animation will be always played regardless.</p>
 	<ul>
-
 		<li>0 = exit the level immediately and don't play the death music (except when the level music is sped up).</li>
 		<li>1 = exit the level immediately and play the death music (note that the vanilla song will be cut short).</li>
 		<li>2 = play the death animation and music, then exit the level.</li>
@@ -734,8 +726,7 @@ table tr td:nth-child(1) code {
 	<code>!ow_death_counter_props</code>
 	<ul>
 		<li>
-			<a href="https://sneslab.net/wiki/YXPPCCCT" target="_blank">YXPCCCTT</a> properties of the death counter on the
-			Overworld, configured as <code>l3_prop(6,1)</code>. The first digit is the palette number, the second is the GFX
+			<a href="https://sneslab.net/wiki/YXPPCCCT" target="_blank">YXPCCCTT</a> properties of the death counter on the Overworld, configured as <code>l3_prop(6,1)</code>. The first digit is the palette number, the second is the GFX
 			page number (0 or 1).
 		</li>
 	</ul>

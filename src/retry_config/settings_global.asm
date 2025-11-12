@@ -4,11 +4,11 @@
 
 ;======================== Default Retry behavior ========================;
 
-; 0 = retry prompt & play the vanilla death song when players die.
+; 0 = retry prompt & play the death song when players die (music restarts on every death).
 ; 1 = retry prompt & play only the death sfx when players die (music won't be interrupted).
-; 2 = instant retry (no prompt & play only the sfx: the fastest option; like "yes" is chosen automatically)
-;     In this option, you can press start then select to exit the level.
-; 3 = no retry prompt/respawn (vanilla death: as if "no" is chosen automatically, use this if you only want the multi-midway feature).
+; 2 = instant retry & play only the death sfx when players die (no prompt & music won't be interrupted)
+; 3 = instant retry & play the death song when players die (no prompt & music restarts on every death)
+; 4 = no retry prompt/respawn (vanilla death).
 ; Note: you can override this per sublevel (see "settings_local.asm") and also at any point by setting a certain RAM address (see "docs/ram_map.html").
     !default_prompt_type = 1
 
@@ -85,10 +85,11 @@
     !reset_boo_rings = 1
 
 ; This determines what happens when you die on the title screen.
-; 0 = vanilla (after dying a glitched version of the title screen will load, causing a softlock.
+; 0 = vanilla (after dying a glitched version of the title screen will load, causing a softlock).
 ;     Use this if you either don't care or want to do something custom with it.)
 ; 1 = play vanilla death animation and reload title screen (note: death music only works with AddmusicK!).
 ; 2 = instantly reload the title screen.
+; 3 = instantly reload the title screen and play the death music (title screen music will restart)
     !title_death_behavior = 1
 
 ;======================== SFX ===========================================;

@@ -15,7 +15,17 @@
 		<li>"credits.txt" and "changelog.txt" converted to html docs.</li>
 		<li>Moved "amk_resources" under "resources/amk" and added "resources/lm/retry_midways.osc" file with Lunar Magic tooltip display information for the custom Retry midway objects.</li>
 		<li>Added !default_sfx_echo option in "settings_global.asm" to allow to enable sfx echo globally easily.</li>
+		<li>Added new option for the Retry prompt type: instant Retry & death music is played (level music will restart). This can be used in the !default_prompt_type global setting or in the %retry local setting or in the prompt_override RAM setting.</li>
+		<li>Added new option for the !title_death_behavior global settings: instant Retry and play the death music (title screen music will restart).</li>
 	</ul>
+	<p><b>NOTE</b>: if upgrading from 0.8.1 or older to 0.8.2 or newer, pay attention if you have used the "vanilla death" prompt option, as it its value changed to account for the new "instant Retry & play death music" option. In details:
+		<ul>
+			<li>In "settings_global.asm": <code>!default_prompt_type = 3</code> &rarr; <code>!default_prompt_type = 4</code></li>
+			<li>In "settings_local.asm": <code>%retry(xxx,4)</code> &rarr; <code>%retry(xxx,5)</code></li>
+			<li>Setting it in your own code: <code>LDA #$04 : STA retry_ram_prompt_override</code> &rarr; <code>LDA #$05 : STA retry_ram_prompt_override</code></li>
+			<li>Getting it in your own code: <code>JSL retry_api_get_retry_type : CMP #$04</code> &rarr; <code>JSL retry_api_get_retry_type : CMP #$05</code></li>
+		</ul>
+	</p>
 
 	<h2 id="v0.8.1">v0.8.1</h2>
 	<ul>

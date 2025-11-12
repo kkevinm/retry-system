@@ -101,10 +101,11 @@
 		<li>Outputs: <code>A = Retry type</code><br/>
 			This value can have one of the following values:
 			<ul>
-				<li><code>$01</code>: Retry prompt enabled & play the vanilla death song when the player dies</li>
+				<li><code>$01</code>: Retry prompt enabled & play the death song when the player dies</li>
 				<li><code>$02</code>: Retry prompt enabled & play only the death sfx when the player dies</li>
-				<li><code>$03</code>: instant Retry enabled</li>
-				<li><code>$04</code>: Retry disabled</li>
+				<li><code>$03</code>: instant Retry enabled & play only the death sfx when the player dies</li>
+				<li><code>$04</code>: instant Retry enabled & play the death song when the player dies</li>
+				<li><code>$05</code>: Retry disabled (vanilla death)</li>
 			</ul>
 		</li>
 		<li>Preconditions: <code>A 8 bits</code></li>

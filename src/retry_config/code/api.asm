@@ -142,10 +142,11 @@ endif
 ; Routine to get the current Retry type, i.e. if currently the level is
 ; set to have Retry prompt, instant Retry or no Retry.
 ; The returned value has this format:
-; - $01 = Retry prompt enabled & play the vanilla death song when the player dies
+; - $01 = Retry prompt enabled & play the death song when the player dies
 ; - $02 = Retry prompt enabled & play only the death sfx when the player dies
-; - $03 = instant Retry enabled
-; - $04 = Retry disabled
+; - $03 = instant Retry enabled & play only the death sfx when the player dies
+; - $04 = instant Retry enabled & play the death song when the player dies
+; - $05 = Retry disabled (vanilla death)
 ;
 ; Inputs: N/A
 ; Outputs: A = Retry type
