@@ -27,7 +27,7 @@
     !midway_powerup = 0
 
 ; Counterbreak options reset the corresponding counters/items when the player dies and/or when going to the Overworld.
-; Useful for Kaizo and collab hacks.
+; Useful for Kaizo and collab hacks. For lives, they will be reset to !initial_lives
 ; 0 = disabled, 1 = enabled for both respawning and going to the Overworld
 ; 2 = enabled just for respawning, 3 = enabled just for going to the Overworld
     !counterbreak_yoshi = 1
@@ -36,6 +36,7 @@
     !counterbreak_coins = 0
     !counterbreak_bonus_stars = 0
     !counterbreak_score = 0
+    !counterbreak_lives = 0
 
 ;======================== QoL fixes =====================================;
 

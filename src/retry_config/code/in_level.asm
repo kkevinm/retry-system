@@ -452,19 +452,19 @@ reset_addresses:
 -   stz $14B0|!addr,x
     dex #2 : bpl -
 
-    ; Reset vanilla Boo rings.
 if !reset_boo_rings
+    ; Reset vanilla Boo rings.
     stz $0FAE|!addr
     stz $0FB0|!addr
 endif
 
-    ; Reset bonus stars counter.
 if !counterbreak_bonus_stars == 1 || !counterbreak_bonus_stars == 2
+    ; Reset bonus stars counter.
     stz $0F48|!addr
 endif
 
-    ; Reset score counter.
 if !counterbreak_score == 1 || !counterbreak_score == 2
+    ; Reset score counter.
     stz $0F34|!addr
     stz $0F36|!addr
     stz $0F38|!addr
@@ -475,19 +475,24 @@ endif
     sep #$20
     lda !ram_timer+2 : and #$0F : sta $0F33|!addr
 
-    ; Reset powerup.
 if !counterbreak_powerup == 1 || !counterbreak_powerup == 2
+    ; Reset powerup.
     stz $19
 endif
 
-    ; Reset item box.
 if !counterbreak_item_box == 1 || !counterbreak_item_box == 2
+    ; Reset item box.
     stz $0DC2|!addr
 endif
 
-    ; Reset coin counter.
 if !counterbreak_coins == 1 || !counterbreak_coins == 2
+    ; Reset coin counter.
     stz $0DBF|!addr
+endif
+
+if !counterbreak_lives == 1 || !counterbreak_lives == 2
+    ; Reset lives.
+    lda.b #!initial_lives-1 : sta $0DBE|!addr
 endif
 
     ; Reset green star block counter.
