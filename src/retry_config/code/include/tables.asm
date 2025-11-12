@@ -49,8 +49,8 @@ endmacro
 
 macro retry(level, val)
     %_check_level(<level>, "retry")
-    if <val> < 0 || <val> > 4
-        error "Error: %retry value needs to be between 0 and 4!"
+    if <val> < 0 || <val> > 5
+        error "Error: %retry value needs to be between 0 and 5!"
     endif
     
     !__idx #= <level>
