@@ -75,10 +75,11 @@
 	<br/>
 
 <h3 id="sfx_echo">%sfx_echo(level)</h3>
-	<p>This will enable SFX echo in the specified sublevel. Note that this option only works if AddmusicK is used in the ROM, and the SFX uses the same echo as the music (if the music has no echo, then the SFX also won't have echo).</p>
+	<p>This will toggle SFX echo in the specified sublevel. The effect depends on the <code>!default_sfx_echo</code> option in <a href="./settings_global.html#sfx">Global Settings - SFX</a>.</p>
+	<p>Note that this option only works if AddmusicK is used in the ROM, and the SFX uses the same echo as the music (if the music has no echo, then the SFX also won't have echo).</p>
 	<p>Examples:</p>
 	<ul>
-		<li><code>%sfx_echo($105)</code>: sublevel $105 will have SFX echo enabled.</li>
+		<li><code>%sfx_echo($105)</code>: sublevel $105 will have SFX echo toggled.</li>
 	</ul>
 	<br/>
 
@@ -115,7 +116,7 @@
 		<li><code>level</code>: the sublevel number.</li>
 		<li><code>checkpoint</code>: same as <code>value</code> in <code>%checkpoint</code>.</li>
 		<li><code>retry</code>: same as <code>value</code> in <code>%retry</code>.</li>
-		<li><code>sfx_echo</code>: if <code>0</code>, SFX echo is disabled in the sublevel. Otherwise, it is enabled.</li>
+		<li><code>sfx_echo</code>: if <code>1</code>, SFX echo is toggled in the sublevel.</li>
 		<li><code>no_reset_rng</code>: if <code>0</code>, RNG is reset when retrying in the sublevel. Otherwise, it is not reset.</li>
 		<li><code>no_room_cp_sfx</code>: if <code>0</code>, automatic checkpoints in the sublevel will play the SFX. Otherwise, they won't play the SFX.</li>
 		<li><code>no_lose_lives</code>: if <code>0</code>, life loss is enabled in the sublevel (if infinite lives is disabled globally). Otherwise, it is disabled.</li>

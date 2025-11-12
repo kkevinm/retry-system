@@ -277,6 +277,18 @@ table tr td:nth-child(1) code {
 	<ul>
 		<li>SFX to play when entering a level from the Overworld (<code>!enter_level_sfx = $00</code> -> no SFX) similarly to what SMB3 does. If the SFX gets cut out, increase <code>!enter_level_delay</code>.</li>
 	</ul>
+
+	<code>!default_sfx_echo = 0</code>
+	<ul>
+		<li>This controls the default SFX echo option for all levels and what the <a href="./settings_local.html#sfx_echo">Local Settings - %sfx_echo</a> option does.
+		<ul>
+			<li>0 = sfx echo is disabled in every sublevel by default, and using %sfx_echo will enable the sfx echo for the specific sublevel.</li>
+			<li>1 = sfx echo is enabled in every sublevel by default, and using %sfx_echo will disable the sfx echo for the specific sublevel.</li>
+		</ul>
+		</li>
+		<li>Note: this is irrelevant if not using AddmusicK.</li>
+		<li>Note: <code>!default_sfx_echo = 1</code> has no effect if <code>!use_legacy_tables = 1</code> (see <a href="#misc">Misc settings</a>).</li>
+	</ul>
 	</br>
 
 <!-- Saving -->

@@ -2,7 +2,11 @@ checkpoint_effect:
     fillbyte $00 : fill $200
 
 sfx_echo:
+if !default_sfx_echo
+    fillbyte $FF : fill $40
+else
     fillbyte $00 : fill $40
+endif
 
 reset_rng:
     fillbyte $FF : fill $40
@@ -65,8 +69,13 @@ macro sfx_echo(level)
     %_check_level(<level>, "sfx_echo")
 
     %_define_bitwise_index(<level>)
+if !default_sfx_echo
+    !{_sfx_echo_!{__idx}} ?= $FF
+    !{_sfx_echo_!{__idx}} #= !{_sfx_echo_!{__idx}}&(_bitwise_table_value(<level>)^$FF)
+else
     !{_sfx_echo_!{__idx}} ?= 0
     !{_sfx_echo_!{__idx}} #= !{_sfx_echo_!{__idx}}|_bitwise_table_value(<level>)
+endif
     
     pushpc
     

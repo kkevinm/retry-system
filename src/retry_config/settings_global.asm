@@ -124,6 +124,12 @@
     !enter_level_sfx_addr = $1DFC
     !enter_level_delay = $02
 
+; Default option for SFX echo. This is irrelevant if AddmusicK is not used.
+; This controls the default SFX echo option for all levels and what the %sfx_echo(<level>) does in "settings_local.asm":
+; 0 = disabled in all levels except those toggled by %sfx_echo
+; 1 = enabled in all levels except those toggled by %sfx_echo (note: this only works if !use_legacy_tables = 0)
+    !default_sfx_echo = 0
+
 ;======================== Save and SRAM =================================;
 
 ; If 1, a custom SRAM expansion patch will be inserted as well.
