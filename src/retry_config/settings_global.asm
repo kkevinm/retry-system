@@ -175,6 +175,9 @@
 ; 3 = play the full death animation in both cases (effects 1 and 2)
     !retry_death_animation = 0
 
+; How many frames after dying the prompt shows up when using !fast_prompt = 0 and !retry_death_animation = 0
+    !prompt_show_delay = $30
+
 ; How fast the prompt expands/shrinks. It must evenly divide 72.
     !prompt_speed = 6
 

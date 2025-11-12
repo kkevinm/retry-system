@@ -228,54 +228,54 @@ table tr td:nth-child(1) code {
 <h3 id="sfx">Sound Effects Settings</h3>
 
 	<p>
-		<code>!death_sfx = $20</code><br>
-		<code>!death_sfx_addr = $1DF9</code>
+		<code>!death_sfx</code><br>
+		<code>!death_sfx_addr</code>
 	</p>
 	<ul>
 		<li>SFX to play when dying (<code>!death_sfx = $00</code> -> no SFX). Only played if the death song is skipped (for example, it's not played if the level uses vanilla death, but it is played when Retry is enabled).</li>
 		<li>You can find a suitable death sfx inside <u class="dir">resources/amk/sfx</u> (see <a href="./files.html#amk_resources">AddmusicK Resources</a> for details).</li>
 	</ul>
 
-	<code>!death_jingle_alt = $FF</code>
+	<code>!death_jingle_alt</code>
 	<ul>
 		<li>The alternative death jingle which will be played after the <code>!death_sfx</code> when "Exit" is chosen in the prompt (only available when you're using AddmusicK). <code>$01-$FE</code>: custom song number, <code>$FF</code> = do not use this feature.</li>
 		<li>You can find a suitable alt death jingle inside <u class="dir">resources/amk/music</u> (to be paired with the custom sfx: see <a href="./files.html#amk_resources">AddmusicK Resources</a> for details).</li>
 	</ul>
 
 	<p>
-		<code>!option_sfx = $01</code><br>
-		<code>!option_sfx_addr = $1DFC</code>
+		<code>!option_sfx</code><br>
+		<code>!option_sfx_addr</code>
 	</p>
 	<ul>
 		<li>SFX to play when selecting an option in the prompt (<code>!option_sfx = $00</code> -> no SFX).</li>
 	</ul>
 
 	<p>
-		<code>!cursor_sfx = $06</code><br>
-		<code>!cursor_sfx_addr = $1DFC</code>
+		<code>!cursor_sfx</code><br>
+		<code>!cursor_sfx_addr</code>
 	</p>
 	<ul>
 		<li>SFX to play when the prompt cursor moves (<code>!cursor_sfx = $00</code> -> no SFX).</li>
 	</ul>
 
 	<p>
-		<code>!room_cp_sfx = $05</code><br>
-		<code>!room_cp_sfx_addr = $1DF9</code>
+		<code>!room_cp_sfx</code><br>
+		<code>!room_cp_sfx_addr</code>
 	</p>
 	<ul>
 		<li>SFX to play when getting a checkpoint through a room transition (<code>!room_cp_sfx = $00</code> -> no SFX). This is meant as a way to inform the player that they just got a room checkpoint. If enabled, you can disable it in specific sublevels: see <a href="./settings_local.html#no_room_cp_sfx">Local Settings - %no_room_cp_sfx</a>.</li>
 	</ul>
 
 	<p>
-		<code>!enter_level_sfx = $00</code><br>
-		<code>!enter_level_sfx_addr = $1DFC</code><br>
-		<code>!enter_level_delay = $02</code>
+		<code>!enter_level_sfx</code><br>
+		<code>!enter_level_sfx_addr</code><br>
+		<code>!enter_level_delay</code>
 	</p>
 	<ul>
 		<li>SFX to play when entering a level from the Overworld (<code>!enter_level_sfx = $00</code> -> no SFX) similarly to what SMB3 does. If the SFX gets cut out, increase <code>!enter_level_delay</code>.</li>
 	</ul>
 
-	<code>!default_sfx_echo = 0</code>
+	<code>!default_sfx_echo</code>
 	<ul>
 		<li>This controls the default SFX echo option for all levels and what the <a href="./settings_local.html#sfx_echo">Local Settings - %sfx_echo</a> option does.
 		<ul>
@@ -291,18 +291,18 @@ table tr td:nth-child(1) code {
 <!-- Saving -->
 <h3 id="saving">Save and SRAM Settings</h3>
 
-	<code>!sram_feature = 1</code>
+	<code>!sram_feature</code>
 	<ul>
 		<li>If 1, a custom SRAM expansion patch will be inserted as well. By default, it will save the custom checkpoint status and death counter to SRAM. To make your own stuff saved as well, check out the <a href="./sram_tables.html">SRAM Tables</a>.</li>
 		<li>Note that this is incompatible with the SRAM+ or BW-RAM+ patches: if they are detected, it will be disabled automatically. Check out <a href="./sram_bwram_info.html">SRAM & BW-RAM Info</a> for details.</li>
 	</ul>
 
-	<code>!save_on_checkpoint = 0</code>
+	<code>!save_on_checkpoint</code>
 	<ul>
 		<li>If 1, the game will automatically save everytime a new checkpoint is obtained (when touching a midway or getting a cp on a room transition). If using this, make sure there's no softlocks (for example, a level is unbeatable from one of the checkpoints).</li>
 	</ul>
 
-	<code>!save_after_game_over = 1</code>
+	<code>!save_after_game_over</code>
 	<ul>
 		<li>If 1, the game will automatically save after getting a game over. This can be useful when paired with the option of not reloading some data from SRAM after a game over (see <a href="./sram_tables.html">SRAM Tables</a> for info), if you want some things to retain even if the player got a game over before saving them (for example, the death counter). This ensures that they will be saved to SRAM when this happens.</li>
 	</ul>
@@ -311,14 +311,14 @@ table tr td:nth-child(1) code {
 <!-- Custom Midways -->
 <h3 id="custom-midways">Custom Midways Settings</h3>
 
-	<code>!use_custom_midway_bar = 1</code>
+	<code>!use_custom_midway_bar</code>
 	<ul>
 		<li>If 1, Retry will install a custom midway object in the ROM, insertable in levels by using object 2D. These objects allow you to have multiple midways in the same level, each with a different entrance.</li>
 		<li>For more info on how to use them, check out <a href="./midway_instruction.html">Midway Instructions</a> page.</li>
 		<li>This can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the <a href="./objectool_info.html">ObjecTool Info</a> page for details).</li>
 	</ul>
 
-	<code>!max_custom_midway_num = 8</code>
+	<code>!max_custom_midway_num</code>
 	<ul>
 		<li>If <code>!use_custom_midway_bar = 1</code>, this setting determines how many custom midways you can have in the same sublevel. The more you set, the more free ram is needed (4 bytes for each).</li>
 	</ul>
@@ -340,6 +340,13 @@ table tr td:nth-child(1) code {
 		<li>1 = play the full death animation before showing the Retry prompt (note: make sure <code>!fast_prompt = 0</code>)</li>
 		<li>2 = play the full death animation before reloading the level with instant Retry</li>
 		<li>3 = play the full death animation in both cases (effects 1 and 2)</li>
+	</ul>
+
+	<code>!prompt_show_delay</code>
+	<ul>
+		<li>
+			How many frames after dying the prompt shows up when using <code>!fast_prompt = 0</code> and <code>!retry_death_animation = 0</code>.
+		</li>
 	</ul>
 
 	<code>!prompt_speed</code>
@@ -409,45 +416,45 @@ table tr td:nth-child(1) code {
 	</ul>
 
 	<p>
-		<code>!text_x_pos = $58</code><br>
-		<code>!text_y_pos = $6F</code>
+		<code>!text_x_pos</code><br>
+		<code>!text_y_pos</code>
 	</p>
 	<ul>
 		<li>X/Y position of the first tile in the prompt (the cursor on the first line). Changing this only works if the black box is disabled (if enabled, default values will be used instead).</li>
 		<li>Note: you can also change these on the fly (see <a href="./ram_map.html">RAM Info</a> page for details).</li>
 	</ul>
 
-	<code>!cursor_setting = 1</code>
+	<code>!cursor_setting</code>
 	<ul>
 		<li>0 = the cursor is static</li>
 		<li>1 = the cursor blinks like in vanilla menus</li>
 		<li>2 = the cursor oscillates slowly right and left</li>
 	</ul>
 
-	<code>!cursor_oscillate_speed = 2</code>
+	<code>!cursor_oscillate_speed</code>
 	<ul>
 		<li>How fast the cursor oscillates (only used when <code>!cursor_setting = 2</code>) Higher = slower. Possible values: 0 to 5.</li>
 	</ul>
 
-	<code>!prompt_wave = 0</code>
+	<code>!prompt_wave</code>
 	<ul>
 		<li>1 = the letters in the option selected on the Retry prompt will wave up and down. Note: this is incompatible with the black box (use <code>!no_prompt_box = 1</code>)</li>
 	</ul>
 
-	<code>!prompt_wave_speed = 2</code>
+	<code>!prompt_wave_speed</code>
 	<ul>
 		<li>How fast the letters wave (only used when <code>!prompt_wave = 1</code>) Higher = slower. Possible values: 0 to 5.</li>
 	</ul>
 
 	<p>
-		<code>!letter_palette = $08</code><br>
-		<code>!cursor_palette = $08</code>
+		<code>!letter_palette</code><br>
+		<code>!cursor_palette</code>
 	</p>
 	<ul>
 		<li>Palette row used by the letters and cursor (note: they use sprite palettes).</li>
 	</ul>
 
-	<code>!no_score_sprites_on_death = 0</code>
+	<code>!no_score_sprites_on_death</code>
 	<ul>
 		<li>If 1, score sprites (points, 1-Up) will be removed when dying, if Retry prompt is enabled in the level. This can be used to replace their graphics ($29, $38-$39, $44-$47, $54-$57) with the Retry prompt tiles instead of having to reserve sprite tiles for the prompt.</li>
 	</ul>
@@ -456,47 +463,38 @@ table tr td:nth-child(1) code {
 	<table>
 		<tr>
 			<th>Name</th>
-			<th>Value</th>
 			<th>Description</th>
 		</tr>
 		<tr>
 			<td><code>!tile_curs</code></td>
-			<td><code>$20</code></td>
 			<td>Sprite tile used for the cursor (note: if the prompt box is enabled, this uses two adjacent 8x8 tiles)</td>
 		</tr>
 		<tr>
 			<td><code>!tile_blk</code></td>
-			<td><code>$22</code></td>
 			<td>Sprite tile used for the black background (note: if the prompt box is enabled, this uses two adjacent 8x8 tiles)</td>
 		</tr>
 		<tr>
 			<td><code>!tile_r</code></td>
-			<td><code>$30</code></td>
 			<td>Sprite tile used for the "R" letter</td>
 		</tr>
 		<tr>
 			<td><code>!tile_e</code></td>
-			<td><code>$31</code></td>
 			<td>Sprite tile used for the "E" letter</td>
 		</tr>
 		<tr>
 			<td><code>!tile_t</code></td>
-			<td><code>$32</code></td>
 			<td>Sprite tile used for the "T" letter</td>
 		</tr>
 		<tr>
 			<td><code>!tile_y</code></td>
-			<td><code>$33</code></td>
 			<td>Sprite tile used for the "Y" letter</td>
 		</tr>
 		<tr>
 			<td><code>!tile_x</code></td>
-			<td><code>$4A</code></td>
 			<td>Sprite tile used for the "X" letter (note: if the "Exit" option is disabled, this won't be used)</td>
 		</tr>
 		<tr>
 			<td><code>!tile_i</code></td>
-			<td><code>$5A</code></td>
 			<td>Sprite tile used for the "Y" letter (note: if the "Exit" option is disabled, this won't be used)</td>
 		</tr>
 	</table>
@@ -523,57 +521,46 @@ table tr td:nth-child(1) code {
 	<table>
 		<tr>
 			<th>Name</th>
-			<th>Value</th>
 			<th>Description</th>
 		</tr>
 		<tr>
 			<td><code>!default_item_box_tile</code></td>
-			<td><code>$80</code></td>
 			<td>Sprite tile number used by the item box by default</td>
 		</tr>
 		<tr>
 			<td><code>!default_item_box_palette</code></td>
-			<td><code>$0B</code></td>
 			<td>Palette used by the item box by default</td>
 		</tr>
 		<tr>
 			<td><code>!default_timer_tile</code></td>
-			<td><code>$88</code></td>
 			<td>Sprite tile number used by the timer by default</td>
 		</tr>
 		<tr>
 			<td><code>!default_timer_palette</code></td>
-			<td><code>$08</code></td>
 			<td>Palette used by the timer by default</td>
 		</tr>
 		<tr>
 			<td><code>!default_coin_counter_tile</code></td>
-			<td><code>$C2</code></td>
 			<td>Sprite tile number used by the coin counter by default</td>
 		</tr>
 		<tr>
 			<td><code>!default_coin_counter_palette</code></td>
-			<td><code>$08</code></td>
 			<td>Palette used by the coin counter by default</td>
 		</tr>
 		<tr>
 			<td><code>!default_lives_counter_tile</code></td>
-			<td><code>$00</code></td>
 			<td>Sprite tile number used by the lives counter by default (disabled by default).</td>
 		</tr>
 		<tr>
 			<td><code>!default_lives_counter_palette</code></td>
-			<td><code>$09</code></td>
 			<td>Palette used by the lives counter by default (the included GFX is tailored for vanilla palette 9, using the berry colors)</td>
 		</tr>
 		<tr>
 			<td><code>!default_bonus_stars_tile</code></td>
-			<td><code>$00</code></td>
 			<td>Sprite tile number used by the bonus stars counter by default (disabled by default)</td>
 		</tr>
 		<tr>
 			<td><code>!default_bonus_stars_palette</code></td>
-			<td><code>$00</code></td>
 			<td>Palette used by the bonus stars counter by default (the included GFX is tailored for vanilla palette 9, using the berry colors)</td>
 		</tr>
 	</table>
@@ -582,67 +569,54 @@ table tr td:nth-child(1) code {
 	<table>
 		<tr>
 			<th width="170">Name</th>
-			<th>Location</th>
 			<th>Description</th>
 		</tr>
 		<tr>
 			<td><code>!item_box_x_pos</code></td>
-			<td><code>$70</code></td>
 			<td>X position on the screen to draw the Item Box</td>
 		</tr>
 		<tr>
 			<td><code>!item_box_y_pos</code></td>
-			<td><code>$07</code></td>
 			<td>Y position on the screen to draw the Item Box</td>
 		</tr>
 		<tr>
 			<td><code>!timer_x_pos</code></td>
-			<td><code>$D0</code></td>
 			<td>X position on the screen to draw the timer</td>
 		</tr>
 		<tr>
 			<td><code>!timer_y_pos</code></td>
-			<td><code>$0F</code></td>
 			<td>Y position on the screen to draw the timer</td>
 		</tr>
 		<tr>
 			<td><code>!coin_counter_x_pos</code></td>
-			<td><code>$D0</code></td>
 			<td>X position on the screen to draw the normal coin counter</td>
 		</tr>
 		<tr>
 			<td><code>!coin_counter_y_pos</code></td>
-			<td><code>$17</code></td>
 			<td>Y position on the screen to draw the normal coin counter</td>
 		</tr>
 		<tr>
 			<td><code>!dc_counter_x_pos</code></td>
-			<td><code>$9A</code></td>
 			<td>X position on the screen to draw the Dragon/Yoshi coin counter</td>
 		</tr>
 		<tr>
 			<td><code>!dc_counter_y_pos</code></td>
-			<td><code>$0F</code></td>
 			<td>Y position on the screen to draw the Dragon/Yoshi coin counter</td>
 		</tr>
 		<tr>
 			<td><code>!lives_counter_x_pos</code></td>
-			<td><code>$10</code></td>
 			<td>X position on the screen to draw the lives counter</td>
 		</tr>
 		<tr>
 			<td><code>!lives_counter_y_pos</code></td>
-			<td><code>$0F</code></td>
 			<td>Y position on the screen to draw the lives counter</td>
 		</tr>
 		<tr>
 			<td><code>!bonus_stars_x_pos</code></td>
-			<td><code>$10</code></td>
 			<td>X position on the screen to draw the bonus stars counter</td>
 		</tr>
 		<tr>
 			<td><code>!bonus_stars_y_pos</code></td>
-			<td><code>$17</code></td>
 			<td>Y position on the screen to draw the bonus stars counter</td>
 		</tr>
 	</table>
@@ -668,20 +642,23 @@ table tr td:nth-child(1) code {
 			<table>
 				<tr>
 					<th width="220">Name</th>
-					<th width="20">Tile </th>
 					<th>Description</th>
 				</tr>
 				<tr>
-					<td><code>!retry_indicator_tile</code></td><td><code>$1D</code></td><td>Location to uploade the tile in VRAM. (Default SP1)</td>
+					<td><code>!retry_indicator_tile</code></td>
+					<td>Location to uploade the tile in VRAM. (Default SP1)</td>
 				</tr>
 				<tr>
-					<td><code>!retry_indicator_palette</code></td><td><code>$09</code></td><td>Sprite palette number used by the retry indicator tile.</td>
+					<td><code>!retry_indicator_palette</code></td>
+					<td>Sprite palette number used by the retry indicator tile.</td>
 				</tr>
 				<tr>
-					<td><code>!retry_indicator_x_pos</code></td><td><code>$10</code></td><td>X-position on the screen to draw the indicator.</td>
+					<td><code>!retry_indicator_x_pos</code></td>
+					<td>X-position on the screen to draw the indicator.</td>
 				</tr>
 				<tr>
-					<td><code>!retry_indicator_y_pos</code></td><td><code>$0F</code></td><td>Y-position on the screen to draw the indicator.</td>
+					<td><code>!retry_indicator_y_pos</code></td>
+					<td>Y-position on the screen to draw the indicator.</td>
 				</tr>
 			</table>
 		</li>

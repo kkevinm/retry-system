@@ -1,7 +1,8 @@
 ; Gamemode 7, 14
 
-; Normally the prompt comes up $40 frames after dying
-!show_prompt_time #= !death_time-$10
+; Calculate the time to check for prompt starting
+; !prompt_show_delay/4 is done because $1496 decrements every 4th frame
+!show_prompt_time #= !death_time-(!prompt_show_delay/4)
 
 ; If the death animation should show, set the times to the minimum possible
 if !retry_death_animation&1
