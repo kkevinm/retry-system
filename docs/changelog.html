@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h1>Changelog</h1>
-	<h2 id="v0.8.2">v0.8.2</h2>
+	<h2 id="v1.0.0">v1.0.0</h2>
 	<ul>
 		<li>Documentation updated.</li>
 		<li>"credits.txt" and "changelog.txt" converted to html docs.</li>
@@ -21,7 +21,7 @@
 		<li>Added !prompt_show_delay option in "settings_global.asm" to adjust how fast the Retry prompt shows up. Also the default value is more similar to the original Retry patch compared to previous versions.</li>
 		<li>Added !default_coin_counter_behavior to only display either coins or dragon coins in the sprite status bar. Adjusted configure_sprite_status_bar api routine to do the same.</li>
 	</ul>
-	<p><b>NOTE</b>: if upgrading from 0.8.1 or older to 0.8.2 or newer, pay attention if you have used the "vanilla death" prompt option, as it its value changed to account for the new "instant Retry & play death music" option. In details:
+	<p><b>NOTE</b>: if upgrading from v0.8.1 or older to v1.0.0 or newer, pay attention if you have used the "vanilla death" prompt option, as it its value changed to account for the new "instant Retry & play death music" option. In details:
 		<ul>
 			<li>In "settings_global.asm": <code>!default_prompt_type = 3</code> &rarr; <code>!default_prompt_type = 4</code></li>
 			<li>In "settings_local.asm": <code>%retry(xxx,4)</code> &rarr; <code>%retry(xxx,5)</code></li>
