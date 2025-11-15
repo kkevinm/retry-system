@@ -29,17 +29,37 @@ org $009CF5
 
 pullpc
 
-; Some helper macros.
-macro transfer(src,dst)
-    pla
-    mvn <dst>,<src>
-    bra ..next
+; Place the MVN routine in RAM to be able to change the bank parameters at runtime
+; MVN <src_bank>,<dst_bank> : RTS
+; Note that MVN has dst_bank before src_bank when assembled
+base $0008|!dp
+    data_transfer:
+        .mvn:      skip 1
+        .dst_bank: skip 1
+        .src_bank: skip 1
+        .rts:      skip 1
+base off
+
+; Setup MVN and RTS in data_tranfer
+macro setup_mvn()
+    ; MVN = opcode $54
+    lda #$54 : sta.b data_transfer_mvn
+
+    ; RTS = opcode $60
+    lda #$60 : sta.b data_transfer_rts
 endmacro
 
 macro next_iteration()
+    ; Progress to the sram address to save to
     lda $02 : clc : adc $04 : sta $02
+    
+    ; Restore registers
     plb : plx
+    
+    ; Increase save table index
     txa : clc : adc #$0005 : tax
+
+    ; If not at the end of the save table, loop
     cpx $06 : bcc .loop
 endmacro
 
@@ -55,35 +75,47 @@ save_game:
     jsr extra_save_file
     plb : plp
 
+    ; Setup data transfer routine
+    %setup_mvn()
+
+    ; Write destination bank parameter in data transfer routine
+    lda.b #!sram_bank : sta.b data_transfer_dst_bank
+
+    ; $02 = starting sram address
     jsr get_sram_addr : sta $02
+
+    ; $06 = save table size to save
     lda.w #!save_table_size : sta $06
+
     ldx #$0000
 .loop:
+    ; $00 = source address
     lda.w tables_save,x : sta $00
     phx : phb
+    
+    ; $04 = transfer size
     lda.w tables_save+3,x : sta $04
+
+    ; Push MVN accumulator parameter on the stack (size - 1)
     dec : pha
-    lda.w tables_save+2,x
+
+    ; Write source bank parameter in data transfer routine
+    sep #$20
+    lda.w tables_save+2,x : sta.b data_transfer_src_bank
+    rep #$20
+
+    ; Call the data transfer routine with parameters:
+    ; - X = $00 = source address
+    ; - Y = $02 = destination address
+    ; - A = transfer size - 1
     ldx $00
     ldy $02
-    and #$00FF : beq ..use_00
-    cmp #$007E : beq ..use_7E
-if !sa1
-    cmp #$007F : beq ..use_7F
-    cmp #$0040 : beq ..use_40
-..use_41:
-    %transfer($41,!sram_bank)
-..use_40:
-    %transfer($40,!sram_bank)
-endif
-..use_7F:
-    %transfer($7F,!sram_bank)
-..use_7E:
-    %transfer($7E,!sram_bank)
-..use_00:
-    %transfer($00|!bank8,!sram_bank)
-..next:
+    pla
+    jsr.w data_transfer
+
+    ; Loop the entire save table
     %next_iteration()
+
 .end:
     sep #$30
     
@@ -110,7 +142,7 @@ load_game:
     jsr extra_load_file
     plb : plp
 
-    ; Set the save table size.
+    ; $06 = save table size to load (entire table)
     rep #$30
     lda.w #!save_table_size : sta $06
 
@@ -131,7 +163,7 @@ load_game_over:
     phb : phk : plb
     phx : phy : php
 
-    ; Set the save table size.
+    ; $06 = save table size to load (not the game_over part)
     rep #$30
     lda.w #!save_table_size_game_over : sta $06
 
@@ -144,34 +176,19 @@ load_game_over:
     rtl
 
 load_file:
+    sep #$20
+
+    ; Setup data transfer routine
+    %setup_mvn()
+
+    ; Write source bank parameter in data transfer routine
+    lda.b #!sram_bank : sta.b data_transfer_src_bank
+
+    ; $02 = starting sram address
     jsr get_sram_addr : sta $02
-    ldx #$0000
-.loop:
-    lda.w tables_save,x : tay
-    phx : phb
-    lda.w tables_save+3,x : sta $04
-    dec : pha
-    lda.w tables_save+2,x
-    ldx $02
-    and #$00FF : beq ..use_00
-    cmp #$007E : beq ..use_7E
-if !sa1
-    cmp #$007F : beq ..use_7F
-    cmp #$0040 : beq ..use_40
-..use_41:
-    %transfer(!sram_bank,$41)
-..use_40:
-    %transfer(!sram_bank,$40)
-endif
-..use_7F:
-    %transfer(!sram_bank,$7F)
-..use_7E:
-    %transfer(!sram_bank,$7E)
-..use_00:
-    %transfer(!sram_bank,$00|!bank8)
-..next:
-    %next_iteration()
-.end:
+
+    ; Load the data from sram
+    jsr load_data
     rts
 
 init_file:
@@ -189,36 +206,22 @@ init_file:
     jsr extra_load_new_file
     plb : plp
 
+    ; Setup data transfer routine
+    %setup_mvn()
+
+    ; Write source bank parameter in data transfer routine
+    lda.b #!sram_defaults_bank : sta.b data_transfer_src_bank
+
+    ; $02 = starting sram defaults address
     rep #$30
     lda.w #tables_sram_defaults : sta $02
+
+    ; $06 = save table size
     lda.w #!save_table_size : sta $06
-    ldx #$0000
-.loop:
-    lda.w tables_save,x : tay
-    phx : phb
-    lda.w tables_save+3,x : sta $04
-    dec : pha
-    lda.w tables_save+2,x
-    ldx $02
-    and #$00FF : beq ..use_00
-    cmp #$007E : beq ..use_7E
-if !sa1
-    cmp #$007F : beq ..use_7F
-    cmp #$0040 : beq ..use_40
-..use_41:
-    %transfer(!sram_defaults_bank,$41)
-..use_40:
-    %transfer(!sram_defaults_bank,$40)
-endif
-..use_7F:
-    %transfer(!sram_defaults_bank,$7F)
-..use_7E:
-    %transfer(!sram_defaults_bank,$7E)
-..use_00:
-    %transfer(!sram_defaults_bank,$00|!bank8)
-..next:
-    %next_iteration()
-..end:
+
+    ; Load the data from rom (sram defaults table)
+    jsr load_data
+
     ; Initialize the intro level checkpoint.
     jsr shared_get_intro_sublevel
     sta !ram_checkpoint
@@ -231,6 +234,45 @@ endif
 
     ; Jump back.
     jml $009D22|!bank
+
+; Helper routine for load_file and init_file operations
+; Inputs:
+; - A,X,Y 16 bit
+; - $02 = starting address to load from
+; - $06 = table size
+; - data_transfer mvn, rts and src_bank set up
+load_data:
+    ldx #$0000
+.loop:
+    ; Y = destination address
+    lda.w tables_save,x : tay
+
+    phx : phb
+    
+    ; $04 = transfer size
+    lda.w tables_save+3,x : sta $04
+
+    ; Push MVN accumulator parameter on the stack (size - 1)
+    dec : pha
+    
+    ; Write destination bank parameter in data transfer routine
+    sep #$20
+    lda.w tables_save+2,x : sta.b data_transfer_dst_bank
+    rep #$20
+
+    ; Call the data transfer routine with parameters:
+    ; - X = $02 = source address
+    ; - Y = destination address (loaded earlier)
+    ; - A = transfer size - 1
+    ldx $02
+    pla
+    jsr.w data_transfer
+    
+    ; Loop the entire save table
+    %next_iteration()
+
+.end:
+    rts
 
 ;=====================================
 ; get_sram_addr routine.

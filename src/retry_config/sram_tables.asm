@@ -16,7 +16,6 @@
 ; Note: for each address you add here, you need to add the default values in the sram_defaults table below.
 ; Note: if using SA-1, for addresses in $7E0000-$7E1FFF you must change the bank to $40 ($400000-$401FFF).
 ;       Additionally, a lot of other addresses might be remapped to different locations (see SA-1 docs for more info).
-; Note: if using FastROM, using $000000-$001FFF instead of $7E0000-$7E1FFF will make the save/load process a bit faster.
 
 save:
     dl !ram_checkpoint    : dw 192
