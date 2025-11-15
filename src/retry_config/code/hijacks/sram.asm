@@ -41,7 +41,7 @@ base $0008|!dp
 base off
 
 ; Setup MVN and RTS in data_tranfer
-macro setup_mvn()
+macro setup_data_transfer()
     ; MVN = opcode $54
     lda #$54 : sta.b data_transfer_mvn
 
@@ -76,7 +76,7 @@ save_game:
     plb : plp
 
     ; Setup data transfer routine
-    %setup_mvn()
+    %setup_data_transfer()
 
     ; Write destination bank parameter in data transfer routine
     lda.b #!sram_bank : sta.b data_transfer_dst_bank
@@ -179,7 +179,7 @@ load_file:
     sep #$20
 
     ; Setup data transfer routine
-    %setup_mvn()
+    %setup_data_transfer()
 
     ; Write source bank parameter in data transfer routine
     lda.b #!sram_bank : sta.b data_transfer_src_bank
@@ -207,7 +207,7 @@ init_file:
     plb : plp
 
     ; Setup data transfer routine
-    %setup_mvn()
+    %setup_data_transfer()
 
     ; Write source bank parameter in data transfer routine
     lda.b #!sram_defaults_bank : sta.b data_transfer_src_bank
