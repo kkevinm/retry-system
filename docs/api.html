@@ -134,12 +134,18 @@
 	<br/>
 
 	<h3 id="get_sram_variable_address">Get SRAM variable address</h3>
-	<p>Routine to get the address in SRAM for a specific variable. By "variable" it's meant any of the RAM addresses that are saved to SRAM specified in the sram save table (except for those under <code>.global</code>). The returned address will be coherent with the current save file loaded when this routine is called (so, make sure to not call it before a save file is loaded!).</p>
+	<p>Routine to get the address in SRAM for a specific variable. By "variable" it's meant any of the RAM addresses that are saved to SRAM specified in the sram save table. If not searching for a variable under <code>.global</code>, the returned address will be coherent with the current save file loaded when this routine is called (so, make sure to not call it before a save file is loaded if not looking for a global variable).</p>
 	<p>This could be useful to read/write values in SRAM directly, for example if you need to update some SRAM value without the game being saved.</p>
-	<p>Note that if you call this on the title screen (for example, if you need to display something based on some value saved in the three files), you will need to set <code>$010A</code> to the value of the save file you want to check (<code>0</code> for save file 1, <code>1</code> for save file 2, <code>2</code> for save file 3) before calling this.</p>
+	<p>Note that if you call this on the title screen looking for a save file specific variable (for example, if you need to display something based on some value saved in the three files), you will need to set <code>$010A</code> to the value of the save file you want to check (<code>0</code> for save file 1, <code>1</code> for save file 2, <code>2</code> for save file 3) before calling this.</p>
 	<p><b>NOTE</b>: this will always return "variable not found" if <code>!sram_feature = 0</code>.</p>
 	<ul>
-		<li>Inputs: <code>N/A</code></li>
+		<li>Inputs: variable address to search for in ROM right after the JSL. This means the call should look like this:
+<pre>
+JSL retry_api_get_sram_variable_address
+dl &lt;variable address&gt;
+... <- your code will continue here after the JSL
+</pre>
+    	</li>
 		<li>Outputs:
 			<ul>
 				<li><code>Carry set = variable not found</code></li>

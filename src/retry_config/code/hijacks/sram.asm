@@ -88,7 +88,7 @@ save_global:
     lda.w #!save_table_size : sta $06
 
     ; $02 = starting sram address
-    lda.w #!sram_addr_global+4 : sta $02
+    jsr get_global_sram_addr : sta $02
 
     ; Save the global data
     ldx.w #!save_table_index_global
@@ -129,7 +129,7 @@ load_global:
     rep #$20
 
     ; $02 = starting sram address
-    lda.w #!sram_addr_global+4 : sta $02
+    jsr get_global_sram_addr : sta $02
 
     ; Load the global data
     ldx.w #!save_table_index_global
@@ -178,7 +178,7 @@ save_game:
     lda.b #!sram_bank : sta.b data_transfer_dst_bank
 
     ; $02 = starting sram address
-    jsr get_sram_addr : sta $02
+    jsr get_file_sram_addr : sta $02
 
     ; $06 = save table ending index to save
     lda.w #!save_table_size_local : sta $06
@@ -265,7 +265,7 @@ load_file:
     lda.b #!sram_bank : sta.b data_transfer_src_bank
 
     ; $02 = starting sram address
-    jsr get_sram_addr : sta $02
+    jsr get_file_sram_addr : sta $02
 
     ; Load the data from sram
     ldx #$0000
@@ -399,11 +399,9 @@ load_data:
     rts
 
 ;=====================================
-; get_sram_addr routine.
-;
-; Small routine to get the low and high byte of the destination address into $02.
+; get_file_sram_addr routine
 ;=====================================
-get_sram_addr:
+get_file_sram_addr:
     rep #$30
     lda $010A|!addr : and #$00FF : asl : tax
     lda.l .sram_addr,x
@@ -411,6 +409,13 @@ get_sram_addr:
 
 .sram_addr:
     dw !sram_addr,!sram_addr+!file_size,!sram_addr+(2*!file_size)
+
+;=====================================
+; get_global_sram_addr routine
+;=====================================
+get_global_sram_addr:
+    lda.w #!sram_addr_global+4
+    rts
 
 else
 
