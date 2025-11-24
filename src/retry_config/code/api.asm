@@ -18,7 +18,7 @@ respawn_in_level:
 
 ;================================================
 ; Routine to save the game, which will also save the addresses
-; defined in the sram_tables.asm file.
+; defined in the "sram_tables.asm" file (including those under ".global").
 ;
 ; Inputs: N/A
 ; Outputs: N/A
@@ -28,6 +28,32 @@ respawn_in_level:
 ;================================================
 save_game:
     jsr shared_save_game
+    rtl
+
+;================================================
+; Routine to save the global variables to SRAM, meaning just
+; the addresses found under ".global" in the "sram_tables.asm" file.
+; This can be useful if you need to update the global variables outside
+; of a save file (e.g. on the title screen) or if you want to save them
+; without saving the file specific addresses.
+;
+; Inputs: N/A
+; Outputs: N/A
+; Pre: N/A
+; Post: A clobbered, DB/X/Y/P preserved, $02-$0B clobbered
+; Example: JSL retry_api_save_global_variables
+;================================================
+save_global_variables:
+    ; Preserve DB, X, Y, P.
+    phb : phk : plb
+    phx : phy : php
+    
+    ; Call the actual routine
+    jsr sram_save_global
+    
+    ; Restore DBR, P, X and Y.
+    plp : ply : plx
+    plb
     rtl
 
 ;================================================
@@ -163,9 +189,10 @@ get_retry_type:
 ;================================================
 ; Routine to get the address in SRAM for a specific variable.
 ; By "variable" it's meant any of the RAM addresses that are saved to SRAM
-; specified in the sram save table. The returned address will be coherent
-; with the current save file loaded when this routine is called (so, make
-; sure to not call it before a save file is loaded!).
+; specified in the sram save table (except for those under ".global").
+; The returned address will be coherent with the current save file loaded
+; when this routine is called (so, make sure to not call it before a save
+; file is loaded!).
 ; This could be useful to read/write values in SRAM directly, for example
 ; if you need to update some SRAM value without the game being saved.
 ; Note: this will always return "variable not found" if !sram_feature = 0.
