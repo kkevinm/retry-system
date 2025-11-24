@@ -44,6 +44,7 @@ save_game:
 ; Example: JSL retry_api_save_global_variables
 ;================================================
 save_global_variables:
+if !sram_feature
     ; Preserve DB, X, Y, P.
     phb : phk : plb
     phx : phy : php
@@ -54,6 +55,7 @@ save_global_variables:
     ; Restore DBR, P, X and Y.
     plp : ply : plx
     plb
+endif
     rtl
 
 ;================================================

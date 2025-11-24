@@ -105,16 +105,14 @@ save_global:
 ; load_global routine
 ;=====================================
 load_global:
-    ; Preserve DB, X, Y, P.
+    ; Set DBR.
     phb : phk : plb
-    phx : phy : php
 
     ; Setup data transfer routine
-    sep #$30
     %setup_data_transfer()
-    rep #$30
 
     ; Check if global save is used
+    rep #$30
     lda.w #!save_table_size_global : beq .return
 
     ; $06 = save table ending index to init/load
@@ -156,10 +154,10 @@ load_global:
     jsr save_global
 
 .return:
-    ; Restore DBR, P, X and Y.
-    plp : ply : plx
+    ; Restore DBR and P.
+    sep #$30
     plb
-    rtl
+    rts
 
 ;=====================================
 ; save_game routine
@@ -415,12 +413,6 @@ get_sram_addr:
     dw !sram_addr,!sram_addr+!file_size,!sram_addr+(2*!file_size)
 
 else
-
-save_global:
-    rts
-
-load_global:
-    rtl
 
 ; Restore code, in case settings are changed.
 if not(!sram_plus) && not(!bwram_plus)
