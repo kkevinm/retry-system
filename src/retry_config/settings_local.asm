@@ -7,6 +7,10 @@
 ;     1 = midway in the sublevel will lead to the sublevel's midway entrance
 ;     2 = any main/midway/secondary entrance to this sublevel will trigger a checkpoint
 ;     3 = both effects of 1 and 2
+;     4 = any main/midway entrance to this sublevel will trigger a checkpoint
+;     5 = both effects of 1 and 4
+;     6 = any secondary entrance to this sublevel will trigger a checkpoint
+;     7 = both effects of 1 and 6
 ;
 ;   %retry(level, value): configure the Retry type in the level, depending on value:
 ;     0 = follow the global setting (!default_prompt_type)

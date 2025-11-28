@@ -31,8 +31,8 @@ function _bitwise_table_value(level) = (1<<(7-((level)&7)))
 
 macro checkpoint(level, val)
     %_check_level(<level>, "checkpoint")
-    if <val> < 0 || <val> > 3
-        error "Error: %checkpoint value needs to be between 0 and 3!"
+    if <val> < 0 || <val> > 7
+        error "Error: %checkpoint value needs to be between 0 and 7!"
     endif
 
     !__idx #= <level>
