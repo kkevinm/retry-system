@@ -11,10 +11,18 @@
 
 <body>
 <h1>Frequently Asked Questions</h1>
-<br />
+<br/>
 
 <h4>Q: Can I insert this in a ROM where I've already inserted worldpeace's Retry patch?</h4>
-<p>A: No, doing so will result in an error when running UberASM Tool. First, you need to remove the original patch: either try to use the Unpatcher tool (at your own risk) or port your hack over to a new ROM.</p>
+<p>A: No, doing so will result in an error when running UberASM Tool. First, you need to remove the original patch: either try to use the <a href="https://www.smwcentral.net/?p=section&a=details&id=17169">Unpatcher tool</a> (at your own risk) or port your hack over to a new ROM.</p>
+<hr>
+
+<h4>Q: After inserting Retry, I get a black screen when dying and retrying in a level! What's going on?</h4>
+<p>A: The first time you apply Retry to your hack, you need to start from a fresh save file (don't load a save file or save state that you created before inserting Retry).</p>
+<hr>
+
+<h4>Q: After inserting Retry, when I enter a level from the Overworld I get sent to the bonus game! What's going on?</h4>
+<p>A: See previous answer.</p>
 <hr>
 
 <h4>Q: I noticed that you don't lose lives when dying/retrying a level. Is it possible to change that?</h4>
@@ -52,8 +60,7 @@
 <h4>Q: Can I change where the prompt is shown on the screen?</h4>
 <p>A: Yes. Look at <code>!text_x_pos</code> and <code>!text_y_pos</code> in <u class="dir">retry_config/settings_global.asm</u>. For example, using <code>!text_x_pos = $08</code> and <code>!text_y_pos = $D0</code> will place it on the lower left corner of the screen.</p>
 <p>Additionally, you can also change it at runtime by writing to the <code>!ram_prompt_x_pos</code> and <code>!ram_prompt_y_pos</code> addresses (see <a href="./ram_map.html">RAM Map</a> for more info).
-<p>Either way, if you want to change it you should disable the Retry box (either by setting <code>!no_prompt_box = 1</code> or by writing to <code>!ram_disable_box</code> at runtime) as its position can't be changed easily.
-</p>
+<p>Either way, if you want to change it you should disable the Retry box (either by setting <code>!no_prompt_box = 1</code> or by writing to <code>!ram_disable_box</code> at runtime) as its position can't be changed easily.</p>
 <hr>
 
 <br/><center><a href="./index.html">Return to main page</a></center>
