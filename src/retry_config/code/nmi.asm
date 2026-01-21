@@ -9,6 +9,11 @@
 ;=====================================
 
 level:
+    ; Don't run on lag frames.
+    lda $10 : beq .run
+    rtl
+.run:
+
 if !sprite_status_bar
     ; Update the sprite status bar graphics.
     jsr sprite_status_bar_nmi
@@ -35,14 +40,14 @@ else
 +   tay
     ldx.w .index,y
 
-    ; Push GFX address depending on the box being enabled or not.
-    ; Additionally the size to upload for the cursor is pushed as well.
+    ; Save GFX address depending on the box being enabled or not.
+    ; Additionally the size to upload for the cursor is saved as well.
     lda !ram_disable_box : beq +
     lda #$02
 +   tay
     rep #$20
-    lda.w .cursor_size,y : pha
-    lda.w .gfx_addr,y : pha
+    lda.w .cursor_size,y : sta $00
+    lda.w .gfx_addr,y : sta $02
 
     ; These values are the same for all uploads, so put them out of the loop.
     ldy.b #$80 : sty $2115
@@ -51,12 +56,12 @@ else
     ldy.b #1<<!prompt_channel
 .loop:
     lda.w .dest,x : sta $2116
-    lda.w .src,x : clc : adc $01,s : sta.w prompt_dma($4302)
+    lda.w .src,x : clc : adc $02 : sta.w prompt_dma($4302)
     ; All uploads are 8x8 except the cursor,
     ; which is 16x8 only when the prompt box is enabled.
     lda.w #gfx_size(1)
     cpx #$00 : bne +
-    lda $03,s
+    lda $00
 +   sta.w prompt_dma($4305)
     sty $420B
     dex #2 : bpl .loop
@@ -69,8 +74,6 @@ else
     lda.w #retry_gfx_box+gfx_size(7) : sta.w prompt_dma($4302)
     sty $420B
 +
-    ; Realign the stack.
-    pla : pla
     plb
 
 .return:

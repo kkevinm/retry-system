@@ -63,7 +63,7 @@ nmi:
 
 .timer:
     ; Compute the VRAM address for later.
-    %calc_vram() : pha
+    %calc_vram() : sta $00
 
     ; Only upload if the timer changed, unless Mario died
     ; (ensuring the timer updates when dying for a timeout).
@@ -71,7 +71,6 @@ nmi:
     lda $71 : cmp #$09 : beq +
     lda $0F30|!addr : cmp.l !rom_timer_ticks : beq +
     rep #$20
-    pla
     jmp .no_timer
 +   
     ; Setup the constant DMA parameters.
@@ -84,7 +83,7 @@ nmi:
     ; Upload the first digit, unless it's 0.
     lda $0F31|!addr : and #$00FF : beq +
     %store_digit_addr()
-    lda $01,s : adc #$0010 : sta $2116
+    lda $00 : adc #$0010 : sta $2116
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
@@ -94,14 +93,14 @@ nmi:
     ; Upload the second digit, unless it's 0.
     lda $0F32|!addr : and #$00FF : beq +
 ++  %store_digit_addr()
-    lda $01,s : adc #$0100 : sta $2116
+    lda $00 : adc #$0100 : sta $2116
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 +
     ; Upload the third digit.
     lda $0F33|!addr : and #$00FF
     %store_digit_addr()
-    pla : adc #$0110 : sta $2116
+    lda $00 : adc #$0110 : sta $2116
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
@@ -111,12 +110,12 @@ nmi:
 
 .coins:
     ; Compute the VRAM address for later.
-    %calc_vram() : pha
+    %calc_vram() : sta $00
 
     ; Only upload if the coin counter changed.
     sep #$20
     lda $0DBF|!addr : cmp !ram_coin_backup : bne +
-    rep #$20 : pla
+    rep #$20
     bra .no_coins
 +   
     ; Update the coin counter backup.
@@ -136,13 +135,13 @@ nmi:
     ; Upload the first digit (unless it's 0).
     lda $4214 : beq +
     %store_digit_addr()
-    lda $01,s : adc #$0100 : sta $2116
+    lda $00 : adc #$0100 : sta $2116
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 +   
     ; Upload the second digit.
     lda $4216 : %store_digit_addr()
-    pla : adc #$0110 : sta $2116
+    lda $00 : adc #$0110 : sta $2116
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
@@ -152,12 +151,12 @@ nmi:
 
 .lives:
     ; Compute the VRAM address for later.
-    %calc_vram() : pha
+    %calc_vram() : sta $00
 
     ; Only upload if the lives counter changed.
     sep #$20
     lda $0DBE|!addr : cmp !ram_lives_backup : bne +
-    rep #$20 : pla
+    rep #$20
     bra .no_lives
 +   
     ; Update the lives counter backup.
@@ -177,13 +176,13 @@ nmi:
     ; Upload the first digit (unless it's 0).
     lda $4214 : beq +
     %store_digit_addr()
-    lda $01,s : adc #$0100 : sta $2116
+    lda $00 : adc #$0100 : sta $2116
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 +   
     ; Upload the second digit.
     lda $4216 : %store_digit_addr()
-    pla : adc #$0110 : sta $2116
+    lda $00 : adc #$0110 : sta $2116
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
@@ -193,13 +192,13 @@ nmi:
 
 .bonus_stars:
     ; Compute the VRAM address for later.
-    %calc_vram() : pha
+    %calc_vram() : sta $00
 
     ; Only upload if the bonus stars changed.
     sep #$20
     ldx $0DB3|!addr
     lda $0F48|!addr,x : cmp !ram_bonus_stars_backup : bne +
-    rep #$20 : pla
+    rep #$20
     bra .no_bonus_stars
 +   
     ; Update the bonus stars backup.
@@ -219,13 +218,13 @@ nmi:
     ; Upload the first digit (unless it's 0).
     lda $4214 : beq +
     %store_digit_addr()
-    lda $01,s : adc #$0100 : sta $2116
+    lda $00 : adc #$0100 : sta $2116
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 +   
     ; Upload the second digit.
     lda $4216 : %store_digit_addr()
-    pla : adc #$0110 : sta $2116
+    lda $00 : adc #$0110 : sta $2116
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
@@ -271,13 +270,13 @@ if !8x8_item_box_tile
     sty $420B
 else
     ; Upload the first row.
-    %calc_vram() : sta $2116 : pha
+    %calc_vram() : sta $00 : sta $2116
     lda.w #retry_gfx_item_box : sta.w prompt_dma($4302)
     lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
 
     ; Upload the second row.
-    pla : adc #$0100 : sta $2116
+    lda $00 : adc #$0100 : sta $2116
     lda.w #retry_gfx_item_box+$40 : sta.w prompt_dma($4302)
     lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
@@ -353,14 +352,16 @@ endif
 
 main:
     ; Don't draw if the game is paused.
-    lda $13D4|!addr : beq +
+    lda $13D4|!addr : beq .not_paused
     rts
-+
+
+.not_paused:
     ; Don't draw if on not in a level.
     lda $0100|!addr : cmp #$0B : bcc +
-    cmp #$15 : bcc ++
+    cmp #$15 : bcc .run
 +   rts
-++
+
+.run:
     phb : phk : plb
     rep #$30
     ldx #$0000
