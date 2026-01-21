@@ -263,11 +263,9 @@ endif
 
     ; Remove Yoshi, but only if not set to go to the Yoshi Wings level.
 ...remove_yoshi:
-    stz $0DC1|!addr
     stz $187A|!addr
     lda #$03 : sta $1DFA|!addr
 +
-
     ; Mark as sublevel so we skip the "Mario Start!" message.
     ; (don't do "inc $141A" so we avoid the 256 entrance glitch)
     lda #$01 : sta $141A|!addr
