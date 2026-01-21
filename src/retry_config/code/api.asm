@@ -3,9 +3,9 @@
 ;================================================
 
 ;================================================
-; Routine to respawn in the level (at the current checkpoint),
-; effectively the same as dying and hitting Retry, or dying with
-; instant Retry enabled.
+; Routine to respawn in the level (at the current checkpoint), effectively the
+; same as dying and hitting Retry, or dying with instant Retry enabled (but
+; without counting as an actual death, so for example without losing lives).
 ;
 ; Inputs: N/A
 ; Outputs: N/A
@@ -14,7 +14,9 @@
 ; Example: JSL retry_api_respawn_in_level
 ;================================================
 respawn_in_level:
-    jml in_level_main_dying_respawn
+    jsl in_level_main_dying_respawn
+    jsr in_level_death_routine_no_game_over
+    rtl
 
 ;================================================
 ; Routine to save the game, which will also save the addresses

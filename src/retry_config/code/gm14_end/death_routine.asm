@@ -18,10 +18,9 @@ if not(!infinite_lives)
 
 ..return:
     rts
-
-.no_game_over:
 endif
 
+.no_game_over:
     ; If the reload level flag is set...
     lda !ram_is_dying : bit #$40 : beq .no_reload
 
