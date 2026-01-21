@@ -15,20 +15,37 @@ endmacro
 ;================================================
 ; Macro to JSL to a routine that ends in RTS.
 ;================================================
-macro jsl_to_rts(routine, rtl)
+macro jsl_to_rts(routine)
+    ; Automatically find the RTL address
+    !__bank #= (<routine>>>16)&$7F
+    !__rtl #= 0
+    
+    if !__bank > $0F
+        error "jsl_to_rts cannot be called with a routine in freespace"
+    elseif !__bank == $00
+        !__rtl #= $0084CF
+    elseif !__bank == $05
+        !__rtl #= $058125
+    else
+        error "Add RTL address for bank $0", hex(!__bank)
+    endif
+
     phk : pea.w (?+)-1
-    pea.w <rtl>-1
+    pea.w !__rtl-1
     jml <routine>|!bank
 ?+
+    
+    undef "__bank"
+    undef "__rtl"
 endmacro
 
 ;================================================
 ; Macro to JSL to a routine that ends in RTS.
 ; Also sets up the DBR to the routine's bank.
 ;================================================
-macro jsl_to_rts_db(routine, rtl)
+macro jsl_to_rts_db(routine)
     %set_dbr(<routine>)
-    %jsl_to_rts(<routine>,<rtl>)
+    %jsl_to_rts(<routine>)
     plb
 endmacro
 
@@ -352,7 +369,7 @@ get_intro_sublevel:
 ; Useful if you need to draw sprites during fadein.
 ;================================================
 update_0400:
-    %jsl_to_rts_db($008494,$0084CF)
+    %jsl_to_rts_db($008494)
     rts
 
 ;================================================
@@ -396,4 +413,26 @@ is_destination_a_checkpoint:
 
 .no:
     clc
+    rts
+
+;===============================================================================
+; Routine to set the Retry checkpoints accordingly with the initial OW flags
+; (i.e. the "Midway point obtained" flag)
+;===============================================================================
+set_checkpoints_from_initial_ow_flags:
+    php
+    sep #$30
+    ldy #$5F
+.loop:
+    ; Skip if the "Midway point obtained" flag is not set
+    lda $1F49|!addr,y : and #$40 : beq ..next
+    ; X = 2*Y (for checkpoint table)
+    tya : asl : tax
+    ; Skip if the checkpoint is for a secondary exit (just to be sure)
+    lda !ram_checkpoint+1,x : bit #$02 : bne ..next
+    ; Set the midway bit in the checkpoint
+    ora #$08 : sta !ram_checkpoint+1,x
+..next:
+    dey : bpl .loop
+    plp
     rts

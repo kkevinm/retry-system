@@ -14,7 +14,7 @@ if not(!infinite_lives)
 
 .game_over:
     ; If yes, go to game over
-    %jsl_to_rts_db($00D0DD,$0084CF)
+    %jsl_to_rts_db($00D0DD)
 
 ..return:
     rts

@@ -28,6 +28,15 @@ init:
     
     sep #$30
 
+    ; If the SRAM feature is not installed, align checkpoints here
+    ; (no save file init hijack).
+if not(!sram_feature)
+    ; Load the initial OW flags from ROM into $1F49
+    %jsl_to_rts_db($009F06)
+    ; Align checkpoint table with the initial OW flags
+    jsr shared_set_checkpoints_from_initial_ow_flags
+endif
+
     ; Initialize "No exit" flag.
     lda.b #!no_exit_option : sta.w !ram_disable_exit
 

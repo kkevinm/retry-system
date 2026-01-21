@@ -311,6 +311,9 @@ init_file:
     jsr shared_get_intro_sublevel
     sta !ram_checkpoint
 
+    ; Align checkpoint table with the initial OW flags
+    jsr shared_set_checkpoints_from_initial_ow_flags
+
     ; Keep 16 bit X/Y for the original code.
     sep #$20
 

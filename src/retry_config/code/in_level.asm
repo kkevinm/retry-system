@@ -75,7 +75,7 @@ endif
 ..start_select_exit:
     ; Call the Start+Select routine.
     ; This should make this compatible with custom resources like Start+Select Advanced, AMK 1.0.8 Start+Select SFX, etc.
-    %jsl_to_rts($00A269,$0084CF)
+    %jsl_to_rts($00A269)
     rtl
 
 .dying:
