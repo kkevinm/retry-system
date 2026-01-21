@@ -8,7 +8,7 @@ endmacro
 
 ; Store the ROM address for the digit in A to the DMA source register.
 macro store_digit_addr()
-    xba : lsr #3 : adc.w #retry_gfx_digits : sta.w prompt_dma($4302)
+    xba : lsr #3 : adc.w #gfx_digits : sta.w prompt_dma($4302)
 endmacro
 
 macro _build_status_bar_value(name)
@@ -77,7 +77,7 @@ nmi:
     rep #$20
     ldy #$80 : sty $2115
     lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #retry_gfx>>16 : sty.w prompt_dma($4304)
+    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
     ldy #$04
 
     ; Upload the first digit, unless it's 0.
@@ -129,7 +129,7 @@ nmi:
     rep #$20
     ldy #$80 : sty $2115
     lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #retry_gfx>>16 : sty.w prompt_dma($4304)
+    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
     ldy #$04
 
     ; Upload the first digit (unless it's 0).
@@ -170,7 +170,7 @@ nmi:
     rep #$20
     ldy #$80 : sty $2115
     lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #retry_gfx>>16 : sty.w prompt_dma($4304)
+    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
     ldy #$04
 
     ; Upload the first digit (unless it's 0).
@@ -212,7 +212,7 @@ nmi:
     rep #$20
     ldy #$80 : sty $2115
     lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #retry_gfx>>16 : sty.w prompt_dma($4304)
+    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
     ldy #$04
 
     ; Upload the first digit (unless it's 0).
@@ -255,7 +255,7 @@ init:
     rep #$20
     ldy #$80 : sty $2115
     lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #retry_gfx>>16 : sty.w prompt_dma($4304)
+    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
     ldy #$04
 
     ; Check if we need to upload the item box tile.
@@ -265,19 +265,19 @@ init:
 if !8x8_item_box_tile
     ; Upload the item box tile.
     %calc_vram() : sta $2116
-    lda.w #retry_gfx_item_box : sta.w prompt_dma($4302)
+    lda.w #gfx_item_box : sta.w prompt_dma($4302)
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 else
     ; Upload the first row.
     %calc_vram() : sta $00 : sta $2116
-    lda.w #retry_gfx_item_box : sta.w prompt_dma($4302)
+    lda.w #gfx_item_box : sta.w prompt_dma($4302)
     lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
 
     ; Upload the second row.
     lda $00 : adc #$0100 : sta $2116
-    lda.w #retry_gfx_item_box+$40 : sta.w prompt_dma($4302)
+    lda.w #gfx_item_box+$40 : sta.w prompt_dma($4302)
     lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
 endif
@@ -289,7 +289,7 @@ endif
 ..timer:
     ; Upload the clock tile.
     %calc_vram() : sta $2116
-    lda.w #retry_gfx_timer : sta.w prompt_dma($4302)
+    lda.w #gfx_timer : sta.w prompt_dma($4302)
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
@@ -300,7 +300,7 @@ endif
 ..coins:
     ; Upload the coin tiles.
     %calc_vram() : sta $2116
-    lda.w #retry_gfx_coins : sta.w prompt_dma($4302)
+    lda.w #gfx_coins : sta.w prompt_dma($4302)
     lda.w #gfx_size(2) : sta.w prompt_dma($4305)
     sty $420B
 
@@ -311,9 +311,9 @@ endif
 ..lives:
     ; Upload the lives tile based on the current player.
     %calc_vram() : sta $2116
-    lda.w #retry_gfx_lives
+    lda.w #gfx_lives
     ldx $0DB3|!addr : beq +
-    lda.w #retry_gfx_lives+gfx_size(1)
+    lda.w #gfx_lives+gfx_size(1)
 +   sta.w prompt_dma($4302)
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
@@ -325,7 +325,7 @@ endif
 ..bonus_stars:
     ; Upload the bonus stars tile.
     %calc_vram() : sta $2116
-    lda.w #retry_gfx_bonus_stars : sta.w prompt_dma($4302)
+    lda.w #gfx_bonus_stars : sta.w prompt_dma($4302)
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
 
@@ -341,7 +341,7 @@ if !draw_retry_indicator
     ; Upload the indicator tile.
     rep #$20
     lda.w #vram_addr(!retry_indicator_tile) : sta $2116
-    lda.w #retry_gfx_indicator : sta.w prompt_dma($4302)
+    lda.w #gfx_indicator : sta.w prompt_dma($4302)
     lda.w #gfx_size(1) : sta.w prompt_dma($4305)
     sty $420B
     sep #$20

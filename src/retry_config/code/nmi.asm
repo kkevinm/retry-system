@@ -52,7 +52,7 @@ else
     ; These values are the same for all uploads, so put them out of the loop.
     ldy.b #$80 : sty $2115
     lda.w #$1801 : sta.w prompt_dma($4300)
-    ldy.b #retry_gfx>>16 : sty.w prompt_dma($4304)
+    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
     ldy.b #1<<!prompt_channel
 .loop:
     lda.w .dest,x : sta $2116
@@ -71,7 +71,7 @@ else
     cmp.w #gfx_size(1) : beq +
     sta.w prompt_dma($4305)
     lda.w #vram_addr(!tile_blk) : sta $2116
-    lda.w #retry_gfx_box+gfx_size(7) : sta.w prompt_dma($4302)
+    lda.w #gfx_letters_box+gfx_size(7) : sta.w prompt_dma($4302)
     sty $420B
 +
     plb
@@ -82,8 +82,8 @@ else
 
 ; Base address of the letters GFX when the prompt box is enabled/disabled.
 .gfx_addr:
-    dw retry_gfx_box
-    dw retry_gfx_no_box
+    dw gfx_letters_box
+    dw gfx_letters_no_box
 
 ; Size to upload for the cursor when the prompt box is enabled/disabled
 .cursor_size:

@@ -1,33 +1,30 @@
 namespace nested off
 
-; Macros to load files easily.
+; Macros to load files and namespace them easily.
 macro incsrc(folder,file)
     namespace <file>
         incsrc "../retry_config/<folder>/<file>.asm"
     namespace off
 endmacro
 
-macro incbin(folder,file)
-    incbin "../retry_config/<folder>/<file>.bin"
-endmacro
-
-;=====================================
-; Load shared settings and defines.
-;=====================================
+;===============================================================================
+; Load shared settings, defines and resources.
+;===============================================================================
     %incsrc(code/include,defines)
     %incsrc(code/include,misc)
     %incsrc(code/include,rom)
     %incsrc("",ram)
     %incsrc("",settings_global)
+    %incsrc(code/include,gfx)
     
-;=====================================
+;===============================================================================
 ; Check incompatibilities.
-;=====================================
+;===============================================================================
     %incsrc(code,check_incompatibilities)
 
-;=====================================
-; Load the Retry tables.
-;=====================================
+;===============================================================================
+; Load the user tables.
+;===============================================================================
 if !use_legacy_tables
     %incsrc(legacy,tables)
 else
@@ -38,40 +35,9 @@ if !sram_feature
     %incsrc("",sram_tables)
 endif
 
-;=====================================
-; Load the letters gfx.
-;=====================================
-retry_gfx:
-.box:
-    %incbin(gfx,letters1)
-.no_box:
-    %incbin(gfx,letters2)
-if !sprite_status_bar
-.digits:
-    %incbin(gfx,digits)
-.coins:
-    %incbin(gfx,coins)
-.timer:
-    %incbin(gfx,timer)
-.lives:
-    %incbin(gfx,lives)
-.bonus_stars:
-    %incbin(gfx,bonus_stars)
-.item_box:
-if !8x8_item_box_tile
-    %incbin(gfx,item_box_8x8)
-else
-    %incbin(gfx,item_box_16x16)
-endif
-if !draw_retry_indicator
-.indicator:
-    %incbin(gfx,indicator)
-endif
-endif
-
-;=====================================
-; Load the ASM files.
-;=====================================
+;===============================================================================
+; Load the code.
+;===============================================================================
     %incsrc(code,shared)
     %incsrc("",extra)
     %incsrc(code,startup)
@@ -90,9 +56,9 @@ endif
     %incsrc(code,sprite_status_bar)
     %incsrc(code,api)
 
-;=====================================
+;===============================================================================
 ; Load the hijacks.
-;=====================================
+;===============================================================================
     %incsrc(code/hijacks,hex_edits)
     %incsrc(code/hijacks,multiple_midways)
     %incsrc(code/hijacks,vanilla_midway)
