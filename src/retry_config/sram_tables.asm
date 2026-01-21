@@ -36,7 +36,9 @@ save:
     
 
 ; Here you specify the default values of the addresses you want to save, for when a new save file is started.
-; You can do "db $XX,$XX,..." for 1 byte values, "dw $XXXX,$XXXX,..." for 2 bytes values and "dl $XXXXXX,$XXXXXX,..." for 3 bytes values.
+; You can do "db $XX,$XX,..." for 1 byte values, "dw $XXXX,$XXXX,..." for 2 bytes values and "dl $XXXXXX,$XXXXXX,..." for 3 bytes values. If you need to insert a lot of repeating values in a row, you can use
+; %dbn($XX,n) for 1 byte values, %dwn($XXXX,n) for 2 byte values or %dln($XXXXXX,n) for 3 byte values, where n is
+; the amount of times the value is repeated (max 242).
 ; The amount of values of each entry should correspond to the dw $YYYY value in the save table
 ; (for example, the checkpoint values are 192, and the death counter values are 5).
 ; If you have some addresses after ".not_game_over" and ".global" in the save table, put their default values after
@@ -63,7 +65,7 @@ sram_defaults:
 
 .not_game_over:
     ; Initial death counter value (don't edit this!).
-    db $00,$00,$00,$00,$00
+    %dbn($00,5)
     ; Feel free to add your own stuff here.
     
 

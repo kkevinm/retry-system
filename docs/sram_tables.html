@@ -64,7 +64,7 @@ sram_defaults:
 
 .not_game_over:
     ; Initial death counter value (don't edit this!).
-    db $00,$00,$00,$00,$00
+    %dbn($00,5)
 
     ; Feel free to add your own stuff here.
 
@@ -74,6 +74,7 @@ sram_defaults:
 </pre>
 
 <p>You can do <code>db $XX,$XX,...</code> for 1 byte values, <code>dw $XXXX,$XXXX,...</code> for 2 bytes values and <code>dl $XXXXXX,$XXXXXX,...</code> for 3 bytes values.</p>
+<p>If you need to insert a lot of repeating values in a row, you can use <code>%dbn($XX,n)</code> for 1 byte values, <code>%dwn($XXXX,n)</code> for 2 byte values or <code>%dln($XXXXXX,n)</code> for 3 byte values, where <code>n</code> is the amount of times the value is repeated (max 242).</p>
 <p>The amount of values of each entry should correspond to the <code>dw $YYYY</code> value in the save table (for example, the checkpoint values are 192, and the death counter values are 5).</p>
 <p>Remember, if you have some addresses after <code>.not_game_over</code> and <code>.global</code> in the <code>save:</code> table, put their default values after <code>.not_game_over</code> and <code>.global</code> here also, in the same order.</p>
 <p>Regarding the <code>.global</code> values, they will be initialized on game startup rather than on a new save file.</p>
