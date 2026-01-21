@@ -1,25 +1,25 @@
-;================================================
+;===============================================================================
 ; Shared routines and macros.
-;================================================
+;===============================================================================
 
-;================================================
+;===============================================================================
 ; Macro to push the current code's DB to the stack
 ; and set the DBR to label's bank.
 ; Note: remember to PLB when finished!
-;================================================
+;===============================================================================
 macro set_dbr(label)
 ?-  pea.w (<label>>>16)|((?-)>>16<<8)
     plb
 endmacro
 
-;================================================
+;===============================================================================
 ; Macro to JSL to a routine that ends in RTS.
-;================================================
+;===============================================================================
 macro jsl_to_rts(routine)
     ; Automatically find the RTL address
     !__bank #= (<routine>>>16)&$7F
     !__rtl #= 0
-    
+
     if !__bank > $0F
         error "jsl_to_rts cannot be called with a routine in freespace"
     elseif !__bank == $00
@@ -39,20 +39,20 @@ macro jsl_to_rts(routine)
     undef "__rtl"
 endmacro
 
-;================================================
+;===============================================================================
 ; Macro to JSL to a routine that ends in RTS.
 ; Also sets up the DBR to the routine's bank.
-;================================================
+;===============================================================================
 macro jsl_to_rts_db(routine)
     %set_dbr(<routine>)
     %jsl_to_rts(<routine>)
     plb
 endmacro
 
-;================================================
+;===============================================================================
 ; Macro to load the current level number ($13BF).
 ; Calls the appropriate routine if dynamic OW levels are used.
-;================================================
+;===============================================================================
 macro lda_13BF()
 if !dynamic_ow_levels
     jsr shared_get_new_13BF
@@ -61,31 +61,31 @@ else
 endif
 endmacro
 
-;================================================
+;===============================================================================
 ; Functions for (H)DMA address conversion
-;================================================
+;===============================================================================
 function dma(addr,ch)     = ((addr)+((ch)*$10))
 function window_dma(addr) = dma(addr,!window_channel)
 function prompt_dma(addr) = dma(addr,!prompt_channel)
 
-;================================================
+;===============================================================================
 ; Utility functions for tilemap and stripe image management.
-;================================================
+;===============================================================================
 function xb(x)                = (((x)&$FF)<<8)|(((x)>>8)&$FF)
 function l3_prop(pal,page)    = ($20|(((pal)&7)<<2)|((page)&1))
 function l3_tile(tile,pal)    = ((tile)|((pal)<<8))
 function str_header1(x,y)     = xb($5000|((y)<<5)|(x))
 function str_header2(len,rle) = xb((((rle)&1)<<14)|(len))
 
-;================================================
+;===============================================================================
 ; Utility functions for VRAM and graphics.
-;================================================
+;===============================================================================
 function vram_addr(offset) = (!sprite_vram+(offset*$10))
 function gfx_size(num)     = (num*$20)
 
-;================================================
+;===============================================================================
 ; Routine to get the prompt type for the current level.
-;================================================
+;===============================================================================
 get_prompt_type:
     ; If in title screen, override the normal settings.
     lda $0100|!addr : cmp #$07 : bne .level
@@ -114,9 +114,9 @@ endif
 .not_default:
     rts
 
-;================================================
+;===============================================================================
 ; Get translevel number the player is standing on the overworld.
-;================================================
+;===============================================================================
 get_translevel:
     lda $0109|!addr : beq .no_intro
     lda #$00 : sta $13BF|!addr
@@ -141,10 +141,10 @@ else
     rts
 endif
 
-;================================================
-; Get correct $13BF value for current level
-; (for patches that change level number dynamically).
-;================================================
+;===============================================================================
+; Get correct $13BF value for current level (for patches that change level
+; number dynamically).
+;===============================================================================
 if !dynamic_ow_levels
 get_new_13BF:
     lda $0109|!addr : beq .no_intro
@@ -162,9 +162,10 @@ get_new_13BF:
 +   rts
 endif
 
-;================================================
-; Routine to save the current level's custom checkpoint value and set the midway flag.
-;================================================
+;===============================================================================
+; Routine to save the current level's custom checkpoint value and set the midway
+; flag.
+;===============================================================================
 hard_save:
     ; Filter title screen, etc.
     lda $0109|!addr : beq .no_intro
@@ -191,10 +192,10 @@ else
     rts
 endif
 
-;================================================
+;===============================================================================
 ; Routine to remove the current level's checkpoint.
 ; Note: $13CE isn't cleared because it's also used in the OW loading routine.
-;================================================
+;===============================================================================
 reset_checkpoint:
     phx
     phy
@@ -211,9 +212,9 @@ reset_checkpoint:
     plx
     rts
 
-;================================================
+;===============================================================================
 ; Routine to save the game.
-;================================================
+;===============================================================================
 save_game:
     phx
     phy
@@ -235,9 +236,9 @@ save_game:
     plx
     rts
 
-;================================================
+;===============================================================================
 ; Routines to reset and save the dcsave buffers.
-;================================================
+;===============================================================================
 dcsave:
 .init:
     ; Return if dcsave isn't installed.
@@ -279,12 +280,11 @@ endif
 .jml:
     jml [$000D|!dp]
 
-;================================================
-; Routine to get the checkpoint value for the current sublevel.
-; Returns the value in A (8 bit).
-; You should use cmp #$00 to check for 0 after calling this.
+;===============================================================================
+; Routine to get the checkpoint value for the current sublevel. Returns the
+; value in A (8 bit). You should use cmp #$00 to check for 0 after calling this.
 ; X,Y and P are preserved.
-;================================================
+;===============================================================================
 get_checkpoint_value:
     phx
     php
@@ -296,12 +296,11 @@ get_checkpoint_value:
     plx
     rts
 
-;================================================
-; Routine to get the effect value for the current sublevel.
-; Returns the value in A (8 bit).
-; You should use cmp #$00 to check for 0 after calling this.
+;===============================================================================
+; Routine to get the effect value for the current sublevel. Returns the value in
+; A (8 bit). You should use cmp #$00 to check for 0 after calling this.
 ; X,Y and P are preserved.
-;================================================
+;===============================================================================
 get_effect_value:
     phx
     php
@@ -314,11 +313,11 @@ get_effect_value:
     plx
     rts
 
-;================================================
-; Routine to get the index and mask to a bitwise sublevel table.
-; Returns the index to the table in X, and the mask in A (8 bit).
+;===============================================================================
+; Routine to get the index and mask to a bitwise sublevel table. Returns the
+; index to the table in X, and the mask in A (8 bit).
 ; A/X/Y should be in 8-bit mode when calling this. Y is preserved.
-;================================================
+;===============================================================================
 get_bitwise_mask:
     lda $010B|!addr : and #$07 : tax
     lda.l .mask_table,x : pha
@@ -331,10 +330,10 @@ get_bitwise_mask:
 .mask_table:
     db $80,$40,$20,$10,$08,$04,$02,$01
 
-;================================================
+;===============================================================================
 ; Routine to get current screen number in X.
 ; If Lunar Magic 3.0+ is used, it may overwrite Y.
-;================================================
+;===============================================================================
 get_screen_number:
     lda.l !rom_lm_version : cmp #$33 : bcc .no_lm3
     lda.l !rom_lm_get_screen_routine : cmp #$FF : beq .no_lm3
@@ -348,10 +347,10 @@ get_screen_number:
 .return:
     rts
 
-;================================================
+;===============================================================================
 ; Routine that returns the intro sublevel in A.
 ; Output: A 16 bit, intro sublevel in A.
-;================================================
+;===============================================================================
 get_intro_sublevel:
     rep #$20
     lda.l !rom_initial_submap : and #$00FF : beq .normal
@@ -363,21 +362,20 @@ get_intro_sublevel:
     lda.w #!intro_level
     rts
 
-;================================================
-; Routine that updates the OAM table at $0400 using
-; the decompressed mirror at $0420.
-; Useful if you need to draw sprites during fadein.
-;================================================
+;===============================================================================
+; Routine that updates the OAM table at $0400 using the decompressed mirror at
+; $0420. Useful if you need to draw sprites during fadein.
+;===============================================================================
 update_0400:
     %jsl_to_rts_db($008494)
     rts
 
-;================================================
-; Routine to check if a level entrance destination would
-; trigger a room checkpoint in the current sublevel.
+;===============================================================================
+; Routine to check if a level entrance destination would trigger a room
+; checkpoint in the current sublevel.
 ; Input: A = entrance destination value high byte
 ; Output: Carry = Set (Yes) / Reset (No)
-;================================================
+;===============================================================================
 is_destination_a_checkpoint:
     ; Save A for later
     xba
