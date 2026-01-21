@@ -85,6 +85,10 @@
 ; 2 = reset Boo Rings positions on death and on level load.
     !reset_boo_rings = 1
 
+; If 1, the frame counters will be reset on each level load.
+; This removes "randomness" in certain sprites (like Puntin' Chucks) on each level attempt.
+    !reset_frame_counters = 1
+
 ; This determines what happens when you die on the title screen.
 ; 0 = vanilla (after dying a glitched version of the title screen will load, causing a softlock).
 ;     Use this if you either don't care or want to do something custom with it.)

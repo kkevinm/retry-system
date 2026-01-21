@@ -3,7 +3,9 @@
 init:
     ; Reset frame counters and layer 1 and 2 X positions.
     rep #$20
+if !reset_frame_counters
     stz $13
+endif
     stz $1A
     stz $1E
     sep #$20
