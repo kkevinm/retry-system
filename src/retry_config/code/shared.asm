@@ -3,8 +3,8 @@
 ;===============================================================================
 
 ;===============================================================================
-; Macro to push the current code's DB to the stack
-; and set the DBR to label's bank.
+; Macro to push the current code's DB to the stack and set the DBR to label's
+; bank.
 ; Note: remember to PLB when finished!
 ;===============================================================================
 macro set_dbr(label)

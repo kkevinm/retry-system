@@ -208,16 +208,56 @@ get_retry_type:
     rtl
 
 ;===============================================================================
+; Routine to get check if a save file is empty.
+;
+; Inputs: save file to check in $010A|!addr (0 = save file 1, 1 = save file
+;         2, 2 = save file 3, behavior undefined for other values)
+; Outputs: Carry set = save file empty
+;          Carry clear = save file not empty
+; Pre: A 8 bits
+; Post: A/X/Y 8 bit and clobbered, DB preserved
+; Example:
+;         LDA #$02 ; Check save file 3
+;         STA $010A|!addr
+;         JSL retry_api_is_save_file_empty
+;         BCS empty
+;     not_empty:
+;         ...
+;     empty:
+;         ...
+;===============================================================================
+is_save_file_empty:
+    sep #$30
+    ldx $010A|!addr
+    phb
+    ; Can't use %jsl_to_rts_db because plb clobbers the Z flag
+    lda.b #$00|!bank8 : pha : plb
+    %jsl_to_rts($009DB5)
+    sep #$30
+    bne .empty
+.not_empty:
+    plb
+    clc
+    rtl
+.empty:
+    plb
+    sec
+    rtl
+
+;===============================================================================
 ; Routine to get the address in SRAM for a specific variable.
 ; By "variable" it's meant any of the RAM addresses that are saved to SRAM
 ; specified in the sram save table.
-; If not searching for a variable under ".global", the returned address will be
-; coherent with the current save file loaded when this routine is called (so,
-; make sure to not call it before a save file is loaded if not looking for a
-; global variable).
+; If not searching for a variable under ".global", the variable will be searched
+; in the currently loaded save file. If calling this before a save file is
+; loaded (e.g. the title screen), you need to specify the save file to look into
+; by setting the $010A|!addr address (0 = save file 1, 1 = save file 2, 2 = save
+; file 3, behavior undefined for other values).
 ; This could be useful to read/write values in SRAM directly, for example if you
-; need to update some SRAM value without the game being saved.
-; Note: this will always return "variable not found" if !sram_feature = 0.
+; need to update some SRAM value without the game being saved, or if you need to
+; display something on the title screen depending on the save file data.
+; Note: this will always return "variable not found" if !sram_feature = 0 or if
+; the chosen save file is empty (for local variables).
 ;
 ; Inputs: variable address to search for in ROM right after the JSL
 ;         This means the call should look like this:
@@ -230,15 +270,26 @@ get_retry_type:
 ;            LDA/STA [$00] and LDA/STA [$00],y instructions.
 ; Pre: N/A
 ; Post: A/X/Y 8 bit and clobbered, DB preserved
-; Example:
+; Example 1 (file already loaded):
 ;         JSL retry_api_get_sram_variable_address
 ;         dl retry_ram_death_counter ; Variable to search for
-;         BCS not_found
+;         BCS error
 ;     found:
 ;         LDY #$01
 ;         LDA #$09
 ;         STA [$00],y ; Set second death counter digit in SRAM to 9
-;     not_found:
+;     error:
+;         ...
+;
+; Example 2 (on title screen):
+;         LDA #$01 ; $01 = search in save file 2
+;         STA $010A|!addr
+;         JSL retry_api_get_sram_variable_address
+;         dl retry_ram_death_counter ; Variable to search for
+;         BCS empty_file
+;         LDA [$00] ; Get first death counter digit of save file 2
+;         ...
+;     empty_file:
 ;         ...
 ;===============================================================================
 get_sram_variable_address:
@@ -264,7 +315,9 @@ if !sram_feature
     jsr sram_get_global_sram_addr
     bra ..shared
 ..local:
-    ; If local, get the save file SRAM address
+    ; If local and the save file is empty, return not found
+    jsl is_save_file_empty : bcs .not_found
+    ; Otherwise, get the save file SRAM address
     jsr sram_get_file_sram_addr
 ..shared:
     ; Add the calculated offset to the SRAM address

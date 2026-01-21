@@ -17,6 +17,8 @@
 		<li>Added %dbn, %dwn and %dln macros to more easily insert repeating values in the sram_defaults table.</li>
 		<li>Added hide_sprite_status_bar API routine to hide the sprite status bar in specific levels.</li>
 		<li>Fixed Yoshi disappearing from the Overworld when using !counterbreak_yoshi = 0, parking it outside of a level with a No Yoshi intro, respawning inside of the level and then exiting the level (thanks to uriel2k3 for reporting this).</li>
+		<li>Added is_save_file_empty API routine.</li>
+		<li>Now the get_sram_variable_address API routine returns "variable not found" if searching for a local SRAM variable in an empty file (thanks to Ramond for reporting this).</li>
 	</ul>
 
 	<h2 id="v1.1.0">v1.1.0</h2>
