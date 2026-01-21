@@ -171,6 +171,23 @@ endif
     rtl
 
 ;===============================================================================
+; Routine to hide the status bar for the current level. This routine should be
+; called in UberASM level init code.
+;
+; Inputs: N/A
+; Outputs: N/A
+; Pre: N/A
+; Post: A/X/Y 8 bit and clobbered, DB preserved
+; Example:
+;     JSL retry_api_hide_sprite_status_bar
+;===============================================================================
+hide_sprite_status_bar:
+if !sprite_status_bar
+    jsl configure_sprite_status_bar : %dwn(0,5)
+endif
+    rtl
+
+;===============================================================================
 ; Routine to get the current Retry type, i.e. if currently the level is set to
 ; have Retry prompt, instant Retry or no Retry.
 ; The returned value has this format:
