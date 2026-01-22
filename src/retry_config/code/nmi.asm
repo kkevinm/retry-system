@@ -51,27 +51,27 @@ else
 
     ; These values are the same for all uploads, so put them out of the loop.
     ldy.b #$80 : sty $2115
-    lda.w #$1801 : sta.w prompt_dma($4300)
-    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
-    ldy.b #1<<!prompt_channel
+    lda.w #$1801 : sta.w upload_dma($4300)
+    ldy.b #!gfx_bank : sty.w upload_dma($4304)
+    ldy.b #1<<!upload_channel
 .loop:
     lda.w .dest,x : sta $2116
-    lda.w .src,x : clc : adc $02 : sta.w prompt_dma($4302)
+    lda.w .src,x : clc : adc $02 : sta.w upload_dma($4302)
     ; All uploads are 8x8 except the cursor,
     ; which is 16x8 only when the prompt box is enabled.
     lda.w #gfx_size(1)
     cpx #$00 : bne +
     lda $00
-+   sta.w prompt_dma($4305)
++   sta.w upload_dma($4305)
     sty $420B
     dex #2 : bpl .loop
 ..end:
 
     ; If the box is enabled, transfer the black tiles too.
     cmp.w #gfx_size(1) : beq +
-    sta.w prompt_dma($4305)
+    sta.w upload_dma($4305)
     lda.w #vram_addr(!tile_blk) : sta $2116
-    lda.w #gfx_letters_box+gfx_size(7) : sta.w prompt_dma($4302)
+    lda.w #gfx_letters_box+gfx_size(7) : sta.w upload_dma($4302)
     sty $420B
 +
     plb

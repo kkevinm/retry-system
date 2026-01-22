@@ -365,10 +365,10 @@
 
 ;=========================== Death Counter ====================================;
 
-; If 1, a death counter will replace the lives on the (vanilla) status bar.
+; If 1, a death counter will replace the lives on the vanilla status bar.
     !status_death_counter = 0
 
-; If 1, the "DEATHS" word will replace Mario's name on the status bar.
+; If 1, the "DEATHS" word will replace Mario's name on the vanilla status bar.
 ; If you want to customize the text or its palette, look in "retry_config/code/hijacks/death_counter.asm".
     !status_death_word = 0
 

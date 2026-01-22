@@ -8,7 +8,7 @@ endmacro
 
 ; Store the ROM address for the digit in A to the DMA source register.
 macro store_digit_addr()
-    xba : lsr #3 : adc.w #gfx_digits : sta.w prompt_dma($4302)
+    xba : lsr #3 : adc.w #gfx_digits : sta.w upload_dma($4302)
 endmacro
 
 macro _build_status_bar_value(name)
@@ -55,7 +55,12 @@ init_ram:
     rts
 
 nmi:
+    ; Setup the constant DMA parameters.
     rep #$20
+    ldy #$80 : sty $2115
+    lda #$1801 : sta.w upload_dma($4300)
+    ldy.b #!gfx_bank : sty.w upload_dma($4304)
+    ldy.b #1<<!upload_channel
 
     ; Check if we need to upload the timer digits.
     lda !ram_status_bar_timer_tile : bne .timer
@@ -69,22 +74,16 @@ nmi:
     ; (ensuring the timer updates when dying for a timeout).
     sep #$20
     lda $71 : cmp #$09 : beq +
-    lda $0F30|!addr : cmp.l !rom_timer_ticks : beq +
+    lda $0F30|!addr : cmp.l !rom_timer_ticks
     rep #$20
+    beq +
     jmp .no_timer
 +   
-    ; Setup the constant DMA parameters.
-    rep #$20
-    ldy #$80 : sty $2115
-    lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
-    ldy #$04
-
     ; Upload the first digit, unless it's 0.
     lda $0F31|!addr : and #$00FF : beq +
     %store_digit_addr()
     lda $00 : adc #$0010 : sta $2116
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 
     ; In this case we need to upload the second digit even if 0.
@@ -94,14 +93,14 @@ nmi:
     lda $0F32|!addr : and #$00FF : beq +
 ++  %store_digit_addr()
     lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 +
     ; Upload the third digit.
     lda $0F33|!addr : and #$00FF
     %store_digit_addr()
     lda $00 : adc #$0110 : sta $2116
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 
 .no_timer:
@@ -125,24 +124,19 @@ nmi:
     sta $4204 : stz $4205
     lda #10 : sta $4206
 
-    ; Setup the constant DMA parameters (also waste time for division).
-    rep #$20
-    ldy #$80 : sty $2115
-    lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
-    ldy #$04
+    jsr rep20_and_waste_time_for_division
 
     ; Upload the first digit (unless it's 0).
     lda $4214 : beq +
     %store_digit_addr()
     lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 +   
     ; Upload the second digit.
     lda $4216 : %store_digit_addr()
     lda $00 : adc #$0110 : sta $2116
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 
 .no_coins:
@@ -166,24 +160,19 @@ nmi:
     inc : sta $4204 : stz $4205
     lda #10 : sta $4206
 
-    ; Setup the constant DMA parameters (also waste time for division).
-    rep #$20
-    ldy #$80 : sty $2115
-    lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
-    ldy #$04
+    jsr rep20_and_waste_time_for_division
 
     ; Upload the first digit (unless it's 0).
     lda $4214 : beq +
     %store_digit_addr()
     lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 +   
     ; Upload the second digit.
     lda $4216 : %store_digit_addr()
     lda $00 : adc #$0110 : sta $2116
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 
 .no_lives:
@@ -208,29 +197,31 @@ nmi:
     sta $4204 : stz $4205
     lda #10 : sta $4206
 
-    ; Setup the constant DMA parameters (also waste time for division).
-    rep #$20
-    ldy #$80 : sty $2115
-    lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
-    ldy #$04
+    jsr rep20_and_waste_time_for_division
 
     ; Upload the first digit (unless it's 0).
     lda $4214 : beq +
     %store_digit_addr()
     lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 +   
     ; Upload the second digit.
     lda $4216 : %store_digit_addr()
     lda $00 : adc #$0110 : sta $2116
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 
 .no_bonus_stars:
-
     sep #$20
+    rts
+
+; Routine to set A to 16 bits and waste time for division.
+; JSR to this routine will result in 17 cycles, so the division result will be
+; ready.
+rep20_and_waste_time_for_division:
+    rep #$20
+    nop
     rts
 
 init:
@@ -254,9 +245,9 @@ init:
     ; Setup the constant DMA parameters.
     rep #$20
     ldy #$80 : sty $2115
-    lda #$1801 : sta.w prompt_dma($4300)
-    ldy.b #!gfx_bank : sty.w prompt_dma($4304)
-    ldy #$04
+    lda #$1801 : sta.w upload_dma($4300)
+    ldy.b #!gfx_bank : sty.w upload_dma($4304)
+    ldy.b #1<<!upload_channel
 
     ; Check if we need to upload the item box tile.
     lda !ram_status_bar_item_box_tile : beq ..no_item_box
@@ -265,20 +256,20 @@ init:
 if !8x8_item_box_tile
     ; Upload the item box tile.
     %calc_vram() : sta $2116
-    lda.w #gfx_item_box : sta.w prompt_dma($4302)
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_item_box : sta.w upload_dma($4302)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 else
     ; Upload the first row.
     %calc_vram() : sta $00 : sta $2116
-    lda.w #gfx_item_box : sta.w prompt_dma($4302)
-    lda.w #gfx_size(2) : sta.w prompt_dma($4305)
+    lda.w #gfx_item_box : sta.w upload_dma($4302)
+    lda.w #gfx_size(2) : sta.w upload_dma($4305)
     sty $420B
 
     ; Upload the second row.
     lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_item_box+$40 : sta.w prompt_dma($4302)
-    lda.w #gfx_size(2) : sta.w prompt_dma($4305)
+    lda.w #gfx_item_box+$40 : sta.w upload_dma($4302)
+    lda.w #gfx_size(2) : sta.w upload_dma($4305)
     sty $420B
 endif
 
@@ -289,8 +280,8 @@ endif
 ..timer:
     ; Upload the clock tile.
     %calc_vram() : sta $2116
-    lda.w #gfx_timer : sta.w prompt_dma($4302)
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_timer : sta.w upload_dma($4302)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 
 ..no_timer:
@@ -300,8 +291,8 @@ endif
 ..coins:
     ; Upload the coin tiles.
     %calc_vram() : sta $2116
-    lda.w #gfx_coins : sta.w prompt_dma($4302)
-    lda.w #gfx_size(2) : sta.w prompt_dma($4305)
+    lda.w #gfx_coins : sta.w upload_dma($4302)
+    lda.w #gfx_size(2) : sta.w upload_dma($4305)
     sty $420B
 
 ..no_coins:
@@ -314,8 +305,8 @@ endif
     lda.w #gfx_lives
     ldx $0DB3|!addr : beq +
     lda.w #gfx_lives+gfx_size(1)
-+   sta.w prompt_dma($4302)
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
++   sta.w upload_dma($4302)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 
 ..no_lives:
@@ -325,8 +316,8 @@ endif
 ..bonus_stars:
     ; Upload the bonus stars tile.
     %calc_vram() : sta $2116
-    lda.w #gfx_bonus_stars : sta.w prompt_dma($4302)
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_bonus_stars : sta.w upload_dma($4302)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 
 ..no_bonus_stars:
@@ -341,8 +332,8 @@ if !draw_retry_indicator
     ; Upload the indicator tile.
     rep #$20
     lda.w #vram_addr(!retry_indicator_tile) : sta $2116
-    lda.w #gfx_indicator : sta.w prompt_dma($4302)
-    lda.w #gfx_size(1) : sta.w prompt_dma($4305)
+    lda.w #gfx_indicator : sta.w upload_dma($4302)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
     sep #$20
 ..no_indicator:

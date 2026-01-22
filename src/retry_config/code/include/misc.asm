@@ -19,9 +19,9 @@
 !window_mask    #= read1($0092A1)
 !window_channel #= log2(!window_mask)
 
-; DMA channel used to upload the Retry prompt tiles.
+; DMA channel used to upload the GFX tiles.
 ; You should never need to edit this.
-!prompt_channel = 2
+!upload_channel = 2
 
 ; Where in VRAM the prompt tiles will be uploaded to.
 ; You should never need to edit this.
