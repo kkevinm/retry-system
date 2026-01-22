@@ -9,12 +9,17 @@ init:
     jsl $05BC72|!bank
 
     ; Check if we entered from the overworld.
-    lda $141A|!addr : beq .return
+    lda $141A|!addr : beq .from_ow
 
     ; Check if it's a normal room transition.
     lda !ram_is_respawning : bne .return
 
 .room_transition:
+    ; Reset RNG if the current sublevel is set to do so on room transitions.
+    jsr shared_get_reset_rng_value
+    cmp.b #!reset_rng_type_always : bne +
+    jsr shared_reset_rng
++   
     ; If the destination should trigger a checkpoint, do it.
     lda !ram_door_dest+1
     jsr shared_is_destination_a_checkpoint : bcc .return
@@ -51,3 +56,10 @@ endif
 
 .return:
     rtl
+
+.from_ow:
+    ; Reset RNG addresses if the current sublevel is set to do so on OW entrance.
+    jsr shared_get_reset_rng_value
+    cmp.b #!reset_rng_type_never : beq +
+    jsr shared_reset_rng
++   rtl

@@ -8,8 +8,12 @@ else
     fillbyte $00 : fill $40
 endif
 
+if !reset_rng < !reset_rng_type_min || !reset_rng > !reset_rng_type_max
+    error "Error: \!rng_reset value needs to be between !reset_rng_type_min and !reset_rng_type_max!"
+endif
+
 reset_rng:
-    fillbyte $FF : fill $40
+    fillbyte !reset_rng : fill $200
 
 disable_room_cp_sfx:
     fillbyte $00 : fill $40
@@ -85,18 +89,17 @@ endif
     pullpc
 endmacro
 
-macro no_reset_rng(level)
-    %_check_level(<level>, "no_reset_rng")
+macro reset_rng(level, val)
+    %_check_level(<level>, "reset_rng")
+    if <val> < !reset_rng_type_min || <val> > !reset_rng_type_max
+        error "Error: %rng_reset value needs to be between !reset_rng_type_min and !reset_rng_type_max!"
+    endif
 
-    %_define_bitwise_index(<level>)
-    !{_no_reset_rng_!{__idx}} ?= 0
-    !{_no_reset_rng_!{__idx}} #= !{_no_reset_rng_!{__idx}}|_bitwise_table_value(<level>)
-    
     pushpc
     
-    org tables_reset_rng+!__idx
-        db !{_no_reset_rng_!{__idx}}^$FF
-    
+    org tables_reset_rng+<level>
+        db <val>
+
     pullpc
 endmacro
 
@@ -135,14 +138,12 @@ macro checkpoint_retry(level, checkpoint, retry)
     %retry(<level>, <retry>)
 endmacro
 
-macro settings(level, checkpoint, retry, sfx_echo, no_reset_rng, no_room_cp_sfx, no_lose_lives)
+macro settings(level, checkpoint, retry, sfx_echo, reset_rng, no_room_cp_sfx, no_lose_lives)
     %checkpoint_retry(<level>, <checkpoint>, <retry>)
     if <sfx_echo> != 0
         %sfx_echo(<level>)
     endif
-    if <no_reset_rng> != 0
-        %no_reset_rng(<level>)
-    endif
+    %reset_rng(<level>, <reset_rng>)
     if <no_room_cp_sfx> != 0
         %no_room_cp_sfx(<level>)
     endif

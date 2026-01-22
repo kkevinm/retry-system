@@ -71,3 +71,4 @@ endif
     %incsrc(code/hijacks,remove_status_bar)
     %incsrc(code/hijacks,vanilla_boss_gm13)
     %incsrc(code/hijacks,switch_palace_message_fix)
+    %incsrc(code/hijacks,ow_no_reset_rng)

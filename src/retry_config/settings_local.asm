@@ -1,5 +1,7 @@
 ; This file is where you set Retry's level-specific settings.
 ; You can add how many settings you want, each in a separate line.
+; Note that if you put the same option for the same level multiple times, only
+; the last one will take effect.
 ; Supported settings (for each, write level as $XXX, like $105 for sublevel 105):
 ;
 ;   %checkpoint(level, value): configure the checkpoint behavior in the level, depending on value:
@@ -24,13 +26,17 @@
 ;
 ;   %sfx_echo(level): toggle sfx echo in the level
 ;
-;   %no_reset_rng(level): don't reset the rng when retrying in the level
+;   %reset_rng(level, value): choose the RNG reset behavior for the sublevel, depending on value:
+;     0 = RNG will never be reset by Retry in this sublevel
+;     1 = RNG will be reset when entering this sublevel from the Overworld (vanilla behavior)
+;     2 = option 1 + RNG will be reset when dying and Retrying in this sublevel (old Retry default behavior)
+;     3 = RNG will always be reset in this sublevel (option 2 + RNG will be reset when entering it from a pipe/door)
 ;
 ;   %no_room_cp_sfx(level): don't play the room checkpoint sfx when entering the level
 ;
 ;   %no_lose_lives(level): enable infinite lives in the level
 ;
-;   %settings(level, checkpoint, retry, sfx_echo, no_reset_rng, no_room_cp_sfx, no_lose_lives): configure all settings for the level
+;   %settings(level, checkpoint, retry, sfx_echo, reset_rng, no_room_cp_sfx, no_lose_lives): configure all settings for the level
 ;
 ; For details, check out "docs/settings_local.html".
 

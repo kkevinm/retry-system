@@ -283,7 +283,7 @@ endif
 ;===============================================================================
 ; Routine to get the checkpoint value for the current sublevel. Returns the
 ; value in A (8 bit). You should use cmp #$00 to check for 0 after calling this.
-; X,Y and P are preserved.
+; X, Y and P are preserved.
 ;===============================================================================
 get_checkpoint_value:
     phx
@@ -299,7 +299,7 @@ get_checkpoint_value:
 ;===============================================================================
 ; Routine to get the effect value for the current sublevel. Returns the value in
 ; A (8 bit). You should use cmp #$00 to check for 0 after calling this.
-; X,Y and P are preserved.
+; X, Y and P are preserved.
 ;===============================================================================
 get_effect_value:
     phx
@@ -309,6 +309,21 @@ get_effect_value:
     lda.l tables_checkpoint_effect,x
     lsr #4
     and #$0F
+    plp
+    plx
+    rts
+
+;===============================================================================
+; Routine to get the RNG reset value for the current sublevel. Returns the value
+; in A (8 bit). You should use cmp #$00 to check for 0 after calling this.
+; X, Y and P are preserved.
+;===============================================================================
+get_reset_rng_value:
+    phx
+    php
+    rep #$10
+    ldx $010B|!addr
+    lda.l tables_reset_rng,x
     plp
     plx
     rts
@@ -433,4 +448,14 @@ set_checkpoints_from_initial_ow_flags:
 ..next:
     dey : bpl .loop
     plp
+    rts
+
+;===============================================================================
+; Helper routine to reset the RNG state.
+;===============================================================================
+reset_rng:
+    rep #$20
+    stz $148B|!addr
+    stz $148D|!addr
+    sep #$20
     rts

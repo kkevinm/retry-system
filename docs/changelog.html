@@ -19,6 +19,15 @@
 		<li>Fixed Yoshi disappearing from the Overworld when using !counterbreak_yoshi = 0, parking it outside of a level with a No Yoshi intro, respawning inside of the level and then exiting the level (thanks to uriel2k3 for reporting this).</li>
 		<li>Added is_save_file_empty API routine.</li>
 		<li>Now the get_sram_variable_address API routine returns "variable not found" if searching for a local SRAM variable in an empty file (thanks to Ramond for reporting this).</li>
+		<li>Overhauled the "reset RNG" feature:
+			<ul>
+				<li>Introduced back the !reset_rng setting in "settings_global.asm" to easily change the default behavior for all levels.</li>
+				<li>Now you have more flexibility on when to reset the RNG: never, or only on entering a level from the Overworld (vanilla behavior), or also when Retrying in a level (old Retry default behavior), or also when entering a level from a door/pipe. The last option can be useful for boss fights with random elements, for example, which with old Retry would behave differently the first time you entered them vs. on the next attempts.</li>
+				<li>Changed the %no_reset_rng option in "settings_local.asm" to %reset_rng, which just specifies the RNG behavior for the chosen sublevel.</li>
+				<li>Changed the no_reset_rng table in "legacy/tables.asm" to reset_rng to mirror the "settings_local.asm" change.</li>
+			</ul>
+		</li>
+		<li><b>NOTE</b>: if upgrading from an older version, if using the %no_reset_rng option in "settings_local.asm", you'll need to change it to %reset_rng like this: <code>%no_reset_rng($XXX)</code> &rarr; <code>reset_rng($XXX,1)</code>.</li>
 	</ul>
 
 	<h2 id="v1.1.0">v1.1.0</h2>

@@ -80,6 +80,14 @@
 ; If 1, DSX (dynamic) sprites status is reset on level load.
     !reset_dsx = 1
 
+; 0 = RNG will never be reset (except in cutscenes)
+; 1 = RNG will only be reset when entering a level from the Overworld (vanilla behavior)
+; 2 = RNG will be reset when dying and Retrying a level and when entering it from the Overworld (old Retry default behavior)
+; 3 = RNG will be always reset (also when going through a sublevel with a door/pipe)
+; Note that you can also change this on a sublevel basis using the "reset_rng" option in "settings_local.asm".
+; Note that if !use_legacy_tables = 1, this option is ignored and you need to edit the "reset_rng" table in "legacy/tables.asm".
+    !reset_rng = 2
+
 ; 0 = vanilla (Boo Rings will retain the previous positions, not recommended for Kaizo).
 ; 1 = reset Boo Rings positions on death.
 ; 2 = reset Boo Rings positions on death and on level load.

@@ -152,3 +152,8 @@ org $009856
 org $00D0D8
     dec $0DBE|!addr
     bpl $09
+
+org $00A1AD
+    stz $1A,x
+    dex
+    db $10 ; bpl

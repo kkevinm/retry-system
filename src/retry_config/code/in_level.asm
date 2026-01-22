@@ -536,13 +536,10 @@ endif
     ; Reset bonus game sprite flag.
     stz $1B94|!addr
 
-    ; Reset RNG addresses if the current sublevel is set to do so.
-    jsr shared_get_bitwise_mask
-    and.l tables_reset_rng,x : beq +
-    rep #$20
-    stz $148B|!addr
-    stz $148D|!addr
-    sep #$20
+    ; Reset RNG if the current sublevel is set to do so on Retrying.
+    jsr shared_get_reset_rng_value
+    cmp.b #!reset_rng_type_ow_retry : bcc +
+    jsr shared_reset_rng
 +   
     rts
 

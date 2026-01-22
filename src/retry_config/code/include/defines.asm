@@ -21,3 +21,10 @@
 !checkpoint_type_midway_bar_secondary_entrance   #= $07
 !checkpoint_type_min                             #= !checkpoint_type_vanilla
 !checkpoint_type_max                             #= !checkpoint_type_midway_bar_secondary_entrance
+
+!reset_rng_type_never    #= $00
+!reset_rng_type_ow       #= $01
+!reset_rng_type_ow_retry #= $02
+!reset_rng_type_always   #= $03
+!reset_rng_type_min      #= !reset_rng_type_never
+!reset_rng_type_max      #= !reset_rng_type_always
