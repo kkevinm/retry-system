@@ -175,7 +175,7 @@ nmi:
     ; Compute the VRAM address for later.
     %calc_vram() : sta $00
 
-    ; Only upload if Mario is dead.
+    ; Only upload if Mario is dead or if loading the level.
     ; We upload every frame even if wasteful, because I'd rather not add another
     ; flag (!ram_is_dying does not work because it is already changed by the
     ; time we get here). On death most things are stopped so it should be fine.
