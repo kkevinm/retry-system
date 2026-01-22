@@ -118,44 +118,20 @@ endif
 
 ; Macro to insert a table of repeating 1 byte values
 macro dbn(val, n)
-    if <n> > 242
-        error "%dbn does not support n > 242"
-    endif
-    if <n> > 0
-        db <val>
-        %dbn(<val>, <n>-1)
-    endif
+    fillbyte <val> : fill <n>
 endmacro
 
 ; Macro to insert a table of repeating 2 byte values
 macro dwn(val, n)
-    if <n> > 242
-        error "%dwn does not support n > 242"
-    endif
-    if <n> > 0
-        dw <val>
-        %dwn(<val>, <n>-1)
-    endif
+    fillword <val> : fill (<n>)*2
 endmacro
 
 ; Macro to insert a table of repeating 3 byte values
 macro dln(val, n)
-    if <n> > 242
-        error "%dln does not support n > 242"
-    endif
-    if <n> > 0
-        dl <val>
-        %dln(<val>, <n>-1)
-    endif
+    filllong <val> : fill (<n>)*3
 endmacro
 
 ; Macro to insert a table of repeating 4 byte values
 macro ddn(val, n)
-    if <n> > 242
-        error "%ddn does not support n > 242"
-    endif
-    if <n> > 0
-        dd <val>
-        %ddn(<val>, <n>-1)
-    endif
+    filldword <val> : fill (<n>)*4
 endmacro

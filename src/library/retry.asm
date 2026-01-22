@@ -25,6 +25,7 @@ endmacro
 ;===============================================================================
 ; Load the user tables.
 ;===============================================================================
+    %incsrc(code/include,ssb_tables)
 if !use_legacy_tables
     %incsrc(legacy,tables)
 else

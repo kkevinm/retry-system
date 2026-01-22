@@ -1,6 +1,10 @@
 ; Gamemode 12
 
 init:
+if !sprite_status_bar
+    jsr ssb_tables_load
+endif
+
     ; Reset the "play CP sfx" flag.
     lda #$00 : sta !ram_play_sfx
     

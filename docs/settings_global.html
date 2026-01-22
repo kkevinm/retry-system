@@ -556,7 +556,7 @@ table tr td:nth-child(1) code {
         </tr>
         <tr>
             <td><code>!sprite_status_bar</code></td>
-            <td>If 1, a sprite status bar will be installed allowing you to display the item box, coin/Yoshi coin counter and timer in levels with sprites, which keeps layer 3 working properly. The sprites use dynamic tiles, meaning you'll need to reserve some GFX space in your SP slots for them. Item box, coins and timer use one 16x16 tile each, but they only need to be reserved when actually using them, and you can choose which tiles to use for each level (or to just disable any or all of them in specific levels) calling the API routine "configure_sprite_status_bar" in your level/gamemode UberASM (see <a href="api.html">API documentation</a>).</td>
+            <td>If 1, a sprite status bar will be installed allowing you to display the item box, coin/Yoshi coin counter and timer in levels with sprites, which keeps layer 3 working properly. The sprites use dynamic tiles, meaning you'll need to reserve some GFX space in your SP slots for them. Item box, coins and timer use one 16x16 tile each, but they only need to be reserved when actually using them, and you can choose which tiles to use for each level (or to just disable any or all of them in specific levels) using the <a href="./settings_local.html#ssb">Local Settings - Configure Sprite Status Bar</a>).</td>
         </tr>
         <tr>
             <td><code>!remove_vanilla_status_bar</code></td>
@@ -566,7 +566,7 @@ table tr td:nth-child(1) code {
 
 	<h4>Tile and Palette Settings</h4>
 	<p>The following settings are only relevant if <code>!sprite_status_bar = 1</code>.</p>
-	<p>Default sprite tile and palette to use for each element in the status bar. These settings can be overridden per-level by using the <code>configure_sprite_status_bar</code> API routine (see <a href="./api.html">API Information</a>). If both <code>!default_xxx_tile</code> and <code>!default_xxx_palette</code> are $00, the item will be hidden by default.</p>
+	<p>Default sprite tile and palette to use for each element in the status bar. These settings can be overridden per-level by using the <a href="./settings_local.html#ssb">Local Settings - Configure Sprite Status Bar</a>. If both <code>!default_xxx_tile</code> and <code>!default_xxx_palette</code> are $00, the item will be hidden by default.</p>
 	<table>
 		<tr>
 			<th>Name</th>
@@ -740,11 +740,11 @@ table tr td:nth-child(1) code {
         </tr>
         <tr>
             <td><code>!status_death_counter</code></td>
-            <td>If 1, a death counter will replace the lives on the (vanilla) status bar.</td>
+            <td>If 1, a death counter will replace the lives on the vanilla status bar.</td>
         </tr>
         <tr>
             <td><code>!status_death_word</code></td>
-            <td>If 1, the "DEATHS" word will replace Mario's name on the status bar. If you want to customize the text or its palette, look in <u class="dir">retry_config/code/hijacks/death_counter.asm</u>.</td>
+            <td>If 1, the "DEATHS" word will replace Mario's name on the vanilla status bar. If you want to customize the text or its palette, look in <u class="dir">retry_config/code/hijacks/death_counter.asm</u>.</td>
         </tr>
         <tr>
             <td><code>!ow_death_counter</code></td>

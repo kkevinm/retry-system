@@ -11,49 +11,6 @@ macro store_digit_addr()
     xba : lsr #3 : adc.w #gfx_digits : sta.w upload_dma($4302)
 endmacro
 
-macro _build_status_bar_value(name)
-    if !default_<name>_palette > $0F
-        error "Error: \!default_<name>_palette is not valid!"
-    endif
-    if !default_<name>_tile > $1FF
-        error "Error: \!default_<name>_tile is not valid!"
-    endif
-
-    if !default_<name>_tile == 0 || !default_<name>_palette == 0
-        !default_<name>_value #= 0
-    else
-        !default_<name>_value #= ((!default_<name>_palette)<<12)|(!default_<name>_tile)
-    endif
-
-    if !default_<name>_value != 0 && !default_<name>_value&$8000 < $8000
-        error "Error: \!default_<name>_palette is not valid!"
-    endif
-
-    !default_<name>_value #= !default_<name>_value&$7FFF
-endmacro
-
-%_build_status_bar_value(item_box)
-%_build_status_bar_value(timer)
-%_build_status_bar_value(coin_counter)
-%_build_status_bar_value(lives_counter)
-%_build_status_bar_value(bonus_stars)
-
-if !default_coin_counter_behavior > 2
-    error "Error: \!default_coin_counter_behavior is not valid!"
-endif
-!default_coin_counter_value #= !default_coin_counter_value|(!default_coin_counter_behavior<<9)
-
-init_ram:
-    ; Reset sprite status bar configuration.
-    rep #$20
-    lda.w #!default_item_box_value : sta !ram_status_bar_item_box_tile
-    lda.w #!default_timer_value : sta !ram_status_bar_timer_tile
-    lda.w #!default_coin_counter_value : sta !ram_status_bar_coins_tile
-    lda.w #!default_lives_counter_value : sta !ram_status_bar_lives_tile
-    lda.w #!default_bonus_stars_value : sta !ram_status_bar_bonus_stars_tile
-    sep #$20
-    rts
-
 nmi:
     ; Setup the constant DMA parameters.
     rep #$20

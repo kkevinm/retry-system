@@ -50,11 +50,6 @@ endif
     ; Initialize "midway powerup" flag.
     lda.b #!midway_powerup : sta.w !ram_midway_powerup
 
-if !sprite_status_bar
-    ; Initialize sprite status bar ram for intro level.
-    jsr sprite_status_bar_init_ram
-endif
-
 if !sram_feature
     ; Initialize the SRAM global variables
     jsr sram_load_global

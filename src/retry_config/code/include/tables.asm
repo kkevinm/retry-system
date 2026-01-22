@@ -1,11 +1,11 @@
 checkpoint_effect:
-    fillbyte $00 : fill $200
+    %dbn($00,$200)
 
 sfx_echo:
 if !default_sfx_echo
-    fillbyte $FF : fill $40
+    %dbn($FF,$40)
 else
-    fillbyte $00 : fill $40
+    %dbn($00,$40)
 endif
 
 if !reset_rng < !reset_rng_type_min || !reset_rng > !reset_rng_type_max
@@ -13,13 +13,13 @@ if !reset_rng < !reset_rng_type_min || !reset_rng > !reset_rng_type_max
 endif
 
 reset_rng:
-    fillbyte !reset_rng : fill $200
+    %dbn(!reset_rng,$200)
 
 disable_room_cp_sfx:
-    fillbyte $00 : fill $40
+    %dbn($00,$40)
 
 lose_lives:
-    fillbyte $FF : fill $40
+    %dbn($FF,$40)
 
 macro _check_level(level, macro_name)
     if <level> < 0 || <level> > $1FF

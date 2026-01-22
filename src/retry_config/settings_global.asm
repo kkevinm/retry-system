@@ -304,7 +304,7 @@
     !remove_vanilla_status_bar = 0
 
 ; Default sprite tile and palette to use for each element in the status bar.
-; These settings can be overridden per-level by using the "configure_sprite_status_bar" API routine (see "docs/api.html").
+; These settings can be overridden per-level by using the %ssb_config commands in "settings_local.asm".
 ; If !default_xxx_tile or !default_xxx_palette is $00, the item will be hidden by default.
 ; These are only relevant if !sprite_status_bar = 1.
     !default_item_box_tile         = $80

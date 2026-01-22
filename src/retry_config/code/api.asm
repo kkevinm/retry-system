@@ -132,6 +132,8 @@ reset_all_checkpoints:
 ; to $0000, it won't be displayed.
 ; For the coin counter, you can add $0200 to the value to only display dragon
 ; coins, or add $0400 to only display coins.
+; Note: for a more convenient way to configure the sprite status bar, you can
+;       use the %ssb_config commands in "settings_local.asm".
 ;
 ; Inputs: for each item, in order, you write the value after the JSL in the
 ;         format described above (see example).
@@ -173,6 +175,8 @@ endif
 ;===============================================================================
 ; Routine to hide the status bar for the current level. This routine should be
 ; called in UberASM level init code.
+; Note: for a more convenient way to hide the sprite status bar, you can use the
+;       %ssb_hide commands in "settings_local.asm".
 ;
 ; Inputs: N/A
 ; Outputs: N/A

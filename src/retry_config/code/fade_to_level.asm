@@ -1,10 +1,6 @@
 ; Gamemode 0F
 
 init:
-if !sprite_status_bar
-    jsr sprite_status_bar_init_ram
-endif
-
     ; If respawning or doing a level transition, skip.
     lda $141A|!addr : bne .transition
 

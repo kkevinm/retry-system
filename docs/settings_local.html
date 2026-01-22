@@ -27,6 +27,18 @@
 		<li><a href="#no_room_cp_sfx">%no_room_cp_sfx(level)</a></li>
 		<li><a href="#no_lose_lives">%no_lose_lives(level)</a></li>
 		<li><a href="#settings">%settings(level, checkpoint, retry, sfx_echo, reset_rng, no_room_cp_sfx, no_lose_lives)</a></li>
+		<li><a href="#ssb_config_item_box">%ssb_config_item_box(level, tile, pal)</a></li>
+		<li><a href="#ssb_config_timer">%ssb_config_timer(level, tile, pal)</a></li>
+		<li><a href="#ssb_config_coins">%ssb_config_coins(level, tile, pal, beha)</a></li>
+		<li><a href="#ssb_config_lives">%ssb_config_lives(level, tile, pal)</a></li>
+		<li><a href="#ssb_config_bonus_stars">%ssb_config_bonus_stars(level, tile, pal)</a></li>
+		<li><a href="#ssb_config">%ssb_config(level, item_box_tile, item_box_pal, timer_tile, timer_pal, coins_tile, coins_pal, coins_beha, lives_tile, lives_pal, bonus_stars_tile, bonus_stars_pal)</a></li>
+		<li><a href="#ssb_hide_item_box">%ssb_hide_item_box(level)</a></li>
+		<li><a href="#ssb_hide_timer">%ssb_hide_timer(level)</a></li>
+		<li><a href="#ssb_hide_coins">%ssb_hide_coins(level)</a></li>
+		<li><a href="#ssb_hide_lives">%ssb_hide_lives(level)</a></li>
+		<li><a href="#ssb_hide_bonus_stars">%ssb_hide_bonus_stars(level)</a></li>
+		<li><a href="#ssb_hide">%ssb_hide(level)</a></li>
 	</ul>
 	<br/>
 
@@ -113,7 +125,7 @@
 	<br/>
 
 <h3 id="no_lose_lives">%no_lose_lives(level)</h3>
-	<p>If infinite lives is disabled (<code>!infinite_lives = 0</code> in <code>settings_global.asm</code>), you can prevent life loss in specific sublevels using this option (for example for tutorial rooms or cutscenes).</p>
+	<p>If infinite lives is disabled (<code>!infinite_lives = 0</code> in <a href="./settings_global.html#fixes">Global Settings - Quality of Life Fixes Settings</a>), you can prevent life loss in specific sublevels using this option (for example for tutorial rooms or cutscenes).</p>
 	<p>If <code>!infinite_lives = 1</code>, you can ignore this.</p>
 	<p>Examples:</p>
 	<ul>
@@ -133,7 +145,42 @@
 		<li><code>no_room_cp_sfx</code>: if <code>0</code>, automatic checkpoints in the sublevel will play the SFX. Otherwise, they won't play the SFX.</li>
 		<li><code>no_lose_lives</code>: if <code>0</code>, life loss is enabled in the sublevel (if infinite lives is disabled globally). Otherwise, it is disabled.</li>
 	</ul>
+	<br/>
 
-	<br/><center><a href="./index.html">Return to main page</a></center>
+	<p id="ssb"></p>
+<h3 id="ssb_config_item_box">%ssb_config_item_box(level, tile, pal)</h3>
+<h3 id="ssb_config_timer">%ssb_config_timer(level, tile, pal)</h3>
+<h3 id="ssb_config_coins">%ssb_config_coins(level, tile, pal, beha)</h3>
+<h3 id="ssb_config_lives">%ssb_config_lives(level, tile, pal)</h3>
+<h3 id="ssb_config_bonus_stars">%ssb_config_bonus_stars(level, tile, pal)</h3>
+	<p>These settings override the respective sprite status bar element's default configuration in the specified level. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a>.</p>
+	<p><code>tile</code> and <code>pal</code> specify the tile and palette to use for the element, similarly to the <code>!default_XXX_tile</code> and <code>!default_XXX_palette</code> defines in the global settings.</p>
+	<p>For the coin counter, there's an additional parameter <code>beha</code> that controls whether to display coins, dragon coins or both:
+		<ul>
+			<li>0 = draw both coins and dragon coins</li>
+			<li>1 = don't draw coins (only dragon coins)</li>
+			<li>2 = don't draw dragon coins (only coins)</li>
+		</ul>
+	</p>
+	<br/>
+
+<h3 id="ssb_config">%ssb_config(level, item_box_tile, item_box_pal, timer_tile, timer_pal, coins_tile, coins_pal, coins_beha, lives_tile, lives_pal, bonus_stars_tile, bonus_stars_pal)</h3>
+	<p>This is a shorthand to configure all the sprite status bar elements for the specified level at the same time. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a></p>
+	<br/>
+
+	<p id="ssb2"></p>
+<h3 id="ssb_hide_item_box">%ssb_hide_item_box(level)</h3>
+<h3 id="ssb_hide_timer">%ssb_hide_timer(level)</h3>
+<h3 id="ssb_hide_coins">%ssb_hide_coins(level)</h3>
+<h3 id="ssb_hide_lives">%ssb_hide_lives(level)</h3>
+<h3 id="ssb_hide_bonus_stars">%ssb_hide_bonus_stars(level)</h3>
+	<p>These hide the respective sprite status bar element in the specified level. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a></p>
+	<br/>
+
+<h3 id="ssb_hide">%ssb_hide(level)</h3>
+	<p>This hides the sprite status bar entirely in the specified level. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a></p>
+	<br/>
+
+	<center><a href="./index.html">Return to main page</a></center>
 </body>
 </html>
