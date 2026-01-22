@@ -1,8 +1,8 @@
-;========================================================================;
-; Settings used by Retry. Feel free to change these.                     ;
-;========================================================================;
+;==============================================================================;
+; Settings used by Retry. Feel free to change these.                           ;
+;==============================================================================;
 
-;======================== Default Retry behavior ========================;
+;=========================== Default Retry behavior ===========================;
 
 ; 0 = retry prompt & play the death song when players die (music restarts on every death).
 ; 1 = retry prompt & play only the death sfx when players die (music won't be interrupted).
@@ -12,7 +12,7 @@
 ; Note: you can override this per sublevel (see "settings_local.asm") and also at any point by setting a certain RAM address (see "docs/ram_map.html").
     !default_prompt_type = 1
 
-;======================== QoL and Anti-Break ============================;
+;=========================== QoL and Anti-Break ===============================;
 
 ; How many lives to start a new save file with.
     !initial_lives = 99
@@ -38,7 +38,7 @@
     !counterbreak_score = 0
     !counterbreak_lives = 0
 
-;======================== QoL fixes =====================================;
+;=========================== QoL fixes ========================================;
 
 ; If 1, level transitions will be much faster than usual.
     !fast_transitions = 0
@@ -97,7 +97,7 @@
 ; 3 = instantly reload the title screen and play the death music (title screen music will restart)
     !title_death_behavior = 1
 
-;======================== SFX ===========================================;
+;=========================== SFX ==============================================;
 
 ; SFX to play when dying (!death_sfx = $00 -> no SFX).
 ; Only played if the death song is skipped (for example, it's not played if the level uses vanilla death).
@@ -136,7 +136,7 @@
 ; 1 = enabled in all levels except those toggled by %sfx_echo (note: this only works if !use_legacy_tables = 0)
     !default_sfx_echo = 0
 
-;======================== Save and SRAM =================================;
+;=========================== Save and SRAM ====================================;
 
 ; If 1, a custom SRAM expansion patch will be inserted as well.
 ; By default, it will save the custom checkpoint status and death counter to SRAM.
@@ -153,7 +153,7 @@
 ; This ensures that they will be saved to SRAM when this happens.
     !save_after_game_over = 1
 
-;======================== Custom Midways ================================;
+;=========================== Custom Midways ===================================;
 
 ; If 1, Retry will install a custom midway object in the ROM, insertable in levels by using object 2D.
 ; These objects allow you to have multiple midways in the same level, each with a different entrance.
@@ -165,7 +165,7 @@
 ; The more you set, the more free ram is needed (4 bytes for each).
     !max_custom_midway_num = 8
 
-;======================== Retry Prompt ==================================;
+;=========================== Retry Prompt =====================================;
 
 ; If 1, the prompt will show up immediately after dying.
 ; Otherwise, it will show up halfway through (or right after, depending on !retry_death_animation)
@@ -282,7 +282,7 @@
     !tile_x    = $4A
     !tile_i    = $5A
 
-;======================== Sprite Status Bar =============================;
+;=========================== Sprite Status Bar ================================;
 
 ; If 1, a sprite status bar will be installed allowing you to display the item box, coins, Yoshi coins,
 ; timer, lives and bonus stars using sprite tiles, which keeps layer 3 working properly.
@@ -355,7 +355,7 @@
     !retry_indicator_x_pos   = $50
     !retry_indicator_y_pos   = $0F
 
-;======================== Death Counter =================================;
+;=========================== Death Counter ====================================;
 
 ; If 1, a death counter will replace the lives on the (vanilla) status bar.
     !status_death_counter = 0
@@ -380,7 +380,7 @@
 ; (it's assumed that the digits are stored in order from 0 to 9 in the GFX file).
     !ow_digit_0 = $22
 
-;======================== Misc settings =================================;
+;=========================== Misc settings ====================================;
 
 ; If 1, the level-specific Retry settings will be loaded from the "legacy/tables.asm"
 ; file instead of the "settings_local.asm" file. Use this if you prefer the old table-based
