@@ -119,9 +119,9 @@ reset_all_checkpoints:
 
 ;===============================================================================
 ; Routine to configure which tiles will be used by the sprite status bar.
-; You can configure these elements: item box, timer, coin counter, lives counter
-; and bonus stars counter. Each element needs a 16x16 sprite tile to be
-; reserved.
+; You can configure these elements: item box, timer, coin counter, lives
+; counter, bonus stars counter and death counter. Each element needs a 16x16
+; sprite tile to be reserved.
 ; This routine should be called in UberASM level init code, to overwrite the
 ; default settings from "settings_global.asm", in case you want to hide some or
 ; all of the elements in some level or if you need to change their tile or
@@ -147,6 +147,7 @@ reset_all_checkpoints:
 ;     dw $80C2 ; Coin counter: palette 8, tile 0xC2
 ;     dw $0000 ; Lives counter: hidden
 ;     dw $0000 ; Bonus stars counter: hidden
+;     dw $0000 ; Death counter: hidden
 ;     ... <- your code will continue here after the JSL
 ;===============================================================================
 configure_sprite_status_bar:
@@ -164,11 +165,12 @@ if !sprite_status_bar
     lda $0005,y : and #$7FFF : sta !ram_status_bar_coins_tile
     lda $0007,y : and #$7FFF : sta !ram_status_bar_lives_tile
     lda $0009,y : and #$7FFF : sta !ram_status_bar_bonus_stars_tile
+    lda $000B,y : and #$7FFF : sta !ram_status_bar_death_tile
     plb
 endif
     ; Make sure the code returns at the right place
     rep #$20
-    lda $01,s : clc : adc.w #2*5 : sta $01,s
+    lda $01,s : clc : adc.w #2*!ssb_elements_number : sta $01,s
     sep #$30
     rtl
 
@@ -187,7 +189,7 @@ endif
 ;===============================================================================
 hide_sprite_status_bar:
 if !sprite_status_bar
-    jsl configure_sprite_status_bar : %dwn(0,5)
+    jsl configure_sprite_status_bar : %dwn(0,!ssb_elements_number)
 endif
     rtl
 

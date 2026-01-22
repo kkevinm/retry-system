@@ -29,13 +29,13 @@ nmi:
 
     ; Only upload if the timer changed, unless Mario died
     ; (ensuring the timer updates when dying for a timeout).
+    ldx $71 : cpx #$09 : beq +
     sep #$20
-    lda $71 : cmp #$09 : beq +
     lda $0F30|!addr : cmp.l !rom_timer_ticks
     rep #$20
     beq +
     jmp .no_timer
-+   
++
     ; Upload the first digit, unless it's 0.
     lda $0F31|!addr : and #$00FF : beq +
     %store_digit_addr()
@@ -59,11 +59,10 @@ nmi:
     lda $00 : adc #$0110 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
-
 .no_timer:
+
     ; Check if we need to upload the coin counter digits.
     lda !ram_status_bar_coins_tile : beq .no_coins
-
 .coins:
     ; Compute the VRAM address for later.
     %calc_vram() : sta $00
@@ -95,11 +94,10 @@ nmi:
     lda $00 : adc #$0110 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
-
 .no_coins:
+
     ; Check if we need to upload the lives counter digits.
     lda !ram_status_bar_lives_tile : beq .no_lives
-
 .lives:
     ; Compute the VRAM address for later.
     %calc_vram() : sta $00
@@ -131,11 +129,10 @@ nmi:
     lda $00 : adc #$0110 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
-
 .no_lives:
+
     ; Check if we need to upload the bonus stars digits.
     lda !ram_status_bar_bonus_stars_tile : beq .no_bonus_stars
-
 .bonus_stars:
     ; Compute the VRAM address for later.
     %calc_vram() : sta $00
@@ -168,8 +165,69 @@ nmi:
     lda $00 : adc #$0110 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
-
 .no_bonus_stars:
+
+    ; Check if we need to upload the death counter digits.
+    lda !ram_status_bar_death_tile : bne .death
+    jmp .no_death
+
+.death:
+    ; Compute the VRAM address for later.
+    %calc_vram() : sta $00
+
+    ; Only upload if Mario is dead.
+    ; We upload every frame even if wasteful, because I'd rather not add another
+    ; flag (!ram_is_dying does not work because it is already changed by the
+    ; time we get here). On death most things are stopped so it should be fine.
+    ldx $0100|!addr : cpx #$14 : bcc +
+    ldx $71 : cpx #$09 : beq +
+    jmp .no_death
++
+    ; X = indicator that something was uploaded previously
+    ldx #$00
+
+    ; Upload the first digit (unless it's 0).
+    lda !ram_death_counter+0 : and #$00FF : beq +
+    %store_digit_addr()
+    lda $00 : adc #$0010 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+    inx
++
+    ; Upload the second digit (unless it's 0 and didn't upload the first).
+    lda !ram_death_counter+1 : and #$00FF : bne +
+    cpx #$00 : beq ++
++   %store_digit_addr()
+    lda $00 : adc #$0020 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+    inx
+++
+    ; Upload the third digit (unless it's 0 and didn't upload the first 2).
+    lda !ram_death_counter+2 : and #$00FF : bne +
+    cpx #$00 : beq ++
++   %store_digit_addr()
+    lda $00 : adc #$0100 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+    inx
+++
+    ; Upload the fourth digit (unless it's 0 and didn't upload the first 3).
+    lda !ram_death_counter+3 : and #$00FF : bne +
+    cpx #$00 : beq ++
++   %store_digit_addr()
+    lda $00 : adc #$0110 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+++
+    ; Upload the fifth digit.
+    lda !ram_death_counter+4 : and #$00FF
+    %store_digit_addr()
+    lda $00 : adc #$0120 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+.no_death:
+
     sep #$20
     rts
 
@@ -208,7 +266,6 @@ init:
 
     ; Check if we need to upload the item box tile.
     lda !ram_status_bar_item_box_tile : beq ..no_item_box
-
 ..item_box:
 if !8x8_item_box_tile
     ; Upload the item box tile.
@@ -229,33 +286,30 @@ else
     lda.w #gfx_size(2) : sta.w upload_dma($4305)
     sty $420B
 endif
-
 ..no_item_box:
+
     ; Check if we need to upload the clock tile.
     lda !ram_status_bar_timer_tile : beq ..no_timer
-
 ..timer:
     ; Upload the clock tile.
     %calc_vram() : sta $2116
     lda.w #gfx_timer : sta.w upload_dma($4302)
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
-
 ..no_timer:
+
     ; Check if we need to upload the coin tiles.
     lda !ram_status_bar_coins_tile : beq ..no_coins
-
 ..coins:
     ; Upload the coin tiles.
     %calc_vram() : sta $2116
     lda.w #gfx_coins : sta.w upload_dma($4302)
     lda.w #gfx_size(2) : sta.w upload_dma($4305)
     sty $420B
-
 ..no_coins:
+
     ; Check if we need to upload the lives tile.
     lda !ram_status_bar_lives_tile : beq ..no_lives
-
 ..lives:
     ; Upload the lives tile based on the current player.
     %calc_vram() : sta $2116
@@ -265,37 +319,45 @@ endif
 +   sta.w upload_dma($4302)
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
-
 ..no_lives:
+
     ; Check if we need to upload the bonus stars tile.
     lda !ram_status_bar_bonus_stars_tile : beq ..no_bonus_stars
-
 ..bonus_stars:
     ; Upload the bonus stars tile.
     %calc_vram() : sta $2116
     lda.w #gfx_bonus_stars : sta.w upload_dma($4302)
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
-
 ..no_bonus_stars:
-    sep #$20
+
+    ; Check if we need to upload the death tile.
+    lda !ram_status_bar_death_tile : beq ..no_death
+..death:
+    ; Upload the death tile.
+    %calc_vram() : sta $2116
+    lda.w #gfx_death : sta.w upload_dma($4302)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+..no_death:
 
 if !draw_retry_indicator
     ; Check if we need to upload the indicator tile.
+    sep #$20
     lda $0100|!addr : cmp #$0B : bcc ..no_indicator
     jsr shared_get_prompt_type
     cmp.b #!retry_type_vanilla : bcs ..no_indicator
-
+..indicator:
     ; Upload the indicator tile.
     rep #$20
     lda.w #vram_addr(!retry_indicator_tile) : sta $2116
     lda.w #gfx_indicator : sta.w upload_dma($4302)
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
-    sep #$20
 ..no_indicator:
 endif
 
+    sep #$20
     rts
 
 main:
@@ -323,8 +385,8 @@ main:
     jsr draw_item_box
     plp
     inc $02
-
 .no_item_box:
+
     ; Draw the timer if applicable.
     lda !ram_status_bar_timer_tile : beq .no_timer
 .timer:
@@ -333,8 +395,8 @@ main:
     jsr draw_timer
     plp
     inc $02
-
 .no_timer:
+
     ; Draw the coins if applicable.
     lda !ram_status_bar_coins_tile : beq .no_coins
 .coins:
@@ -346,8 +408,8 @@ main:
     jsr draw_yoshi_coins
 +   plp
     inc $02
-
 .no_coins:
+
     ; Draw the lives if applicable.
     lda !ram_status_bar_lives_tile : beq .no_lives
 .lives:
@@ -356,8 +418,8 @@ main:
     jsr draw_lives
     plp
     inc $02
-
 .no_lives:
+
     ; Draw the bonus stars if applicable.
     lda !ram_status_bar_bonus_stars_tile : beq .no_bonus_stars
 .bonus_stars:
@@ -366,8 +428,17 @@ main:
     jsr draw_bonus_stars
     plp
     inc $02
-
 .no_bonus_stars:
+
+    ; Draw the death counter if applicable.
+    lda !ram_status_bar_death_tile : beq .no_death
+.death:
+    php
+    jsr convert_tile_props
+    jsr draw_death
+    plp
+    inc $02
+.no_death:
 
 if !draw_retry_indicator
     ; Draw the indicator if applicable
@@ -378,7 +449,6 @@ if !draw_retry_indicator
 .indicator:
     jsr draw_indicator
     inc $02
-
 .no_indicator:
 endif
     
@@ -702,6 +772,90 @@ draw_bonus_stars:
 .tile:
     dw $0000,$0010,$0011
 
+draw_death:
+    ; Draw the death tile.
+    ldy #$0000
+    jsr .draw
+
+    ; $04 = indicator that something was uploaded previously
+    stz $04
+
+    ; Draw the first digit, unless it's 0.
+    lda !ram_death_counter+0 : bne +
+    iny #2
+    bra ++
++   jsr .draw
+++
+    ; Draw the second digit, unless it's 0 and didn't draw the first.
+    lda !ram_death_counter+1 : ora $04 : bne +
+    iny #2
+    bra ++
++   jsr .draw
+++
+    ; Draw the third digit, unless it's 0 and didn't draw the first 2.
+    lda !ram_death_counter+2 : ora $04 : bne +
+    iny #2
+    bra ++
++   jsr .draw
+++
+    ; Draw the fourth digit, unless it's 0 and didn't draw the first 3.
+    lda !ram_death_counter+3 : ora $04 : bne +
+    iny #2
+    bra ++
++   jsr .draw
+++
+    ; Draw the fifth digit.
+    ;jsr .draw
+    ;rts
+
+.draw:
+    inc $04
+    jsr get_free_slot
+    rep #$20
+    lda.w .pos,y : sta $0200|!addr,x
+    lda $00 : ora.w .tile,y : sta $0202|!addr,x
+    phx
+    txa : lsr #2 : tax
+    sep #$20
+    stz $0420|!addr,x
+    plx
+    inx #4
+    iny #2
+    rts
+
+.pos:
+    db $00+!death_counter_x_pos-1,!death_counter_y_pos
+    db $08+!death_counter_x_pos,!death_counter_y_pos
+    db $10+!death_counter_x_pos,!death_counter_y_pos
+    db $18+!death_counter_x_pos,!death_counter_y_pos
+    db $20+!death_counter_x_pos,!death_counter_y_pos
+    db $28+!death_counter_x_pos,!death_counter_y_pos
+
+.tile:
+    dw $0000,$0001,$0002,$0010,$0011,$0012
+
+if !draw_retry_indicator
+
+assert !retry_indicator_palette >= $08 && !retry_indicator_palette <= $0F, "Error: \!retry_indicator_palette should be between $08 and $0F."
+
+!retry_indicator_xy #= (!retry_indicator_x_pos)|(!retry_indicator_y_pos<<8)
+!retry_indicator_tp #= (!retry_indicator_tile&$1FF)|$3000|((!retry_indicator_palette-8)<<9)
+
+draw_indicator:
+    jsr get_free_slot
+    rep #$20
+    lda.w #!retry_indicator_xy : sta $0200|!addr,x
+    lda.w #!retry_indicator_tp : sta $0202|!addr,x
+    phx
+    txa : lsr #2 : tax
+    sep #$20
+    stz $0420|!addr,x
+    plx
+    inx #4
+    rts
+
+endif
+
 if !draw_all_dc_collected
 get_total_dc_amount:
     ; If CMP #$XX, return $XX
@@ -731,26 +885,5 @@ get_total_dc_amount:
     rts
 endif
 
-if !draw_retry_indicator
-
-assert !retry_indicator_palette >= $08 && !retry_indicator_palette <= $0F, "Error: \!retry_indicator_palette should be between $08 and $0F."
-
-!retry_indicator_xy #= (!retry_indicator_x_pos)|(!retry_indicator_y_pos<<8)
-!retry_indicator_tp #= (!retry_indicator_tile&$1FF)|$3000|((!retry_indicator_palette-8)<<9)
-
-draw_indicator:
-    jsr get_free_slot
-    rep #$20
-    lda.w #!retry_indicator_xy : sta $0200|!addr,x
-    lda.w #!retry_indicator_tp : sta $0202|!addr,x
-    phx
-    txa : lsr #2 : tax
-    sep #$20
-    stz $0420|!addr,x
-    plx
-    inx #4
-    rts
-
-endif
 
 endif

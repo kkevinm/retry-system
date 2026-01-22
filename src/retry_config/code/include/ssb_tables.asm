@@ -26,6 +26,7 @@ endmacro
 %_build_status_bar_value(coin_counter)
 %_build_status_bar_value(lives_counter)
 %_build_status_bar_value(bonus_stars)
+%_build_status_bar_value(death_counter)
 
 if !default_coin_counter_behavior > 2
     error "Error: \!default_coin_counter_behavior is not valid!"
@@ -46,6 +47,9 @@ lives:
 
 bonus_stars:
     %dwn(!default_bonus_stars_value,$200)
+
+death:
+    %dwn(!default_death_counter_value,$200)
 
 macro _ssb_config_shared(level, tile, pal, name)
     if <level> < 0 || <level> > $1FF
@@ -111,12 +115,17 @@ macro ssb_config_bonus_stars(level, tile, pal)
     %_ssb_config_shared(<level>, <tile>, <pal>, bonus_stars)
 endmacro
 
-macro ssb_config(level, item_box_tile, item_box_pal, timer_tile, timer_pal, coins_tile, coins_pal, coins_beha, lives_tile, lives_pal, bonus_stars_tile, bonus_stars_pal)
+macro ssb_config_death(level, tile, pal)
+    %_ssb_config_shared(<level>, <tile>, <pal>, death)
+endmacro
+
+macro ssb_config(level, item_box_tile, item_box_pal, timer_tile, timer_pal, coins_tile, coins_pal, coins_beha, lives_tile, lives_pal, bonus_stars_tile, bonus_stars_pal, death_tile, death_pal)
     %ssb_config_item_box(<level>, <item_box_tile>, <item_box_pal>)
     %ssb_config_timer(<level>, <timer_tile>, <timer_pal>)
     %ssb_config_coins(<level>, <coins_tile>, <coins_pal>, <coins_beha>)
     %ssb_config_lives(<level>, <lives_tile>, <lives_pal>)
     %ssb_config_bonus_stars(<level>, <bonus_stars_tile>, <bonus_stars_pal>)
+    %ssb_config_death(<level>, <death_tile>, <death_pal>)
 endmacro
 
 macro ssb_hide_item_box(level)
@@ -139,8 +148,12 @@ macro ssb_hide_bonus_stars(level)
     %ssb_config_bonus_stars(<level>, 0, 0)
 endmacro
 
+macro ssb_hide_death(level)
+    %ssb_config_death(<level>, 0, 0)
+endmacro
+
 macro ssb_hide(level)
-    %ssb_config(<level>, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    %ssb_config(<level>, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 endmacro
 
 if not(!use_legacy_tables)
@@ -156,6 +169,7 @@ load:
     lda.l coins,x       : sta !ram_status_bar_coins_tile
     lda.l lives,x       : sta !ram_status_bar_lives_tile
     lda.l bonus_stars,x : sta !ram_status_bar_bonus_stars_tile
+    lda.l death,x       : sta !ram_status_bar_death_tile
     plp
     plx
     rts
@@ -171,6 +185,7 @@ load:
     lda.w #!default_coin_counter_value  : sta !ram_status_bar_coins_tile
     lda.w #!default_lives_counter_value : sta !ram_status_bar_lives_tile
     lda.w #!default_bonus_stars_value   : sta !ram_status_bar_bonus_stars_tile
+    lda.w #!default_death_counter_value : sta !ram_status_bar_death_tile
     plp
     rts
 
@@ -193,7 +208,10 @@ endmacro
 macro ssb_config_bonus_stars(level, tile, pal)
 endmacro
 
-macro ssb_config(level, item_box_tile, item_box_pal, timer_tile, timer_pal, coins_tile, coins_pal, coins_beha, lives_tile, lives_pal, bonus_stars_tile, bonus_stars_pal)
+macro ssb_config_death(level, tile, pal)
+endmacro
+
+macro ssb_config(level, item_box_tile, item_box_pal, timer_tile, timer_pal, coins_tile, coins_pal, coins_beha, lives_tile, lives_pal, bonus_stars_tile, bonus_stars_pal, death_tile, death_pal)
 endmacro
 
 macro ssb_hide_item_box(level)
@@ -209,6 +227,9 @@ macro ssb_hide_lives(level)
 endmacro
 
 macro ssb_hide_bonus_stars(level)
+endmacro
+
+macro ssb_hide_death(level)
 endmacro
 
 macro ssb_hide(level)

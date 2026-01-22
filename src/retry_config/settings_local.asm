@@ -51,10 +51,11 @@
 ;   %ssb_config_coins(level, tile, pal, beha)
 ;   %ssb_config_lives(level, tile, pal)
 ;   %ssb_config_bonus_stars(level, tile, pal)
+;   %ssb_config_death(level, tile, pal)
 ;     These settings override the respective sprite status bar element's default configuration in the specified level.
 ;     For the coins, "beha" has the same meaning as !default_coin_counter_behavior
 ;
-;   %ssb_config(level, item_box_tile, item_box_pal, timer_tile, timer_pal, coins_tile, coins_pal, coins_beha, lives_tile, lives_pal, bonus_stars_tile, bonus_stars_pal)
+;   %ssb_config(level, item_box_tile, item_box_pal, timer_tile, timer_pal, coins_tile, coins_pal, coins_beha, lives_tile, lives_pal, bonus_stars_tile, bonus_stars_pal, death_tile, death_pal)
 ;     This overrides the default sprite status bar tile and palette for every element in the level.
 ;
 ;   %ssb_hide_item_box(level)
@@ -62,6 +63,7 @@
 ;   %ssb_hide_coins(level)
 ;   %ssb_hide_lives(level)
 ;   %ssb_hide_bonus_stars(level)
+;   %ssb_hide_death(level)
 ;     These hide the respective sprite status bar element in the level.
 ;
 ;   %ssb_hide(level)

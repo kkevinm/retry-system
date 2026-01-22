@@ -28,6 +28,9 @@ lives:
 bonus_stars:
     %incgfx(bonus_stars)
 
+death:
+    %incgfx(death)
+
 item_box:
 if !8x8_item_box_tile
     %incgfx(item_box_8x8)

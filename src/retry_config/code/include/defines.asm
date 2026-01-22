@@ -28,3 +28,5 @@
 !reset_rng_type_always   #= $03
 !reset_rng_type_min      #= !reset_rng_type_never
 !reset_rng_type_max      #= !reset_rng_type_always
+
+!ssb_elements_number #= 6

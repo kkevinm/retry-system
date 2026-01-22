@@ -69,7 +69,8 @@ namespace off
 %retry_ram(status_bar_coins_tile,$21)       ; 2
 %retry_ram(status_bar_lives_tile,$23)       ; 2
 %retry_ram(status_bar_bonus_stars_tile,$25) ; 2
-%retry_ram(reserved,$27)                    ; 4 (reserved for future expansion)
+%retry_ram(status_bar_death_tile,$27)       ; 2
+%retry_ram(reserved,$29)                    ; 2 (reserved for future expansion)
 %retry_ram(death_counter,$2B)               ; 5
 %retry_ram(checkpoint,$30)                  ; 192
 %retry_ram(cust_obj_data,$F0)               ; 1+(!max_custom_midway_num*4)

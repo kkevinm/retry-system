@@ -66,7 +66,7 @@ endif
     %incsrc(code/hijacks,custom_midway)
     %incsrc(code/hijacks,sram)
     %incsrc(code/hijacks,hurry_up)
-    %incsrc(code/hijacks,death_counter)
+    %incsrc(code/hijacks,death_counter_vanilla)
     %incsrc(code/hijacks,initial_facing_fix)
     %incsrc(code/hijacks,item_box_fix)
     %incsrc(code/hijacks,remove_status_bar)

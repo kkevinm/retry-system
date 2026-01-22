@@ -317,6 +317,8 @@
     !default_lives_counter_palette = $09
     !default_bonus_stars_tile      = $00
     !default_bonus_stars_palette   = $09
+    !default_death_counter_tile    = $00
+    !default_death_counter_palette = $09
 
 ; General properties for sprite status bar elements.
 ; These are only relevant if !sprite_status_bar = 1.
@@ -332,6 +334,8 @@
     !lives_counter_y_pos = $0F
     !bonus_stars_x_pos   = $10
     !bonus_stars_y_pos   = $17
+    !death_counter_x_pos = $10
+    !death_counter_y_pos = $0F
 
 ; If 1, the item box will always be drawn (if set to be drawn for the specific level).
 ; Otherwise, it will only be drawn when having an item in reserve.
