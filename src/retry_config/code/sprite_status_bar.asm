@@ -149,7 +149,7 @@ endif
     sty $420B
 ..no_death:
     
-    ; Check if new need to upload the "X" tile.
+    ; Check if we need to upload the "X" tile.
     lda $04 : beq ..no_X
 ..X:
     ; Upload the "X" tile.
