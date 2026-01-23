@@ -16,6 +16,9 @@ if !sprite_status_bar
 digits:
     %incgfx(digits)
 
+x:
+    %incgfx(x)
+
 coins:
     %incgfx(coins)
 

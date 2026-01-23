@@ -31,9 +31,12 @@ init:
 nmi:
     ; $02 = flag to force upload (for direct addressing)
     lda !retry_ram_status_bar_force_upload : sta $02
-    
-    ; Setup the constant DMA parameters.
+
+    ; $04 = flag to upload the "X" tile
     rep #$20
+    stz $04
+
+    ; Setup the constant DMA parameters.
     ldy #$80 : sty $2115
     lda #$1801 : sta.w upload_dma($4300)
     ldy.b #!gfx_bank : sty.w upload_dma($4304)
@@ -76,6 +79,10 @@ endif
     ; Check if we need to upload the clock tile.
     lda !ram_status_bar_timer_tile : beq ..no_timer
 ..timer:
+    ; Signal "X" tile upload
+if !timer_X_enabled
+    inc $04
+endif
     ; Upload the clock tile.
     %calc_vram() : sta $2116
     lda.w #gfx_timer : sta.w upload_dma($4302)
@@ -86,6 +93,10 @@ endif
     ; Check if we need to upload the coin tiles.
     lda !ram_status_bar_coins_tile : beq ..no_coins
 ..coins:
+    ; Signal "X" tile upload
+if !coin_counter_X_enabled
+    inc $04
+endif
     ; Upload the coin tiles.
     %calc_vram() : sta $2116
     lda.w #gfx_coins : sta.w upload_dma($4302)
@@ -96,6 +107,10 @@ endif
     ; Check if we need to upload the lives tile.
     lda !ram_status_bar_lives_tile : beq ..no_lives
 ..lives:
+    ; Signal "X" tile upload
+if !lives_counter_X_enabled
+    inc $04
+endif
     ; Upload the lives tile based on the current player.
     %calc_vram() : sta $2116
     lda.w #gfx_lives
@@ -109,6 +124,10 @@ endif
     ; Check if we need to upload the bonus stars tile.
     lda !ram_status_bar_bonus_stars_tile : beq ..no_bonus_stars
 ..bonus_stars:
+    ; Signal "X" tile upload
+if !bonus_stars_X_enabled
+    inc $04
+endif
     ; Upload the bonus stars tile.
     %calc_vram() : sta $2116
     lda.w #gfx_bonus_stars : sta.w upload_dma($4302)
@@ -119,12 +138,27 @@ endif
     ; Check if we need to upload the death tile.
     lda !ram_status_bar_death_tile : beq ..no_death
 ..death:
+    ; Signal "X" tile upload
+if !death_counter_X_enabled
+    inc $04
+endif
     ; Upload the death tile.
     %calc_vram() : sta $2116
     lda.w #gfx_death : sta.w upload_dma($4302)
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 ..no_death:
+    
+    ; Check if new need to upload the "X" tile.
+    lda $04 : beq ..no_X
+..X:
+    ; Upload the "X" tile.
+    rep #$20
+    lda.w #vram_addr(!X_tile) : sta $2116
+    lda.w #gfx_x : sta.w upload_dma($4302)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+..no_X:
 
 if !draw_retry_indicator
     ; Check if we need to upload the indicator tile.
@@ -553,7 +587,46 @@ endif
 .props:
     dw $0000,$4000,$8000,$C000
 
+
+assert !X_palette >= $08 && !X_palette <= $0F, "Error: \!X_palette should be between $08 and $0F."
+
+!X_tp #= (!X_tile&$1FF)|$3000|((!X_palette-8)<<9)
+
+!timer_X_index         #= 2*0
+!coin_counter_X_index  #= 2*1
+!lives_counter_X_index #= 2*2
+!bonus_stars_X_index   #= 2*3
+!death_counter_X_index #= 2*4
+
+; Shared routine to draw an element's "X" tile
+; Should be called with Y = index specific for each element, defined above
+draw_X:
+    jsr get_free_slot
+    rep #$20
+    lda.w .pos,y : sta $0200|!addr,x
+    lda.w #!X_tp : sta $0202|!addr,x
+    phx
+    txa : lsr #2 : tax
+    sep #$20
+    stz $0420|!addr,x
+    plx
+    inx #4
+    rts
+
+.pos:
+    db !timer_X_x_pos,!timer_X_y_pos
+    db !coin_counter_X_x_pos,!coin_counter_X_y_pos
+    db !lives_counter_X_x_pos,!lives_counter_X_y_pos
+    db !bonus_stars_X_x_pos,!bonus_stars_X_y_pos
+    db !death_counter_X_x_pos,!death_counter_X_y_pos
+
 draw_timer:
+    ; Draw the "X" tile if applicable
+if !timer_X_enabled
+    ldy.w #!timer_X_index
+    jsr draw_X
+endif
+
     ; Draw the clock tile.
     ldy #$0000
     jsr .draw
@@ -610,6 +683,12 @@ draw_timer:
     dw $0000,$0001,$0010,$0011
 
 draw_coins:
+    ; Draw the "X" tile if applicable
+if !coin_counter_X_enabled
+    ldy.w #!coin_counter_X_index
+    jsr draw_X
+endif
+
     ; Draw the coin tile.
     ldy #$0000
     jsr .draw
@@ -704,6 +783,12 @@ endif
     db $80,$40,$20,$10,$08,$04,$02,$01
 
 draw_lives:
+    ; Draw the "X" tile if applicable
+if !lives_counter_X_enabled
+    ldy.w #!lives_counter_X_index
+    jsr draw_X
+endif
+
     ; Draw the lives tile.
     ldy #$0000
     jsr .draw
@@ -741,6 +826,12 @@ draw_lives:
     dw $0000,$0010,$0011
 
 draw_bonus_stars:
+    ; Draw the "X" tile if applicable
+if !bonus_stars_X_enabled
+    ldy.w #!bonus_stars_X_index
+    jsr draw_X
+endif
+
     ; Draw the bonus stars tile.
     ldy #$0000
     jsr .draw
@@ -783,6 +874,12 @@ draw_bonus_stars:
     dw $0000,$0010,$0011
 
 draw_death:
+    ; Draw the "X" tile if applicable
+if !death_counter_X_enabled
+    ldy.w #!death_counter_X_index
+    jsr draw_X
+endif
+
     ; Draw the death tile.
     ldy #$0000
     jsr .draw
@@ -835,11 +932,11 @@ draw_death:
 
 .pos:
     db $00+!death_counter_x_pos-1,!death_counter_y_pos
-    db $08+!death_counter_x_pos,!death_counter_y_pos
     db $10+!death_counter_x_pos,!death_counter_y_pos
     db $18+!death_counter_x_pos,!death_counter_y_pos
     db $20+!death_counter_x_pos,!death_counter_y_pos
     db $28+!death_counter_x_pos,!death_counter_y_pos
+    db $30+!death_counter_x_pos,!death_counter_y_pos
 
 .tile:
     dw $0000,$0001,$0002,$0010,$0011,$0012

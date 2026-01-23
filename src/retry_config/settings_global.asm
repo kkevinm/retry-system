@@ -30,13 +30,13 @@
 ; Useful for Kaizo and collab hacks. For lives, they will be reset to !initial_lives
 ; 0 = disabled, 1 = enabled for both respawning and going to the Overworld
 ; 2 = enabled just for respawning, 3 = enabled just for going to the Overworld
-    !counterbreak_yoshi = 1
-    !counterbreak_powerup = 1
-    !counterbreak_item_box = 1
-    !counterbreak_coins = 0
+    !counterbreak_yoshi       = 1
+    !counterbreak_powerup     = 1
+    !counterbreak_item_box    = 1
+    !counterbreak_coins       = 0
     !counterbreak_bonus_stars = 0
-    !counterbreak_score = 0
-    !counterbreak_lives = 0
+    !counterbreak_score       = 0
+    !counterbreak_lives       = 0
 
 ;=========================== QoL fixes ========================================;
 
@@ -110,7 +110,7 @@
 ; SFX to play when dying (!death_sfx = $00 -> no SFX).
 ; Only played if the death song is skipped (for example, it's not played if the level uses vanilla death).
 ; You can find a suitable death sfx inside "resources/amk/sfx".
-    !death_sfx = $20
+    !death_sfx      = $20
     !death_sfx_addr = $1DF9
 
 ; The alternative death jingle which will be played after the !death_sfx when "Exit" is chosen in the prompt.
@@ -119,24 +119,24 @@
     !death_jingle_alt = $FF
 
 ; SFX to play when selecting an option in the prompt (!option_sfx = $00 -> no SFX).
-    !option_sfx = $01
+    !option_sfx      = $01
     !option_sfx_addr = $1DFC
 
 ; SFX to play when the prompt cursor moves (!cursor_sfx = $00 -> no SFX).
-    !cursor_sfx = $06
+    !cursor_sfx      = $06
     !cursor_sfx_addr = $1DFC
 
 ; SFX to play when getting a checkpoint through a room transition (!room_cp_sfx = $00 -> no SFX).
 ; This is meant as a way to inform the player that they just got a room checkpoint.
 ; If enabled, you can disable it in specific sublevels using the "no_room_cp_sfx" option in "settings_local.asm".
-    !room_cp_sfx = $05
+    !room_cp_sfx      = $05
     !room_cp_sfx_addr = $1DF9
 
 ; SFX to play when entering a level from the Overworld (!enter_level_sfx = $00 -> no SFX)
 ; similarly to what SMB3 does. If the SFX gets cut out, increase !enter_level_delay.
-    !enter_level_sfx = $00
+    !enter_level_sfx      = $00
     !enter_level_sfx_addr = $1DFC
-    !enter_level_delay = $02
+    !enter_level_delay    = $02
 
 ; Default option for SFX echo. This is irrelevant if AddmusicK is not used.
 ; This controls the default SFX echo option for all levels and what the %sfx_echo(<level>) does in "settings_local.asm":
@@ -229,7 +229,7 @@
 ; It could be handy if you disabled the exit option, but still want a quick way of exiting the level.
 ; By default it's "Select", set !exit_button = $00 to disable this.
 ; For more information on these values, see $7E0016 on the SMWCentral RAM Map.
-    !exit_button = %00100000
+    !exit_button         = %00100000
     !exit_button_address = $16
 
 ; If 1, the Retry prompt won't be drawn to the screen (but still function normally).
@@ -309,14 +309,19 @@
 ; These are only relevant if !sprite_status_bar = 1.
     !default_item_box_tile         = $80
     !default_item_box_palette      = $0B
+
     !default_timer_tile            = $88
     !default_timer_palette         = $08
+
     !default_coin_counter_tile     = $C2
     !default_coin_counter_palette  = $08
+
     !default_lives_counter_tile    = $00
     !default_lives_counter_palette = $09
+
     !default_bonus_stars_tile      = $00
     !default_bonus_stars_palette   = $09
+
     !default_death_counter_tile    = $00
     !default_death_counter_palette = $09
 
@@ -324,18 +329,54 @@
 ; These are only relevant if !sprite_status_bar = 1.
     !item_box_x_pos      = $70
     !item_box_y_pos      = $07
+
     !timer_x_pos         = $D0
     !timer_y_pos         = $0F
+
     !coin_counter_x_pos  = $D0
     !coin_counter_y_pos  = $17
+
     !dc_counter_x_pos    = $9A
     !dc_counter_y_pos    = $0F
+
     !lives_counter_x_pos = $10
     !lives_counter_y_pos = $0F
+
     !bonus_stars_x_pos   = $10
     !bonus_stars_y_pos   = $17
+
     !death_counter_x_pos = $10
     !death_counter_y_pos = $0F
+
+; These enable an "X" tile to be drawn together with the respective element,
+; similar to some counters on the vanilla status bar. For each one, you can
+; set the position it will be drawn at when the element is visible (by default
+; they're all placed right next to the counter icon horizontally).
+    !timer_X_enabled         = 0
+    !timer_X_x_pos           = !timer_x_pos+$08
+    !timer_X_y_pos           = !timer_y_pos
+
+    !coin_counter_X_enabled  = 1
+    !coin_counter_X_x_pos    = !coin_counter_x_pos+$08
+    !coin_counter_X_y_pos    = !coin_counter_y_pos
+
+    !lives_counter_X_enabled = 1
+    !lives_counter_X_x_pos   = !lives_counter_x_pos+$08
+    !lives_counter_X_y_pos   = !lives_counter_y_pos
+
+    !bonus_stars_X_enabled   = 1
+    !bonus_stars_X_x_pos     = !bonus_stars_x_pos+$08
+    !bonus_stars_X_y_pos     = !bonus_stars_y_pos
+
+    !death_counter_X_enabled = 1
+    !death_counter_X_x_pos   = !death_counter_x_pos+$08
+    !death_counter_X_y_pos   = !death_counter_y_pos
+
+; Tile and palette for the "X" tile, used when at least one of the elements
+; have the "X" tile enabled (they all use the same tile). The tile is only
+; uploaded when necessary.
+    !X_tile    = $CF
+    !X_palette = $08
 
 ; If 1, the item box will always be drawn (if set to be drawn for the specific level).
 ; Otherwise, it will only be drawn when having an item in reserve.
@@ -364,7 +405,7 @@
     !draw_retry_indicator    = 0
     !retry_indicator_tile    = $1D
     !retry_indicator_palette = $09
-    !retry_indicator_x_pos   = $50
+    !retry_indicator_x_pos   = $58
     !retry_indicator_y_pos   = $0F
 
 ;=========================== Death Counter ====================================;
