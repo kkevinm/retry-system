@@ -12,7 +12,7 @@ table {
 	text-align: left;
 }
 </style>
-<body>
+<body class="wide">
 <h1>Global Retry Settings</h1>
 <p>Global settings are those Retry options that are used project-wide, these options must be in the <code>retry_config/settings_global.asm</code> file. To override any of these settings you can change the <a href="./settings_local.html">Local Settings</a>.</p>
 
@@ -659,7 +659,7 @@ table {
 			<td>Y position on the screen to draw the item box</td>
 		</tr>
 		<tr>
-			<td rowspan="7">Timer</td>
+			<td rowspan="8">Timer</td>
 			<td><code>!timer_icon_x_pos</code></td>
 			<td>X position on the screen to draw the timer icon</td>
 		</tr>
@@ -688,7 +688,11 @@ table {
 			<td>Y position on the screen to draw the timer counter</td>
 		</tr>
 		<tr>
-			<td rowspan="7">Coins</td>
+			<td><code>!timer_counter_right_align</code></td>
+			<td>The alignment determines where the timer counter is drawn when there's less digits to draw (because of leading 0s). If 1, the timer counter is right aligned, otherwise it is left aligned</td>
+		</tr>
+		<tr>
+			<td rowspan="8">Coins</td>
 			<td><code>!coin_icon_x_pos</code></td>
 			<td>X position on the screen to draw the normal coin icon</td>
 		</tr>
@@ -717,6 +721,10 @@ table {
 			<td>Y position on the screen to draw the normal coin counter</td>
 		</tr>
 		<tr>
+			<td><code>!coin_counter_right_align</code></td>
+			<td>The alignment determines where the coin counter is drawn when there's less digits to draw (because of leading 0s). If 1, the coin counter is right aligned, otherwise it is left aligned</td>
+		</tr>
+		<tr>
 			<td rowspan="2">Dragon coins</td>
 			<td><code>!dc_counter_x_pos</code></td>
 			<td>X position on the screen to draw the Dragon/Yoshi coin counter</td>
@@ -726,7 +734,7 @@ table {
 			<td>Y position on the screen to draw the Dragon/Yoshi coin counter</td>
 		</tr>
 		<tr>
-			<td rowspan="7">Lives</td>
+			<td rowspan="8">Lives</td>
 			<td><code>!lives_icon_x_pos</code></td>
 			<td>X position on the screen to draw the lives icon</td>
 		</tr>
@@ -755,7 +763,11 @@ table {
 			<td>Y position on the screen to draw the lives counter</td>
 		</tr>
 		<tr>
-			<td rowspan="7">Bonus stars</td>
+			<td><code>!lives_counter_right_align</code></td>
+			<td>The alignment determines where the lives counter is drawn when there's less digits to draw (because of leading 0s). If 1, the lives counter is right aligned, otherwise it is left aligned</td>
+		</tr>
+		<tr>
+			<td rowspan="8">Bonus stars</td>
 			<td><code>!bonus_stars_icon_x_pos</code></td>
 			<td>X position on the screen to draw the bonus stars icon</td>
 		</tr>
@@ -784,7 +796,11 @@ table {
 			<td>Y position on the screen to draw the bonus stars counter</td>
 		</tr>
 		<tr>
-			<td rowspan="7">Deaths</td>
+			<td><code>!bonus_stars_right_align</code></td>
+			<td>The alignment determines where the bonus stars counter is drawn when there's less digits to draw (because of leading 0s). If 1, the bonus stars counter is right aligned, otherwise it is left aligned</td>
+		</tr>
+		<tr>
+			<td rowspan="8">Deaths</td>
 			<td><code>!death_icon_x_pos</code></td>
 			<td>X position on the screen to draw the deaths icon</td>
 		</tr>
@@ -811,6 +827,10 @@ table {
 		<tr>
 			<td><code>!death_counter_y_pos</code></td>
 			<td>Y position on the screen to draw the deaths counter</td>
+		</tr>
+		<tr>
+			<td><code>!death_counter_right_align</code></td>
+			<td>The alignment determines where the death counter is drawn when there's less digits to draw (because of leading 0s). If 1, the death counter is right aligned, otherwise it is left aligned</td>
 		</tr>
 	</table>
 

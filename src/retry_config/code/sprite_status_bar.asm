@@ -573,15 +573,15 @@ endif
 
 .pos:
 if !8x8_item_box_tile
-    db $00+!item_box_x_pos,$08+!item_box_y_pos
-    db $18+!item_box_x_pos,$08+!item_box_y_pos
-    db $00+!item_box_x_pos,$10+!item_box_y_pos
-    db $18+!item_box_x_pos,$10+!item_box_y_pos
+    db $00+!item_box_x_pos,$08+!item_box_y_pos-1
+    db $18+!item_box_x_pos,$08+!item_box_y_pos-1
+    db $00+!item_box_x_pos,$10+!item_box_y_pos-1
+    db $18+!item_box_x_pos,$10+!item_box_y_pos-1
 else
-    db $00+!item_box_x_pos,$00+!item_box_y_pos
-    db $10+!item_box_x_pos,$00+!item_box_y_pos
-    db $00+!item_box_x_pos,$10+!item_box_y_pos
-    db $10+!item_box_x_pos,$10+!item_box_y_pos
+    db $00+!item_box_x_pos,$00+!item_box_y_pos-1
+    db $10+!item_box_x_pos,$00+!item_box_y_pos-1
+    db $00+!item_box_x_pos,$10+!item_box_y_pos-1
+    db $10+!item_box_x_pos,$10+!item_box_y_pos-1
 endif
 
 .props:
@@ -614,11 +614,17 @@ draw_X:
     rts
 
 .pos:
-    db !timer_X_x_pos,!timer_X_y_pos
-    db !coin_X_x_pos,!coin_X_y_pos
-    db !lives_X_x_pos,!lives_X_y_pos
-    db !bonus_stars_X_x_pos,!bonus_stars_X_y_pos
-    db !death_X_x_pos,!death_X_y_pos
+    db !timer_X_x_pos,!timer_X_y_pos-1
+    db !coin_X_x_pos,!coin_X_y_pos-1
+    db !lives_X_x_pos,!lives_X_y_pos-1
+    db !bonus_stars_X_x_pos,!bonus_stars_X_y_pos-1
+    db !death_X_x_pos,!death_X_y_pos-1
+
+; Tiles offset from the timer tile in VRAM
+!timer_icon_offset   = $00
+!timer_digit1_offset = $01
+!timer_digit2_offset = $10
+!timer_digit3_offset = $11
 
 draw_timer:
     ; Draw the "X" tile if applicable
@@ -629,33 +635,45 @@ endif
 
     ; Draw the clock tile.
     ldy #$0000
+    sty $0E ;lda.b #!timer_icon_offset : sta $0E
     jsr .draw
     
     ; Draw the first digit, unless it's 0.
     lda $0F31|!addr : bne +
     lda #$80 : ora !ram_timer+0 : sta !ram_timer+0
+if !timer_counter_align_right
     iny #2
+endif
     bra ++
 +   lda !ram_is_respawning : beq +
     lda !ram_timer+0 : bpl +
+if !timer_counter_align_right
     iny #2
+endif
     bra ++
-+   jsr .draw
++   lda.b #!timer_digit1_offset : sta $0E
+    jsr .draw
     ; In this case we always need to draw the second digit.
     bra +
 ++
     ; Draw the second digit, unless it's 0.
     lda $0F32|!addr : bne +
     lda #$80 : ora !ram_timer+1 : sta !ram_timer+1
+if !timer_counter_align_right
     iny #2
+endif
     bra ++
 +   lda !ram_is_respawning : beq +
     lda !ram_timer+1 : bpl +
+if !timer_counter_align_right
     iny #2
+endif
     bra ++
-+   jsr .draw
++   lda.b #!timer_digit2_offset : sta $0E
+    jsr .draw
 ++
     ; Draw the third digit.
+    lda.b #!timer_digit3_offset : sta $0E
     ;jsr .draw
     ;rts
 
@@ -663,7 +681,7 @@ endif
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora.w .tile,y : sta $0202|!addr,x
+    lda $00 : ora $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
@@ -674,13 +692,15 @@ endif
     rts
 
 .pos:
-    db $00+!timer_icon_x_pos-1,!timer_icon_y_pos
-    db $00+!timer_counter_x_pos,!timer_counter_y_pos
-    db $08+!timer_counter_x_pos,!timer_counter_y_pos
-    db $10+!timer_counter_x_pos,!timer_counter_y_pos
+    db $00+!timer_icon_x_pos-1,!timer_icon_y_pos-1
+    db $00+!timer_counter_x_pos,!timer_counter_y_pos-1
+    db $08+!timer_counter_x_pos,!timer_counter_y_pos-1
+    db $10+!timer_counter_x_pos,!timer_counter_y_pos-1
 
-.tile:
-    dw $0000,$0001,$0010,$0011
+; Tiles offset from the coin tile in VRAM
+!coin_icon_offset   = $00
+!coin_digit1_offset = $10
+!coin_digit2_offset = $11
 
 draw_coins:
     ; Draw the "X" tile if applicable
@@ -691,15 +711,20 @@ endif
 
     ; Draw the coin tile.
     ldy #$0000
+    sty $0E ;lda.b #!coin_icon_offset : sta $0E
     jsr .draw
 
     ; Draw the first digit, unless it's 0.
     lda $0DBF|!addr : cmp #10 : bcs +
+if !coin_counter_align_right
     iny #2
+endif
     bra ++
-+   jsr .draw
++   lda.b #!coin_digit1_offset : sta $0E
+    jsr .draw
 ++
     ; Draw the second digit.
+    lda.b #!coin_digit2_offset : sta $0E
     ;jsr .draw
     ;rts
 
@@ -707,7 +732,7 @@ endif
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora.w .tile,y : sta $0202|!addr,x
+    lda $00 : ora $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
@@ -718,12 +743,9 @@ endif
     rts
 
 .pos:
-    db $00+!coin_icon_x_pos-1,!coin_icon_y_pos
-    db $00+!coin_counter_x_pos,!coin_counter_y_pos
-    db $08+!coin_counter_x_pos,!coin_counter_y_pos
-
-.tile:
-    dw $0000,$0010,$0011
+    db $00+!coin_icon_x_pos-1,!coin_icon_y_pos-1
+    db $00+!coin_counter_x_pos,!coin_counter_y_pos-1
+    db $08+!coin_counter_x_pos,!coin_counter_y_pos-1
 
 draw_yoshi_coins:
     phx
@@ -782,6 +804,11 @@ endif
 .mask:
     db $80,$40,$20,$10,$08,$04,$02,$01
 
+; Tiles offset from the lives tile in VRAM
+!lives_icon_offset   = $00
+!lives_digit1_offset = $10
+!lives_digit2_offset = $11
+
 draw_lives:
     ; Draw the "X" tile if applicable
 if !lives_X_enabled
@@ -791,15 +818,20 @@ endif
 
     ; Draw the lives tile.
     ldy #$0000
+    sty $0E ;lda.b #!lives_icon_offset : sta $0E
     jsr .draw
 
     ; Draw the first digit, unless it's 0.
     lda $0DBE|!addr : inc : cmp #10 : bcs +
+if !lives_counter_align_right
     iny #2
+endif
     bra ++
-+   jsr .draw
++   lda.b #!lives_digit1_offset : sta $0E
+    jsr .draw
 ++
     ; Draw the second digit.
+    lda.b #!lives_digit2_offset : sta $0E
     ;jsr .draw
     ;rts
 
@@ -807,7 +839,7 @@ endif
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora.w .tile,y : sta $0202|!addr,x
+    lda $00 : ora $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
@@ -818,12 +850,14 @@ endif
     rts
 
 .pos:
-    db $00+!lives_icon_x_pos-1,!lives_icon_y_pos
-    db $00+!lives_counter_x_pos,!lives_counter_y_pos
-    db $08+!lives_counter_x_pos,!lives_counter_y_pos
+    db $00+!lives_icon_x_pos-1,!lives_icon_y_pos-1
+    db $00+!lives_counter_x_pos,!lives_counter_y_pos-1
+    db $08+!lives_counter_x_pos,!lives_counter_y_pos-1
 
-.tile:
-    dw $0000,$0010,$0011
+; Tiles offset from the bonus stars tile in VRAM
+!bonus_stars_icon_offset   = $00
+!bonus_stars_digit1_offset = $10
+!bonus_stars_digit2_offset = $11
 
 draw_bonus_stars:
     ; Draw the "X" tile if applicable
@@ -834,6 +868,7 @@ endif
 
     ; Draw the bonus stars tile.
     ldy #$0000
+    sty $0E ;lda.b #!bonus_stars_icon_offset : sta $0E
     jsr .draw
 
     ; Draw the first digit, unless it's 0.
@@ -842,12 +877,16 @@ endif
     ldx $0DB3|!addr
     lda $0F48|!addr,x : cmp #10 : bcs +
     plp : plx
+if !bonus_stars_counter_align_right
     iny #2
+endif
     bra ++
 +   plp : plx
+    lda.b #!bonus_stars_digit1_offset : sta $0E
     jsr .draw
 ++
     ; Draw the second digit.
+    lda.b #!bonus_stars_digit2_offset : sta $0E
     ;jsr .draw
     ;rts
 
@@ -855,7 +894,7 @@ endif
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora.w .tile,y : sta $0202|!addr,x
+    lda $00 : ora $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
@@ -866,12 +905,17 @@ endif
     rts
 
 .pos:
-    db $00+!bonus_stars_icon_x_pos-1,!bonus_stars_icon_y_pos
-    db $00+!bonus_stars_counter_x_pos,!bonus_stars_counter_y_pos
-    db $08+!bonus_stars_counter_x_pos,!bonus_stars_counter_y_pos
+    db $00+!bonus_stars_icon_x_pos-1,!bonus_stars_icon_y_pos-1
+    db $00+!bonus_stars_counter_x_pos,!bonus_stars_counter_y_pos-1
+    db $08+!bonus_stars_counter_x_pos,!bonus_stars_counter_y_pos-1
 
-.tile:
-    dw $0000,$0010,$0011
+; Tiles offset from the death tile in VRAM
+!death_icon_offset   = $00
+!death_digit1_offset = $01
+!death_digit2_offset = $02
+!death_digit3_offset = $10
+!death_digit4_offset = $11
+!death_digit5_offset = $12
 
 draw_death:
     ; Draw the "X" tile if applicable
@@ -882,6 +926,7 @@ endif
 
     ; Draw the death tile.
     ldy #$0000
+    sty $0E ;lda.b #!death_icon_offset : sta $0E
     jsr .draw
 
     ; $04 = indicator that something was uploaded previously
@@ -889,29 +934,42 @@ endif
 
     ; Draw the first digit, unless it's 0.
     lda !ram_death_counter+0 : bne +
+if !death_counter_align_right
     iny #2
+endif
     bra ++
-+   jsr .draw
++   lda.b #!death_digit1_offset : sta $0E
+    jsr .draw
 ++
     ; Draw the second digit, unless it's 0 and didn't draw the first.
     lda !ram_death_counter+1 : ora $04 : bne +
+if !death_counter_align_right
     iny #2
+endif
     bra ++
-+   jsr .draw
++   lda.b #!death_digit2_offset : sta $0E
+    jsr .draw
 ++
     ; Draw the third digit, unless it's 0 and didn't draw the first 2.
     lda !ram_death_counter+2 : ora $04 : bne +
+if !death_counter_align_right
     iny #2
+endif
     bra ++
-+   jsr .draw
++   lda.b #!death_digit3_offset : sta $0E
+    jsr .draw
 ++
     ; Draw the fourth digit, unless it's 0 and didn't draw the first 3.
     lda !ram_death_counter+3 : ora $04 : bne +
+if !death_counter_align_right
     iny #2
+endif
     bra ++
-+   jsr .draw
++   lda.b #!death_digit4_offset : sta $0E
+    jsr .draw
 ++
     ; Draw the fifth digit.
+    lda.b #!death_digit5_offset : sta $0E
     ;jsr .draw
     ;rts
 
@@ -920,7 +978,7 @@ endif
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora.w .tile,y : sta $0202|!addr,x
+    lda $00 : ora $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
@@ -931,21 +989,18 @@ endif
     rts
 
 .pos:
-    db $00+!death_icon_x_pos-1,!death_icon_y_pos
-    db $00+!death_counter_x_pos,!death_counter_y_pos
-    db $08+!death_counter_x_pos,!death_counter_y_pos
-    db $10+!death_counter_x_pos,!death_counter_y_pos
-    db $18+!death_counter_x_pos,!death_counter_y_pos
-    db $20+!death_counter_x_pos,!death_counter_y_pos
-
-.tile:
-    dw $0000,$0001,$0002,$0010,$0011,$0012
+    db $00+!death_icon_x_pos-1,!death_icon_y_pos-1
+    db $00+!death_counter_x_pos,!death_counter_y_pos-1
+    db $08+!death_counter_x_pos,!death_counter_y_pos-1
+    db $10+!death_counter_x_pos,!death_counter_y_pos-1
+    db $18+!death_counter_x_pos,!death_counter_y_pos-1
+    db $20+!death_counter_x_pos,!death_counter_y_pos-1
 
 if !draw_retry_indicator
 
 assert !retry_indicator_palette >= $08 && !retry_indicator_palette <= $0F, "Error: \!retry_indicator_palette should be between $08 and $0F."
 
-!retry_indicator_xy #= (!retry_indicator_x_pos)|(!retry_indicator_y_pos<<8)
+!retry_indicator_xy #= (!retry_indicator_x_pos)|((!retry_indicator_y_pos-1)<<8)
 !retry_indicator_tp #= (!retry_indicator_tile&$1FF)|$3000|((!retry_indicator_palette-8)<<9)
 
 draw_indicator:

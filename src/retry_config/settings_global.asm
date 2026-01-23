@@ -327,54 +327,60 @@
 
 ; General properties for sprite status bar elements.
 ; You can customize their position, including the icon and counter, independently,
-; and also enable and position an "X" tile next to the element.
+; and also enable and position an "X" tile next to the element. You can also
+; choose if to left or right align the counters (e.g. "0x1 " vs "0x 1").
 ; These are only relevant if !sprite_status_bar = 1.
     ; Item box
-    !item_box_x_pos            = $70
-    !item_box_y_pos            = $07
+    !item_box_x_pos                  = $70
+    !item_box_y_pos                  = $08
     ; Timer
-    !timer_icon_x_pos          = $D0
-    !timer_icon_y_pos          = $0F
-    !timer_X_enabled           = 0
-    !timer_X_x_pos             = !timer_icon_x_pos+$08
-    !timer_X_y_pos             = !timer_icon_y_pos
-    !timer_counter_x_pos       = !timer_icon_x_pos+$08
-    !timer_counter_y_pos       = !timer_icon_y_pos
+    !timer_icon_x_pos                = $D0
+    !timer_icon_y_pos                = $10
+    !timer_X_enabled                 = 0
+    !timer_X_x_pos                   = !timer_icon_x_pos+$08
+    !timer_X_y_pos                   = !timer_icon_y_pos
+    !timer_counter_x_pos             = !timer_icon_x_pos+$08
+    !timer_counter_y_pos             = !timer_icon_y_pos
+    !timer_counter_align_right       = 1
     ; Coins
-    !coin_icon_x_pos           = $D0
-    !coin_icon_y_pos           = $17
-    !coin_X_enabled            = 1
-    !coin_X_x_pos              = !coin_icon_x_pos+$08
-    !coin_X_y_pos              = !coin_icon_y_pos
-    !coin_counter_x_pos        = !coin_icon_x_pos+$10
-    !coin_counter_y_pos        = !coin_icon_y_pos
+    !coin_icon_x_pos                 = $D0
+    !coin_icon_y_pos                 = $18
+    !coin_X_enabled                  = 1
+    !coin_X_x_pos                    = !coin_icon_x_pos+$08
+    !coin_X_y_pos                    = !coin_icon_y_pos
+    !coin_counter_x_pos              = !coin_icon_x_pos+$10
+    !coin_counter_y_pos              = !coin_icon_y_pos
+    !coin_counter_align_right        = 1
     ; Dragon coins
-    !dc_counter_x_pos          = $9A
-    !dc_counter_y_pos          = $0F
+    !dc_counter_x_pos                = $9A
+    !dc_counter_y_pos                = $10
     ; Lives
-    !lives_icon_x_pos          = $10
-    !lives_icon_y_pos          = $0F
-    !lives_X_enabled           = 1
-    !lives_X_x_pos             = !lives_icon_x_pos+$08
-    !lives_X_y_pos             = !lives_icon_y_pos
-    !lives_counter_x_pos       = !lives_icon_x_pos+$10
-    !lives_counter_y_pos       = !lives_icon_y_pos
+    !lives_icon_x_pos                = $10
+    !lives_icon_y_pos                = $10
+    !lives_X_enabled                 = 1
+    !lives_X_x_pos                   = !lives_icon_x_pos+$08
+    !lives_X_y_pos                   = !lives_icon_y_pos
+    !lives_counter_x_pos             = !lives_icon_x_pos+$10
+    !lives_counter_y_pos             = !lives_icon_y_pos
+    !lives_counter_align_right       = 1
     ; Bonus stars
-    !bonus_stars_icon_x_pos    = $10
-    !bonus_stars_icon_y_pos    = $17
-    !bonus_stars_X_enabled     = 1
-    !bonus_stars_X_x_pos       = !bonus_stars_icon_x_pos+$08
-    !bonus_stars_X_y_pos       = !bonus_stars_icon_y_pos
-    !bonus_stars_counter_x_pos = !bonus_stars_icon_x_pos+$10
-    !bonus_stars_counter_y_pos = !bonus_stars_icon_y_pos
+    !bonus_stars_icon_x_pos          = $10
+    !bonus_stars_icon_y_pos          = $18
+    !bonus_stars_X_enabled           = 1
+    !bonus_stars_X_x_pos             = !bonus_stars_icon_x_pos+$08
+    !bonus_stars_X_y_pos             = !bonus_stars_icon_y_pos
+    !bonus_stars_counter_x_pos       = !bonus_stars_icon_x_pos+$10
+    !bonus_stars_counter_y_pos       = !bonus_stars_icon_y_pos
+    !bonus_stars_counter_align_right = 1
     ; Deaths
-    !death_icon_x_pos          = $10
-    !death_icon_y_pos          = $0F
-    !death_X_enabled           = 1
-    !death_X_x_pos             = !death_icon_x_pos+$08
-    !death_X_y_pos             = !death_icon_y_pos
-    !death_counter_x_pos       = !death_icon_x_pos+$10
-    !death_counter_y_pos       = !death_icon_y_pos
+    !death_icon_x_pos                = $10
+    !death_icon_y_pos                = $10
+    !death_X_enabled                 = 1
+    !death_X_x_pos                   = !death_icon_x_pos+$08
+    !death_X_y_pos                   = !death_icon_y_pos
+    !death_counter_x_pos             = !death_icon_x_pos+$10
+    !death_counter_y_pos             = !death_icon_y_pos
+    !death_counter_align_right       = 1
 
 ; Tile and palette for the "X" tile, used when at least one of the elements
 ; have the "X" tile enabled (they all use the same tile). The tile is only
@@ -410,7 +416,7 @@
     !retry_indicator_tile    = $1D
     !retry_indicator_palette = $09
     !retry_indicator_x_pos   = $58
-    !retry_indicator_y_pos   = $0F
+    !retry_indicator_y_pos   = $10
 
 ;=========================== Death Counter ====================================;
 
