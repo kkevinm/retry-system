@@ -591,7 +591,7 @@ draw_timer:
     rts
 
 .pos:
-    db $00+!timer_x_pos-1,!timer_y_pos+1
+    db $00+!timer_x_pos-1,!timer_y_pos
     db $08+!timer_x_pos,!timer_y_pos
     db $10+!timer_x_pos,!timer_y_pos
     db $18+!timer_x_pos,!timer_y_pos
