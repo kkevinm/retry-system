@@ -11,244 +11,6 @@ macro store_digit_addr()
     xba : lsr #3 : adc.w #gfx_digits : sta.w upload_dma($4302)
 endmacro
 
-nmi:
-    ; $02 = flag to force upload (for direct addressing)
-    lda !retry_ram_status_bar_force_upload : sta $02
-
-    ; Setup the constant DMA parameters.
-    rep #$20
-    ldy #$80 : sty $2115
-    lda #$1801 : sta.w upload_dma($4300)
-    ldy.b #!gfx_bank : sty.w upload_dma($4304)
-    ldy.b #1<<!upload_channel
-
-    ; Check if we need to upload the timer digits.
-    lda !ram_status_bar_timer_tile : bne .timer
-    jmp .no_timer
-
-.timer:
-    ; Compute the VRAM address for later.
-    %calc_vram() : sta $00
-
-    ; Only upload if forced, or if the timer changed, unless Mario died
-    ; (ensuring the timer updates when dying for a timeout).
-    ldx $02 : bne +
-    ldx $71 : cpx #$09 : beq +
-    sep #$20
-    lda $0F30|!addr : cmp.l !rom_timer_ticks
-    rep #$20
-    beq +
-    jmp .no_timer
-+
-    ; Upload the first digit, unless it's 0.
-    lda $0F31|!addr : and #$00FF : beq +
-    %store_digit_addr()
-    lda $00 : adc #$0010 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-
-    ; In this case we need to upload the second digit even if 0.
-    lda $0F32|!addr : and #$00FF : bra ++
-+   
-    ; Upload the second digit, unless it's 0.
-    lda $0F32|!addr : and #$00FF : beq +
-++  %store_digit_addr()
-    lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-+
-    ; Upload the third digit.
-    lda $0F33|!addr : and #$00FF
-    %store_digit_addr()
-    lda $00 : adc #$0110 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-.no_timer:
-
-    ; Check if we need to upload the coin counter digits.
-    lda !ram_status_bar_coins_tile : beq .no_coins
-.coins:
-    ; Compute the VRAM address for later.
-    %calc_vram() : sta $00
-
-    ; Only upload if forced or if the coin counter changed.
-    sep #$20
-    lda $0DBF|!addr : cmp !ram_coin_backup : bne +
-    ldx $02 : bne +
-    rep #$20
-    bra .no_coins
-+   
-    ; Update the coin counter backup.
-    sta !ram_coin_backup
-
-    ; Compute the coin counter digits.
-    sta $4204 : stz $4205
-    lda #10 : sta $4206
-
-    jsr rep20_and_waste_time_for_division
-
-    ; Upload the first digit (unless it's 0).
-    lda $4214 : beq +
-    %store_digit_addr()
-    lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-+   
-    ; Upload the second digit.
-    lda $4216 : %store_digit_addr()
-    lda $00 : adc #$0110 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-.no_coins:
-
-    ; Check if we need to upload the lives counter digits.
-    lda !ram_status_bar_lives_tile : beq .no_lives
-.lives:
-    ; Compute the VRAM address for later.
-    %calc_vram() : sta $00
-
-    ; Only upload if forced or if the lives counter changed.
-    sep #$20
-    lda $0DBE|!addr : cmp !ram_lives_backup : bne +
-    ldx $02 : bne +
-    rep #$20
-    bra .no_lives
-+   
-    ; Update the lives counter backup.
-    sta !ram_lives_backup
-
-    ; Compute the lives counter digits.
-    inc : sta $4204 : stz $4205
-    lda #10 : sta $4206
-
-    jsr rep20_and_waste_time_for_division
-
-    ; Upload the first digit (unless it's 0).
-    lda $4214 : beq +
-    %store_digit_addr()
-    lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-+   
-    ; Upload the second digit.
-    lda $4216 : %store_digit_addr()
-    lda $00 : adc #$0110 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-.no_lives:
-
-    ; Check if we need to upload the bonus stars digits.
-    lda !ram_status_bar_bonus_stars_tile : beq .no_bonus_stars
-.bonus_stars:
-    ; Compute the VRAM address for later.
-    %calc_vram() : sta $00
-
-    ; Only upload if forced or if the bonus stars changed.
-    sep #$20
-    ldx $0DB3|!addr
-    lda $0F48|!addr,x : cmp !ram_bonus_stars_backup : bne +
-    ldx $02 : bne +
-    rep #$20
-    bra .no_bonus_stars
-+   
-    ; Update the bonus stars backup.
-    sta !ram_bonus_stars_backup
-
-    ; Compute the bonus stars digits.
-    sta $4204 : stz $4205
-    lda #10 : sta $4206
-
-    jsr rep20_and_waste_time_for_division
-
-    ; Upload the first digit (unless it's 0).
-    lda $4214 : beq +
-    %store_digit_addr()
-    lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-+   
-    ; Upload the second digit.
-    lda $4216 : %store_digit_addr()
-    lda $00 : adc #$0110 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-.no_bonus_stars:
-
-    ; Check if we need to upload the death counter digits.
-    lda !ram_status_bar_death_tile : bne .death
-    jmp .no_death
-
-.death:
-    ; Compute the VRAM address for later.
-    %calc_vram() : sta $00
-
-    ; Only upload if forced or if Mario is dead or if loading the level.
-    ; We upload every frame even if wasteful, because I'd rather not add another
-    ; flag (!ram_is_dying does not work because it is already changed by the
-    ; time we get here). On death most things are stopped so it should be fine.
-    ldx $02 : bne +
-    ldx $0100|!addr : cpx #$14 : bcc +
-    ldx $71 : cpx #$09 : beq +
-    jmp .no_death
-+
-    ; X = indicator that something was uploaded previously
-    ldx #$00
-
-    ; Upload the first digit (unless it's 0).
-    lda !ram_death_counter+0 : and #$00FF : beq +
-    %store_digit_addr()
-    lda $00 : adc #$0010 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-    inx
-+
-    ; Upload the second digit (unless it's 0 and didn't upload the first).
-    lda !ram_death_counter+1 : and #$00FF : bne +
-    cpx #$00 : beq ++
-+   %store_digit_addr()
-    lda $00 : adc #$0020 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-    inx
-++
-    ; Upload the third digit (unless it's 0 and didn't upload the first 2).
-    lda !ram_death_counter+2 : and #$00FF : bne +
-    cpx #$00 : beq ++
-+   %store_digit_addr()
-    lda $00 : adc #$0100 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-    inx
-++
-    ; Upload the fourth digit (unless it's 0 and didn't upload the first 3).
-    lda !ram_death_counter+3 : and #$00FF : bne +
-    cpx #$00 : beq ++
-+   %store_digit_addr()
-    lda $00 : adc #$0110 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-++
-    ; Upload the fifth digit.
-    lda !ram_death_counter+4 : and #$00FF
-    %store_digit_addr()
-    lda $00 : adc #$0120 : sta $2116
-    lda.w #gfx_size(1) : sta.w upload_dma($4305)
-    sty $420B
-.no_death:
-
-    sep #$20
-    ; Force upload only lasts for 1 frame
-    lda #$00 : sta !retry_ram_status_bar_force_upload
-    rts
-
-; Routine to set A to 16 bits and waste time for division.
-; JSR to this routine will result in 17 cycles, so the division result will be
-; ready.
-rep20_and_waste_time_for_division:
-    rep #$20
-    nop
-    rts
-
 init:
     ; Skip if on the title screen.
     lda $0100|!addr : cmp #$0F : bcs +
@@ -263,13 +25,13 @@ init:
     ; Force to upload during level load
     lda #$01 : sta !ram_status_bar_force_upload
 
-    ; Upload the static tiles.
-    jsr .nmi
+    ; Upload the status bar.
+    ;jmp nmi
 
-    ; Upload the digits.
-    jmp nmi
-
-.nmi:
+nmi:
+    ; $02 = flag to force upload (for direct addressing)
+    lda !retry_ram_status_bar_force_upload : sta $02
+    
     ; Setup the constant DMA parameters.
     rep #$20
     ldy #$80 : sty $2115
@@ -277,6 +39,16 @@ init:
     ldy.b #!gfx_bank : sty.w upload_dma($4304)
     ldy.b #1<<!upload_channel
 
+    ; If forced upload, also upload the icons
+    ; For now we're uploading every icon when the status bar visibility changes,
+    ; which could be wasteful in most cases, but it's the simpler way and this
+    ; case only happens in rare cases. If necessary, in the future it could be
+    ; changed to use a force upload flag for every item separately (maybe a bit
+    ; in their ram).
+    ldx $02 : bne .icons
+    jmp .counters
+
+.icons:
     ; Check if we need to upload the item box tile.
     lda !ram_status_bar_item_box_tile : beq ..no_item_box
 ..item_box:
@@ -370,7 +142,232 @@ if !draw_retry_indicator
 ..no_indicator:
 endif
 
+.counters:
+    ; Check if we need to upload the timer digits.
+    lda !ram_status_bar_timer_tile : bne ..timer
+    jmp ..no_timer
+
+..timer:
+    ; Compute the VRAM address for later.
+    %calc_vram() : sta $00
+
+    ; Only upload if forced, or if the timer changed, unless Mario died
+    ; (ensuring the timer updates when dying for a timeout).
+    ldx $02 : bne +
+    ldx $71 : cpx #$09 : beq +
     sep #$20
+    lda $0F30|!addr : cmp.l !rom_timer_ticks
+    rep #$20
+    beq +
+    jmp ..no_timer
++
+    ; Upload the first digit, unless it's 0.
+    lda $0F31|!addr : and #$00FF : beq +
+    %store_digit_addr()
+    lda $00 : adc #$0010 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+
+    ; In this case we need to upload the second digit even if 0.
+    lda $0F32|!addr : and #$00FF : bra ++
++   
+    ; Upload the second digit, unless it's 0.
+    lda $0F32|!addr : and #$00FF : beq +
+++  %store_digit_addr()
+    lda $00 : adc #$0100 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
++
+    ; Upload the third digit.
+    lda $0F33|!addr : and #$00FF
+    %store_digit_addr()
+    lda $00 : adc #$0110 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+..no_timer:
+
+    ; Check if we need to upload the coin counter digits.
+    lda !ram_status_bar_coins_tile : beq ..no_coins
+..coins:
+    ; Compute the VRAM address for later.
+    %calc_vram() : sta $00
+
+    ; Only upload if forced or if the coin counter changed.
+    sep #$20
+    lda $0DBF|!addr : cmp !ram_coin_backup : bne +
+    ldx $02 : bne +
+    rep #$20
+    bra ..no_coins
++   
+    ; Update the coin counter backup.
+    sta !ram_coin_backup
+
+    ; Compute the coin counter digits.
+    sta $4204 : stz $4205
+    lda #10 : sta $4206
+
+    jsr .rep20_and_waste_time_for_division
+
+    ; Upload the first digit (unless it's 0).
+    lda $4214 : beq +
+    %store_digit_addr()
+    lda $00 : adc #$0100 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
++   
+    ; Upload the second digit.
+    lda $4216 : %store_digit_addr()
+    lda $00 : adc #$0110 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+..no_coins:
+
+    ; Check if we need to upload the lives counter digits.
+    lda !ram_status_bar_lives_tile : beq ..no_lives
+..lives:
+    ; Compute the VRAM address for later.
+    %calc_vram() : sta $00
+
+    ; Only upload if forced or if the lives counter changed.
+    sep #$20
+    lda $0DBE|!addr : cmp !ram_lives_backup : bne +
+    ldx $02 : bne +
+    rep #$20
+    bra ..no_lives
++   
+    ; Update the lives counter backup.
+    sta !ram_lives_backup
+
+    ; Compute the lives counter digits.
+    inc : sta $4204 : stz $4205
+    lda #10 : sta $4206
+
+    jsr .rep20_and_waste_time_for_division
+
+    ; Upload the first digit (unless it's 0).
+    lda $4214 : beq +
+    %store_digit_addr()
+    lda $00 : adc #$0100 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
++   
+    ; Upload the second digit.
+    lda $4216 : %store_digit_addr()
+    lda $00 : adc #$0110 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+..no_lives:
+
+    ; Check if we need to upload the bonus stars digits.
+    lda !ram_status_bar_bonus_stars_tile : beq ..no_bonus_stars
+..bonus_stars:
+    ; Compute the VRAM address for later.
+    %calc_vram() : sta $00
+
+    ; Only upload if forced or if the bonus stars changed.
+    sep #$20
+    ldx $0DB3|!addr
+    lda $0F48|!addr,x : cmp !ram_bonus_stars_backup : bne +
+    ldx $02 : bne +
+    rep #$20
+    bra ..no_bonus_stars
++   
+    ; Update the bonus stars backup.
+    sta !ram_bonus_stars_backup
+
+    ; Compute the bonus stars digits.
+    sta $4204 : stz $4205
+    lda #10 : sta $4206
+
+    jsr .rep20_and_waste_time_for_division
+
+    ; Upload the first digit (unless it's 0).
+    lda $4214 : beq +
+    %store_digit_addr()
+    lda $00 : adc #$0100 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
++   
+    ; Upload the second digit.
+    lda $4216 : %store_digit_addr()
+    lda $00 : adc #$0110 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+..no_bonus_stars:
+
+    ; Check if we need to upload the death counter digits.
+    lda !ram_status_bar_death_tile : bne ..death
+    jmp ..no_death
+
+..death:
+    ; Compute the VRAM address for later.
+    %calc_vram() : sta $00
+
+    ; Only upload if forced or if Mario is dead or if loading the level.
+    ; We upload every frame even if wasteful, because I'd rather not add another
+    ; flag (!ram_is_dying does not work because it is already changed by the
+    ; time we get here). On death most things are stopped so it should be fine.
+    ldx $02 : bne +
+    ldx $0100|!addr : cpx #$14 : bcc +
+    ldx $71 : cpx #$09 : beq +
+    jmp ..no_death
++
+    ; X = indicator that something was uploaded previously
+    ldx #$00
+
+    ; Upload the first digit (unless it's 0).
+    lda !ram_death_counter+0 : and #$00FF : beq +
+    %store_digit_addr()
+    lda $00 : adc #$0010 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+    inx
++
+    ; Upload the second digit (unless it's 0 and didn't upload the first).
+    lda !ram_death_counter+1 : and #$00FF : bne +
+    cpx #$00 : beq ++
++   %store_digit_addr()
+    lda $00 : adc #$0020 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+    inx
+++
+    ; Upload the third digit (unless it's 0 and didn't upload the first 2).
+    lda !ram_death_counter+2 : and #$00FF : bne +
+    cpx #$00 : beq ++
++   %store_digit_addr()
+    lda $00 : adc #$0100 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+    inx
+++
+    ; Upload the fourth digit (unless it's 0 and didn't upload the first 3).
+    lda !ram_death_counter+3 : and #$00FF : bne +
+    cpx #$00 : beq ++
++   %store_digit_addr()
+    lda $00 : adc #$0110 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+++
+    ; Upload the fifth digit.
+    lda !ram_death_counter+4 : and #$00FF
+    %store_digit_addr()
+    lda $00 : adc #$0120 : sta $2116
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+..no_death:
+
+    sep #$20
+    ; Force upload only lasts for 1 frame
+    lda #$00 : sta !retry_ram_status_bar_force_upload
+    rts
+
+; Routine to set A to 16 bits and waste time for division.
+; JSR to this routine will result in 17 cycles, so the division result will be
+; ready.
+.rep20_and_waste_time_for_division:
+    rep #$20
+    nop
     rts
 
 main:
