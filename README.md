@@ -4,8 +4,6 @@ If you just stumbled here and have no idea what this is about, check out [SMWCen
 
 ### Description
 
-This patch is meant as a spiritual successor to [worldpeace](https://www.smwcentral.net/?p=profile&id=1250)'s [Retry patch](https://smwc.me/1657727). While having the same functionalities, it features cleaner and more documented code, new features and a lot less hijacks, which makes it compatible with much more patches than before. Requires [UberASM Tool 2.0+](https://www.smwcentral.net/?p=section&a=details&id=19982).
-
 This is the modern Retry System that extends and improves the [original patch](https://smwc.me/1657727) by [worldpeace](https://www.smwcentral.net/?p=profile&id=1250). Its base features are the same as the old patch, but there's a lot of new functionalities and customizations available, which make it an useful tool also for projects where a retry system is not needed. Additionally, being implemented as an UberASM project, it features much less hijacks than the original patch, making it compatible with more resources. [UberASM Tool](https://www.smwcentral.net/?p=section&a=details&id=19982) version 2.0 or higher is required.
 
 The main features implemented are:
