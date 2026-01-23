@@ -29,6 +29,7 @@
 		</li>
 		<li>Added new %ssb_config_xxx and %ssb_hide_xxx options in "settings_local.asm" to configure and hide the sprite status bar elements per level, without having to insert additonal external UberASM code. The API routines can still be used (they are still useful to show/hide the status bar during a level, and they are necessary if !use_legacy_tables = 1).</li>
 		<li>Added the death counter to the sprite status bar.</li>
+		<li>Fixed some sprite status bar icons being glitched when making them visible during a level.</li>
 		<li>Fixed some sprite status bar counters displaying the wrong value when making them visible during a level.</li>
 		<li><b>NOTE</b>: if upgrading from an older version, if using the %no_reset_rng option in "settings_local.asm", you'll need to change it to %reset_rng like this: <code>%no_reset_rng($XXX)</code> &rarr; <code>reset_rng($XXX,1)</code>.</li>
 		<li><b>NOTE</b>: if upgrading from an older version, if using the configure_sprite_status_bar API routine, you'll need to add an additional value to account for the death counter (e.g. add $0000 at the end).</li>
