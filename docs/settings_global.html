@@ -11,9 +11,6 @@
 table {
 	text-align: left;
 }
-table tr td:nth-child(1) code {
-	background: none;
-}
 </style>
 <body>
 <h1>Global Retry Settings</h1>
@@ -29,8 +26,23 @@ table tr td:nth-child(1) code {
 		<li><a href="#sfx">Sound Effects Settings</a></li>
 		<li><a href="#saving">Save and SRAM Settings</a></li>
 		<li><a href="#custom-midways">Custom Midways Settings</a></li>
-		<li><a href="#prompt-settings">Retry Prompt Settings</a></li>
-		<li><a href="#sprite-status-bar">Sprite Status Bar Settings</a></li>
+		<li>
+			<a href="#prompt-settings">Retry Prompt Settings</a>
+			<ul>
+				<li><a href="#prompt-settings-general">General Settings</a></li>
+				<li><a href="#prompt-settings-sprite">Sprite Tile Settings</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#sprite-status-bar">Sprite Status Bar Settings</a>
+			<ul>
+				<li><a href="#sprite-status-bar-general">General Settings</a></li>
+				<li><a href="#sprite-status-bar-tile">Tile and Palette Settings</a></li>
+				<li><a href="#sprite-status-bar-position">Position Settings</a></li>
+				<li><a href="#sprite-status-bar-other">Other Settings</a></li>
+				<li><a href="#sprite-status-bar-indicator">Retry Indicator Settings</a></li>
+			</ul>
+		</li>
 		<li><a href="#death-counters">Death Counters Settings</a></li>
 		<li><a href="#misc">Misc Settings</a></li>
 	</ul>
@@ -361,7 +373,7 @@ table tr td:nth-child(1) code {
 
 <!-- Retry Prompt -->
 <h3 id="prompt-settings">Retry Prompt Settings</h3>
-	<h4>General Settings</h4>
+	<h4 id="prompt-settings-general">General Settings</h4>
 	<table>
         <tr>
             <th>Name</th>
@@ -502,7 +514,7 @@ table tr td:nth-child(1) code {
         </tr>
     </table>
 
-    <h4>Sprite Tile Settings</h4>
+    <h4 id="prompt-settings-sprite">Sprite Tile Settings</h4>
 	<p>Sprite tile number for the tiles used by the prompt ($00-$FF = SP1/SP2, $100-$1FF = SP3/SP4). These will be overwritten dynamically when the prompt needs to show up. The default values should be fine in most cases, unless you're using some other patch that reserves tiles in SP1, for example: Sprite Status Bar, 32x32 Player Tilemap, lx5's Custom Powerups, lx5's Dynamic Spriteset System. In this case you may need to change some of them to avoid other tiles being overwritten. You can see the tile number in LM's 8x8 Tile Editor, by taking the value you see in the bottom left - $400 (e.g., "Tile 0x442" &rarr; $42, "Tile 0x542" &rarr; $142). These aren't used if you don't use the Retry prompt or if <code>!no_prompt_draw = 1</code>.</p>
 	<table>
 		<tr>
@@ -548,7 +560,7 @@ table tr td:nth-child(1) code {
 <h3 id="sprite-status-bar">Sprite Status Bar Settings</h3>
 	<p>Settings for the sprite status bar that comes with the Retry system.</p>
 
-	<h4>General Settings</h4>
+	<h4 id="sprite-status-bar-general">General Settings</h4>
 	<table>
         <tr>
             <th>Name</th>
@@ -564,15 +576,17 @@ table tr td:nth-child(1) code {
         </tr>
     </table>
 
-	<h4>Tile and Palette Settings</h4>
+	<h4 id="sprite-status-bar-tile">Tile and Palette Settings</h4>
 	<p>The following settings are only relevant if <code>!sprite_status_bar = 1</code>.</p>
 	<p>Default sprite tile and palette to use for each element in the status bar. These settings can be overridden per-level by using the <a href="./settings_local.html#ssb">Local Settings - Configure Sprite Status Bar</a>. If both <code>!default_xxx_tile</code> and <code>!default_xxx_palette</code> are $00, the item will be hidden by default.</p>
 	<table>
 		<tr>
+			<th>Element</th>
 			<th>Name</th>
 			<th>Description</th>
 		</tr>
 		<tr>
+			<td rowspan="2">Item box</td>
 			<td><code>!default_item_box_tile</code></td>
 			<td>Sprite tile number used by the item box by default</td>
 		</tr>
@@ -581,6 +595,7 @@ table tr td:nth-child(1) code {
 			<td>Palette used by the item box by default</td>
 		</tr>
 		<tr>
+			<td rowspan="2">Timer</td>
 			<td><code>!default_timer_tile</code></td>
 			<td>Sprite tile number used by the timer by default</td>
 		</tr>
@@ -589,6 +604,7 @@ table tr td:nth-child(1) code {
 			<td>Palette used by the timer by default</td>
 		</tr>
 		<tr>
+			<td rowspan="2">Coins</td>
 			<td><code>!default_coin_counter_tile</code></td>
 			<td>Sprite tile number used by the coin counter by default</td>
 		</tr>
@@ -597,6 +613,7 @@ table tr td:nth-child(1) code {
 			<td>Palette used by the coin counter by default</td>
 		</tr>
 		<tr>
+			<td rowspan="2">Lives</td>
 			<td><code>!default_lives_counter_tile</code></td>
 			<td>Sprite tile number used by the lives counter by default (disabled by default).</td>
 		</tr>
@@ -605,6 +622,7 @@ table tr td:nth-child(1) code {
 			<td>Palette used by the lives counter by default (the included GFX is tailored for vanilla palette 9, using the berry colors)</td>
 		</tr>
 		<tr>
+			<td rowspan="2">Bonus stars</td>
 			<td><code>!default_bonus_stars_tile</code></td>
 			<td>Sprite tile number used by the bonus stars counter by default (disabled by default)</td>
 		</tr>
@@ -613,6 +631,7 @@ table tr td:nth-child(1) code {
 			<td>Palette used by the bonus stars counter by default (the included GFX is tailored for vanilla palette 9, using the berry colors)</td>
 		</tr>
 		<tr>
+			<td rowspan="2">Deaths</td>
 			<td><code>!default_death_counter_tile</code></td>
 			<td>Sprite tile number used by the death counter by default (disabled by default)</td>
 		</tr>
@@ -622,29 +641,73 @@ table tr td:nth-child(1) code {
 		</tr>
 	</table>
 
-	<h4>Elements Position Settings</h4>
-	<p>Settings to change the position of all the sprite status bar elements on the screen.</p>
+	<h4 id="sprite-status-bar-position">Position Settings</h4>
+	<p>With these settings you can customize the position on the screen of each sprite status bar element (icons and counters independently), and also enable or disable an "X" tile next to the counters for those applicable (similarly to the vanilla status bar).</p>
 	<table>
 		<tr>
+			<th>Element</th>
 			<th>Name</th>
 			<th>Description</th>
 		</tr>
 		<tr>
+			<td rowspan="2">Item box</td>
 			<td><code>!item_box_x_pos</code></td>
-			<td>X position on the screen to draw the Item Box</td>
+			<td>X position on the screen to draw the item box</td>
 		</tr>
 		<tr>
 			<td><code>!item_box_y_pos</code></td>
-			<td>Y position on the screen to draw the Item Box</td>
+			<td>Y position on the screen to draw the item box</td>
 		</tr>
 		<tr>
-			<td><code>!timer_x_pos</code></td>
-			<td>X position on the screen to draw the timer</td>
+			<td rowspan="7">Timer</td>
+			<td><code>!timer_icon_x_pos</code></td>
+			<td>X position on the screen to draw the timer icon</td>
 		</tr>
 		<tr>
-			<td><code>!timer_y_pos</code></td>
-			<td>Y position on the screen to draw the timer</td>
+			<td><code>!timer_icon_y_pos</code></td>
+			<td>Y position on the screen to draw the timer icon</td>
 		</tr>
+		<tr>
+            <td><code>!timer_X_enabled</code></td>
+            <td>If 1, the "X" tile is drawn together with the timer</td>
+        </tr>
+        <tr>
+            <td><code>!timer_X_x_pos</code></td>
+            <td>X position on the screen to draw the timer "X" tile</td>
+        </tr>
+        <tr>
+            <td><code>!timer_Y_x_pos</code></td>
+            <td>Y position on the screen to draw the timer "X" tile</td>
+        </tr>
+		<tr>
+			<td><code>!timer_counter_x_pos</code></td>
+			<td>X position on the screen to draw the timer counter</td>
+		</tr>
+		<tr>
+			<td><code>!timer_counter_y_pos</code></td>
+			<td>Y position on the screen to draw the timer counter</td>
+		</tr>
+		<tr>
+			<td rowspan="7">Coins</td>
+			<td><code>!coin_icon_x_pos</code></td>
+			<td>X position on the screen to draw the normal coin icon</td>
+		</tr>
+		<tr>
+			<td><code>!coin_icon_y_pos</code></td>
+			<td>Y position on the screen to draw the normal coin icon</td>
+		</tr>
+		<tr>
+            <td><code>!coin_X_enabled</code></td>
+            <td>If 1, the "X" tile is drawn together with the coin counter</td>
+        </tr>
+        <tr>
+            <td><code>!coin_X_x_pos</code></td>
+            <td>X position on the screen to draw the coin counter "X" tile</td>
+        </tr>
+        <tr>
+            <td><code>!coin_Y_x_pos</code></td>
+            <td>Y position on the screen to draw the coin counter "X" tile</td>
+        </tr>
 		<tr>
 			<td><code>!coin_counter_x_pos</code></td>
 			<td>X position on the screen to draw the normal coin counter</td>
@@ -654,6 +717,7 @@ table tr td:nth-child(1) code {
 			<td>Y position on the screen to draw the normal coin counter</td>
 		</tr>
 		<tr>
+			<td rowspan="2">Dragon coins</td>
 			<td><code>!dc_counter_x_pos</code></td>
 			<td>X position on the screen to draw the Dragon/Yoshi coin counter</td>
 		</tr>
@@ -661,6 +725,27 @@ table tr td:nth-child(1) code {
 			<td><code>!dc_counter_y_pos</code></td>
 			<td>Y position on the screen to draw the Dragon/Yoshi coin counter</td>
 		</tr>
+		<tr>
+			<td rowspan="7">Lives</td>
+			<td><code>!lives_icon_x_pos</code></td>
+			<td>X position on the screen to draw the lives icon</td>
+		</tr>
+		<tr>
+			<td><code>!lives_icon_y_pos</code></td>
+			<td>Y position on the screen to draw the lives icon</td>
+		</tr>
+        <tr>
+            <td><code>!lives_X_enabled</code></td>
+            <td>If 1, the "X" tile is drawn together with the lives counter.</td>
+        </tr>
+        <tr>
+            <td><code>!lives_X_x_pos</code></td>
+            <td>X position on the screen to draw the lives counter "X" tile.</td>
+        </tr>
+        <tr>
+            <td><code>!lives_Y_x_pos</code></td>
+            <td>Y position on the screen to draw the lives counter "X" tile.</td>
+        </tr>
 		<tr>
 			<td><code>!lives_counter_x_pos</code></td>
 			<td>X position on the screen to draw the lives counter</td>
@@ -670,89 +755,70 @@ table tr td:nth-child(1) code {
 			<td>Y position on the screen to draw the lives counter</td>
 		</tr>
 		<tr>
-			<td><code>!bonus_stars_x_pos</code></td>
-			<td>X position on the screen to draw the bonus stars counter</td>
+			<td rowspan="7">Bonus stars</td>
+			<td><code>!bonus_stars_icon_x_pos</code></td>
+			<td>X position on the screen to draw the bonus stars icon</td>
 		</tr>
 		<tr>
-			<td><code>!bonus_stars_y_pos</code></td>
-			<td>Y position on the screen to draw the bonus stars counter</td>
+			<td><code>!bonus_stars_icon_y_pos</code></td>
+			<td>Y position on the screen to draw the bonus stars icon</td>
 		</tr>
-		<tr>
-			<td><code>!death_counter_x_pos</code></td>
-			<td>X position on the screen to draw the death counter</td>
-		</tr>
-		<tr>
-			<td><code>!death_counter_y_pos</code></td>
-			<td>Y position on the screen to draw the death counter</td>
-		</tr>
-	</table>
-
-	<h4>"X" tile settings</h4>
-	<p>These settings enable and customize an "X" tile to be drawn together with the respective elements on the sprite status bar, similarly to some counters on the vanilla status bar. The "X" tile uses a single 8x8 tile that is shared by all counters, and only uploaded when necessary.</p>
-	<table>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-        </tr>
-        <tr>
-            <td><code>!timer_X_enabled</code></td>
-            <td>If 1, the "X" tile is drawn together with the timer.</td>
-        </tr>
-        <tr>
-            <td><code>!timer_X_x_pos</code></td>
-            <td>X position on the screen to drawn the timer "X" tile.</td>
-        </tr>
-        <tr>
-            <td><code>!timer_Y_x_pos</code></td>
-            <td>Y position on the screen to drawn the timer "X" tile.</td>
-        </tr>
-        <tr>
-            <td><code>!coin_counter_X_enabled</code></td>
-            <td>If 1, the "X" tile is drawn together with the coin counter.</td>
-        </tr>
-        <tr>
-            <td><code>!coin_counter_X_x_pos</code></td>
-            <td>X position on the screen to drawn the coin counter "X" tile.</td>
-        </tr>
-        <tr>
-            <td><code>!coin_counter_Y_x_pos</code></td>
-            <td>Y position on the screen to drawn the coin counter "X" tile.</td>
-        </tr>
-        <tr>
-            <td><code>!lives_counter_X_enabled</code></td>
-            <td>If 1, the "X" tile is drawn together with the lives counter.</td>
-        </tr>
-        <tr>
-            <td><code>!lives_counter_X_x_pos</code></td>
-            <td>X position on the screen to drawn the lives counter "X" tile.</td>
-        </tr>
-        <tr>
-            <td><code>!lives_counter_Y_x_pos</code></td>
-            <td>Y position on the screen to drawn the lives counter "X" tile.</td>
-        </tr>
         <tr>
             <td><code>!bonus_stars_X_enabled</code></td>
             <td>If 1, the "X" tile is drawn together with the bonus stars counter.</td>
         </tr>
         <tr>
             <td><code>!bonus_stars_X_x_pos</code></td>
-            <td>X position on the screen to drawn the bonus stars counter "X" tile.</td>
+            <td>X position on the screen to draw the bonus stars counter "X" tile.</td>
         </tr>
         <tr>
             <td><code>!bonus_stars_Y_x_pos</code></td>
-            <td>Y position on the screen to drawn the bonus stars counter "X" tile.</td>
+            <td>Y position on the screen to draw the bonus stars counter "X" tile.</td>
         </tr>
+		<tr>
+			<td><code>!bonus_stars_counter_x_pos</code></td>
+			<td>X position on the screen to draw the bonus stars counter</td>
+		</tr>
+		<tr>
+			<td><code>!bonus_stars_counter_y_pos</code></td>
+			<td>Y position on the screen to draw the bonus stars counter</td>
+		</tr>
+		<tr>
+			<td rowspan="7">Deaths</td>
+			<td><code>!death_icon_x_pos</code></td>
+			<td>X position on the screen to draw the deaths icon</td>
+		</tr>
+		<tr>
+			<td><code>!death_icon_y_pos</code></td>
+			<td>Y position on the screen to draw the deaths icon</td>
+		</tr>
         <tr>
-            <td><code>!death_counter_X_enabled</code></td>
+            <td><code>!death_X_enabled</code></td>
             <td>If 1, the "X" tile is drawn together with the death counter.</td>
         </tr>
         <tr>
-            <td><code>!death_counter_X_x_pos</code></td>
-            <td>X position on the screen to drawn the death counter "X" tile.</td>
+            <td><code>!death_X_x_pos</code></td>
+            <td>X position on the screen to draw the death counter "X" tile.</td>
         </tr>
         <tr>
-            <td><code>!death_counter_Y_x_pos</code></td>
-            <td>Y position on the screen to drawn the death counter "X" tile.</td>
+            <td><code>!death_Y_x_pos</code></td>
+            <td>Y position on the screen to draw the death counter "X" tile.</td>
+        </tr>
+		<tr>
+			<td><code>!death_counter_x_pos</code></td>
+			<td>X position on the screen to draw the deaths counter</td>
+		</tr>
+		<tr>
+			<td><code>!death_counter_y_pos</code></td>
+			<td>Y position on the screen to draw the deaths counter</td>
+		</tr>
+	</table>
+
+	<h4 id="sprite-status-bar-other">Other Settings</h4>
+	<table>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
         </tr>
         <tr>
             <td><code>!X_tile</code></td>
@@ -761,14 +827,6 @@ table tr td:nth-child(1) code {
         <tr>
             <td><code>!X_palette</code></td>
             <td>Palette to use for the "X" tile.</td>
-        </tr>
-    </table>
-
-	<h4>Other Settings</h4>
-	<table>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
         </tr>
         <tr>
             <td><code>!always_draw_box</code></td>
@@ -795,7 +853,7 @@ table tr td:nth-child(1) code {
 		</tr>
     </table>
 
-    <h4>Retry Indicator Settings</h4>
+    <h4 id="sprite-status-bar-indicator">Retry Indicator Settings</h4>
 	<table>
 		<tr>
 			<th>Name</th>

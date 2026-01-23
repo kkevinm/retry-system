@@ -94,7 +94,7 @@ endif
     lda !ram_status_bar_coins_tile : beq ..no_coins
 ..coins:
     ; Signal "X" tile upload
-if !coin_counter_X_enabled
+if !coin_X_enabled
     inc $04
 endif
     ; Upload the coin tiles.
@@ -108,7 +108,7 @@ endif
     lda !ram_status_bar_lives_tile : beq ..no_lives
 ..lives:
     ; Signal "X" tile upload
-if !lives_counter_X_enabled
+if !lives_X_enabled
     inc $04
 endif
     ; Upload the lives tile based on the current player.
@@ -139,7 +139,7 @@ endif
     lda !ram_status_bar_death_tile : beq ..no_death
 ..death:
     ; Signal "X" tile upload
-if !death_counter_X_enabled
+if !death_X_enabled
     inc $04
 endif
     ; Upload the death tile.
@@ -592,11 +592,11 @@ assert !X_palette >= $08 && !X_palette <= $0F, "Error: \!X_palette should be bet
 
 !X_tp #= (!X_tile&$1FF)|$3000|((!X_palette-8)<<9)
 
-!timer_X_index         #= 2*0
-!coin_counter_X_index  #= 2*1
-!lives_counter_X_index #= 2*2
-!bonus_stars_X_index   #= 2*3
-!death_counter_X_index #= 2*4
+!timer_X_index       #= 2*0
+!coin_X_index        #= 2*1
+!lives_X_index       #= 2*2
+!bonus_stars_X_index #= 2*3
+!death_X_index       #= 2*4
 
 ; Shared routine to draw an element's "X" tile
 ; Should be called with Y = index specific for each element, defined above
@@ -615,10 +615,10 @@ draw_X:
 
 .pos:
     db !timer_X_x_pos,!timer_X_y_pos
-    db !coin_counter_X_x_pos,!coin_counter_X_y_pos
-    db !lives_counter_X_x_pos,!lives_counter_X_y_pos
+    db !coin_X_x_pos,!coin_X_y_pos
+    db !lives_X_x_pos,!lives_X_y_pos
     db !bonus_stars_X_x_pos,!bonus_stars_X_y_pos
-    db !death_counter_X_x_pos,!death_counter_X_y_pos
+    db !death_X_x_pos,!death_X_y_pos
 
 draw_timer:
     ; Draw the "X" tile if applicable
@@ -674,18 +674,18 @@ endif
     rts
 
 .pos:
-    db $00+!timer_x_pos-1,!timer_y_pos
-    db $08+!timer_x_pos,!timer_y_pos
-    db $10+!timer_x_pos,!timer_y_pos
-    db $18+!timer_x_pos,!timer_y_pos
+    db $00+!timer_icon_x_pos-1,!timer_icon_y_pos
+    db $00+!timer_counter_x_pos,!timer_counter_y_pos
+    db $08+!timer_counter_x_pos,!timer_counter_y_pos
+    db $10+!timer_counter_x_pos,!timer_counter_y_pos
 
 .tile:
     dw $0000,$0001,$0010,$0011
 
 draw_coins:
     ; Draw the "X" tile if applicable
-if !coin_counter_X_enabled
-    ldy.w #!coin_counter_X_index
+if !coin_X_enabled
+    ldy.w #!coin_X_index
     jsr draw_X
 endif
 
@@ -718,9 +718,9 @@ endif
     rts
 
 .pos:
-    db $00+!coin_counter_x_pos-1,!coin_counter_y_pos
-    db $10+!coin_counter_x_pos,!coin_counter_y_pos
-    db $18+!coin_counter_x_pos,!coin_counter_y_pos
+    db $00+!coin_icon_x_pos-1,!coin_icon_y_pos
+    db $00+!coin_counter_x_pos,!coin_counter_y_pos
+    db $08+!coin_counter_x_pos,!coin_counter_y_pos
 
 .tile:
     dw $0000,$0010,$0011
@@ -784,8 +784,8 @@ endif
 
 draw_lives:
     ; Draw the "X" tile if applicable
-if !lives_counter_X_enabled
-    ldy.w #!lives_counter_X_index
+if !lives_X_enabled
+    ldy.w #!lives_X_index
     jsr draw_X
 endif
 
@@ -818,9 +818,9 @@ endif
     rts
 
 .pos:
-    db $00+!lives_counter_x_pos-1,!lives_counter_y_pos
-    db $10+!lives_counter_x_pos,!lives_counter_y_pos
-    db $18+!lives_counter_x_pos,!lives_counter_y_pos
+    db $00+!lives_icon_x_pos-1,!lives_icon_y_pos
+    db $00+!lives_counter_x_pos,!lives_counter_y_pos
+    db $08+!lives_counter_x_pos,!lives_counter_y_pos
 
 .tile:
     dw $0000,$0010,$0011
@@ -866,17 +866,17 @@ endif
     rts
 
 .pos:
-    db $00+!bonus_stars_x_pos-1,!bonus_stars_y_pos
-    db $10+!bonus_stars_x_pos,!bonus_stars_y_pos
-    db $18+!bonus_stars_x_pos,!bonus_stars_y_pos
+    db $00+!bonus_stars_icon_x_pos-1,!bonus_stars_icon_y_pos
+    db $00+!bonus_stars_counter_x_pos,!bonus_stars_counter_y_pos
+    db $08+!bonus_stars_counter_x_pos,!bonus_stars_counter_y_pos
 
 .tile:
     dw $0000,$0010,$0011
 
 draw_death:
     ; Draw the "X" tile if applicable
-if !death_counter_X_enabled
-    ldy.w #!death_counter_X_index
+if !death_X_enabled
+    ldy.w #!death_X_index
     jsr draw_X
 endif
 
@@ -931,12 +931,12 @@ endif
     rts
 
 .pos:
-    db $00+!death_counter_x_pos-1,!death_counter_y_pos
+    db $00+!death_icon_x_pos-1,!death_icon_y_pos
+    db $00+!death_counter_x_pos,!death_counter_y_pos
+    db $08+!death_counter_x_pos,!death_counter_y_pos
     db $10+!death_counter_x_pos,!death_counter_y_pos
     db $18+!death_counter_x_pos,!death_counter_y_pos
     db $20+!death_counter_x_pos,!death_counter_y_pos
-    db $28+!death_counter_x_pos,!death_counter_y_pos
-    db $30+!death_counter_x_pos,!death_counter_y_pos
 
 .tile:
     dw $0000,$0001,$0002,$0010,$0011,$0012
