@@ -23,6 +23,7 @@ jobs:
           ".github"
           "README.md"
           "docs/_template.html"
+          "screenshots"
         )
 
         # Create args for rsync
