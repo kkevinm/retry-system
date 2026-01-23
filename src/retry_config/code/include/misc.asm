@@ -135,3 +135,8 @@ endmacro
 macro ddn(val, n)
     filldword <val> : fill (<n>)*4
 endmacro
+
+; Only used for breakpoints during debugging (stolen from Selicre)
+macro debug(x)
+    sta.l $005000+<x>
+endmacro

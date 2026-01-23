@@ -165,10 +165,11 @@
 			<li>2 = don't draw dragon coins (only coins)</li>
 		</ul>
 	</p>
+	<p>Note that these are settings that persist during the level. If you need a way to unhide status bar elements during a level, you can use the <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> routine.</p>
 	<br/>
 
 <h3 id="ssb_config">%ssb_config(level, item_box_tile, item_box_pal, timer_tile, timer_pal, coins_tile, coins_pal, coins_beha, lives_tile, lives_pal, bonus_stars_tile, bonus_stars_pal, death_tile, death_pal)</h3>
-	<p>This is a shorthand to configure all the sprite status bar elements for the specified level at the same time. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a></p>
+	<p>This is a shorthand to configure all the sprite status bar elements for the specified level at the same time. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a>.</p>
 	<br/>
 
 	<p id="ssb2"></p>
@@ -178,11 +179,12 @@
 <h3 id="ssb_hide_lives">%ssb_hide_lives(level)</h3>
 <h3 id="ssb_hide_bonus_stars">%ssb_hide_bonus_stars(level)</h3>
 <h3 id="ssb_hide_death">%ssb_hide_death(level)</h3>
-	<p>These hide the respective sprite status bar element in the specified level. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a></p>
+	<p>These hide the respective sprite status bar element in the specified level. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a>.</p>
+	<p>Note that these are settings that persist during the level. If you need a way to hide status bar elements during a level, you can use the <a href="./api.html#hide_sprite_status_bar">API - Hide sprite status bar</a> routine.</p>
 	<br/>
 
 <h3 id="ssb_hide">%ssb_hide(level)</h3>
-	<p>This hides the sprite status bar entirely in the specified level. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a></p>
+	<p>This hides the sprite status bar entirely in the specified level. This only works if <code>!sprite_status_bar = 1</code> in <a href="./settings_global.html#sprite-status-bar">Global Settings - Sprite Status Bar Settings</a>.</p>
 	<br/>
 
 	<center><a href="./index.html">Return to main page</a></center>

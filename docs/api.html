@@ -85,9 +85,9 @@
 	<br/>
 
 	<h3 id="configure_sprite_status_bar">Configure sprite status bar</h3>
-	<p><b>NOTE</b>: for a more convenient way to configure the sprite status bar, check out <a href="./settings_local.html#ssb">Local Settings - Configure Sprite Status Bar</a>.</p>
+	<p><b>NOTE</b>: for a more convenient way to configure the sprite status bar, check out <a href="./settings_local.html#ssb">Local Settings - Configure Sprite Status Bar</a>. This routine is still useful if you need to unhide elements of the status bar during the level.</p>
 	<p><b>NOTE</b>: this routine has no effect unless <code>!sprite_status_bar = 1</code> in <code>settings_global.asm</code>.</p>
-	<p>Call this in UberASM level init code to configure graphics for the sprite status bar items (item box, timer, coin counter, lives counter, bonus stars counter, death counter) for a specific level. Calling this will override the default settings found in <code>settings_global.asm</code>, in case you want to hide some or all of the elements in some level or if you need to change their tile or palette.</p>
+	<p>Call this in UberASM level init code to configure graphics for the sprite status bar items (item box, timer, coin counter, lives counter, bonus stars counter, death counter) for a specific level. Calling this will override the default settings found in <code>settings_global.asm</code> and the level settings found in <code>settings_local.asm</code>, in case you want to hide some or all of the elements in some level or if you need to change their tile or palette. You can also call it in main if you need to unhide elements during a level.</p>
 	<p>Each item's configuration is set with a 16 bit value <code>$PTTT</code>. The first digit <code>P</code> will be the item's palette, starting from palette 8 with <code>P = 8</code> and ending with palette F with <code>P = F</code>. <code>TTT</code> will determine the tile number: you can see this in Lunar Magic's "8x8 Tile Editor" if you hover over the desired tile (more specifically, the upper left 8x8 tile of the 16x16 tile you want to use). In the bottom bar you'll see "Tile 0xYYY": then, <code>TTT = YYY - $400</code>. For example, the Smiling Coin tile is "Tile 0x4C2", which results in <code>TTT = $4C2 - $400 = $0C2</code>. So, for example, to reserve that tile and use palette F, the full value will be <code>$F0C2</code>.</p>
 	<p>If an item's value is <code>$0000</code>, the item will simply not be displayed.</p>
 	<p>For the coin counter specifically, you can choose to only display coins or dragon coins. By default both will be displayed, but if you add <code>$0200</code> to the value only dragon coins will be displayed, instead if you add <code>$0400</code> only coins will be displayed. For example:</p>
@@ -118,9 +118,9 @@
 	<br/>
 
 	<h3 id="hide_sprite_status_bar">Hide sprite status bar</h3>
-	<p><b>NOTE</b>: for a more convenient way to hide the sprite status bar, check out <a href="./settings_local.html#ssb2">Local Settings - Hide Sprite Status Bar</a>.</p>
+	<p><b>NOTE</b>: for a more convenient way to hide the sprite status bar, check out <a href="./settings_local.html#ssb2">Local Settings - Hide Sprite Status Bar</a>. This routine is still useful if you need to hide elements of the status bar during the level.</p>
 	<p><b>NOTE</b>: this routine has no effect unless <code>!sprite_status_bar = 1</code> in <code>settings_global.asm</code>.</p>
-	<p>Routine to hide the sprite status bar for the current level. This routine should be called in UberASM level init code.</p>
+	<p>Routine to hide the sprite status bar for the current level. This routine should be called in UberASM level init code, or in main if you need to hide the status bar during a level.</p>
 	<ul>
 		<li>Inputs: <code>N/A</code></li>
 		<li>Outputs: <code>N/A</code></li>

@@ -282,9 +282,16 @@
 			<td class="left-align">Current sprite status bar death counter tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
 		</tr>
 		<tr>
-			<td><code>reserved</code></td>
+			<td><code>status_bar_force_upload</code></td>
 			<td><code>$29</code></td>
-			<td><code>$02</code></td>
+			<td><code>$01</code></td>
+			<td>Internal</td>
+			<td class="left-align">Flag that forces all visible elements of the status bar to be uploaded freshly in the sprite GFX (for 1 frame, it is reset after being used in NMI). Normally elements are only uploaded when changed (e.g. the frame when the timer ticks down) to not waste NMI time, but sometimes it is necessary to be uploaded regardless: on level load and when the status bar element got unhidden during the level. You can set it yourself, if writing to the other RAM addresses manually, but normally you should just use the API routines which handles this for you (see <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> and <a href="./api.html#hide_sprite_status_bar">API - Hide sprite status bar</a> for details).</td>
+		</tr>
+		<tr>
+			<td><code>reserved</code></td>
+			<td><code>$2A</code></td>
+			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Unused, but reserved for future expansion. Usage as freeram is not recommended.</td>
 		</tr>

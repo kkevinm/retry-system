@@ -122,10 +122,11 @@ reset_all_checkpoints:
 ; You can configure these elements: item box, timer, coin counter, lives
 ; counter, bonus stars counter and death counter. Each element needs a 16x16
 ; sprite tile to be reserved.
-; This routine should be called in UberASM level init code, to overwrite the
-; default settings from "settings_global.asm", in case you want to hide some or
-; all of the elements in some level or if you need to change their tile or
-; palette.
+; This routine should be called in UberASM level init code (or in main if you
+; need to unhide elements during the level), to overwrite the default settings
+; from "settings_global.asm" and the level settings from "settings_local.asm",
+; in case you want to hide some or all of the elements in some level or if you
+; need to change their tile or palette.
 ; Each element needs a 16 bit value that determines which 16x16 tile it will use
 ; and what palette to use. The first digit is the palette row to use (8-F),
 ; while the other 3 digits are the tile number (000-1FF). If an element is set
@@ -133,7 +134,8 @@ reset_all_checkpoints:
 ; For the coin counter, you can add $0200 to the value to only display dragon
 ; coins, or add $0400 to only display coins.
 ; Note: for a more convenient way to configure the sprite status bar, you can
-;       use the %ssb_config commands in "settings_local.asm".
+;       use the %ssb_config commands in "settings_local.asm". This routine is
+;       still useful to unhide elements during a level.
 ;
 ; Inputs: for each item, in order, you write the value after the JSL in the
 ;         format described above (see example).
@@ -156,16 +158,31 @@ if !sprite_status_bar
     ; Set DBR equal to caller routine bank
     sep #$30
     lda $04,s : pha : plb
-    ; Use Y to read address after the routine call
+    ; Use Y to read addresses after the routine call
     rep #$30
     lda $02,s : tay
     ; Copy the values from after the JSL to sprite status bar ram
-    lda $0001,y : and #$7FFF : sta !ram_status_bar_item_box_tile
-    lda $0003,y : and #$7FFF : sta !ram_status_bar_timer_tile
-    lda $0005,y : and #$7FFF : sta !ram_status_bar_coins_tile
-    lda $0007,y : and #$7FFF : sta !ram_status_bar_lives_tile
-    lda $0009,y : and #$7FFF : sta !ram_status_bar_bonus_stars_tile
-    lda $000B,y : and #$7FFF : sta !ram_status_bar_death_tile
+    ; Also set the force upload flag if some element got unhidden
+    !_stack #= $0001
+    macro _store(name)
+        lda !ram_status_bar_<name>_tile : bne ?+
+        lda.w !_stack,y : and #$7FFF : beq ?+
+        sep #$20
+        lda #$01 : sta !ram_status_bar_force_upload
+        rep #$20
+    ?+  lda.w !_stack,y : and #$7FFF : sta !ram_status_bar_<name>_tile
+        !_stack #= !_stack+2
+    endmacro
+    %_store(item_box)
+    %_store(timer)
+    %_store(coins)
+    %_store(lives)
+    %_store(bonus_stars)
+    %_store(death)
+    ; Compile time check to make sure we're managing all of the parameters and
+    ; that the !ssb_elements_number define is correct
+    assert (!_stack-1)/2 == !ssb_elements_number, "Align configure_sprite_status_bar and \!ssb_elements_number!"
+    undef "_stack"
     plb
 endif
     ; Make sure the code returns at the right place
@@ -176,9 +193,11 @@ endif
 
 ;===============================================================================
 ; Routine to hide the status bar for the current level. This routine should be
-; called in UberASM level init code.
+; called in UberASM level init code, or in main if you need to hide elements
+; during a level.
 ; Note: for a more convenient way to hide the sprite status bar, you can use the
-;       %ssb_hide commands in "settings_local.asm".
+;       %ssb_hide commands in "settings_local.asm". This routine is still useful
+;       to hide elements during a level.
 ;
 ; Inputs: N/A
 ; Outputs: N/A
@@ -190,6 +209,8 @@ endif
 hide_sprite_status_bar:
 if !sprite_status_bar
     jsl configure_sprite_status_bar : %dwn(0,!ssb_elements_number)
+    ; Make sure we don't upload anything
+    lda #$00 : sta !ram_status_bar_force_upload
 endif
     rtl
 

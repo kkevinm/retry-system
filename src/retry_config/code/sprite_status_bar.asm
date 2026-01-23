@@ -12,6 +12,9 @@ macro store_digit_addr()
 endmacro
 
 nmi:
+    ; $02 = flag to force upload (for direct addressing)
+    lda !retry_ram_status_bar_force_upload : sta $02
+
     ; Setup the constant DMA parameters.
     rep #$20
     ldy #$80 : sty $2115
@@ -27,8 +30,9 @@ nmi:
     ; Compute the VRAM address for later.
     %calc_vram() : sta $00
 
-    ; Only upload if the timer changed, unless Mario died
+    ; Only upload if forced, or if the timer changed, unless Mario died
     ; (ensuring the timer updates when dying for a timeout).
+    ldx $02 : bne +
     ldx $71 : cpx #$09 : beq +
     sep #$20
     lda $0F30|!addr : cmp.l !rom_timer_ticks
@@ -67,9 +71,10 @@ nmi:
     ; Compute the VRAM address for later.
     %calc_vram() : sta $00
 
-    ; Only upload if the coin counter changed.
+    ; Only upload if forced or if the coin counter changed.
     sep #$20
     lda $0DBF|!addr : cmp !ram_coin_backup : bne +
+    ldx $02 : bne +
     rep #$20
     bra .no_coins
 +   
@@ -102,9 +107,10 @@ nmi:
     ; Compute the VRAM address for later.
     %calc_vram() : sta $00
 
-    ; Only upload if the lives counter changed.
+    ; Only upload if forced or if the lives counter changed.
     sep #$20
     lda $0DBE|!addr : cmp !ram_lives_backup : bne +
+    ldx $02 : bne +
     rep #$20
     bra .no_lives
 +   
@@ -137,10 +143,11 @@ nmi:
     ; Compute the VRAM address for later.
     %calc_vram() : sta $00
 
-    ; Only upload if the bonus stars changed.
+    ; Only upload if forced or if the bonus stars changed.
     sep #$20
     ldx $0DB3|!addr
     lda $0F48|!addr,x : cmp !ram_bonus_stars_backup : bne +
+    ldx $02 : bne +
     rep #$20
     bra .no_bonus_stars
 +   
@@ -175,10 +182,11 @@ nmi:
     ; Compute the VRAM address for later.
     %calc_vram() : sta $00
 
-    ; Only upload if Mario is dead or if loading the level.
+    ; Only upload if forced or if Mario is dead or if loading the level.
     ; We upload every frame even if wasteful, because I'd rather not add another
     ; flag (!ram_is_dying does not work because it is already changed by the
     ; time we get here). On death most things are stopped so it should be fine.
+    ldx $02 : bne +
     ldx $0100|!addr : cpx #$14 : bcc +
     ldx $71 : cpx #$09 : beq +
     jmp .no_death
@@ -229,6 +237,8 @@ nmi:
 .no_death:
 
     sep #$20
+    ; Force upload only lasts for 1 frame
+    lda #$00 : sta !retry_ram_status_bar_force_upload
     rts
 
 ; Routine to set A to 16 bits and waste time for division.
@@ -249,6 +259,9 @@ init:
     sta !ram_coin_backup
     sta !ram_lives_backup
     sta !ram_bonus_stars_backup
+
+    ; Force to upload during level load
+    lda #$01 : sta !ram_status_bar_force_upload
 
     ; Upload the static tiles.
     jsr .nmi
