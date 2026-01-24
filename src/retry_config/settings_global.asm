@@ -307,21 +307,22 @@
 ; These settings can be overridden per-level by using the %ssb_config commands in "settings_local.asm".
 ; If !default_xxx_tile or !default_xxx_palette is $00, the item will be hidden by default.
 ; These are only relevant if !sprite_status_bar = 1.
+    ; Item box (this uses 4 8x8, arranged as a 16x16 box)
     !default_item_box_tile         = $80
     !default_item_box_palette      = $0B
-
+    ; Timer (this uses 4 8x8, arranged as a 16x16 box)
     !default_timer_tile            = $88
     !default_timer_palette         = $08
-
+    ; Coins (this uses 4 8x8, arranged as a 16x16 box)
     !default_coin_counter_tile     = $C2
     !default_coin_counter_palette  = $08
-
+    ; Lives (this uses 3 8x8, arranged as a 16x16 box with the top right corner not used)
     !default_lives_counter_tile    = $00
     !default_lives_counter_palette = $09
-
+    ; Bonus stars (this uses 3 8x8, arranged as a 16x16 box with the top right corner not used)
     !default_bonus_stars_tile      = $00
     !default_bonus_stars_palette   = $09
-
+    ; Deaths (this uses 6 8x8, arranged as a 24x16 box)
     !default_death_counter_tile    = $00
     !default_death_counter_palette = $09
 

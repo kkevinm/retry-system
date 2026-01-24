@@ -579,6 +579,7 @@ table {
 	<h4 id="sprite-status-bar-tile">Tile and Palette Settings</h4>
 	<p>The following settings are only relevant if <code>!sprite_status_bar = 1</code>.</p>
 	<p>Default sprite tile and palette to use for each element in the status bar. These settings can be overridden per-level by using the <a href="./settings_local.html#ssb">Local Settings - Configure Sprite Status Bar</a>. If both <code>!default_xxx_tile</code> and <code>!default_xxx_palette</code> are $00, the item will be hidden by default.</p>
+	<p>Note that since the elements are loaded at runtime in VRAM, you need to reserve graphics space for each one that is enabled. The specifics of how much space each one takes is described in the table. If you don't want to reserve space globally (in SP1/2), you can choose to use the local settings to reserve different tiles in each level depending on what is unused there (you can even choose to put them in SP3/4 by adding <code>$100</code> to the tile number).</p>
 	<table>
 		<tr>
 			<th>Element</th>
@@ -588,7 +589,7 @@ table {
 		<tr>
 			<td rowspan="2">Item box</td>
 			<td><code>!default_item_box_tile</code></td>
-			<td>Sprite tile number used by the item box by default</td>
+			<td>Sprite tile number used by the item box by default. This uses 4 8x8 tiles, arranged as a 16x16 box (except if <code>!8x8_item_box_tile = 1</code>, in which case it only uses 1 8x8 tile).</td>
 		</tr>
 		<tr>
 			<td><code>!default_item_box_palette</code></td>
@@ -597,7 +598,7 @@ table {
 		<tr>
 			<td rowspan="2">Timer</td>
 			<td><code>!default_timer_tile</code></td>
-			<td>Sprite tile number used by the timer by default</td>
+			<td>Sprite tile number used by the timer by default. This uses 4 8x8 tiles, arranged as a 16x16 box.</td>
 		</tr>
 		<tr>
 			<td><code>!default_timer_palette</code></td>
@@ -606,7 +607,7 @@ table {
 		<tr>
 			<td rowspan="2">Coins</td>
 			<td><code>!default_coin_counter_tile</code></td>
-			<td>Sprite tile number used by the coin counter by default</td>
+			<td>Sprite tile number used by the coin counter by default. This uses 4 8x8 tiles, arranged as a 16x16 box.</td>
 		</tr>
 		<tr>
 			<td><code>!default_coin_counter_palette</code></td>
@@ -615,7 +616,7 @@ table {
 		<tr>
 			<td rowspan="2">Lives</td>
 			<td><code>!default_lives_counter_tile</code></td>
-			<td>Sprite tile number used by the lives counter by default (disabled by default).</td>
+			<td>Sprite tile number used by the lives counter by default (disabled by default). This uses 3 8x8 tiles, arranged as a 16x16 box with the top right corner unused (you can use it for your own stuff).</td>
 		</tr>
 		<tr>
 			<td><code>!default_lives_counter_palette</code></td>
@@ -624,7 +625,7 @@ table {
 		<tr>
 			<td rowspan="2">Bonus stars</td>
 			<td><code>!default_bonus_stars_tile</code></td>
-			<td>Sprite tile number used by the bonus stars counter by default (disabled by default)</td>
+			<td>Sprite tile number used by the bonus stars counter by default (disabled by default). This uses 3 8x8 tiles, arranged as a 16x16 box with the top right corner unused (you can use it for your own stuff).</td>
 		</tr>
 		<tr>
 			<td><code>!default_bonus_stars_palette</code></td>
@@ -633,7 +634,7 @@ table {
 		<tr>
 			<td rowspan="2">Deaths</td>
 			<td><code>!default_death_counter_tile</code></td>
-			<td>Sprite tile number used by the death counter by default (disabled by default)</td>
+			<td>Sprite tile number used by the death counter by default (disabled by default). This uses 6 8x8 tiles, arranged as a 24x16 box.</td>
 		</tr>
 		<tr>
 			<td><code>!default_death_counter_palette</code></td>
