@@ -80,7 +80,7 @@
 ; If 1, DSX (dynamic) sprites status is reset on level load.
     !reset_dsx = 1
 
-; 0 = RNG will never be reset (except in cutscenes)
+; 0 = RNG will never be reset
 ; 1 = RNG will only be reset when entering a level from the Overworld (vanilla behavior)
 ; 2 = RNG will be reset when dying and Retrying a level and when entering it from the Overworld (old Retry default behavior)
 ; 3 = RNG will be always reset (also when going through a sublevel with a door/pipe)

@@ -4,35 +4,21 @@
 
 pushpc
 
-; $00A1A8 is hijacked by the SA-1 pack
-org $00A1AD
+org $00A1B2
     jml ow_no_reset_rng
 
-org $00A1BB
+org $00A1BB|!bank
     return:
 
 pullpc
 
 ow_no_reset_rng:
-    ; Replicate the vanilla code for $1A-$D7 (X already loaded here)
--   stz $1A,x
-    dex : bpl -
-
-    lda $0100|!addr : cmp #$0C : bne .cutscene
-
-    ; For Overworld, reset everything except RNG
+    ; Reset $13D3-$148A
     ldx.w #$148B-$13D3-1
 -   stz $13D3|!addr,x
     dex : bpl -
+    ; Reset $148F-$1BA1
     ldx.w #$07CE-($148B-$13D3)-4
 -   stz $148F|!addr,x
-    dex : bpl -
-    jml return
-
-.cutscene:
-    ; For cutscenes, replicate the vanilla code
-    ; (I'm not sure if not resetting RNG here can cause issues)
-    ldx #$07CE
--   stz $13D3|!addr,x
     dex : bpl -
     jml return

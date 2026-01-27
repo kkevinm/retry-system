@@ -153,7 +153,6 @@ org $00D0D8
     dec $0DBE|!addr
     bpl $09
 
-org $00A1AD
-    stz $1A,x
-    dex
-    db $10 ; bpl
+org $00A1B2
+    ldx.w #$07CE
+    db $9E ; stz.w $WWWW,x
