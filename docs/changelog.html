@@ -34,8 +34,19 @@
 		<li>Added new "X" tile that can be displayed next to the sprite status bar elements, similarly to the vanilla status bar. Check out the new defines in "settings_global.asm" in the sprite status bar section.</li>
 		<li>Added new options in "settings_global.asm" to position the sprite status bar counters independently from their icons.</li>
 		<li>Added new options in "settings_global.asm" to align the sprite status bar counters left or right.</li>
+		<li>Renamed some API routines to have shorter names (note: you can still use the old names, but they might get removed in future versions):
+			<ul>
+				<li><code>retry_api_respawn_in_level</code> &rarr; <code>retry_api_respawn</code></li>
+				<li><code>retry_api_save_global_variables</code> &rarr; <code>retry_api_save_global_vars</code></li>
+				<li><code>retry_api_reset_level_checkpoint</code> &rarr; <code>retry_api_reset_cp</code></li>
+				<li><code>retry_api_reset_all_checkpoints</code> &rarr; <code>retry_api_reset_all_cps</code></li>
+				<li><code>retry_api_configure_sprite_status_bar</code> &rarr; <code>retry_api_cfg_ssb</code></li>
+				<li><code>retry_api_hide_sprite_status_bar</code> &rarr; <code>retry_api_hide_ssb</code></li>
+				<li><code>retry_api_get_sram_variable_address</code> &rarr; <code>retry_api_get_sram_var</code></li>
+			</ul>
+		</li>
 		<li><b>NOTE</b>: if upgrading from an older version, if using the %no_reset_rng option in "settings_local.asm", you'll need to change it to %reset_rng like this: <code>%no_reset_rng($XXX)</code> &rarr; <code>reset_rng($XXX,1)</code>.</li>
-		<li><b>NOTE</b>: if upgrading from an older version, if using the configure_sprite_status_bar API routine, you'll need to add an additional value to account for the death counter (e.g. add $0000 at the end).</li>
+		<li><b>NOTE</b>: if upgrading from an older version, if using the "configure_sprite_status_bar" API routine, you'll need to add an additional value to account for the death counter (e.g. add $0000 at the end), and also change it to "cfg_ssb" for good measure.</li>
 	</ul>
 
 	<h2 id="v1.1.0">v1.1.0</h2>

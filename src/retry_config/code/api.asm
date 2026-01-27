@@ -12,9 +12,10 @@
 ; Outputs: N/A
 ; Pre: A/X/Y 8 bits
 ; Post: A/X/Y 8 bits
-; Example: JSL retry_api_respawn_in_level
+; Example: JSL retry_api_respawn
 ;===============================================================================
-respawn_in_level:
+respawn:
+%deprecated(respawn_in_level)
     jsl in_level_main_dying_respawn
     jsr in_level_death_routine_no_game_over
     rtl
@@ -44,9 +45,10 @@ save_game:
 ; Outputs: N/A
 ; Pre: N/A
 ; Post: A clobbered, DB/X/Y/P preserved, $02-$0B clobbered
-; Example: JSL retry_api_save_global_variables
+; Example: JSL retry_api_save_global_vars
 ;===============================================================================
-save_global_variables:
+save_global_vars:
+%deprecated(save_global_variables)
 if !sram_feature
     ; Preserve DB, X, Y, P.
     phb : phk : plb
@@ -72,9 +74,10 @@ endif
 ; Outputs: N/A
 ; Pre: A/X/Y 8 bits
 ; Post: A/X/Y 8 bits, DB/X/Y preserved
-; Example: JSL retry_api_reset_level_checkpoint
+; Example: JSL retry_api_reset_cp
 ;===============================================================================
-reset_level_checkpoint:
+reset_cp:
+%deprecated(reset_level_checkpoint)
     jsr shared_reset_checkpoint
     rtl
 
@@ -87,9 +90,10 @@ reset_level_checkpoint:
 ; Outputs: N/A
 ; Pre: N/A
 ; Post: A/X/Y size preserved, DB/X/Y preserved
-; Example: JSL retry_api_reset_all_checkpoints
+; Example: JSL retry_api_reset_all_cps
 ;===============================================================================
-reset_all_checkpoints:
+reset_all_cps:
+%deprecated(reset_all_checkpoints)
     ; A/X/Y 8 bits
     phx : phy : php
     sep #$30
@@ -143,7 +147,7 @@ reset_all_checkpoints:
 ; Pre: N/A
 ; Post: A/X/Y 8 bit and clobbered, DB preserved
 ; Example:
-;     JSL retry_api_configure_sprite_status_bar
+;     JSL retry_api_cfg_ssb
 ;     dw $B080 ; Item box: palette B, tile 0x80
 ;     dw $8088 ; Timer: palette 8, tile 0x88
 ;     dw $80C2 ; Coin counter: palette 8, tile 0xC2
@@ -152,7 +156,8 @@ reset_all_checkpoints:
 ;     dw $0000 ; Death counter: hidden
 ;     ... <- your code will continue here after the JSL
 ;===============================================================================
-configure_sprite_status_bar:
+cfg_ssb:
+%deprecated(configure_sprite_status_bar)
 if !sprite_status_bar
     phb
     ; Set DBR equal to caller routine bank
@@ -204,11 +209,12 @@ endif
 ; Pre: N/A
 ; Post: A/X/Y 8 bit and clobbered, DB preserved
 ; Example:
-;     JSL retry_api_hide_sprite_status_bar
+;     JSL retry_api_hide_ssb
 ;===============================================================================
-hide_sprite_status_bar:
+hide_ssb:
+%deprecated(hide_sprite_status_bar)
 if !sprite_status_bar
-    jsl configure_sprite_status_bar : %dwn(0,!ssb_elements_number)
+    jsl cfg_ssb : %dwn(0,!ssb_elements_number)
     ; Make sure we don't upload anything
     lda #$00 : sta !ram_status_bar_force_upload
 endif
@@ -298,7 +304,7 @@ is_save_file_empty:
 ; Pre: N/A
 ; Post: A/X/Y 8 bit and clobbered, DB preserved
 ; Example 1 (file already loaded):
-;         JSL retry_api_get_sram_variable_address
+;         JSL retry_api_get_sram_var
 ;         dl retry_ram_death_counter ; Variable to search for
 ;         BCS error
 ;     found:
@@ -311,7 +317,7 @@ is_save_file_empty:
 ; Example 2 (on title screen):
 ;         LDA #$01 ; $01 = search in save file 2
 ;         STA $010A|!addr
-;         JSL retry_api_get_sram_variable_address
+;         JSL retry_api_get_sram_var
 ;         dl retry_ram_death_counter ; Variable to search for
 ;         BCS empty_file
 ;         LDA [$00] ; Get first death counter digit of save file 2
@@ -319,7 +325,8 @@ is_save_file_empty:
 ;     empty_file:
 ;         ...
 ;===============================================================================
-get_sram_variable_address:
+get_sram_var:
+%deprecated(get_sram_variable_address)
 if !sram_feature
     phb
     ; Set DBR equal to caller routine bank

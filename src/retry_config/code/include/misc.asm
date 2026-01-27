@@ -140,3 +140,8 @@ endmacro
 macro debug(x)
     sta.l $005000+<x>
 endmacro
+
+; Deprecated label macro used for documentation purposes
+macro deprecated(x)
+    <x>:
+endmacro
