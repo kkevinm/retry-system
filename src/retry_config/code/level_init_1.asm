@@ -56,4 +56,5 @@ if !counterbreak_yoshi != 1 && !counterbreak_yoshi != 2
 endif
     stz $0DC1|!addr
 +
+    jsl level_transition_init
     rtl

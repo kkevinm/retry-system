@@ -7,6 +7,10 @@ macro incsrc(folder,file)
     namespace off
 endmacro
 
+; Label used in retry_gm.asm
+empty:
+    rtl
+
 ;===============================================================================
 ; Load shared settings, defines and resources.
 ;===============================================================================

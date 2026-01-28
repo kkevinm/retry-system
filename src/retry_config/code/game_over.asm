@@ -1,6 +1,8 @@
 ; Gamemode 16
 
 init:
+    jsl level_transition_init
+    
     ; Skip if it's not the "GAME OVER" screen.
     lda $143B|!addr : cmp #$14 : bne .return
 

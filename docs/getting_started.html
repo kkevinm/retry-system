@@ -44,7 +44,7 @@
 	<p>If you instead want to do it manually, follow these steps:</p>
 	<ul>
 		<li>Copy the <u class="dir">retry.asm</u> file from the <u class="dir">src/library</u> folder into UberASM Tool's <u class="dir">library</u> folder.</li>
-		<li>Copy all the files from the <u class="dir">src/gamemode</u> folder into UberASM Tool's <u class="dir">gamemode</u> folder.</li>
+		<li>Copy the <u class="dir">retry_gm.asm</u> file from the <u class="dir">src/gamemode</u> folder into UberASM Tool's <u class="dir">gamemode</u> folder.</li>
 		<li>Copy the <u class="dir">src/retry_config</u> into UberASM Tool's top folder.</li>
 	</ul>
 	<p>After running the script or copying the files manually, your UberASM Tool folder structure should look like this:
@@ -52,7 +52,7 @@
 			<div class="folder">UberASM Tool Folder
 			<span class="folder">├─&nbsp;asm</span>
 			<span class="folder">├─&nbsp;gamemode</span>
-			<span class="folder">│<span class="file">└─&nbsp;<b>retry_gm*.asm</b></span></span>
+			<span class="folder">│<span class="file">└─&nbsp;<b>retry_gm.asm</b></span></span>
 			<span class="folder">├─&nbsp;level</span>
 			<span class="folder">├─&nbsp;library</span>
 			<span class="folder">│<span class="file">└─&nbsp;<b>retry.asm</b></span></span>
@@ -60,7 +60,7 @@
 			<span class="folder">├─&nbsp;overworld</span>
 			<span class="folder">├─&nbsp;<b>retry_config</b></span>
 			<span class="folder">├─&nbsp;retry_old_backup <i>(only present if old Retry backed up by install script)</i></span>
-			<span class="folder">├─&nbsp;routines <i>(only present in UberASM Tool 2.0+)</i></span>
+			<span class="folder">├─&nbsp;routines</span>
 			<span class="folder">├─&nbsp;...</span>
 			</div>
 		</div>
@@ -70,23 +70,13 @@
 	<h3 id="insert_files">Insert Files with UberASM Tool</h3>
 	<p>Now that the Retry files are in place, you need to tell UberASM Tool to insert them in your rom.</p>
 	<ul>
-		<li>Copy these lines into UberASM Tool's <u class="dir">list.txt</u> file:
+		<li>Copy this line into UberASM Tool's <u class="dir">list.txt</u> file, under <code>gamemode:</code>:
 <pre>
-gamemode:
-	00 retry_gm00.asm
-	06 retry_gm06.asm
-	07 retry_gm07.asm
-	0C retry_gm0C.asm
-	0D retry_gm0D.asm
-	0F retry_gm0F.asm
-	10 retry_gm10.asm
-	11 retry_gm11.asm
-	12 retry_gm12.asm
-	13 retry_gm13.asm
-	14 retry_gm14.asm
-	15 retry_gm15.asm
-	16 retry_gm16.asm
-	19 retry_gm19.asm
+	* retry_gm.asm
+</pre>
+		<b>Note</b>: if you already have something for <code>*</code> under <code>gamemode:</code>, just add it with a comma like this:
+<pre>
+	* your_stuff.asm,retry_gm.asm
 </pre>
 		</li>
 		<li>Make sure you have edited at least one level in Lunar Magic.</li>

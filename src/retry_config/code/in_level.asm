@@ -541,6 +541,9 @@ endif
     cmp.b #!reset_rng_type_ow_retry : bcc +
     jsr shared_reset_rng
 +   
+    ; Make sure $1496 is not zero so the game does not override the gamemode.
+    ; This should've been a problem before but it never was an issue???
+    lda #$02 : sta $1496|!addr
     rts
 
 ;=====================================

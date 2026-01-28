@@ -67,22 +67,9 @@ echo.
 echo Retry files copied successfully^^!
 
 echo.
-echo To complete the installation, copy these lines in your "list.txt" under gamemode:
+echo To complete the installation, copy this line in your "list.txt" under gamemode:
 echo.
-echo     00 retry_gm00.asm
-echo     06 retry_gm06.asm
-echo     07 retry_gm07.asm
-echo     0C retry_gm0C.asm
-echo     0D retry_gm0D.asm
-echo     0F retry_gm0F.asm
-echo     10 retry_gm10.asm
-echo     11 retry_gm11.asm
-echo     12 retry_gm12.asm
-echo     13 retry_gm13.asm
-echo     14 retry_gm14.asm
-echo     15 retry_gm15.asm
-echo     16 retry_gm16.asm
-echo     19 retry_gm19.asm
+echo     * retry_gm.asm
 
 goto :end
 
