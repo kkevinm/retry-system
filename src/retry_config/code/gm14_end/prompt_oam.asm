@@ -283,7 +283,7 @@ letters:
 ; This routine puts all used slots in OAM at the end of the table in contiguous spots.
 ; The result is that all free slots will be at the beginning of the table.
 ; This allows the letters to be drawn with max priority w.r.t. everything else, and to not overwrite other tiles.
-; Returns with Y = $01FC and X = last free OAM slot.
+; Clobbers $00-$03.
 ;=====================================
 defrag_oam:
     ; Since we scan both $0200 and $0300, we need 16 bit indexes.
@@ -313,15 +313,14 @@ defrag_oam:
     ; If the slot is free, go to the next one.
     cmp $0201|!addr,y : beq ..next
 
-    ; Otherwise, copy the Y slot in the X slot...
+    ; Otherwise, copy the Y slot in the X slot.
     rep #$20
     lda $0200|!addr,y : sta $0200|!addr,x
     lda $0202|!addr,y : sta $0202|!addr,x
 
-    ; ...and mark the Y slot as free.
-    lda #$F0F0 : sta $0200|!addr,y
-
-    phx : phy
+    ; Backup X and Y.
+    stx $00
+    sty $02
 
     ; Compute the indexes in $0420.
     tya : lsr #2 : tay
@@ -331,13 +330,16 @@ defrag_oam:
     sep #$20
     lda $0420|!addr,y : sta $0420|!addr,x
 
-    ply : plx
+    ; Restore X and Y.
+    ldx $00
+    ldy $02
 
     ; Go to the next slot in the rearranged table.
     dex #4
 
-    ; Reload value to compare $0201 to.
-    lda #$F0
+    ; Mark the Y slot as free
+    ; (also load A with value to compare $0201 to in the next iteration).
+    lda #$F0 : sta $0201|!addr,y
 
 ..next:
     ; Go to the next slot in the original table, and loop back if not the end.
