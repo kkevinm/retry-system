@@ -114,7 +114,7 @@ if !title_death_behavior != 0
     stz $15 : stz $16 : stz $17 : stz $18
 
     ; If the death animation is almost over...
-    lda $1496|!addr : cmp #$02 : bne ...return
+    lda $1496|!addr : cmp #$03 : bcs ...return
 
     ; ... reset stuff for reloading...
     jsr reset_addresses
