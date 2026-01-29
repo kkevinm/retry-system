@@ -1,3 +1,5 @@
+;>dbr off
+
 ; Max gamemode used by Retry
 !retry_gm_max = $19
 
@@ -7,18 +9,20 @@ macro jump_to_gm_ptr(table)
     ; Compile time sanity check
     assert <table>_end-<table> == (!retry_gm_max+1)*2, "<table> table is invalid"
 
-    lda $0100|!addr : cmp.b #!retry_gm_max+1 : bcs return
+    ; Even if something changed the gamemode we're gucci
+    lda.l retry_ram_gm_backup : cmp.b #!retry_gm_max+1 : bcs return
     ; Set $00 = jump pointer
     ; The bank is the same for all pointers
     asl : tax
     rep #$20
-    lda.w <table>,x : sta $00
+    lda.l <table>,x : sta $00
     sep #$20
     lda.b #retry_empty>>16 : sta $02
     jml [$0000|!dp]
 endmacro
 
 init:
+    lda $0100|!addr : sta.l retry_ram_gm_backup
     %jump_to_gm_ptr(init_ptrs)
 
 main:

@@ -49,7 +49,7 @@ endmacro
 %retry_ram(prompt_phase,$0C)                ; 1
 %retry_ram(update_window,$0D)               ; 1
 %retry_ram(is_dying,$0E)                    ; 1
-%retry_ram(unused,$0F)                      ; 1
+%retry_ram(gm_backup,$0F)                   ; 1
 %retry_ram(midway_powerup,$10)              ; 1
 %retry_ram(prompt_override,$11)             ; 1
 %retry_ram(disable_exit,$12)                ; 1
