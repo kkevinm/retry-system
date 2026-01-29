@@ -193,9 +193,8 @@
     !prompt_speed = 6
 
 ; 0 = sprites and animations won't freeze when the prompt is shown.
-; 1 = sprites and most animations will freeze, but some animations will still play (for example, Magikoopa Magic's flashing).
-; 2 = sprites and all animations will freeze.
-    !prompt_freeze = 2
+; 1 = sprites and animations will freeze when the prompt is shown.
+    !prompt_freeze = 1
 
 ; Cooldown (max $7F) for disabling up/down when the prompt shows up, which prevents
 ; selecting the "Exit" option for a few frames. Can be useful to prevent accidentally

@@ -46,6 +46,8 @@
 				<li><code>retry_api_get_sram_variable_address</code> &rarr; <code>retry_api_get_sram_var</code></li>
 			</ul>
 		</li>
+		<li>Fixed !prompt_freeze = 0 shortening the death animation on the title screen and in levels using the Retry prompt.</li>
+		<li>Removed old !prompt_freeze = 1 option (the one freezing most but not all sprites when the prompt is active).</li>
 		<li><b>NOTE</b>: if upgrading from an older version, if using the %no_reset_rng option in "settings_local.asm", you'll need to change it to %reset_rng like this: <code>%no_reset_rng($XXX)</code> &rarr; <code>reset_rng($XXX,1)</code>.</li>
 		<li><b>NOTE</b>: if upgrading from an older version, if using the "configure_sprite_status_bar" API routine, you'll need to add an additional value to account for the death counter (e.g. add $0000 at the end), and also change it to "cfg_ssb" for good measure.</li>
 	</ul>

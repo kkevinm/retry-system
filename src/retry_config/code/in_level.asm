@@ -114,7 +114,7 @@ if !title_death_behavior != 0
     stz $15 : stz $16 : stz $17 : stz $18
 
     ; If the death animation is almost over...
-    lda $1496|!addr : cmp #$01 : bne ...return
+    lda $1496|!addr : cmp #$02 : bne ...return
 
     ; ... reset stuff for reloading...
     jsr reset_addresses
@@ -139,13 +139,6 @@ if !exit_animation < 2
     stz $7D
 endif
 
-    ; If the game isn't locked, prevent death timer from running out.
-if !prompt_freeze == 0
-    lda $1496|!addr : bpl +
-    stz $1496|!addr
-+   inc $1496|!addr
-endif
-
     rtl
 
 ...no_exit:
@@ -166,13 +159,7 @@ endif
     stz $76
 
     ; Handle the box shrinking.
-    cmp #$05 : bne ...no_shrink
-
-    ; This overcomes vanilla DECing $1496 twice since $9D is 0
-if !prompt_freeze == 0
-    inc $1496|!addr
-endif
-    bra ...handle_box
+    cmp #$05 : beq ...handle_box
 
 ...no_shrink:
     ; Keep death timer constant during prompt activity (except shrinking).
@@ -296,16 +283,16 @@ endif
 ; screen_freeze routine
 ;
 ; Routine to freeze sprites, animations, timer etc. while the prompt is displayed.
-; If !prompt_freeze == 0, most stuff is kept running except for timer, autoscrollers, message boxes and some Yoshi stuff.
-; If !prompt_freeze == 1, stuff that doesn't obey to the $9D flag will still run.
-; If !prompt_freeze == 2, everything should freeze (although I might have missed some).
+; If !prompt_freeze == 0, most stuff is kept running except for timer, death
+; timer, autoscrollers, message boxes, some Yoshi stuff and the lives incrementer.
+; If !prompt_freeze != 0, everything should freeze (although I might have missed
+; some vanilla stuff that does not obey to $9D).
 ;=====================================
 screen_freeze:
 if !prompt_freeze
     ; Force sprites and animations to lock.
     lda #$01 : sta $9D
 
-if !prompt_freeze == 2
     ; Freeze animations that use $13.
     lda !ram_prompt_phase : beq +
     cmp #$05 : bcs +
@@ -354,13 +341,15 @@ if !prompt_freeze == 2
     lda $14 : and #$03 : bne +
     inc $18AC|!addr
 +
-endif
 else
     ; Force sprites and animations to run.
     stz $9D
 
     ; Prevent timer from ticking down.
     inc $0F30|!addr
+
+    ; Prevent death timer from running out.
+    inc $1496|!addr
 
     ; Prevent messages from activating.
     stz $1426|!addr
