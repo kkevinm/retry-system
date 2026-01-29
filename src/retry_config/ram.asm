@@ -28,11 +28,9 @@ macro retry_ram(name,offset)
     !retry_ram_<name> #= !ram_<name>
 
     base !ram_<name>
-        ram_<name>:
+        global ram_<name>:
     base off
 endmacro
-
-namespace off
 
 ; Use the same offsets as the retry patch to keep compatibility with other resources.
 ; The way to read these is: each row defines a Retry freeram address, where the name is the name to append to "!retry_ram_", and the number is the offset from !retry_freeram.
