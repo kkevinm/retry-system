@@ -66,8 +66,7 @@
 ; This controls whether to freeze sprites during a level's pipe entrance (it doesn't affect other entrance types).
 ; 0 = don't freeze
 ; 1 = freeze (recommended)
-; 2 = vanilla: freeze only if sprites were frozen when exiting the previous room (e.g. if you entered a pipe, but not if you entered a door).
-;     This can be inconsistent if exiting and re-entering the level.
+; 2 = vanilla (inconsistent)
     !pipe_entrance_freeze = 1
 
 ; If 1, Start+Select out of a level is always possible.
