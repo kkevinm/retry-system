@@ -1,5 +1,3 @@
-namespace nested off
-
 ; Macros to load files and namespace them easily.
 macro incsrc(folder,file)
     namespace <file>

@@ -541,8 +541,10 @@ endif
     cmp.b #!reset_rng_type_ow_retry : bcc +
     jsr shared_reset_rng
 +   
-    ; Make sure $1496 is not zero so the game does not override the gamemode.
-    ; This should've been a problem before but it never was an issue???
+    ; Make sure $1496 is not 0 and not decremented to 0 this frame, so the game
+    ; does not override the gamemode in the death animation routine.
+    ; UberASM uses a backup of $0100 to call the labels, so it was working fine
+    ; before. Now we use $0100 in the shared gamemode file, so this is necessary.
     lda #$02 : sta $1496|!addr
     rts
 
