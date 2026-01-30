@@ -8,8 +8,8 @@
 	<link rel="icon" href="./img/icon.png" type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
-
 <body>
+<div class="box">
 <h1>Frequently Asked Questions</h1>
 <br/>
 
@@ -59,11 +59,11 @@
 
 <h4>Q: Can I change where the prompt is shown on the screen?</h4>
 <p>A: Yes. Look at <code>!text_x_pos</code> and <code>!text_y_pos</code> in <u class="dir">retry_config/settings_global.asm</u>. For example, using <code>!text_x_pos = $08</code> and <code>!text_y_pos = $D0</code> will place it on the lower left corner of the screen.</p>
-<p>Additionally, you can also change it at runtime by writing to the <code>!ram_prompt_x_pos</code> and <code>!ram_prompt_y_pos</code> addresses (see <a href="./ram_map.html">RAM Map</a> for more info).
-<p>Either way, if you want to change it you should disable the Retry box (either by setting <code>!no_prompt_box = 1</code> or by writing to <code>!ram_disable_box</code> at runtime) as its position can't be changed easily.</p>
+<p>Additionally, you can also change it at runtime by writing to the <code>!ram_prompt_x_pos</code> and <code>!ram_prompt_y_pos</code> addresses (see <a href="./ram_map.html">RAM Map</a> for more info).</p>
+<p>Either way, if you want to change it you have to disable the Retry box (either by setting <code>!no_prompt_box = 1</code> or by writing to <code>!ram_disable_box</code> at runtime) as its position can't be changed easily.</p>
 <hr>
 
 <br/><center><a href="./index.html">Return to main page</a></center>
+</div>
 </body>
-
 </html>

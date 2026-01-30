@@ -7,7 +7,8 @@
 	<link rel="icon" href="./img/icon.png" type="image/x-icon">
 	<link rel="stylesheet" type="text/css" href="./style.css">
 </head>
-<body class="wide">
+<body>
+<div class="box-wide">
 	<h1>Retry Hijack Map</h1>
 	<p>While this version of the Retry System mostly uses UberASM Tool code to run, it still requires some hijacks for some functions that cannot be achieved otherwise. These hijacks are inserted automatically when inserting UberASM Tool, and they can be removed with the provided <u class="dir">src/retry_unpatch.asm</u> file if you need to remove Retry from your rom (see <a href="./uninstall.html">Uninstalling Retry</a> for details).</p>
 	<p>If you're experiencing game crashes or weird problems after inserting some other patch, you can check here if there are conflicting hijacks with Retry, although that should be pretty rare compared to the old Retry patch which had much more frequent resource conflicts.</p>
@@ -94,12 +95,12 @@
 		</tr>
 		<tr>
 			<td><code>$009E25</code></td>
-			<td><code>1</td>
+			<td><code>1</code></td>
 			<td class="left-align">Changes how many lives the save file starts with.</td>
 		</tr>
 		<tr>
 			<td><code>$00A1B2</code></td>
-			<td><code>4</td>
+			<td><code>4</code></td>
 			<td class="left-align">Prevents the original game from resetting the RNG state when loading the Overworld and cutscenes (since it is handled by Retry).</td>
 		</tr>
 		<tr>
@@ -184,5 +185,6 @@
 	</table>
 
 <br/><center><a href="./index.html">Return to main page</a></center>
+</div>
 </body>
 </html>

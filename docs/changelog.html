@@ -8,10 +8,11 @@
 	<link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-	<h1>Changelog</h1>
+<div class="box">
+	<h1>Retry System Changelog</h1>
 	<h2 id="v1.2.0">v1.2.0</h2>
 	<ul>
-		<li><b>NOTE</b>: this update introduces a bunch of changes that break backwards compatibility. If you want to port your ROM from an older version, check the details at the end of this list.</li>
+		<li><u class="warn">NOTE:</u> this update introduces a bunch of changes that break backwards compatibility. If you want to port your ROM from an older version, check the details at the end of this list.</li>
 		<li>Reworked gamemode code so only a single file is now needed: "retry_gm.asm", to be inserted as "* retry_gm.asm" under "gamemode:" (thanks to Koopster for the idea).</li>
 		<li>Fixed "Midway point obtained" Overworld initial flag from Lunar Magic not working with Retry installed (thanks to LouisDoucet for reporting this).</li>
 		<li>Added !reset_frame_counters option in "settings_global.asm" to be able to disable resetting the frame counters on level load.</li>
@@ -31,7 +32,8 @@
 		<li>Fixed !prompt_freeze = 0 shortening the death animation on the title screen and in levels using the Retry prompt.</li>
 		<li>Removed old !prompt_freeze = 1 option (the one freezing most but not all sprites when the prompt is active).</li>
 		<li>Now if you load an invalid save file or save state by accident (one created before Retry was inserted), instead of crashing the game on level retry, it will display an helpful error message in game (thanks to Selicre for the suggestion).</li>
-		<li>Backwards incompatible changes:
+		<li>Updated the documentation styling to a dark mode <del>stolen</del> inspired by the classic SMW Central theme.</li>
+		<li><u class="warn">Backwards incompatible changes:</u>
 			<ul>
 				<li>Now Retry requires UberASM Tool 2.1 or higher. Also the asar.dll in the tool must be 1.90 or higher (which is what's already included in the tool by default).</li>
 				<li>Overhauled the "reset RNG" feature:
@@ -45,7 +47,7 @@
 				</li>
 				<li>Expanded the free ram size by 16 bytes, which results in the ram variables !retry_ram_death_counter, !retry_ram_checkpoint and !retry_ram_cust_obj_data to be shifted compared to previous versions. See "docs/ram.html" for more information.</li>
 				<li>Save files and save states created with Retry versions older than v1.2.0 won't work with v1.2.0 (the error message will be displayed in game).</li>
-				<li>Renamed some API routines to have shorter names (note: you can still use the old names, but they might get removed in future versions):
+				<li>Renamed some API routines to have shorter names (<u class="warn">NOTE:</u> you can still use the old names, but they might get removed in future versions):
 					<ul>
 						<li><code>retry_api_respawn_in_level</code> &rarr; <code>retry_api_respawn</code></li>
 						<li><code>retry_api_save_global_variables</code> &rarr; <code>retry_api_save_global_vars</code></li>
@@ -84,7 +86,7 @@
 		<li>Added !prompt_show_delay option in "settings_global.asm" to adjust how fast the Retry prompt shows up. Also the default value is more similar to the original Retry patch compared to previous versions.</li>
 		<li>Added !default_coin_counter_behavior to only display either coins or dragon coins in the sprite status bar. Adjusted configure_sprite_status_bar api routine to do the same.</li>
 	</ul>
-	<p><b>NOTE</b>: if upgrading from v0.8.1 or older to v1.0.0 or newer, pay attention if you have used the "vanilla death" prompt option, as it its value changed to account for the new "instant Retry & play death music" option. In details:
+	<p><u class="warn">NOTE:</u> if upgrading from v0.8.1 or older to v1.0.0 or newer, pay attention if you have used the "vanilla death" prompt option, as it its value changed to account for the new "instant Retry & play death music" option. In details:
 		<ul>
 			<li>In "settings_global.asm": <code>!default_prompt_type = 3</code> &rarr; <code>!default_prompt_type = 4</code></li>
 			<li>In "settings_local.asm": <code>%retry(xxx,4)</code> &rarr; <code>%retry(xxx,5)</code></li>
@@ -133,14 +135,14 @@
 	<ul>
 		<li>Updated "library/retry.asm" and "gamemode/retry_gm14.asm" files, which I forgot to update in 0.7.1 so that version gave compilation errors.</li>
 	</ul>
-	<p><b>NOTE</b>: if upgrading from 0.7.0 or older to 0.7.1 or newer, you need to patch the included "retry_unpatch.asm" file with Asar BEFORE running UberASM Tool with the new Retry version, or the game will crash.</p>
+	<p><u class="warn">NOTE:</u> if upgrading from 0.7.0 or older to 0.7.1 or newer, you need to patch the included "retry_unpatch.asm" file with Asar BEFORE running UberASM Tool with the new Retry version, or the game will crash.</p>
 
 	<h2 id="v0.7.1">v0.7.1</h2>
 	<ul>
 		<li>Removed "level_end_frame.asm" and the "gm14_end" routine in "extra.asm", as they're now obsoleted by the UberASM Tool 2.0 "end" label (2.0 is required to insert Retry from this version onwards).</li>
 		<li>Fixed issue from the previous version where the sprite status bar coin tile could be glitched.</li>
 	</ul>
-	<p><b>NOTE</b>: if upgrading from 0.7.0 or older to 0.7.1 or newer, you need to patch the included "retry_unpatch.asm" file with Asar BEFORE running UberASM Tool with the new Retry version, or the game will crash.</p>
+	<p><u class="warn">NOTE:</u> if upgrading from 0.7.0 or older to 0.7.1 or newer, you need to patch the included "retry_unpatch.asm" file with Asar BEFORE running UberASM Tool with the new Retry version, or the game will crash.</p>
 
 	<h2 id="v0.7.0">v0.7.0</h2>
 	<ul>
@@ -192,9 +194,9 @@
 		<li>Fixed Retry prompt remaining glitched on screen in case Mario revives after death, for example with the Yoshi revive glitch (thanks to YouFailMe and Mega for reporting this).</li>
 		<li>Added !draw_all_dc_collected option to make all DCs collected be drawn or not to Retry's sprite status bar (thanks to Anas for reporting this).</li>
 		<li>Now enabling the sprite status bar on the title screen will work properly instead of showing glitched tiles. Note that it is still disabled by default in "sprite_status_bar_tables.asm": values are $0000 for level C7, changing those according to the guide in the file will enable it.</li>
-      NOTE: this requires inserting the new "retry_gm06.asm" gamemode file in GM 06 (see updated "how_to_insert.txt" guide).
+      <u class="warn">NOTE:</u> this requires inserting the new "retry_gm06.asm" gamemode file in GM 06 (see updated "how_to_insert.txt" guide).
 		<li>Added fix for dying on the title screen with the !title_death_behavior option, with which you can choose if to reload the title screen immediately or only after the death animation has played out. You can also keep the original game's glitched behavior if you need to.</li>
-      NOTE: this requires inserting the new "retry_gm07.asm" gamemode file in GM 07 (see updated "how_to_insert.txt" guide).
+      <u class="warn">NOTE:</u> this requires inserting the new "retry_gm07.asm" gamemode file in GM 07 (see updated "how_to_insert.txt" guide).
      </ul>
 
 	<h2 id="v0.5.1">v0.5.1</h2>
@@ -273,12 +275,12 @@
 		<li>Fixed earthquake effect (e.g. Thwomps) still going while the Retry prompt is shown (only when using !prompt_freeze = 2).</li>
 		<li>Fixed bug where if using the "Time Up Fix" patch together with a patch that skips status bar initialization code (e.g. "RAM Toggled Status Bar"), the timer wouldn't tick down after dying due to a timeout in a level without Retry (similar fix as v0.3.3 but for a much more specific case).</li>
 		<li>Added define for green star block coin counter in "misc.asm" for consistency.</li>
-		<li>Fixed issue where the "Enable SFX echo" feature wouldn't work during a level transition that changes song, if the song had a high echo buffer (note: it can still happen if using !fast_transitions = 1 with songs with echo delay $0C or higher - in this case the SFX echo will be enabled after a room transition/respawn).</li>
+		<li>Fixed issue where the "Enable SFX echo" feature wouldn't work during a level transition that changes song, if the song had a high echo buffer (<u class="warn">NOTE:</u> it can still happen if using !fast_transitions = 1 with songs with echo delay $0C or higher - in this case the SFX echo will be enabled after a room transition/respawn).</li>
 		<li>Added !enter_level_sfx setting (disabled by default) to play a SFX when entering a level from the Overworld, similarly to SMB3.</li>
 		<li>Added !retry_death_animation setting (disabled by default) to allow to play the full death animation before showing the Retry prompt and/or before instantly respawning (thanks to KaizoFish for the suggestion).</li>
 		<li>Added !death_camera_lock setting (enabled by default) to stop the camera from scrolling while dying (including the "Exit" animation or the death animation enabled by !retry_death_animation).</li>
-		<li>Added !time_up_fix setting (enabled by default) to prevent the "TIME UP!" message from appearing after dying in a level with timer set to 0 (similar fix as Alcaro's, but handled with UberASM). Note that a new gamemode file was added ("retry_gm15.asm") to make it work.</li>
-		<li>Rewritten fix for glitched layer 2 interaction on level load:</li>
+		<li>Added !time_up_fix setting (enabled by default) to prevent the "TIME UP!" message from appearing after dying in a level with timer set to 0 (similar fix as Alcaro's, but handled with UberASM). <u class="warn">NOTE:</u> a new gamemode file was added ("retry_gm15.asm") to make it work.</li>
+		<li>Rewritten fix for glitched layer 2 interaction on level load.</li>
   		<li>Now Mario won't appear in his "falling" pose for 1 frame if respawning on layer 2 ground.</li>
   		<li>Now sprites won't act as being in the air for 1 frame if placed on layer 2 ground while respawning (this fixes, for example, Mushrooms starting moving after a level reload when they're not supposed to).</li>
   		<li>Now !retry_ram_l2_backup is unused (might be repurposed for something else in future versions).</li>
@@ -518,5 +520,6 @@
 	</ul>
 
 	<br/><center><a href="./index.html">Return to main page</a></center>
+</div>
 </body>
 </html>

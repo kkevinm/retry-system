@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
+<div class="box">
 <h1>ObjecTool Information</h1>
 <p>If you want to insert custom objects using the ObjecTool patch, and you're using Retry's Custom Midway Object feature (<code>!use_custom_midway_bar = 1</code> in the settings) you'll need to make an edit before inserting the patch.</p>
 <p>Open <u class="dir">objectool.asm</u> and remove these lines (they're towards the top of the file):</p>
@@ -26,5 +27,6 @@ org $0DA415|!bank                   ; x6A615 (hijack normal object loading routi
 
 <p>Additionally, if you want to remove Retry's custom midway bar while keeping ObjecTool, you'll need to place back the code that you removed in <u class="dir">objectool.asm</u> (and make sure you run Retry with <code>!use_custom_midway_bar = 0</code>).</p>
 <br/><center><a href="./index.html">Return to main page</a></center>
+</div>
 </body>
 </html>

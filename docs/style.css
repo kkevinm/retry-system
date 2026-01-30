@@ -1,13 +1,23 @@
 body {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2em;
-  padding-bottom: 4em;
-  font-family: Arial, sans-serif;
-  font-size: 1em;
+  background: url("./img/background.png") repeat;
+  padding: 1em;
+  padding-bottom: 1em;
 }
 
-body.wide {
+.box, .box-wide {
+  margin: 0 auto;
+  padding: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-bottom: 2em;
+  font-family: "Tahoma", sans-serif;
+  font-size: 1em;
+  max-width: 800px;
+  color: white;
+  background-color: rgb(0 0 0 / 75%);
+}
+
+.box-wide {
   max-width: 1024px;
 }
 
@@ -15,26 +25,42 @@ p, li, th, td {
   line-height: 140%;
 }
 
+a {
+  color: #99ff99;
+}
+
 pre {
-  font-size: 1.09em;
+  font-size: 1em;
   padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 1.0);
+  font-family: "Courier New", monospace;
+  bold: true;
   border-radius: 3px;
   user-select: all;
   line-height: 1.3;
 }
 
 u.dir, code {
-  font-size: 1.09em;
+  font-size: 1em;
   padding: 2px 3px;
-  background: rgba(0,0,0,.05);
+  background: rgba(255, 255, 255, 0.10);
   border-radius: 2px;
+  font-family: "Courier New", monospace;
 }
 
-u.dir {
+u.dir, u.warn, u.error {
   text-decoration: none;
-  font-family: monospace;
+}
+
+u.warn {
+  font-weight: bold;
+  color: #ffd556;
+}
+
+u.error {
+  font-weight: bold;
+  color: #c22c2c;
 }
 
 blockquote {
@@ -49,12 +75,12 @@ table {
 }
 
 th {
-  background-color: rgba(0,0,0,.05);
+  background-color: rgba(255, 255, 255, .15);
   font-size: 0.93em;
 }
 
 td,th {
-  border: 1px solid rgba(0,0,0,.15);
+  border: 1px solid rgba(255, 255, 255, .30);
   padding: 4px 8px;
 }
 
@@ -85,8 +111,12 @@ ul li {
 }
 
 hr {
-  background: rgba(0,0,0,.1);
+  background: rgba(255, 255, 255, .3);
   height: 1px;
   border: none;
   margin: 2em 0;
+}
+
+h1, h2, h3, h4 {
+  color: #9999ff;
 }
