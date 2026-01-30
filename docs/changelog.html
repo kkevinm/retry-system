@@ -49,7 +49,7 @@
 		<li>Fixed !prompt_freeze = 0 shortening the death animation on the title screen and in levels using the Retry prompt.</li>
 		<li>Removed old !prompt_freeze = 1 option (the one freezing most but not all sprites when the prompt is active).</li>
 		<li>Now if you load an invalid save file or save state by accident (one created before Retry was inserted), instead of crashing the game on level retry, it will display an helpful error message in game (thanks to Selicre for the suggestion).</li>
-		<li>Expanded the free ram size by 16 bytes, which results in the ram variables !retry_ram_death_counter, !retry_ram_checkpoint and !retry_ram_cust_obj_data to have be shifted compared to previous versions. See "docs/ram.html" for more information.</li>
+		<li>Expanded the free ram size by 16 bytes, which results in the ram variables !retry_ram_death_counter, !retry_ram_checkpoint and !retry_ram_cust_obj_data to be shifted compared to previous versions. See "docs/ram.html" for more information.</li>
 		<li><b>NOTE</b>: since this version, Retry requires UberASM Tool 2.1 or higher. Also the asar.dll in the tool must be 1.90 or higher (which is what's already included in the tool by default).</li>
 		<li><b>NOTE</b>: if upgrading from an older version, if using the %no_reset_rng option in "settings_local.asm", you'll need to change it to %reset_rng like this: <code>%no_reset_rng($XXX)</code> &rarr; <code>reset_rng($XXX,1)</code>.</li>
 		<li><b>NOTE</b>: if upgrading from an older version, if using the "configure_sprite_status_bar" API routine, you'll need to add an additional value to account for the death counter (e.g. add $0000 at the end), and also change it to "cfg_ssb" for good measure.</li>
