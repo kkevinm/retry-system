@@ -1,8 +1,9 @@
-; Asar 1.80+ is required
-asar 1.80
+; Asar 1.90+ is required
+asar 1.90
 
-; UberASM Tool 2.0+ is required
-%require_uber_ver(2,0)
+; UberASM Tool 2.1+ is required
+; (technically 2.0 is fine but it ships with Asar 1.81)
+%require_uber_ver(2,1)
 
 ;if read1($05D9E3) != $5C
 ;    error "You must save a level in Lunar Magic with the \"Separate midway entrance\" option checked before applying this. Insertion aborted."

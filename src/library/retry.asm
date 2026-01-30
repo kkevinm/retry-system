@@ -58,6 +58,7 @@ endif
     %incsrc(code,time_up)
     %incsrc(code,sprite_status_bar)
     %incsrc(code,api)
+    %incsrc(code/fail,fail)
 
 ;===============================================================================
 ; Load the hijacks.

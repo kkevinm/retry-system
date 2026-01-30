@@ -12,8 +12,8 @@
 !save_table_size                  = !save_table_size_local+!save_table_size_global
 !save_table_index_global          = !save_table_size_local
 
-; Magic number to mark the global save area in SRAM
-!save_global_magic_number = $DEADBEEF
+; Magic number to mark save areas in SRAM
+!sram_magic_number = $DEADBEEF
 
 if !sram_feature
 
@@ -94,9 +94,9 @@ save_global:
     ldx.w #!save_table_index_global
     jsr save_data
 
-    ; Save the magic number to SRAM
-    lda.w #!save_global_magic_number : sta !sram_addr_global
-    lda.w #!save_global_magic_number>>16 : sta !sram_addr_global+2
+    ; Save the magic number to global SRAM
+    lda.w #!sram_magic_number : sta !sram_addr_global
+    lda.w #!sram_magic_number>>16 : sta !sram_addr_global+2
 
 .return:
     rts
@@ -119,8 +119,8 @@ load_global:
     lda.w #!save_table_size : sta $06
 
     ; If magic number is in SRAM, load the global data
-    lda !sram_addr_global : cmp.w #!save_global_magic_number : bne .init
-    lda !sram_addr_global+2 : cmp.w #!save_global_magic_number>>16 : bne .init
+    lda !sram_addr_global : cmp.w #!sram_magic_number : bne .init
+    lda !sram_addr_global+2 : cmp.w #!sram_magic_number>>16 : bne .init
 
 .load:
     ; Write source bank parameter in data transfer routine
@@ -163,13 +163,10 @@ load_global:
 ; save_game routine
 ;=====================================
 save_game:
-    ; Set the DBR.
-    phk : plb
-
     ; Call the custom save routine.
-    php : phb
+    php
     jsr extra_save_file
-    plb : plp
+    plp
 
     ; Setup data transfer routine
     %setup_data_transfer()
@@ -182,6 +179,16 @@ save_game:
 
     ; $06 = save table ending index to save
     lda.w #!save_table_size_local : sta $06
+
+    ; Save the magic number to the save file (-4 from the sram addr returned)
+    ; Also set the code bank on the stack
+-   pea.w (!sram_bank)|((-)>>16<<8) : plb
+    ldy.w #-4
+    lda.w #!sram_magic_number : sta ($02),y
+    iny #2
+    lda.w #!sram_magic_number>>16 : sta ($02),y
+    ; Now the DBR is set up correctly
+    plb
 
     ; Save the save file data
     ldx #$0000
@@ -207,14 +214,13 @@ load_game:
     jmp init_file
 +   
     ; Preserve DB, X, Y, P.
-    phb : phk : plb
-    phx : phy : php
+    phb : phx : phy : php
 
     ; Call the custom load routine.
     sep #$30
-    php : phb
+    php
     jsr extra_load_file
-    plb : plp
+    plp
 
     ; $06 = save table ending index to load (entire local table)
     rep #$30
@@ -224,8 +230,7 @@ load_game:
     jsr load_file
 
     ; Restore DBR, P, X and Y.
-    plp : ply : plx
-    plb
+    plp : ply : plx : plb
     
     ; Restore original code and jump back.
     phx
@@ -237,8 +242,7 @@ load_game:
 ;=====================================
 load_game_over:
     ; Preserve DB, X, Y, P.
-    phb : phk : plb
-    phx : phy : php
+    phb : phx : phy : php
 
     ; $06 = save table ending index to load (not the game_over part)
     rep #$30
@@ -248,8 +252,7 @@ load_game_over:
     jsr load_file
 
     ; Restore DBR, P, X and Y.
-    plp : ply : plx
-    plb
+    plp : ply : plx : plb
     rtl
 
 ;=====================================
@@ -267,28 +270,43 @@ load_file:
     ; $02 = starting sram address
     jsr get_file_sram_addr : sta $02
 
+    ; Check the magic number in the save file (-4 from the sram addr returned)
+    ; Also set the code bank on the stack
+-   pea.w (!sram_bank)|((-)>>16<<8) : plb
+    ldy.w #-4
+    lda ($02),y : cmp.w #!sram_magic_number : bne .fail
+    iny #2
+    lda ($02),y : cmp.w #!sram_magic_number>>16 : bne .fail
+    ; Now the DBR is set up correctly
+    plb
+
     ; Load the data from sram
     ldx #$0000
     jsr load_data
     rts
 
+.fail:
+    ; Go to the fail handler
+    plb
+    jmp fail_sram
+
 ;=====================================
 ; init_file routine
 ;=====================================
 init_file:
-    ; Preserve X and Y.
-    phx : phy
+    ; Preserve DBR, X and Y.
+    phb : phx : phy
 
     ; Set 8 bit X/Y for the custom routine.
     sep #$10
 
-    ; Set DBR.
-    phb : phk : plb
-
     ; Call the custom load routine.
-    php : phb
+    php
     jsr extra_load_new_file
-    plb : plp
+    plp
+
+    ; Set the DBR.
+    phk : plb
 
     ; Setup data transfer routine
     %setup_data_transfer()
@@ -318,7 +336,7 @@ init_file:
     sep #$20
 
     ; Restore DBR, Y and X.
-    plb : ply : plx
+    ply : plx : plb
 
     ; Jump back.
     jml $009D22|!bank
@@ -411,7 +429,9 @@ get_file_sram_addr:
     rts    
 
 .sram_addr:
-    dw !sram_addr,!sram_addr+!file_size,!sram_addr+(2*!file_size)
+    dw !sram_addr+4
+    dw !sram_addr+4+!file_size
+    dw !sram_addr+4+(2*!file_size)
 
 ;=====================================
 ; get_global_sram_addr routine
