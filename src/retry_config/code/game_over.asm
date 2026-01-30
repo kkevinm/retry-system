@@ -12,11 +12,9 @@ if !sram_feature
 endif
     
     ; Call the extra routine.
-    phb : phk : plb
-    php
-    jsr extra_game_over
-    plp
-    plb
+    php : phb
+    jsl extra_game_over
+    plb : plp
 
     ; If applicable, save the game.
 if !save_after_game_over

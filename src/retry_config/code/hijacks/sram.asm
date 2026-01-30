@@ -59,11 +59,10 @@ macro next_iteration()
     ; Progress to the sram address to save to
     lda $02 : clc : adc $04 : sta $02
     
-    ; Restore registers
-    plb : plx
-    
     ; Increase save table index
-    txa : clc : adc #$0005 : tax
+    ; PLA === PLX : TXA
+    ; Carry cannot be set unless the save table is too large (invalid anyway)
+    pla : adc #$0005 : tax
 
     ; If not at the end of the save table, loop
     cpx $06 : bcc .loop
@@ -164,9 +163,9 @@ load_global:
 ;=====================================
 save_game:
     ; Call the custom save routine.
-    php
-    jsr extra_save_file
-    plp
+    php : phb
+    jsl extra_save_file
+    plb : plp
 
     ; Setup data transfer routine
     %setup_data_transfer()
@@ -219,9 +218,9 @@ load_game:
 
     ; Call the custom load routine.
     sep #$30
-    php
-    jsr extra_load_file
-    plp
+    php : phb
+    jsl extra_load_file
+    plb : plp
 
     ; $06 = save table ending index to load (entire local table)
     rep #$30
@@ -303,12 +302,9 @@ init_file:
     sep #$10
 
     ; Call the custom load routine.
-    php
-    jsr extra_load_new_file
-    plp
-
-    ; Set the DBR.
-    phk : plb
+    php : phb
+    jsl extra_load_new_file
+    plb : plp
 
     ; Setup data transfer routine
     %setup_data_transfer()
@@ -351,20 +347,22 @@ init_file:
 ; - $06 = ending index in the table_save
 ; - data_transfer mvn, rts and dst_bank set up
 save_data:
+    phb
 .loop:
+    phx
+
     ; $00 = source address
-    lda.w tables_save,x : sta $00
-    phx : phb
+    lda.l tables_save,x : sta $00
     
     ; $04 = transfer size
-    lda.w tables_save+3,x : sta $04
+    lda.l tables_save+3,x : sta $04
 
     ; Push MVN accumulator parameter on the stack (size - 1)
     dec : pha
 
     ; Write source bank parameter in data transfer routine
     sep #$20
-    lda.w tables_save+2,x : sta.b data_transfer_src_bank
+    lda.l tables_save+2,x : sta.b data_transfer_src_bank
     rep #$20
 
     ; Call the data transfer routine with parameters:
@@ -380,6 +378,7 @@ save_data:
     %next_iteration()
 
 .end:
+    plb
     rts
 
 ; Helper routine for load_file and init_file operations
@@ -390,21 +389,22 @@ save_data:
 ; - $06 = ending index in the table_save
 ; - data_transfer mvn, rts and src_bank set up
 load_data:
+    phb
 .loop:
-    ; Y = destination address
-    lda.w tables_save,x : tay
+    phx
 
-    phx : phb
+    ; Y = destination address
+    lda.l tables_save,x : tay
     
     ; $04 = transfer size
-    lda.w tables_save+3,x : sta $04
+    lda.l tables_save+3,x : sta $04
 
     ; Push MVN accumulator parameter on the stack (size - 1)
     dec : pha
     
     ; Write destination bank parameter in data transfer routine
     sep #$20
-    lda.w tables_save+2,x : sta.b data_transfer_dst_bank
+    lda.l tables_save+2,x : sta.b data_transfer_dst_bank
     rep #$20
 
     ; Call the data transfer routine with parameters:
@@ -419,6 +419,7 @@ load_data:
     %next_iteration()
 
 .end:
+    plb
     rts
 
 ;=====================================

@@ -21,8 +21,8 @@ handle_menu:
 
 .exit:
     ; Call the custom exit routine.
-    phy : php : phb : phk : plb
-    jsr extra_prompt_exit
+    phy : php : phb
+    jsl extra_prompt_exit
     plb : plp : ply
 
     ; Set prompt phase to "shrinking with exit selected".

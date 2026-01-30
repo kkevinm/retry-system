@@ -393,8 +393,8 @@ endif
 reset_addresses:
     ; Call the custom reset routine.
     ; Call this first so the values can be used in the routine before being reset.
-    php : phb : phk : plb
-    jsr extra_reset
+    php : phb
+    jsl extra_reset
     plb : plp
 
     ; Reset collected Yoshi coins.

@@ -56,8 +56,8 @@ midway_main:
 
     ; Call the custom midway routine.
     ; (we already did PHX earlier).
-    phy : php : phb : phk : plb
-    jsr extra_midway
+    phy : php : phb
+    jsl extra_midway
     plb : plp : ply : plx
     
     ; Only run the powerup code if applicable.

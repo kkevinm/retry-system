@@ -1,7 +1,16 @@
-; Macros to load files and namespace them easily.
+; Macro to load files and namespace them easily.
+; This one inserts the file in the same bank.
 macro incsrc(folder,file)
     namespace <file>
         incsrc "../retry_config/<folder>/<file>.asm"
+    namespace off
+endmacro
+
+; Macro to load files and namespace them easily.
+; This one inserts the file in a separate bank.
+macro incsrc_ex(folder,file)
+    namespace <file>
+        %prot_source("./retry_config/<folder>/<file>.asm", <file>)
     namespace off
 endmacro
 
@@ -35,14 +44,14 @@ else
     %incsrc("",settings_local)
 endif
 if !sram_feature
-    %incsrc("",sram_tables)
+    %incsrc_ex("",sram_tables)
 endif
 
 ;===============================================================================
 ; Load the code.
 ;===============================================================================
     %incsrc(code,shared)
-    %incsrc("",extra)
+    %incsrc_ex("",extra)
     %incsrc(code,startup)
     %incsrc(code,fade_to_level)
     %incsrc(code,level_init_1)

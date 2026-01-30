@@ -51,8 +51,8 @@ endif
     jsr shared_hard_save
 
     ; Call the custom checkpoint routine.
-    php : phb : phk : plb
-    jsr extra_room_checkpoint
+    php : phb
+    jsl extra_room_checkpoint
     plb : plp
 
     ; Save individual dcsave buffers.

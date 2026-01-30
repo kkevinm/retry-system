@@ -40,11 +40,9 @@ endif
     sta !ram_hurry_up
 
     ; Call the custom reset routine.
-    phx : php
-    phb : phk : plb
-    jsr extra_reset
-    plb
-    plp : plx
+    phx : php : phb
+    jsl extra_reset
+    plb : plp : plx
 
     ; Set the destination from the level's checkpoint value.
     rep #$20

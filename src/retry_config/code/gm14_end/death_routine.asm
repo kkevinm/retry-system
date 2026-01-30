@@ -67,7 +67,7 @@ endif
 +   
     ; Call the custom death routine.
     php : phb
-    jsr extra_death
+    jsl extra_death
     plb : plp
 
     ; Reset some stuff related to lx5's Custom Powerups.
