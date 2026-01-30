@@ -5,7 +5,7 @@
 
 ;=====================================
 ; What freeram to use.
-; 241 + (!max_custom_midway_num*4) bytes are used.
+; 257 + (!max_custom_midway_num*4) bytes are used.
 ; On SA-1, only !retry_freeram_sa1 is used.
 ;=====================================
 !retry_freeram     = $7FB400
@@ -69,7 +69,8 @@ endmacro
 %retry_ram(status_bar_bonus_stars_tile,$25) ; 2
 %retry_ram(status_bar_death_tile,$27)       ; 2
 %retry_ram(status_bar_force_upload,$29)     ; 1
-%retry_ram(reserved,$2A)                    ; 1 (reserved for future expansion)
-%retry_ram(death_counter,$2B)               ; 5
-%retry_ram(checkpoint,$30)                  ; 192
-%retry_ram(cust_obj_data,$F0)               ; 1+(!max_custom_midway_num*4)
+%retry_ram(canary,$2A)                      ; 2
+%retry_ram(reserved,$2C)                    ; 15 (reserved for future expansion)
+%retry_ram(death_counter,$3B)               ; 5
+%retry_ram(checkpoint,$40)                  ; 192
+%retry_ram(cust_obj_data,$100)              ; 1+(!max_custom_midway_num*4)

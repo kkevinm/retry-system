@@ -30,3 +30,5 @@
 !reset_rng_type_max      #= !reset_rng_type_always
 
 !ssb_elements_number #= 6
+
+!canary_value #= 42069

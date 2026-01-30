@@ -1,8 +1,13 @@
 ; Gamemode 11
 
 init:
-    ; Reset frame counters and layer 1 and 2 X positions.
+    ; Check if the ram canary is still valid
     rep #$20
+    lda !ram_canary : cmp.w #!canary_value : beq .ok
+    jmp fail_wram
+
+.ok:
+    ; Reset frame counters and layer 1 and 2 X positions.
 if !reset_frame_counters
     stz $13
 endif

@@ -12,7 +12,7 @@
 	<p>This documents serves as a detailed reference on the purpose of the RAM addresses used by Retry, and how you can use them.</p>
 
 <h3 id="overview">Overview</h3>
-	<p>Retry uses a chunk of RAM at <code>$7FB400</code> (<code>$40A400</code> on SA-1 roms) by default. The size of this area is <code>241 + (4*!max_custom_midway_num)</code> bytes (where <code>!max_custom_midway_num</code> is defined in <code>settings.asm</code>).</p>
+	<p>Retry uses a chunk of RAM at <code>$7FB400</code> (<code>$40A400</code> on SA-1 roms) by default. The size of this area is <code>257 + (4*!max_custom_midway_num)</code> bytes (where <code>!max_custom_midway_num</code> is defined in <code>settings.asm</code>).</p>
 	<p>The default address should be fine in most cases, but if you want to change it because of some freeram conflict, open <code>ram.asm</code> and edit <code>!retry_freeram</code> (<code>!retry_freeram_sa1</code> if you're using SA-1).</p>
 	<p>In the <code>ram.asm</code> file you can also see the name for the different addresses, defined as <code>%retry_ram(name,$XX)</code>, where <code>$XX</code> specifies the offset from the base <code>!retry_freeram</code> address. The full address name is resolved to <code>!ram_name</code> and <code>!ram_retry_name</code>.
 
@@ -289,29 +289,36 @@
 			<td class="left-align">Flag that forces all visible elements of the status bar to be uploaded freshly in the sprite GFX (for 1 frame, it is reset after being used in NMI). Normally elements are only uploaded when changed (e.g. the frame when the timer ticks down) to not waste NMI time, but sometimes it is necessary to be uploaded regardless: on level load and when the status bar element got unhidden during the level. You can set it yourself, if writing to the other RAM addresses manually, but normally you should just use the API routines which handles this for you (see <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> and <a href="./api.html#hide_sprite_status_bar">API - Hide sprite status bar</a> for details).</td>
 		</tr>
 		<tr>
-			<td><code>reserved</code></td>
+			<td><code>canary</code></td>
 			<td><code>$2A</code></td>
-			<td><code>$01</code></td>
+			<td><code>$02</code></td>
+			<td>Internal</td>
+			<td class="left-align">Contains a fixed value and it is used to detect invalid game states (like if loading a bogus save state or if the memory gets corrupted). If the value is not the expected one, an error message will show in game when loading a level. You should never write to it unless you want to force the error message (which is basically a hardlock).</td>
+		</tr>
+		<tr>
+			<td><code>reserved</code></td>
+			<td><code>$2C</code></td>
+			<td><code>$0F</code></td>
 			<td>Internal</td>
 			<td class="left-align">Unused, but reserved for future expansion. Usage as freeram is not recommended.</td>
 		</tr>
 		<tr>
 			<td><code>death_counter</code></td>
-			<td><code>$2B</code></td>
+			<td><code>$3B</code></td>
 			<td><code>$05</code></td>
 			<td>Internal</td>
 			<td class="left-align">Holds the amount of deaths occurred. Each byte holds the value of a digit in the counter (from left to right). Saved to SRAM/BW-RAM by default (if <code>!sram_feature = 1</code> in <code>settings.asm</code>).</td>
 		</tr>
 		<tr>
 			<td><code>checkpoint</code></td>
-			<td><code>$30</code></td>
+			<td><code>$40</code></td>
 			<td><code>$C0</code></td>
 			<td>Internal</td>
 			<td class="left-align">Checkpoint data for each level (2 bytes per level). Holds the destination value of the latest checkpoint obtained in each level (using the same format as <code>respawn</code>). Note that entry <code>0</code> (the first 2 bytes) hold the checkpoint value for the intro level, but it won't be used after the intro. Saved to SRAM/BW-RAM by default (if <code>!sram_feature = 1</code> in <code>settings.asm</code>).</td>
 		</tr>
 		<tr>
 			<td><code>cust_obj_data</code></td>
-			<td><code>$F0</code></td>
+			<td><code>$100</code></td>
 			<td>Var.</td>
 			<td>Internal</td>
 			<td class="left-align">Data for all the possible custom midway objects loaded in the current level, plus a counter for how many custom midways are in the level (used to prevent additional midways from spawning if reaching the <code>!max_custom_midway_num</code> value from <code>settings.asm</code>).<br>Each midway uses 4 bytes, so this uses <code>(4*!max_custom_midway_num)+1</code> bytes. For each object, there's a 2 bytes identifier (based on its index in the level's map16 data) and the destination value that this midway will set when grabbed (based on the object's extension).</td>

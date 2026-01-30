@@ -195,8 +195,8 @@ setup:
     lda #$F0
 -   sta $0201|!addr,y
     stz $0400|!addr,x
-    dex #4
-    dey
+    dey #4
+    dex
     bpl -
     ; Copy sprite tilemap to OAM table
     ldy.w #sprite_tilemap_end-sprite_tilemap-1

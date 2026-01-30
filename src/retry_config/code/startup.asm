@@ -10,6 +10,9 @@ init:
 -   stz.w !retry_freeram,x
     dex #2 : bpl -
 
+    ; Initialize the canary
+    lda.w #!canary_value : sta.w !ram_canary
+
     ; Initialize "set checkpoint" handle to $FFFF.
     lda #$FFFF : sta.w !ram_set_checkpoint
 
