@@ -2,7 +2,7 @@
 ; You usually shouldn't edit this file.
 
 ; Retry version number to write in ROM.
-!version = "1.1.0"
+!version = "1.2.0-dev"
 
 ; What button exits the level while the game is paused (by default, select).
 !exit_level_buttons_addr = $16

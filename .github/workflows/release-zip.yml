@@ -38,6 +38,7 @@ jobs:
         (
           cd out || exit 1
           zip -r ../retry-system_${{ github.event.release.tag_name }}.zip .
+          cd ..
         )
 
         # Clean up
