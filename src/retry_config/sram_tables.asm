@@ -19,7 +19,7 @@
 ; Note: for each address you add here, you need to add the default values in the sram_defaults table below.
 ; Note: if using SA-1, for addresses in $7E0100-$7E1FFF you must change them to $400100-$401FFF and for addresses $7E0000-$7E00FF you must change them to $003000-$0030FF.
 ;       Additionally, a lot of other addresses might be remapped to different locations (see SA-1 docs for more info).
-; Note: you can put up to 2389 bytes in the "save" and ".not_game_over" tables combined, and up to 162 bytes on lorom and 1021 bytes on SA-1 in the ".global" table.
+; Note: you can put up to 2385 bytes in the "save" and ".not_game_over" tables combined, and up to 162 bytes on lorom and 1021 bytes on SA-1 in the ".global" table.
 
 save:
     dl !ram_checkpoint    : dw 192

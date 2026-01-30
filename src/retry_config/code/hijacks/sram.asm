@@ -13,7 +13,7 @@
 !save_table_index_global          = !save_table_size_local
 
 ; Magic number to mark save areas in SRAM
-!sram_magic_number = $DEADBEEF
+!sram_magic_number = $52544552 ; RETR
 
 if !sram_feature
 
@@ -174,21 +174,22 @@ save_game:
     ; Write destination bank parameter in data transfer routine
     lda.b #!sram_bank : sta.b data_transfer_dst_bank
 
-    ; $02 = starting sram address
-    jsr get_file_sram_addr : sta $02
-
-    ; $06 = save table ending index to save
-    lda.w #!save_table_size_local : sta $06
+    ; Get starting sram address
+    jsr get_file_sram_addr
 
     ; Save the magic number to the save file (-4 from the sram addr returned)
     ; Also set the code bank on the stack
 -   pea.w (!sram_bank)|((-)>>16<<8) : plb
-    ldy.w #-4
-    lda.w #!sram_magic_number : sta ($02),y
-    iny #2
+    sec : sbc #$0004 : sta $02
+    lda.w #!sram_magic_number : sta ($02)
+    ldy #$0002
     lda.w #!sram_magic_number>>16 : sta ($02),y
-    ; Now the DBR is set up correctly
+    lda $02 : clc : adc #$0004 : sta $02
+    ; Now $02 and the DBR is set up correctly
     plb
+
+    ; $06 = save table ending index to save
+    lda.w #!save_table_size_local : sta $06
 
     ; Save the save file data
     ldx #$0000
@@ -267,17 +268,18 @@ load_file:
     ; Write source bank parameter in data transfer routine
     lda.b #!sram_bank : sta.b data_transfer_src_bank
 
-    ; $02 = starting sram address
-    jsr get_file_sram_addr : sta $02
+    ; Get starting sram address
+    jsr get_file_sram_addr
 
     ; Check the magic number in the save file (-4 from the sram addr returned)
     ; Also set the code bank on the stack
 -   pea.w (!sram_bank)|((-)>>16<<8) : plb
-    ldy.w #-4
-    lda ($02),y : cmp.w #!sram_magic_number : bne .fail
-    iny #2
+    sec : sbc #$0004 : sta $02
+    lda ($02) : cmp.w #!sram_magic_number : bne .fail
+    ldy #$0002
     lda ($02),y : cmp.w #!sram_magic_number>>16 : bne .fail
-    ; Now the DBR is set up correctly
+    lda $02 : clc : adc #$0004 : sta $02
+    ; Now $02 and the DBR is set up correctly
     plb
 
     ; Load the data from sram
