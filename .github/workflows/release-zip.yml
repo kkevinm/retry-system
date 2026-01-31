@@ -18,9 +18,6 @@ jobs:
         # rsync exclusions
         EXCLUDES=(
           ".git*"
-          ".gitkeep"
-          ".gitignore"
-          ".github"
           "README.md"
           "docs/_template.html"
           "screenshots"
