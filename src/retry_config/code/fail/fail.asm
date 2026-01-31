@@ -191,7 +191,7 @@ setup:
     %_upload_palette($80, sprite_pal)
     ; Clear OAM table
     ldy.w #$0200-4
-    ldx.w #$0020-1
+    ldx.w #$0080-1
     lda #$F0
 -   sta $0201|!addr,y
     stz $0400|!addr,x

@@ -104,7 +104,6 @@ save_global:
 ; load_global routine
 ;=====================================
 load_global:
-    ; Set DBR.
     phb : phk : plb
 
     ; Setup data transfer routine
@@ -153,7 +152,6 @@ load_global:
     jsr save_global
 
 .return:
-    ; Restore DBR and P.
     sep #$30
     plb
     rts
@@ -210,10 +208,10 @@ save_game:
 ;=====================================
 load_game:
     ; Load or init the file
-    beq +
+    beq .load
     jmp init_file
-+   
-    ; Preserve DB, X, Y, P.
+
+.load:
     phb : phx : phy : php
 
     ; Call the custom load routine.
@@ -225,11 +223,8 @@ load_game:
     ; $06 = save table ending index to load (entire local table)
     rep #$30
     lda.w #!save_table_size_local : sta $06
-
-    ; Load the save file.
     jsr load_file
 
-    ; Restore DBR, P, X and Y.
     plp : ply : plx : plb
     
     ; Restore original code and jump back.
@@ -241,17 +236,24 @@ load_game:
 ; load_game_over routine
 ;=====================================
 load_game_over:
-    ; Preserve DB, X, Y, P.
     phb : phx : phy : php
 
-    ; $06 = save table ending index to load (not the game_over part)
+    ; Load carry with save file empty check result
+    jsr shared_is_save_file_empty
+    
+    ; $06 = save table ending index to init/load (not the game_over part)
     rep #$30
     lda.w #!save_table_size_local_game_over : sta $06
-
-    ; Load the save file.
+    
+    ; Init or load the save based on carry status
+    bcs .empty
+.not_empty:
     jsr load_file
+    bra .return
+.empty:
+    jsr init_data
 
-    ; Restore DBR, P, X and Y.
+.return:
     plp : ply : plx : plb
     rtl
 
@@ -259,9 +261,8 @@ load_game_over:
 ; load_file routine
 ;=====================================
 load_file:
-    sep #$20
-
     ; Setup data transfer routine
+    sep #$20
     %setup_data_transfer()
 
     ; Write source bank parameter in data transfer routine
@@ -295,18 +296,27 @@ load_file:
 ; init_file routine
 ;=====================================
 init_file:
-    ; Preserve DBR, X and Y.
-    phb : phx : phy
-
-    ; Set 8 bit X/Y for the custom routine.
-    sep #$10
+    phb : phx : phy : php
 
     ; Call the custom load routine.
-    php : phb
+    phb
+    sep #$30
     jsl extra_load_new_file
-    plb : plp
+    plb
 
+    ; $06 = save table ending index
+    rep #$30
+    lda.w #!save_table_size_local : sta $06
+    jsr init_data
+
+    plp : ply : plx : plb
+    jml $009D22|!bank
+
+; Helper routine for init_file operations
+; - $06 = ending index in the table_save
+init_data:
     ; Setup data transfer routine
+    sep #$20
     %setup_data_transfer()
 
     ; Write source bank parameter in data transfer routine
@@ -315,9 +325,6 @@ init_file:
     ; $02 = starting sram defaults address
     rep #$30
     lda.w #tables_sram_defaults : sta $02
-
-    ; $06 = save table ending index
-    lda.w #!save_table_size_local : sta $06
 
     ; Load the data from rom (sram defaults table)
     ldx #$0000
@@ -329,15 +336,7 @@ init_file:
 
     ; Align checkpoint table with the initial OW flags
     jsr shared_set_checkpoints_from_initial_ow_flags
-
-    ; Keep 16 bit X/Y for the original code.
-    sep #$20
-
-    ; Restore DBR, Y and X.
-    ply : plx : plb
-
-    ; Jump back.
-    jml $009D22|!bank
+    rts
 
 ; Helper routine for save_game operations
 ; Inputs:

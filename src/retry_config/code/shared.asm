@@ -237,6 +237,31 @@ save_game:
     rts
 
 ;===============================================================================
+; Routine to check if the current save file is empty
+; Output: Carry set = save file empty
+;         Carry clear = save file not empty
+;===============================================================================
+is_save_file_empty:
+    php
+    sep #$30
+    ldx $010A|!addr
+    phb
+    ; Can't use %jsl_to_rts_db because plb clobbers the Z flag
+    lda.b #$00|!bank8 : pha : plb
+    %jsl_to_rts($009DB5)
+    bne .empty
+.not_empty:
+    plb
+    plp
+    clc
+    rts
+.empty:
+    plb
+    plp
+    sec
+    rts
+
+;===============================================================================
 ; Routines to reset and save the dcsave buffers.
 ;===============================================================================
 dcsave:

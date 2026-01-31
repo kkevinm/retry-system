@@ -260,21 +260,7 @@ get_retry_type:
 ;         ...
 ;===============================================================================
 is_save_file_empty:
-    sep #$30
-    ldx $010A|!addr
-    phb
-    ; Can't use %jsl_to_rts_db because plb clobbers the Z flag
-    lda.b #$00|!bank8 : pha : plb
-    %jsl_to_rts($009DB5)
-    sep #$30
-    bne .empty
-.not_empty:
-    plb
-    clc
-    rtl
-.empty:
-    plb
-    sec
+    jsr shared_is_save_file_empty
     rtl
 
 ;===============================================================================

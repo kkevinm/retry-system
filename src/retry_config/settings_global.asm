@@ -158,7 +158,7 @@
 ; This can be useful when paired with the option of not reloading some data from SRAM after a game over (see "sram_tables.asm"),
 ; if you want some things to retain even if the player got a game over before saving them (for example, the death counter).
 ; This ensures that they will be saved to SRAM when this happens.
-    !save_after_game_over = 1
+    !save_after_game_over = 0
 
 ;=========================== Custom Midways ===================================;
 
