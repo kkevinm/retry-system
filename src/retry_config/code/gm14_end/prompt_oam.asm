@@ -199,10 +199,10 @@ endif
     ; Load X/Y position based on black box enabled flag
     lda !ram_disable_box : beq +
     lda !ram_prompt_x_pos : sta $0D
-    lda !ram_prompt_y_pos : sta $0E
+    lda !ram_prompt_y_pos : dec : sta $0E
     bra .loop
 +   lda.b #!default_text_x_pos : sta $0D
-    lda.b #!default_text_y_pos : sta $0E
+    lda.b #!default_text_y_pos-1 : sta $0E
 
 .loop:
     ; Return if we reached the $FF terminator.

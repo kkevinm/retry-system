@@ -39,7 +39,7 @@
 ; These are not recommended to be changed unless you also change the
 ; black box windowing configuration.
 !default_text_x_pos = $58
-!default_text_y_pos = $6F
+!default_text_y_pos = $70
 
 ; Stripe image table defines.
 !stripe_index = $7F837B

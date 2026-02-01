@@ -241,7 +241,7 @@
 ; default values will be used instead).
 ; Note: you can also change these on the fly (see "docs/ram_map.html").
     !text_x_pos = $58
-    !text_y_pos = $6F
+    !text_y_pos = $70
 
 ; 0 = the cursor is static
 ; 1 = the cursor blinks like in vanilla menus
