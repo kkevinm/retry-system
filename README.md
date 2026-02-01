@@ -23,4 +23,11 @@ See [Documentation](https://kkevinm.github.io/retry-system/) for more details.
 ### Screenshots
 
 ![alt text](screenshots/1.png "Classic Retry prompt in action")
-![alt text](screenshots/2.png "Sprite status bar in action")
+
+![alt text](screenshots/2.png "Minimal Retry prompt in action")
+
+![alt text](screenshots/3.gif "Instant Retry in action")
+
+![alt text](screenshots/4.png "Sprite status bar in action (standard example)")
+
+![alt text](screenshots/5.png "Sprite status bar in action (kaizo example)")
