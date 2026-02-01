@@ -177,6 +177,50 @@ SEP #$20
 
 <p>(if your autoscroller code is in a routine that ends with RTS, use RTS instead of RTL before <code>.run</code>).</p>
 
+<hr>
+
+<h4 id="q8">Q: I'm using the SRAM table to save lives/coins/powerup/item box/bonus stars/score, but they reset to the default when I load a file! What do I do?</h4>
+<p>Saving these is slightly tricky since the original game resets them when creating or loading a save file. Luckily it should be an easy fix: for each one that you want to save, there's a hex edit you can apply to fix it (to apply them, copy those you need to a new file, save it as a <code>.asm</code> file, then patch it with Asar).</p>
+<ul>
+    <li>Lives:</li>
+<pre>
+    org $009E2C : nop #3
+</pre>
+    <li>Coins:</li>
+<pre>
+    org $009E2F : nop #3
+</pre>
+    <li>Powerup:</li>
+<pre>
+    org $009E35 : nop #2
+</pre>
+    <li>Item box:</li>
+<pre>
+    org $009E37 : nop #3
+</pre>
+    <li>Bonus stars:</li>
+<pre>
+    org $009E4B : nop #3
+</pre>
+    <li>Score:</li>
+<pre>
+    org $009E4E : nop #6 : skip 2 : nop #6
+</pre>
+</ul>
+
+<h4 id="q9">Q: I'm using the SRAM table to save moons/dragon coins, but they reset when I get a game over! What do I do?</h4>
+<p>This issue can also be fixed with a simple hex edit. With these the moons/dragon coins should reset to the state they were on the last save (or stay the same if you put them under <code>.not_game_over</code> in the SRAM table).</p>
+<ul>
+    <li>Moons:</li>
+<pre>
+    org $00977F : nop #3
+</pre>
+    <li>Dragon coins:</li>
+<pre>
+    org $009779 : nop #3
+</pre>
+</ul>
+
 <br/><center><a class="button" href="./index.html">Return to main page</a></center>
 </div>
 </body>

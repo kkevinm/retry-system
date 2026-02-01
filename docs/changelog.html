@@ -38,6 +38,7 @@
 		<li>Fixed Retry loading addresses from SRAM with bogus values when getting a Game Over without having saved before. This was only an issue if !save_after_game_over = 1, at least an exit was gotten in the file and you chose "CONTINUE" after the Game Over, but it now also triggered the new SRAM validity check erroneously (thanks to Anorakun for reporting this).</li>
 		<li>Added option !exit_y_offset in "settings_global.asm" to allow to change the position of "EXIT" relative to "RETRY" (only for !no_prompt_box = 1, otherwise the prompt looks glitched).</li>
 		<li>Updated the documentation styling to a dark mode <del>stolen</del> inspired by the classic SMW Central theme.</li>
+		<li>Expanded documentation with an "Advanced" section for more niche use cases and for coders.</li>
 		<li><u class="warn">Backwards incompatible changes:</u>
 			<ul>
 				<li>Now Retry requires UberASM Tool 2.1 or higher. Also the asar.dll in the tool must be 1.90 or higher (which is what's already included in the tool by default).</li>
