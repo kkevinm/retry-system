@@ -243,6 +243,10 @@
     !text_x_pos = $58
     !text_y_pos = $70
 
+; Y offset of the prompt "EXIT" line from the "RETRY" line.
+; Only change this with !no_prompt_box = 1, or the prompt will look glitched.
+    !exit_y_offset = $10
+
 ; 0 = the cursor is static
 ; 1 = the cursor blinks like in vanilla menus
 ; 2 = the cursor oscillates slowly right and left

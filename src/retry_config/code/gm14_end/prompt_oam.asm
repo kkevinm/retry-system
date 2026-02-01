@@ -260,11 +260,11 @@ letters:
     db $FF
 
 .exit:
-    db $00,$10,!tile_curs,props(!c_props,!tile_curs),$00 ; Black/Cursor
-    db $10,$10,!tile_e,   props(!l_props,!tile_e),   $00 ; E
-    db $18,$10,!tile_x,   props(!l_props,!tile_x),   $00 ; X
-    db $20,$10,!tile_i,   props(!l_props,!tile_i),   $00 ; I
-    db $28,$10,!tile_t,   props(!l_props,!tile_t),   $00 ; T
+    db $00,!exit_y_offset,!tile_curs,props(!c_props,!tile_curs),$00 ; Black/Cursor
+    db $10,!exit_y_offset,!tile_e,   props(!l_props,!tile_e),   $00 ; E
+    db $18,!exit_y_offset,!tile_x,   props(!l_props,!tile_x),   $00 ; X
+    db $20,!exit_y_offset,!tile_i,   props(!l_props,!tile_i),   $00 ; I
+    db $28,!exit_y_offset,!tile_t,   props(!l_props,!tile_t),   $00 ; T
 ..end:
     db $FF
 
