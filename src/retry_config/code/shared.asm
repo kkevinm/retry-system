@@ -13,29 +13,37 @@ macro set_dbr(label)
 endmacro
 
 ;===============================================================================
+; God awful function to find the RTL location in various SMW banks
+; It returns 0 if the bank is not supported
+;===============================================================================
+function __rtl(x) = \
+    select(equal(x, $00), $0084CF,\
+    select(equal(x, $01), $0180CA,\
+    select(equal(x, $02), $02B889,\
+    select(equal(x, $03), $03827F,\
+    select(equal(x, $04), $048575,\
+    select(equal(x, $05), $058125,\
+    select(equal(x, $07), $07FC51,\
+    select(equal(x, $0C), $0C9399,\
+    select(equal(x, $0D), $0DA105,\
+    0)))))))))
+
+;===============================================================================
 ; Macro to JSL to a routine that ends in RTS.
 ;===============================================================================
 macro jsl_to_rts(routine)
-    ; Automatically find the RTL address
-    !__bank #= (<routine>>>16)&$7F
-    !__rtl #= 0
-
-    if !__bank > $0F
-        error "jsl_to_rts cannot be called with a routine in freespace"
-    elseif !__bank == $00
-        !__rtl #= $0084CF
-    elseif !__bank == $05
-        !__rtl #= $058125
-    else
-        error "Add RTL address for bank $0", hex(!__bank)
+    !__rtl = __rtl((<routine>>>16)&$7F)
+    if not(!__rtl)
+        error "jsl_to_rts not supported for bank $", hex((<routine>>>16)&$7F)
+    endif
+    if read1(!__rtl) != $6B
+        error "Found $", hex(read1(!__rtl)), " at ROM $", hex(!__rtl), ", expected $6B"
     endif
 
     phk : pea.w (?+)-1
     pea.w !__rtl-1
     jml <routine>|!bank
 ?+
-    
-    undef "__bank"
     undef "__rtl"
 endmacro
 
