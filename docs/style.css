@@ -42,16 +42,6 @@ a:hover {
   text-decoration: underline;
 }
 
-a.button {
-  padding: 2px 6px 4px 6px;
-  border: 1px outset buttonborder;
-  border-radius: 3px;
-  border-color: rgba(255, 255, 255, 0.3);
-  background-color: rgba(255, 255, 255, 0.2);
-  text-decoration: none;
-  font-weight: bold;
-}
-
 pre {
   font-size: 1em;
   padding: 8px 16px;
@@ -162,7 +152,7 @@ h1, h2, h3, h4 {
 
 .menu:hover .menu-title {
   background-color: color-mix(in srgb, black, #99ff99 17%);
-  transition: background-color 0.12s ease-out;
+  transition: background-color 0.15s ease-out;
 }
 
 .menu:hover .menu-items {
@@ -171,7 +161,7 @@ h1, h2, h3, h4 {
 
 .menu-items li:hover {
   background-color: color-mix(in srgb, black, #99ff99 17%);
-  transition: background-color 0.12s ease-out;
+  transition: background-color 0.15s ease-out;
 }
 
 .menu-items a {
@@ -181,11 +171,12 @@ h1, h2, h3, h4 {
 .menu-title, .menu-items, .submenu-items {
   background-color: black;
   padding: 0px;
-  transition: background-color 0.12s ease-in;
+  transition: background-color 0.15s ease-in;
 }
 
 .menu-items > li, .submenu-items > li {
   margin: 0px;
+  transition: background-color 0.15s ease-in;
 }
 
 .menu-items > li > a, .submenu-items > li > a, .submenu-title {
@@ -195,7 +186,6 @@ h1, h2, h3, h4 {
   padding-top: 5px;
   padding-bottom: 5px;
   margin: 0px;
-  transition: background-color 0.12s ease-in;
 }
 
 .menu-title {

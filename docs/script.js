@@ -24,9 +24,9 @@ document.body.insertAdjacentHTML("afterbegin", "\
             <div class=\"submenu-title\">\
                 <a href=\"./advanced.html\">Advanced Usage</a>\
                 <ul class=\"submenu-items\">\
-                    <li><a href=\"./extra.html\">Extra</a></li>\
+                    <li><a href=\"./extra.html\">Extra Routines</a></li>\
                     <li><a href=\"./ram_map.html\">RAM Map</a></li>\
-                    <li><a href=\"./api.html\">API</a></li>\
+                    <li><a href=\"./api.html\">API Routines</a></li>\
                 </ul>\
             </div>\
         </li>\
