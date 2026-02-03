@@ -149,6 +149,11 @@ h1, h2, h3, h4 {
   position: fixed;
   left: 0px;
   top: 0px;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
 
 .menu li {
@@ -165,7 +170,7 @@ h1, h2, h3, h4 {
 }
 
 .menu-items li:hover {
-  background-color: color-mix(in srgb, transparent, #99ff99 17%);
+  background-color: color-mix(in srgb, black, #99ff99 17%);
   transition: background-color 0.12s ease-out;
 }
 
@@ -174,7 +179,7 @@ h1, h2, h3, h4 {
 }
 
 .menu-title, .menu-items, .submenu-items {
-  background-color: rgba(0, 0, 0, .95);
+  background-color: black;
   padding: 0px;
   transition: background-color 0.12s ease-in;
 }
@@ -196,17 +201,14 @@ h1, h2, h3, h4 {
 .menu-title {
   fill: white;
   padding: 10px 10px;
-  font-size: 1.2em;
-  font-weight: bold;
   border: 1px solid rgba(255, 255, 255, .30);
-  width: inherit;
 }
 
 .menu-items {
   position: relative;
   display: none;
   margin-top: -4px;
-  font-size: 0.8em;
+  font-size: 0.85em;
   border: 1px solid rgba(255, 255, 255, .30);
   color: white;
 }
