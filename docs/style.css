@@ -38,6 +38,10 @@ a {
   text-decoration: none;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
 a.button {
   padding: 2px 6px 4px 6px;
   border: 1px outset buttonborder;
@@ -138,3 +142,106 @@ hr {
 h1, h2, h3, h4 {
   color: #9999ff;
 }
+
+.menu {
+  font-family: "Tahoma", sans-serif;
+  color: white;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+}
+
+.menu li {
+  list-style-type: none;
+}
+
+.menu:hover .menu-title {
+  background-color: color-mix(in srgb, black, #99ff99 17%);
+  transition: background-color 0.12s ease-out;
+}
+
+.menu:hover .menu-items {
+  display: block;
+}
+
+.menu-items li:hover {
+  background-color: color-mix(in srgb, transparent, #99ff99 17%);
+  transition: background-color 0.12s ease-out;
+}
+
+.menu-items a {
+  text-decoration: none;
+}
+
+.menu-title, .menu-items, .submenu-items {
+  background-color: rgba(0, 0, 0, .95);
+  padding: 0px;
+  transition: background-color 0.12s ease-in;
+}
+
+.menu-items > li, .submenu-items > li {
+  margin: 0px;
+}
+
+.menu-items > li > a, .submenu-items > li > a, .submenu-title {
+  display: block;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 0px;
+  transition: background-color 0.12s ease-in;
+}
+
+.menu-title {
+  fill: white;
+  padding: 10px 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  border: 1px solid rgba(255, 255, 255, .30);
+  width: inherit;
+}
+
+.menu-items {
+  position: relative;
+  display: none;
+  margin-top: -4px;
+  font-size: 0.8em;
+  border: 1px solid rgba(255, 255, 255, .30);
+  color: white;
+}
+
+.submenu-title {
+  position: relative;
+}
+
+.submenu-title::after {
+  content: "\25B8";
+  margin-left: 5px;
+  vertical-align: -1px;
+  margin-right: 0px;
+  float: right;
+}
+
+.submenu-title:has(> a) {
+  color: #99ff99;
+}
+
+.submenu-items {
+  position: absolute;
+  display: none;
+  left: 100%;
+  top: -1px;
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid rgba(255, 255, 255, .30);
+}
+
+.submenu-title:hover .submenu-items {
+  display: block;
+}
+
+.submenu-items a {
+  white-space: nowrap;
+}
+
