@@ -11,6 +11,9 @@ assert !prompt_pal_cursor >= $08 && !prompt_pal_cursor <= $0F, "Error: \!prompt_
 ; Function to add the T bit in the YXPPCCCT properties for tiles in page 1
 function props(prop,tile) = ((prop)|((tile>>8)&1))
 
+; The bg tiles are always uploaded next to the cursor
+!prompt_tile_black #= !prompt_tile_cursor+1
+
 ;===============================================================================
 ; prompt_oam routine
 ;

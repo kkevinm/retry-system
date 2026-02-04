@@ -1,15 +1,15 @@
-!gfx_bank = ((gfx_letters>>16)&$FF)
+!gfx_bank = ((gfx_prompt>>16)&$FF)
 
 macro incgfx(file)
     incbin "../../gfx/<file>.bin"
 endmacro
 
-letters:
+prompt:
 .box:
-    %incgfx(letters1)
+    %incgfx(prompt1)
 
 .no_box:
-    %incgfx(letters2)
+    %incgfx(prompt2)
 
 if !sprite_status_bar
 

@@ -38,6 +38,8 @@
 		<li>Fixed switch palace message sprites getting glitched or disappearing if the sprite status bar is enabled and having edited the Overworld in Lunar Magic (issue introduced in v0.7.1).</li>
 		<li>Fixed Retry loading addresses from SRAM with bogus values when getting a Game Over without having saved before. This was only an issue if !save_after_game_over = 1, at least an exit was gotten in the file and you chose "CONTINUE" after the Game Over, but it now also triggered the new SRAM validity check erroneously (thanks to Anorakun for reporting this).</li>
 		<li>Added option !exit_y_offset in "settings_global.asm" to allow to change the position of "EXIT" relative to "RETRY" (only for !no_prompt_box = 1, otherwise the prompt looks glitched).</li>
+		<li>Optimized prompt VRAM usage, so now the cursor + black tiles use three adjacent 8x8 tiles instead of two pairs of 8x8 tiles.</li>
+		<li>Added a new file "prompt_tilemap.asm" where the prompt text can be edited.</li>
 		<li>Updated the documentation styling to a dark mode <del>stolen</del> inspired by the classic SMW Central theme.</li>
 		<li>Expanded documentation with an "Advanced" section for more niche use cases and for coders.</li>
 		<li>Added navigation menu at the top left of the documentation pages (note: JavaScript needs to be enabled).</li>
@@ -66,7 +68,8 @@
 						<li><code>retry_api_get_sram_variable_address</code> &rarr; <code>retry_api_get_sram_var</code></li>
 					</ul>
 				</li>
-				<li>Changed the <code>retry_api_cfg_ssb</code> routine (ex <code>retry_api_configure_sprite_status_bar</code>) parameters number to also accept the death counter configuration. If you were using the routine, just add another parameter at the end (for example <code>$0000</code> to keep the death counter hidden).</code>
+				<li>Changed the <code>retry_api_cfg_ssb</code> routine (ex <code>retry_api_configure_sprite_status_bar</code>) parameters number to also accept the death counter configuration. If you were using the routine, just add another parameter at the end (for example <code>$0000</code> to keep the death counter hidden).</code></li>
+				<li>Renamed "letter1.bin" and "letter2.bin" in "gfx" to "prompt1.bin" and "prompt2.bin". Also their content changed (tile order is different than before to account for the new prompt tilemap editing options).</li>
 			</ul>
 		</li>
 	</ul>

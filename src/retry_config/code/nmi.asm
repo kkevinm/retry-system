@@ -1,12 +1,12 @@
 ; Gamemode 14
 
-;=====================================
+;===============================================================================
 ; nmi routine
 ;
 ; I know that uploading each tile individually is slow, but it makes it easy
 ; to change where the tiles are uploaded to for the user, and easier to manage
 ; the case where the "exit" option is left out.
-;=====================================
+;===============================================================================
 
 level:
     ; Don't run on lag frames.
@@ -34,7 +34,7 @@ else
     phb : phk : plb
 
     ; Loop to upload all the tiles.
-    ; If the exit option is disabled, we skip the XI tiles.
+    ; If the exit option is disabled, we skip the second line tiles.
     lda !ram_disable_exit : beq +
     lda #$01
 +   tay
@@ -54,40 +54,36 @@ else
     lda.w #$1801 : sta.w upload_dma($4300)
     ldy.b #!gfx_bank : sty.w upload_dma($4304)
     ldy.b #1<<!upload_channel
-.loop:
-    lda.w .dest,x : sta $2116
-    lda.w .src,x : clc : adc $02 : sta.w upload_dma($4302)
-    ; All uploads are 8x8 except the cursor,
-    ; which is 16x8 only when the prompt box is enabled.
-    lda.w #gfx_size(1)
-    cpx #$00 : bne +
-    lda $00
-+   sta.w upload_dma($4305)
-    sty $420B
-    dex #2 : bpl .loop
-..end:
+    clc
 
-    ; If the box is enabled, transfer the black tiles too.
-    cmp.w #gfx_size(1) : beq +
-    sta.w upload_dma($4305)
-    lda.w #vram_addr(!prompt_tile_black) : sta $2116
-    lda.w #gfx_letters_box+gfx_size(!prompt_gfx_index_black) : sta.w upload_dma($4302)
+    ; Upload the cursor separately since it has a different size
+.cursor:
+    lda.w #vram_addr(!prompt_tile_cursor) : sta $2116
+    lda.w #gfx_size(!prompt_gfx_index_cursor) : adc $02 : sta.w upload_dma($4302)
+    lda $00 : sta.w upload_dma($4305)
     sty $420B
-+
-    plb
+
+    ; Upload all remaining 8x8 tiles
+.tile_loop:
+    lda.w .dest,x : sta $2116
+    lda.w .src,x : adc $02 : sta.w upload_dma($4302)
+    lda.w #gfx_size(1) : sta.w upload_dma($4305)
+    sty $420B
+    dex #2 : bpl .tile_loop
 
 .return:
     sep #$20
+    plb
     rtl
 
 ; Base address of the letters GFX when the prompt box is enabled/disabled.
 .gfx_addr:
-    dw gfx_letters_box
-    dw gfx_letters_no_box
+    dw gfx_prompt_box
+    dw gfx_prompt_no_box
 
 ; Size to upload for the cursor when the prompt box is enabled/disabled
 .cursor_size:
-    dw gfx_size(2)
+    dw gfx_size(3)
     dw gfx_size(1)
 
 ; Index in the below tables to start from when the exit option is enabled/disabled.
@@ -108,14 +104,12 @@ macro _gfx_sizes(...)
 endmacro
 
 .src:
-    dw gfx_size(!prompt_gfx_index_cursor)
     %_gfx_sizes(!prompt_gfx_index_line1)
 ..exit:
     %_gfx_sizes(!prompt_gfx_index_line2)
 ..end:
 
 .dest:
-    dw vram_addr(!prompt_tile_cursor)
     %_vram_addrs(!prompt_tiles_line1)
 ..exit:
     %_vram_addrs(!prompt_tiles_line2)
