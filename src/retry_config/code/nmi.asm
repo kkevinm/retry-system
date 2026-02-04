@@ -70,8 +70,8 @@ else
     ; If the box is enabled, transfer the black tiles too.
     cmp.w #gfx_size(1) : beq +
     sta.w upload_dma($4305)
-    lda.w #vram_addr(!tile_blk) : sta $2116
-    lda.w #gfx_letters_box+gfx_size(7) : sta.w upload_dma($4302)
+    lda.w #vram_addr(!prompt_tile_black) : sta $2116
+    lda.w #gfx_letters_box+gfx_size(!prompt_gfx_index_black) : sta.w upload_dma($4302)
     sty $420B
 +
     plb
@@ -95,27 +95,30 @@ else
     db .src_end-.src-2
     db .src_exit-.src-2
 
-; Tables for cursor and "RETRY" tiles.
+macro _vram_addrs(...)
+    for i = 0..sizeof(...)
+        dw vram_addr(<...[!i]>)
+    endfor
+endmacro
+
+macro _gfx_sizes(...)
+    for i = 0..sizeof(...)
+        dw gfx_size(<...[!i]>)
+    endfor
+endmacro
+
 .src:
-    dw gfx_size(6) ; Cursor
-    dw gfx_size(2) ; R
-    dw gfx_size(3) ; E
-    dw gfx_size(1) ; T
-    dw gfx_size(5) ; Y
+    dw gfx_size(!prompt_gfx_index_cursor)
+    %_gfx_sizes(!prompt_gfx_index_line1)
 ..exit:
-    dw gfx_size(4) ; X
-    dw gfx_size(0) ; I
+    %_gfx_sizes(!prompt_gfx_index_line2)
 ..end:
 
 .dest:
-    dw vram_addr(!tile_curs)
-    dw vram_addr(!tile_r)
-    dw vram_addr(!tile_e)
-    dw vram_addr(!tile_t)
-    dw vram_addr(!tile_y)
+    dw vram_addr(!prompt_tile_cursor)
+    %_vram_addrs(!prompt_tiles_line1)
 ..exit:
-    dw vram_addr(!tile_x)
-    dw vram_addr(!tile_i)
+    %_vram_addrs(!prompt_tiles_line2)
 ..end:
 
 endif

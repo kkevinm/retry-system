@@ -26,6 +26,7 @@ empty:
     %incsrc(code/include,rom)
     %incsrc("",ram)
     %incsrc("",settings_global)
+    %incsrc("",prompt_tilemap)
     %incsrc(code/include,gfx)
     
 ;===============================================================================

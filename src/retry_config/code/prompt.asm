@@ -270,15 +270,29 @@ update_window:
     lda.b #.window>>16 : sta.w window_dma($4304)
     rts
 
+; Calculate window left position based on the amount of tiles in the variadic
+macro _win_start_calc(start, ...)
+    !__win_pos #= <start>+($08*sizeof(...))
+endmacro
+
+; Calculate window left position for the two prompt text lines based on the
+; user tile index lists
+!__win_start #= !text_x_pos+$10 ; +$10 for cursor and space
+%_win_start_calc(!__win_start,!prompt_tile_index_line1)
+!__win_pos_line1 #= !__win_pos
+%_win_start_calc(!__win_start,!prompt_tile_index_line2)
+!__win_pos_line2 #= !__win_pos
+undef "__win_pos"
+
 ; Windowing table to use normally
 .window:
     ; all cover / layer123 cover
     db $5D : db $FF,$00,$FF,$00
-    db $12 : db $38,$C8,$FF,$00
-    db $08 : db $90,$C8,$38,$C8
-    db $08 : db $38,$C8,$FF,$00
-    db $08 : db $88,$C8,$38,$C8
-    db $0D : db $38,$C8,$FF,$00
+    db $12 : db !window_x_pos,$100-!window_x_pos,$FF,$00
+    db $08 : db !__win_pos_line1,$100-!window_x_pos,!window_x_pos,$100-!window_x_pos
+    db $08 : db !window_x_pos,$100-!window_x_pos,$FF,$00
+    db $08 : db !__win_pos_line2,$100-!window_x_pos,!window_x_pos,$100-!window_x_pos
+    db $0D : db !window_x_pos,$100-!window_x_pos,$FF,$00
     db $4C : db $FF,$00,$FF,$00
     db $00
 
@@ -286,8 +300,8 @@ update_window:
 .window_no_exit:
     ; all cover / layer123 cover
     db $5D : db $FF,$00,$FF,$00
-    db $12 : db $38,$C8,$FF,$00
-    db $08 : db $90,$C8,$38,$C8
-    db $1D : db $38,$C8,$FF,$00
+    db $12 : db !window_x_pos,$100-!window_x_pos,$FF,$00
+    db $08 : db !__win_pos_line1,$100-!window_x_pos,!window_x_pos,$100-!window_x_pos
+    db $1D : db !window_x_pos,$100-!window_x_pos,$FF,$00
     db $4C : db $FF,$00,$FF,$00
     db $00

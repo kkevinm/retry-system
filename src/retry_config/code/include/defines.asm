@@ -32,3 +32,5 @@
 !ssb_elements_number #= 6
 
 !canary_value #= 42069
+
+!window_x_pos #= $38

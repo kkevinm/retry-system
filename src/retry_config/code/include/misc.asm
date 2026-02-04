@@ -33,14 +33,6 @@
 ; "Per Level Yoshi Coins Amount" patch) then this value will be used.
 !default_dc_amount = 5
 
-; Default X/Y position values for the Retry prompt text.
-; These values are used when the black box is enabled, otherwise the values
-; in setting.asm (or in the respective RAM addresses if used) are used. 
-; These are not recommended to be changed unless you also change the
-; black box windowing configuration.
-!default_text_x_pos = $58
-!default_text_y_pos = $70
-
 ; Stripe image table defines.
 !stripe_index = $7F837B
 !stripe_table = $7F837D

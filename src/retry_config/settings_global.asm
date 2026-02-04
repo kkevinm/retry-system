@@ -237,8 +237,7 @@
     !no_prompt_draw = 0
 
 ; X/Y position of the first tile in the prompt (the cursor on the first line).
-; Changing this only works if the black box is disabled (if enabled,
-; default values will be used instead).
+; If the black box is enabled, you should not change the Y position or it will look glitched, but you're free to change the X position down to $38.
 ; Note: you can also change these on the fly (see "docs/ram_map.html").
     !text_x_pos = $58
     !text_y_pos = $70
@@ -264,33 +263,10 @@
 ; Higher = slower. Possible values: 0 to 5.
     !prompt_wave_speed = 2
 
-; Palette row used by the letters and cursor (note: they use sprite palettes).
-    !letter_palette = $08
-    !cursor_palette = $08
-
 ; If 1, score sprites (points, 1-Up) will be removed when dying, if Retry prompt is enabled in the level.
 ; This can be used to replace their graphics ($29, $38-$39, $44-$47, $54-$57)
 ; with the Retry prompt tiles instead of having to reserve sprite tiles for the prompt.
     !no_score_sprites_on_death = 0
-
-; Sprite tile number for the tiles used by the prompt ($00-$FF = SP1/SP2, $100-$1FF = SP3/SP4).
-; These will be overwritten dynamically when the prompt needs to show up.
-; The default values should be fine in most cases, unless you're using some other patch that reserves tiles in SP1,
-; for example: Sprite Status Bar, 32x32 Player Tilemap, lx5's Custom Powerups, lx5's Dynamic Spriteset System.
-; In this case you may need to change some of them to avoid other tiles being overwritten.
-; You can see the tile number in LM's 8x8 Tile Editor, by taking the value you see in the bottom left - $400
-; (e.g., "Tile 0x442" -> $42, "Tile 0x542" -> $142).
-; Note: when the prompt box is enabled, !tile_curs and !tile_blk actually use 2 adjacent 8x8 tiles.
-; For example, !tile_curs = $24 means both $24 and $25 will be overwritten.
-; Also, obviously these aren't used if you don't use the Retry prompt or !no_prompt_draw = 1.
-    !tile_curs = $20
-    !tile_blk  = $22
-    !tile_r    = $30
-    !tile_e    = $31
-    !tile_t    = $32
-    !tile_y    = $33
-    !tile_x    = $4A
-    !tile_i    = $5A
 
 ;=========================== Sprite Status Bar ================================;
 

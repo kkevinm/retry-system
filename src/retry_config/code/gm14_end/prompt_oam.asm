@@ -1,17 +1,17 @@
 if not(!no_prompt_draw)
 
 ; Check if palette values make sense.
-assert !letter_palette >= $08 && !letter_palette <= $0F, "Error: \!letter_palette should be between $08 and $0F."
-assert !cursor_palette >= $08 && !cursor_palette <= $0F, "Error: \!cursor_palette should be between $08 and $0F."
+assert !prompt_pal_letter >= $08 && !prompt_pal_letter <= $0F, "Error: \!prompt_pal_letter should be between $08 and $0F."
+assert !prompt_pal_cursor >= $08 && !prompt_pal_cursor <= $0F, "Error: \!prompt_pal_cursor should be between $08 and $0F."
 
 ; Convert palettes from row number to YXPPCCCT format.
-!l_props #= ($30|((!letter_palette-8)<<1))
-!c_props #= ($30|((!cursor_palette-8)<<1))
+!l_props #= ($30|((!prompt_pal_letter-8)<<1))
+!c_props #= ($30|((!prompt_pal_cursor-8)<<1))
 
 ; Function to add the T bit in the YXPPCCCT properties for tiles in page 1
 function props(prop,tile) = ((prop)|((tile>>8)&1))
 
-;=====================================
+;===============================================================================
 ; prompt_oam routine
 ;
 ; This routine draws the Retry prompt tiles on the screen.
@@ -23,7 +23,7 @@ function props(prop,tile) = ((prop)|((tile>>8)&1))
 ; Before drawing, all the currently used OAM slots are moved at the end of the OAM table, then the new tiles are written from the start.
 ; This ensures that in most cases Retry won't overwrite other sprites, and that it will always have max priority w.r.t. other sprite tiles
 ; (so that other sprites will always go behind the prompt).
-;=====================================
+;===============================================================================
 prompt_oam:
     ; Get as many free slots as possible at the start of $0200.
     ; Skip this in Reznor/Morton/Roy's rooms to avoid glitching their BGs.
@@ -91,7 +91,7 @@ if !cursor_setting == 2
     db -1,0,1,2,3,2,1,0
 endif
 
-;=====================================
+;===============================================================================
 ; handle_cursor routine
 ;
 ; This routine handles hiding the cursor when applicable, as well as setting its OAM size
@@ -103,7 +103,7 @@ endif
 ;  $00 = LSB set if the cursor should be hidden
 ;  $01 = OAM index of the cursor
 ;  $02 = X offset of the cursor (when !cursor_setting == 2)
-;=====================================
+;===============================================================================
 handle_cursor:
     ; Set the OAM size.
     lda $01 : lsr #2 : tax
@@ -124,7 +124,7 @@ if !cursor_setting == 2
     ; Draw an additional black tile under the cursor.
     rep #$20
     lda $0200|!addr,x : sta $0200|!addr,y
-    lda.w #(!l_props<<8)|(!tile_blk) : sta $0202|!addr,y
+    lda.w #(!l_props<<8)|(!prompt_tile_black) : sta $0202|!addr,y
     sep #$20
 
     ; Make the black tile 16x16 and increase the OAM index.
@@ -147,15 +147,15 @@ endif
     lda !ram_disable_box : beq +
     lda #$F0 : sta $0201|!addr,x
     rts
-+   lda.b #!tile_blk : sta $0202|!addr,x
++   lda.b #!prompt_tile_black : sta $0202|!addr,x
 .return:
     rts
 
-;=====================================
+;===============================================================================
 ; erase_tiles routine
 ;
 ; This routine hides the Retry prompt tiles.
-;=====================================
+;===============================================================================
 erase_tiles:
     ; Erase the prompt's OAM tiles when in Reznor/Morton/Roy/Ludwig's rooms.
     ; This avoids the BG from glitching out when the prompt disappears.
@@ -183,26 +183,21 @@ endif
 .return:
     rts
 
-;=====================================
+;===============================================================================
 ; oam_draw routine
 ;
 ; This routine draws one part of the Retry prompt on the screen.
 ; Inputs:
 ;  X = index in the letters table
 ;  Y = OAM index
-;=====================================
+;===============================================================================
 oam_draw:
 if !prompt_wave
     stz $0F
 endif
     
-    ; Load X/Y position based on black box enabled flag
-    lda !ram_disable_box : beq +
     lda !ram_prompt_x_pos : sta $0D
     lda !ram_prompt_y_pos : dec : sta $0E
-    bra .loop
-+   lda.b #!default_text_x_pos : sta $0D
-    lda.b #!default_text_y_pos-1 : sta $0E
 
 .loop:
     ; Return if we reached the $FF terminator.
@@ -214,7 +209,7 @@ endif
 if !prompt_wave
     ; Make the letters wave
     lda $03 : beq +
-    lda.w letters+2,x : cmp.b #!tile_curs : beq +
+    lda.w letters+2,x : cmp.b #!prompt_tile_cursor : beq +
     phx
     lda $1B91|!addr : lsr #!prompt_wave_speed
     clc : adc $0F : and #$07 : tax
@@ -245,46 +240,76 @@ if !prompt_wave
     db -3,-2,-1,0,1,0,-1,-2
 endif
 
-;=====================================
+; Get value in the variadic list at the specified index
+macro _arg_get(idx, ...)
+    !__idx #= <idx>
+    !__arg #= <...[!__idx]>
+    undef "__idx"
+endmacro
+
+; Build OAM entries for all tiles indexed by the variadic argument
+; The entries start at the <x,y> specified and then shift 8 pixels to the right each time
+macro _prompt_oam(x, y, ...)
+    !__x #= <x>
+    for i = 0..sizeof(...)
+        %_arg_get(<...[!i]>,!prompt_tiles_line1,!prompt_tiles_line2)
+        db !__x                   ; X
+        db <y>                    ; Y
+        db !__arg                 ; Tile
+        db props(!l_props,!__arg) ; Properties
+        db $00                    ; Size
+        !__x #= !__x+$08
+    endfor
+    undef "__x"
+    undef "__arg"
+endmacro
+
+;===============================================================================
 ; OAM info for each tile (X,Y,T,P,S)
-;=====================================
+;
+; For the letters on the two lines, a variadic macro is used to build the table
+; based on two lists of tile numbers.
+;===============================================================================
 letters:
 .retry:
-    db $00,$00,!tile_curs,props(!c_props,!tile_curs),$00 ; Black/Cursor
-    db $10,$00,!tile_r,   props(!l_props,!tile_r),   $00 ; R
-    db $18,$00,!tile_e,   props(!l_props,!tile_e),   $00 ; E
-    db $20,$00,!tile_t,   props(!l_props,!tile_t),   $00 ; T
-    db $28,$00,!tile_r,   props(!l_props,!tile_r),   $00 ; R
-    db $30,$00,!tile_y,   props(!l_props,!tile_y),   $00 ; Y
+    db $00,$00,!prompt_tile_cursor,props(!c_props,!prompt_tile_cursor),$00
+    %_prompt_oam($10,$00,!prompt_tile_index_line1)
 ..end:
     db $FF
 
 .exit:
-    db $00,!exit_y_offset,!tile_curs,props(!c_props,!tile_curs),$00 ; Black/Cursor
-    db $10,!exit_y_offset,!tile_e,   props(!l_props,!tile_e),   $00 ; E
-    db $18,!exit_y_offset,!tile_x,   props(!l_props,!tile_x),   $00 ; X
-    db $20,!exit_y_offset,!tile_i,   props(!l_props,!tile_i),   $00 ; I
-    db $28,!exit_y_offset,!tile_t,   props(!l_props,!tile_t),   $00 ; T
+    db $00,!exit_y_offset,!prompt_tile_cursor,props(!c_props,!prompt_tile_cursor),$00
+    %_prompt_oam($10,!exit_y_offset,!prompt_tile_index_line2)
 ..end:
     db $FF
 
+; These are the tiles used to hide the window holes to the left.
+; We calculate how many tiles are needed based on the text x position.
 .box:
-    db $E0,$10,!tile_blk, props(!l_props,!tile_blk), $02 ; Black
-    db $F0,$10,!tile_blk, props(!l_props,!tile_blk), $02 ; Black
+    for i = 0..(!text_x_pos-!window_x_pos)/$10
+        db -(!i+1)*$10,$10,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
+    endfor
+    if (!text_x_pos-!window_x_pos)%$10 != 0
+        db !window_x_pos-!text_x_pos,$10,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
+    endif
 ..no_exit:
-    db $E0,$00,!tile_blk, props(!l_props,!tile_blk), $02 ; Black
-    db $F0,$00,!tile_blk, props(!l_props,!tile_blk), $02 ; Black
+    for i = 0..(!text_x_pos-!window_x_pos)/$10
+        db -(!i+1)*$10,$00,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
+    endfor
+    if (!text_x_pos-!window_x_pos)%$10 != 0
+        db !window_x_pos-!text_x_pos,$00,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
+    endif
 ..end:
     db $FF
 
-;=====================================
+;===============================================================================
 ; defrag_oam routine
 ;
 ; This routine puts all used slots in OAM at the end of the table in contiguous spots.
 ; The result is that all free slots will be at the beginning of the table.
 ; This allows the letters to be drawn with max priority w.r.t. everything else, and to not overwrite other tiles.
 ; Clobbers $00-$03.
-;=====================================
+;===============================================================================
 defrag_oam:
     ; Since we scan both $0200 and $0300, we need 16 bit indexes.
     rep #$10
