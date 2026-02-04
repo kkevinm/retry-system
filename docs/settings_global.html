@@ -8,12 +8,12 @@
 	<link rel="icon" href="./img/icon.png" type="image/x-icon">
 	<link rel="stylesheet" type="text/css" href="./style.css">
 	<script defer src="./script.js"></script>
+	<style>
+		table {
+			text-align: left;
+		}
+	</style>
 </head>
-<style>
-	table {
-		text-align: left;
-	}
-</style>
 <body>
 <div class="box-wide">
 <h1>Global Retry Settings</h1>
@@ -29,13 +29,7 @@
 		<li class="closer"><a href="#sfx">Sound Effects Settings</a></li>
 		<li class="closer"><a href="#saving">Save and SRAM Settings</a></li>
 		<li class="closer"><a href="#custom-midways">Custom Midways Settings</a></li>
-		<li class="closer">
-			<a href="#prompt-settings">Retry Prompt Settings</a>
-			<ul>
-				<li class="closer"><a href="#prompt-settings-general">General Settings</a></li>
-				<li class="closer"><a href="#prompt-settings-sprite">Sprite Tile Settings</a></li>
-			</ul>
-		</li>
+		<li class="closer"><a href="#prompt-settings">Retry Prompt Settings</a></li>
 		<li class="closer">
 			<a href="#sprite-status-bar">Sprite Status Bar Settings</a>
 			<ul>
@@ -376,7 +370,7 @@
 
 <!-- Retry Prompt -->
 <h3 id="prompt-settings">Retry Prompt Settings</h3>
-	<h4 id="prompt-settings-general">General Settings</h4>
+	<p>Settings for the Retry prompt behavior. Note: if you're looking to customize the prompt GFX usage or appearance, look at <a href="./prompt_tilemap.html">Prompt Tilemap Settings</a>.</p>
 	<table>
         <tr>
             <th>Name</th>
@@ -475,7 +469,7 @@
 				<code>!text_y_pos</code>
             </td>
             <td>
-            	X/Y position of the first tile in the prompt (the cursor on the first line). Changing this only works if the black box is disabled (if enabled, default values will be used instead).</br>
+            	X/Y position of the first tile in the prompt (the cursor on the first line). If the black box is enabled, you should not change the Y position or it will look glitched, but you're free to change the X position down to $38.</br>
 				Note: you can also change these on the fly (see <a href="./ram_map.html">RAM Info</a> page for details).
             </td>
         </tr>
@@ -511,58 +505,10 @@
             </td>
         </tr>
         <tr>
-            <td>
-            	<code>!letter_palette</code></br>
-				<code>!cursor_palette</code>
-            </td>
-            <td>Palette row used by the letters and cursor (note: they use sprite palettes).</td>
-        </tr>
-        <tr>
             <td><code>!no_score_sprites_on_death</code></td>
             <td>If 1, score sprites (points, 1-Up) will be removed when dying, if Retry prompt is enabled in the level. This can be used to replace their graphics ($29, $38-$39, $44-$47, $54-$57) with the Retry prompt tiles instead of having to reserve sprite tiles for the prompt.</td>
         </tr>
     </table>
-
-    <h4 id="prompt-settings-sprite">Sprite Tile Settings</h4>
-	<p>Sprite tile number for the tiles used by the prompt ($00-$FF = SP1/SP2, $100-$1FF = SP3/SP4). These will be overwritten dynamically when the prompt needs to show up. The default values should be fine in most cases, unless you're using some other patch that reserves tiles in SP1, for example: Sprite Status Bar, 32x32 Player Tilemap, lx5's Custom Powerups, lx5's Dynamic Spriteset System. In this case you may need to change some of them to avoid other tiles being overwritten. You can see the tile number in LM's 8x8 Tile Editor, by taking the value you see in the bottom left - $400 (e.g., "Tile 0x442" &rarr; $42, "Tile 0x542" &rarr; $142). These aren't used if you don't use the Retry prompt or if <code>!no_prompt_draw = 1</code>.</p>
-	<table>
-		<tr>
-			<th>Name</th>
-			<th>Description</th>
-		</tr>
-		<tr>
-			<td><code>!tile_curs</code></td>
-			<td>Sprite tile used for the cursor (note: if the prompt box is enabled, this uses two adjacent 8x8 tiles)</td>
-		</tr>
-		<tr>
-			<td><code>!tile_blk</code></td>
-			<td>Sprite tile used for the black background (note: if the prompt box is enabled, this uses two adjacent 8x8 tiles)</td>
-		</tr>
-		<tr>
-			<td><code>!tile_r</code></td>
-			<td>Sprite tile used for the "R" letter</td>
-		</tr>
-		<tr>
-			<td><code>!tile_e</code></td>
-			<td>Sprite tile used for the "E" letter</td>
-		</tr>
-		<tr>
-			<td><code>!tile_t</code></td>
-			<td>Sprite tile used for the "T" letter</td>
-		</tr>
-		<tr>
-			<td><code>!tile_y</code></td>
-			<td>Sprite tile used for the "Y" letter</td>
-		</tr>
-		<tr>
-			<td><code>!tile_x</code></td>
-			<td>Sprite tile used for the "X" letter (note: if the "Exit" option is disabled, this won't be used)</td>
-		</tr>
-		<tr>
-			<td><code>!tile_i</code></td>
-			<td>Sprite tile used for the "Y" letter (note: if the "Exit" option is disabled, this won't be used)</td>
-		</tr>
-	</table>
 	</br>
 
 <!-- Sprite Status Bar -->

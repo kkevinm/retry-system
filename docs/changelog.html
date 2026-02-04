@@ -32,7 +32,6 @@
 		<li>Added new options in "settings_global.asm" to position the sprite status bar counters independently from their icons.</li>
 		<li>Added new options in "settings_global.asm" to align the sprite status bar counters left or right.</li>
 		<li>Fixed !prompt_freeze = 0 shortening the death animation on the title screen and in levels using the Retry prompt.</li>
-		<li>Removed old !prompt_freeze = 1 option (the one freezing most but not all sprites when the prompt is active).</li>
 		<li>Now if you load an invalid save file or save state by accident (one created before Retry was inserted), instead of crashing the game on level retry, it will display an helpful error message in game (thanks to Selicre for the suggestion).</li>
 		<li>Added missing hijack restore at $05B30E in "retry_unpatch.asm".</li>
 		<li>Fixed switch palace message sprites getting glitched or disappearing if the sprite status bar is enabled and having edited the Overworld in Lunar Magic (issue introduced in v0.7.1).</li>
@@ -55,6 +54,7 @@
 					</ul>
 					If upgrading from an older version, if using the %no_reset_rng option in "settings_local.asm", you'll need to change it to %reset_rng like this: <code>%no_reset_rng($XXX)</code> &rarr; <code>reset_rng($XXX,1)</code>.
 				</li>
+				<li>Removed old !prompt_freeze = 1 option (the one freezing most but not all sprites when the prompt is active). Now !prompt_freeze = 1 acts like the old !prompt_freeze = 2 (freeze all sprites and animation), but you can still use 2 and it works the same.</li>
 				<li>Expanded the free ram size by 16 bytes, which results in the ram variables !retry_ram_death_counter, !retry_ram_checkpoint and !retry_ram_cust_obj_data to be shifted compared to previous versions. See "docs/ram.html" for more information.</li>
 				<li>Save files and save states created with Retry versions older than v2.0.0 won't work with v2.0.0 (the error message will be displayed in game).</li>
 				<li>Renamed some API routines to have shorter names (<u class="warn">NOTE:</u> you can still use the old names, but they might get removed in future versions):
