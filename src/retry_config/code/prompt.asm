@@ -271,16 +271,16 @@ update_window:
     rts
 
 ; Calculate window left position based on the amount of tiles in the variadic
-macro _win_start_calc(start, ...)
+macro _win_pos_calc(start, ...)
     !__win_pos #= <start>+($08*sizeof(...))
 endmacro
 
 ; Calculate window left position for the two prompt text lines based on the
 ; user tile index lists
 !__win_start #= !text_x_pos+$10 ; +$10 for cursor and space
-%_win_start_calc(!__win_start,!prompt_tile_index_line1)
+%_win_pos_calc(!__win_start,!prompt_tile_index_line1)
 !__win_pos_line1 #= !__win_pos
-%_win_start_calc(!__win_start,!prompt_tile_index_line2)
+%_win_pos_calc(!__win_start,!prompt_tile_index_line2)
 !__win_pos_line2 #= !__win_pos
 undef "__win_pos"
 
