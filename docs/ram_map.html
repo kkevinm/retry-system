@@ -178,14 +178,14 @@
 			<td><code>$15</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
-			<td class="left-align">Holds the X position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!text_x_pos</code> value in <code>settings_global.asm</code>).</td>
+			<td class="left-align">Holds the X position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!text_x_pos</code> value in <code>settings_global.asm</code>). Changing this at runtime while having the prompt black box enabled is not recommended, as the black box is fixed in place regardless of this position.</td>
 		</tr>
 		<tr>
 			<td><code>prompt_y_pos</code></td>
 			<td><code>$16</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
-			<td class="left-align">Holds the Y position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!text_y_pos</code> value in <code>settings_global.asm</code>).</td>
+			<td class="left-align">Holds the Y position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!text_y_pos</code> value in <code>settings_global.asm</code>). Changing this at runtime while having the prompt black box enabled is not recommended, as the black box is fixed in place regardless of this position.</td>
 		</tr>
 		<tr>
 			<td><code>disable_box</code></td>
