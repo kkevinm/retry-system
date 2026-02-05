@@ -2,7 +2,8 @@
 ; If you're opening this just to change which areas of VRAM (SP1/SP2/SP3/SP4)
 ; are used by the Retry prompt tiles, then look at the "Basic settings".
 ; To also change the prompt text, look at "Advanced settings" (note: more complicated).
-; For more detailed explanations and an example, look at the "prompt_tilemap.html" documentation page.
+; For more detailed explanations and a simple tool that generates the defines for you,
+; look at the "prompt_tilemap.html" documentation page.
 
 ;============================== Basic settings =================================
 
@@ -11,7 +12,7 @@
 ; first line, !prompt_tiles_line2 are the unique letters for the second line.
 ; Note: When the prompt black box is enabled, !prompt_tile_cursor uses three adjacent 8x8 tiles.
 ;       When the prompt black box is disabled, !prompt_tile_cursor uses one 8x8 tile.
-; Note: When the exit option is disabled, the line2 list is unused.
+; Note: When the exit option is disabled, or the line2 list has all letters from the line1, the line2 list is unused.
     !prompt_tile_cursor = $20
     !prompt_tiles_line1 = $30,$31,$32,$33 ; RETY
     !prompt_tiles_line2 = $4A,$5A         ; XI
@@ -26,7 +27,8 @@
 ; By index it means at which 8x8 tile (starting from the top left) the tiles are found (starting from 0).
 ; If you edit this, make sure that !prompt_gfx_index_line1 has the same amount of values as
 ; !prompt_tiles_line1, and that !prompt_gfx_index_line2 has the same amount of values as !prompt_tiles_line2.
-; Note: When the exit option is disabled, the line2 list is unused.
+; Note: If you're sure the line2 is not needed (like if the exit option is always disabled in the hack,
+; or all the letters in line2 are found in the line1 list), then keep it empty.
     !prompt_gfx_index_cursor = 0
     !prompt_gfx_index_line1  = 3,4,5,6 ; RETY
     !prompt_gfx_index_line2  = 7,8     ; XI

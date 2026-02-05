@@ -12,6 +12,7 @@
 		table {
 			text-align: left;
 		}
+		
 		button {
 			padding: 4px 6px 4px 6px;
 			border: 1px outset buttonborder;
@@ -24,22 +25,44 @@
 			background-color: rgba(255, 255, 255, 0.2);
 			transition: background-color 0.15s ease-in;
 		}
+		
 		button:hover {
 			background-color: rgba(255, 255, 255, 0.4);
 			transition: background-color 0.15s ease-out;
 		}
+		
 		button:active {
 			background-color: rgba(255, 255, 255, 0.3);
 			transition: background-color 0.15s ease-in;
 		}
+		
+		.out-table {
+			width: inherit;
+			text-align: center;
+			font-weight: bold;
+			font-size: 1em;
+		}
+
+		.out-table td {
+			width: 25px;
+			height: 25px;
+			padding: 0px;
+		}
 	</style>
 	<script>
+		function is_whitespace(ch) {
+			return /\s/.test(ch);
+		}
+
+		function remove_whitespace(str) {
+			return str.replace(/\s/g, "");
+		}
+
 		function generate() {
-			var line1 = document.getElementById("line1").value;
-			var line2 = document.getElementById("line2").value;
-			var out = document.getElementById("out");
-			var err = document.getElementById("err");
-			let start_idx = 2; // After cursor
+			let line1 = document.getElementById("line1").value;
+			let line2 = document.getElementById("line2").value;
+			let out = document.getElementById("out");
+			let err = document.getElementById("err");
 
 			out.innerHTML = "";
 			err.innerHTML = "";
@@ -49,32 +72,111 @@
 				return;
 			}
 
-			var chars1 = new Set(line1);
-			var chars2 = [...new Set(line2).difference(chars1)];
+			var chars1 = new Set(remove_whitespace(line1));
+			var chars2 = [...new Set(remove_whitespace(line2)).difference(chars1)];
 			chars1 = [...chars1];
+			var chars = chars1.concat(chars2);
 
-			var gfx_index1 = "<code>!prompt_gfx_index_line1 = ";
-			var gfx_index2 = "<code>!prompt_gfx_index_line2 = ";
-			var tile_index1 = "<code>!prompt_tile_index_line1 = ";
-			var tile_index2 = "<code>!prompt_tile_index_line2 = ";
-
-			// TODO chars1
-
+			var tiles1 = "!prompt_tiles_line1 = ";
+			var tiles2 = "!prompt_tiles_line2 = ";
+			tiles1 += "<";
+			tiles1 += chars1.length;
+			tiles1 += " values>\n";
 			if (chars2.length === 0) {
-				gfx_index2 += "0";
-				tile_index2 += "0";
+				tiles2 += "0";
 			} else {
-
+				tiles2 += "<";
+				tiles2 += chars2.length;
+				tiles2 += " values>";
 			}
 
-			gfx_index1 += "</code>"
-			gfx_index2 += "</code>"
-			tile_index1 += "</code>"
-			tile_index2 += "</code>"
+			var gfx_index1 = "!prompt_gfx_index_line1 = ";
+			var gfx_index2 = "!prompt_gfx_index_line2 = ";
+			var tile_index1 = "!prompt_tile_index_line1 = ";
+			var tile_index2 = "!prompt_tile_index_line2 = ";
 
-			// TODO print lists and gfx layout
+			var idx = 3; // Start after cursor
+			for (var i = 0; i < chars1.length; i++) {
+				gfx_index1 += idx++;
+				if (i < chars1.length - 1) gfx_index1 += ",";
+			}
 
-			out.innerHTML = chars1.join("") + chars2.join("");
+			if (chars2.length !== 0) {
+				for (var i = 0; i < chars2.length; i++) {
+					gfx_index2 += idx++;
+					if (i < chars2.length - 1) gfx_index2 += ",";
+				}
+			}
+
+			for (var i = 0; i < line1.length; i++) {
+				if (is_whitespace(line1[i]))
+					tile_index1 += "-1";
+				else
+					tile_index1 += chars.indexOf(line1[i]);
+				if (i < line1.length - 1) tile_index1 += ",";
+			}
+
+			if (line2.length === 0) {
+				tile_index2 += "0";
+			} else {
+				for (var i = 0; i < line2.length; i++) {
+					if (is_whitespace(line2[i]))
+						tile_index2 += "-1";
+					else
+						tile_index2 += chars.indexOf(line2[i]);
+					if (i < line2.length - 1) tile_index2 += ",";
+				}
+			}
+
+			var max_len = gfx_index1.length;
+			if (gfx_index2.length > max_len) max_len = gfx_index2.length;
+			gfx_index1 += " ".repeat(max_len - gfx_index1.length + 1);
+			gfx_index1 += "; ";
+			gfx_index1 += line1;
+			gfx_index1 += "\n";
+			gfx_index2 += " ".repeat(max_len - gfx_index2.length + 1);
+			gfx_index2 += "; ";
+			gfx_index2 += line2;
+			gfx_index2 += "\n";
+
+			max_len = tile_index1.length;
+			if (tile_index2.length > max_len) max_len = tile_index2.length;
+			tile_index1 += " ".repeat(max_len - tile_index1.length + 1);
+			tile_index1 += "; ";
+			tile_index1 += line1;
+			tile_index1 += "\n";
+			tile_index2 += " ".repeat(max_len - tile_index2.length + 1);
+			tile_index2 += "; ";
+			tile_index2 += line2;
+			tile_index2 += "\n";
+
+			out.innerHTML = "<pre>" + tiles1 + tiles2 + "</pre>"
+							+ "<pre>" + gfx_index1 + gfx_index2 + "</pre>"
+							+ "<pre>" + tile_index1 + tile_index2 + "</pre>";
+
+			chars = "\u25B6  ".concat(chars.join("")).replaceAll(" ", "\u2B1C");
+			var table = "";
+			
+			for (var i = 0; i < 16*8; i++) {
+				if (i % 16 === 0)  table += "<tr>";
+				table += "<td>";
+				if (i < chars.length) table += chars[i];
+				table += "</td>";
+				if (i % 16 === 15) table += "</tr>";
+			}
+
+			var out_table = document.getElementById("out-table");
+			if (out_table === null) {
+				out_label = document.createElement("p");
+				out_label.innerHTML = "GFX Layout:<br/>";
+				document.getElementById("out-wrap").appendChild(out_label);
+				out_table = document.createElement("table");
+				out_table.id = "out-table";
+				out_table.classList.add("out-table");
+				document.getElementById("out-wrap").appendChild(out_table);
+			}
+			out_table.innerHTML = table;
+			window.scrollTo(0, document.body.scrollHeight);
 		}
 	</script>
 </head>
@@ -164,7 +266,8 @@
 					<li><code>X = 4</code></li>
 					<li><code>I = 5</code></li>
 				</ul>
-				So, to draw <code>RETRY</code> on the first line <code>!prompt_tile_index_line1 = 0,1,2,0,3</code>, and to draw <code>EXIT</code> on the second line <code>!prompt_tile_index_line2 = 1,4,5,2</code>.
+				So, to draw <code>RETRY</code> on the first line <code>!prompt_tile_index_line1 = 0,1,2,0,3</code>, and to draw <code>EXIT</code> on the second line <code>!prompt_tile_index_line2 = 1,4,5,2</code>.<br/>
+				If a line has multiple words, you can use <code>-1</code> in the list to denote a space, without having to add extra gfx for it (if the box is enabled, the space will be the black square, otherwise it just skips to the next tile).<br/>
 				In these lists you can specify any amount of tiles you want, but keep in mind that if the black box is enabled you'll be constrained by the box size (although you can change <code>!text_x_pos</code> in <code>settings_global.asm</code> if you need more space). If it is disabled, you'll be constrained by the screen space.<br/>
 				Note that <code>!prompt_tile_index_line2</code> is unused if the exit option is disabled (<code>!no_exit_option = 1</code>), but you should leave at least one value anyway (for example <code>0</code>).
 			</td>
@@ -175,24 +278,27 @@
 	<h3 id="tool">Tilemap Generation Tool</h3>
 	<p>If you want to avoid hex brainrot you can use this simple tool to generate the settings for you, based on the text you want to show on the prompt.</p>
 	<p>Both lines are case sensitive (usually you want everything to be all caps though), and the second line can be left empty if you're not using the "Exit" option (<code>!no_exit_option = 1</code>).</p>
-	<p>The tool output will be: how the gfx file should be layed out (you need to edit the gfx yourself) and the various index defines. Remember to also change <code>!prompt_tiles_line1</code> and <code>!prompt_tiles_line2</code> to have the same amount of elements as the new <code>!prompt_gfx_index_line1</code> and <code>!prompt_gfx_index_line2</code>.</p>
-	<ul style="list-style-type: none;">
+	<p>The tool output will be: how many values need to be specified in the prompt tiles lists (you need to choose these values yourself), the contents of the gfx/tile index lists, and a visual of how the <code>prompt1.bin</code>/<code>prompt2.bin</code> gfx file should be layed out (you need to edit the gfx yourself). In the gfx layout, "&#x25B6" denotes the cursor tile and "&#x2B1C" the "empty" tile (black or transparent square depending on the gfx file).</p>
+
+	<div style="width: 320px">
+	<ul style="list-style-type: none; text-align: right;">
 		<li>
 			<label for="line1">First line:</label>
-			<input type="text" id="line1" required/>
+			<input type="text" id="line1" value="RETRY"/>
 		</li>
 		<li>
 			<label for="line2">Second line:</label>
-			<input type="text" id="line2"/>
+			<input type="text" id="line2" value="EXIT"/>
 		</li>
 		<li>
-			<button onClick="generate()">Generate!</button>
-		</li>
-		<li>
-			<p id="out"></p>
-			<p id="err" style="font-weight: bold; color: #c22c2c;"></p>
+			<center><button onClick="generate()">Generate!</button></center>
 		</li>
 	</ul>
+	</div>
+	<span id="out-wrap" style="text-align: left;">
+		<p id="out"></p>
+		<p id="err" style="font-weight: bold; color: #c22c2c;"></p>
+	</span>
 </div>
 </body>
 </html>

@@ -199,6 +199,7 @@ if !prompt_wave
     stz $0F
 endif
     
+    lda !ram_disable_box : sta $0C
     lda !ram_prompt_x_pos : sta $0D
     lda !ram_prompt_y_pos : dec : sta $0E
 
@@ -206,9 +207,17 @@ endif
     ; Return if we reached the $FF terminator.
     lda.w letters,x : cmp #$FF : beq .return
 
-    ; Store the X,Y positions and tile OAM properties.
+    ; Store the X position.
     clc : adc $0D : sta $0200|!addr,y
+
+    ; If the prompt box is disabled, don't draw the empty tiles.
+    lda $0C : beq +
+    lda.w letters+2,x : cmp.b #!prompt_tile_black : beq ..skip_tile
+    cmp.b #!prompt_tile_black+1 : beq ..skip_tile
++
+    ; Store the Y position.
     lda.w letters+1,x : clc : adc $0E : sta $0201|!addr,y
+
 if !prompt_wave
     ; Make the letters wave
     lda $03 : beq +
@@ -221,6 +230,8 @@ if !prompt_wave
     inc $0F
 +
 endif
+    
+    ; Store tile and properties.
     rep #$20
     lda.w letters+2,x : sta $0202|!addr,y
     sep #$20
@@ -232,8 +243,9 @@ endif
     ply
 
     ; Go to the next tile.
-    inx #5
     iny #4
+..skip_tile:
+    inx #5
     bra .loop
 .return:
     rts
@@ -255,7 +267,11 @@ endmacro
 macro _prompt_oam(x, y, ...)
     !__x #= <x>
     for i = 0..sizeof(...)
-        %_arg_get(<...[!i]>,!prompt_tiles_line1,!prompt_tiles_line2)
+        if <...[!i]> == -1
+            !__arg #= !prompt_tile_black
+        else
+            %_arg_get(<...[!i]>,!prompt_tiles_line1,!prompt_tiles_line2)
+        endif
         db !__x                   ; X
         db <y>                    ; Y
         db !__arg                 ; Tile
