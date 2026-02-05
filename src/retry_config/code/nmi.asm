@@ -106,13 +106,17 @@ endmacro
 .src:
     %_gfx_sizes(!prompt_gfx_index_line1)
 ..exit:
+if defined("prompt_gfx_index_line2")
     %_gfx_sizes(!prompt_gfx_index_line2)
+endif
 ..end:
 
 .dest:
     %_vram_addrs(!prompt_tiles_line1)
 ..exit:
+if defined("prompt_tiles_line2")
     %_vram_addrs(!prompt_tiles_line2)
+endif
 ..end:
 
 endif

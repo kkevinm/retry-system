@@ -280,12 +280,15 @@ endmacro
 !__win_start #= !text_x_pos+$10 ; +$10 for cursor and space
 %_win_pos_calc(!__win_start,!prompt_tile_index_line1)
 !__win_pos_line1 #= !__win_pos
+if defined("prompt_tile_index_line2")
 %_win_pos_calc(!__win_start,!prompt_tile_index_line2)
 !__win_pos_line2 #= !__win_pos
+endif
 undef "__win_pos"
 
 ; Windowing table to use normally
 .window:
+if defined("prompt_tile_index_line2")
     ; all cover / layer123 cover
     db $5D : db $FF,$00,$FF,$00
     db $12 : db !window_x_pos,$100-!window_x_pos,$FF,$00
@@ -295,6 +298,7 @@ undef "__win_pos"
     db $0D : db !window_x_pos,$100-!window_x_pos,$FF,$00
     db $4C : db $FF,$00,$FF,$00
     db $00
+endif
 
 ; Windowing table to use when exit is disabled
 .window_no_exit:

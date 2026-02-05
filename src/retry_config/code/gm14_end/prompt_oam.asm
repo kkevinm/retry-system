@@ -269,8 +269,10 @@ macro _prompt_oam(x, y, ...)
     for i = 0..sizeof(...)
         if <...[!i]> == -1
             !__arg #= !prompt_tile_black
-        else
+        elseif defined("prompt_tiles_line2")
             %_arg_get(<...[!i]>,!prompt_tiles_line1,!prompt_tiles_line2)
+        else
+            %_arg_get(<...[!i]>,!prompt_tiles_line1)
         endif
         db !__x                   ; X
         db <y>                    ; Y
@@ -297,8 +299,10 @@ letters:
     db $FF
 
 .exit:
+if defined("prompt_tile_index_line2")
     db $00,!exit_y_offset,!prompt_tile_cursor,props(!c_props,!prompt_tile_cursor),$00
     %_prompt_oam($10,!exit_y_offset,!prompt_tile_index_line2)
+endif
 ..end:
     db $FF
 

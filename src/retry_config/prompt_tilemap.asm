@@ -1,9 +1,9 @@
 ; In this file you can customize the Retry prompt text relatively easily.
 ; If you're opening this just to change which areas of VRAM (SP1/SP2/SP3/SP4)
 ; are used by the Retry prompt tiles, then look at the "Basic settings".
-; To also change the prompt text, look at "Advanced settings" (note: more complicated).
-; For more detailed explanations and a simple tool that generates the defines for you,
-; look at the "prompt_tilemap.html" documentation page.
+; To also change the prompt text, open "docs/prompt_tilemap.html" and go to the
+; "Tilemap Generation Tool", which will calculate the values needed for the defines
+; in the "Advanced settings" section (it also explains what they do if you're interested).
 
 ;============================== Basic settings =================================
 
@@ -24,22 +24,10 @@
 ;============================== Advanced settings ==============================
 
 ; These settings specify the index of the prompt tiles in the GFX bin file.
-; By index it means at which 8x8 tile (starting from the top left) the tiles are found (starting from 0).
-; If you edit this, make sure that !prompt_gfx_index_line1 has the same amount of values as
-; !prompt_tiles_line1, and that !prompt_gfx_index_line2 has the same amount of values as !prompt_tiles_line2.
-; Note: If you're sure the line2 is not needed (like if the exit option is always disabled in the hack,
-; or all the letters in line2 are found in the line1 list), then keep it empty.
     !prompt_gfx_index_cursor = 0
     !prompt_gfx_index_line1  = 3,4,5,6 ; RETY
     !prompt_gfx_index_line2  = 7,8     ; XI
 
 ; These settings specify which tiles are drawn on the two lines of the Retry prompt, and in which order.
-; To find these out, take the two list of tiles !prompt_gfx_index_line1 and !prompt_gfx_index_line2 together
-; and imagine them as a single list (with the default, it's the list R-E-T-Y-X-I).
-; Then, for both lines you specifiy the index of the letters in this list, starting from 0.
-; For example, with the default tiles, 0 = R, 1 = E, 2 = T, 3 = Y, so "RETRY" becomes "0,1,2,0,3".
-; Note that if the black box is enabled, the letters amount is constrained by the box size.
-; You can change !text_x_pos to have more space available.
-; Note: When the exit option is disabled, the line2 list is unused.
     !prompt_tile_index_line1 = 0,1,2,0,3 ; RETRY
     !prompt_tile_index_line2 = 1,4,5,2   ; EXIT
