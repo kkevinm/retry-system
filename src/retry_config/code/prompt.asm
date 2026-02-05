@@ -278,12 +278,15 @@ endmacro
 ; Calculate window left position for the two prompt text lines based on the
 ; user tile index lists
 !__win_start #= !text_x_pos+$10 ; +$10 for cursor and space
+
 %_win_pos_calc(!__win_start,!prompt_tile_index_line1)
 !__win_pos_line1 #= !__win_pos
+
 if defined("prompt_tile_index_line2")
-%_win_pos_calc(!__win_start,!prompt_tile_index_line2)
-!__win_pos_line2 #= !__win_pos
+    %_win_pos_calc(!__win_start,!prompt_tile_index_line2)
+    !__win_pos_line2 #= !__win_pos
 endif
+
 undef "__win_pos"
 
 ; Windowing table to use normally

@@ -120,7 +120,7 @@
 			}
 
 			var tile_index2;
-			if (chars2.length === 0) {
+			if (line2.length === 0 || remove_whitespace(line2).length === 0) {
 				tile_index2 = ";!prompt_tile_index_line2 =";
 			} else {
 				tile_index2 = "!prompt_tile_index_line2 = ";
@@ -139,12 +139,10 @@
 			gfx_index1 += "; ";
 			gfx_index1 += line1;
 			gfx_index1 += "\n";
-			if (line2.length !== 0) {
-				gfx_index2 += " ".repeat(max_len - gfx_index2.length + 1);
-				gfx_index2 += "; ";
-				gfx_index2 += line2;
-				gfx_index2 += "\n";
-			}
+			gfx_index2 += " ".repeat(max_len - gfx_index2.length + 1);
+			gfx_index2 += "; ";
+			gfx_index2 += line2;
+			gfx_index2 += "\n";
 
 			max_len = tile_index1.length;
 			if (tile_index2.length > max_len) max_len = tile_index2.length;
@@ -152,12 +150,10 @@
 			tile_index1 += "; ";
 			tile_index1 += line1;
 			tile_index1 += "\n";
-			if (line2.length !== 0) {
-				tile_index2 += " ".repeat(max_len - tile_index2.length + 1);
-				tile_index2 += "; ";
-				tile_index2 += line2;
-				tile_index2 += "\n";
-			}
+			tile_index2 += " ".repeat(max_len - tile_index2.length + 1);
+			tile_index2 += "; ";
+			tile_index2 += line2;
+			tile_index2 += "\n";
 
 			out.innerHTML = "<pre>!prompt_tile_cursor = <1 value>\n" + tiles1 + tiles2 + "</pre>"
 							+ "<pre>!prompt_gfx_index_cursor = 0\n" + gfx_index1 + gfx_index2 + "</pre>"
