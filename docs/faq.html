@@ -44,27 +44,27 @@
 	<hr>
 	
 	<h4 id="q7">Q: Can I change the prompt type in specific situations (not necessarily on a sublevel basis)?</h4>
-	<p>A: Yes. Additionally to the <code>effect</code> table, there's the <code>!ram_prompt_override</code> address that, when set, will replace both the table and the default option (see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>).</p>
+	<p>A: Yes. Additionally to the <code>effect</code> table, there's the <code>!retry_ram_prompt_override</code> address that, when set, will replace both the table and the default option (see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>).</p>
 	<p>For example, you could use it to let the player choose the prompt type as they want (you still have to implement that, though, as this only handles setting the prompt type).
 	<p>Note that this address by default is never reset by Retry after startup.</p>
 	
 	<hr>
 	
 	<h4 id="q8">Q: Can I keep the Retry prompt but remove the black box?</h4>
-	<p>A: Yes. Look at <code>!no_prompt_box</code> in <u class="dir">retry_config/settings_global.asm</u>. You can also remove it only under certain circumstances by setting <code>!ram_disable_box</code> to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
+	<p>A: Yes. Look at <code>!no_prompt_box</code> in <u class="dir">retry_config/settings_global.asm</u>. You can also remove it only under certain circumstances by setting <code>!retry_ram_disable_box</code> to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
 	<p>Note that this address by default is never reset by Retry after startup.</p>
 	
 	<hr>
 	
 	<h4 id="q9">Q: Can I keep the Retry prompt but remove the "exit" option?</h4>
-	<p>A: Yes. Look at <code>!no_exit_option</code> in <u class="dir">retry_config/settings_global.asm</u>. You can also remove it only under certain circumstances by setting <code>!ram_disable_exit</code> to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
+	<p>A: Yes. Look at <code>!no_exit_option</code> in <u class="dir">retry_config/settings_global.asm</u>. You can also remove it only under certain circumstances by setting <code>!retry_ram_disable_exit</code> to 1 (for more info, see <u class="dir">retry_config/ram.asm</u> and <a href="./ram_map.html">RAM Map</a>). For example, you can do it in a Level ASM init to make a level not have the option.</p>
 	<p>Note that this address by default is never reset by Retry after startup.</p>
 	
 	<hr>
 	
 	<h4 id="q10">Q: Can I change where the prompt is shown on the screen?</h4>
 	<p>A: Yes. Look at <code>!text_x_pos</code> and <code>!text_y_pos</code> in <u class="dir">retry_config/settings_global.asm</u>. For example, using <code>!text_x_pos = $08</code> and <code>!text_y_pos = $D0</code> will place it on the lower left corner of the screen.</p>
-	<p>Additionally, you can also change it at runtime by writing to the <code>!ram_prompt_x_pos</code> and <code>!ram_prompt_y_pos</code> addresses (see <a href="./ram_map.html">RAM Map</a> for more info).</p>
+	<p>Additionally, you can also change it at runtime by writing to the <code>!retry_ram_prompt_x_pos</code> and <code>!retry_ram_prompt_y_pos</code> addresses (see <a href="./ram_map.html">RAM Map</a> for more info).</p>
 	<p>Note that if the black box is enabled (<code>!no_prompt_box = 0</code>), you're a bit more restricted in how much you can change the position. For once, the Y position shouldn't be changed, while the X should be kept in the confines of the black box (also accounting for how long the prompt text is).</p>
 	
 	<hr>

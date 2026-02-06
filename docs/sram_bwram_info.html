@@ -41,8 +41,8 @@ dl $7FA660 : dw $0300   ; $40A660 on SA-1.
 <p>A: If you really need to use those, then you can add these to the <code>sram_table</code>/<code>bw_ram_table</code>:</p>
 
 <pre>
-dl !ram_checkpoint    : dw 192
-dl !ram_death_counter : dw 5
+dl !retry_ram_checkpoint    : dw 192
+dl !retry_ram_death_counter : dw 5
 </pre>
 
 <p>Note: to have the Retry ram defines available in the patch, copy the contents of <u class="dir">retry_config/ram.asm</u> at the top of the SRAM+/BW-RAM+ table file. Also, if you're not using the death counter, you can omit the second line.</p>

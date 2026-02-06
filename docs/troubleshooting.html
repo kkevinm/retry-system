@@ -127,9 +127,9 @@ BEQ Okay
     <hr>
 
     <h4 id="q8">Q: I use a custom midway block/sprite, but it doesn't seem to work!</h4>
-    <p>By default Retry only works with the vanilla midway tile, but it's fairly straightforward to make it work with your own blocks/sprites. Retry has a specific RAM address that can be used to set the midway in the current level (according to the <code>checkpoint</code> setting in <u class="dir">retry_config/settings_local.asm</u>). The address is <code>!ram_set_checkpoint</code> to have it always available in sprites/blocks, you can copy the contents of "ram.asm" into PIXI's <u class="dir">asm/sa1def.asm</u>, GPS's <u class="dir">defines.asm</u> and UberASM Tool's <u class="dir">other/macro_library.asm</u>.</p>
-    <p>The system works as follows: if you set the low byte (<code>!ram_set_checkpoint</code>) to <code>#$00</code>, it will trigger the current level's midway. If the checkpoint table for this sublevel is 0, it means it will give you the midway for the main level. While if it's 2 or 3, it will give you the midway for the current sublevel.</p>
-    <p>You can also set a completely custom entrance for the checkpoint, similarly to how Retry's custom midway objects work. To do this, you need to set the entire 16 bit address (<code>!ram_set_checkpoint</code> and <code>!ram_set_checkpoint+1</code>) to the entrance value you want to use. This value follows the format of $7E19B8 and $7E19D8 (where $7E19B8 should go in the first byte of the address, $7E19D8 in the second). For more info, check those addresses in SMWCentral's RAM Map. In practice, your midway block sprite should have a piece of code like this, to set the vanilla midway:</p>
+    <p>By default Retry only works with the vanilla midway tile, but it's fairly straightforward to make it work with your own blocks/sprites. Retry has a specific RAM address that can be used to set the midway in the current level (according to the <code>checkpoint</code> setting in <u class="dir">retry_config/settings_local.asm</u>). The address is <code>!retry_ram_set_checkpoint</code> to have it always available in sprites/blocks, you can copy the contents of "ram.asm" into PIXI's <u class="dir">asm/sa1def.asm</u>, GPS's <u class="dir">defines.asm</u> and UberASM Tool's <u class="dir">other/macro_library.asm</u>.</p>
+    <p>The system works as follows: if you set the low byte (<code>!retry_ram_set_checkpoint</code>) to <code>#$00</code>, it will trigger the current level's midway. If the checkpoint table for this sublevel is 0, it means it will give you the midway for the main level. While if it's 2 or 3, it will give you the midway for the current sublevel.</p>
+    <p>You can also set a completely custom entrance for the checkpoint, similarly to how Retry's custom midway objects work. To do this, you need to set the entire 16 bit address (<code>!retry_ram_set_checkpoint</code> and <code>!retry_ram_set_checkpoint+1</code>) to the entrance value you want to use. This value follows the format of $7E19B8 and $7E19D8 (where $7E19B8 should go in the first byte of the address, $7E19D8 in the second). For more info, check those addresses in SMWCentral's RAM Map. In practice, your midway block sprite should have a piece of code like this, to set the vanilla midway:</p>
 <pre>
 LDA #$01
 STA $13CE
@@ -137,17 +137,17 @@ STA $13CE
     <p>To add multiple midway support, you'd just need to add this after it:</p>
 <pre>
 LDA #$00
-STA !ram_set_checkpoint
+STA !retry_ram_set_checkpoint
 </pre>
     <p>To make the midway take you to an arbitrary entrance, you need to set a different value depending on what entrance it is. For example, to make it use secondary exit number $0169, you'd use this code:</p>
 <pre>
 REP #$20
 LDA #$0169	; Secondary exit number.
 ORA #$0200	; Set the "secondary exit" bit in the high byte (like $7E19D8).
-STA !ram_set_checkpoint
+STA !retry_ram_set_checkpoint
 SEP #$20
 </pre>
-    <p>Additionally, you can also reset the current level's checkpoint by setting !ram_set_checkpoint to #$80. This will respawn Mario in the current level's main entrance when dying.</p>
+    <p>Additionally, you can also reset the current level's checkpoint by setting !retry_ram_set_checkpoint to #$80. This will respawn Mario in the current level's main entrance when dying.</p>
     <ul>
 	   <li>if !save_on_checkpoint = 1, using this method will also make the game save.</li>
 	   <li>if using the "Individual Dragon Coins Save" patch, using this method will also make the current Dragon Coins save (when !Midpoint = 1 in that patch).</li>

@@ -17,11 +17,11 @@
 <p>This table can be used to save custom values to SRAM, so they can persist when the console is turned off. By default it saves the custom checkpoint ram (so multiple midways will save properly) and the death counter.</p>
 <pre>
 save:
-    dl !ram_checkpoint    : dw 192
+    dl !retry_ram_checkpoint    : dw 192
     ; Feel free to add your own stuff here.
 
 .not_game_over:
-    dl !ram_death_counter : dw 5
+    dl !retry_ram_death_counter : dw 5
     ; Feel free to add your own stuff here.
 
 .global:

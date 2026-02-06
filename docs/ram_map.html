@@ -17,7 +17,7 @@
 <h3 id="overview">Overview</h3>
 	<p>Retry uses a chunk of RAM at <code>$7FB400</code> (<code>$40A400</code> on SA-1 roms) by default. The size of this area is <code>257 + (4*!max_custom_midway_num)</code> bytes (where <code>!max_custom_midway_num</code> is defined in <code>settings.asm</code>).</p>
 	<p>The default address should be fine in most cases, but if you want to change it because of some freeram conflict, open <code>ram.asm</code> and edit <code>!retry_freeram</code> (<code>!retry_freeram_sa1</code> if you're using SA-1).</p>
-	<p>In the <code>ram.asm</code> file you can also see the name for the different addresses, defined as <code>%retry_ram(name,$XX)</code>, where <code>$XX</code> specifies the offset from the base <code>!retry_freeram</code> address. The full address name is resolved to <code>!ram_name</code> and <code>!ram_retry_name</code>.</p>
+	<p>In the <code>ram.asm</code> file you can also see the name for the different addresses, defined as <code>%retry_ram(name,$XX)</code>, where <code>$XX</code> specifies the offset from the base <code>!retry_freeram</code> address. The full address name is resolved to <code>!ram_name</code> and <code>!retry_ram_name</code>.</p>
 
 <h3 id="usage">Usage</h3>
 	<p>If you need to perform read/write operations on the Retry RAM addresses, you can do as follows:</p>

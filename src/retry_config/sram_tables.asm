@@ -22,12 +22,12 @@
 ; Note: you can put up to 2385 bytes in the "save" and ".not_game_over" tables combined, and up to 162 bytes on lorom and 1021 bytes on SA-1 in the ".global" table.
 
 save:
-    dl !ram_checkpoint    : dw 192
+    dl !retry_ram_checkpoint    : dw 192
     ; Feel free to add your own stuff here.
     
 
 .not_game_over:
-    dl !ram_death_counter : dw 5
+    dl !retry_ram_death_counter : dw 5
     ; Feel free to add your own stuff here.
     
 
