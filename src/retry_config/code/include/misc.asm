@@ -57,10 +57,10 @@
 if !sa1
     !sram_addr = $41A000
     !sram_addr_global #= $41A000+(!file_size*3)
-else
+else ; if not(!sa1)
     !sram_addr = $700400
     !sram_addr_global #= $7002CB+143
-endif
+endif ; !sa1
 
 ; SRAM bank for convenience
 !sram_bank = bank(!sram_addr)
@@ -68,37 +68,37 @@ endif
 ; OW translevel number table.
 if !sa1
     !7ED000 = $40D000
-else
+else ; if not(!sa1)
     !7ED000 = $7ED000
-endif
+endif ; !sa1
 
 ; Detect the SRAM Plus patch.
 if read1($009B42) == $04
     !sram_plus = 1
-else
+else ; if not(read1($009B42) == $04)
     !sram_plus = 0
-endif
+endif ; read1($009B42) == $04
 
 ; Detect the BW-RAM Plus patch.
 if read1($009BD2) == $5C
     !bwram_plus = 1
-else
+else ; if not(read1($009BD2) == $5C)
     !bwram_plus = 0
-endif
+endif ; read1($009BD2) == $5C
 
 ; Detects lx5's Custom Powerups.
 if read2($00D067) == $DEAD
     !custom_powerups = 1
-else
+else ; if not(read2($00D067) == $DEAD)
     !custom_powerups = 0
-endif
+endif ; read2($00D067) == $DEAD
 
 ; Detects the "Level Depending on Ram" and similar patches.
 if read1($05DCDD) == $22 || read1($05DCE2) == $22
     !dynamic_ow_levels = 1
-else
+else ; if not(read1($05DCDD) == $22 || read1($05DCE2) == $22)
     !dynamic_ow_levels = 0
-endif
+endif ; read1($05DCDD) == $22 || read1($05DCE2) == $22
 
 ; Detects if SA-1 MaxTile is inserted.
 if read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140
@@ -107,9 +107,9 @@ if read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140
     !maxtile_buffer_high   = $6190
     !maxtile_buffer_normal = $61A0
     !maxtile_buffer_low    = $61B0
-else
+else ; if not(read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140)
     !maxtile = 0
-endif
+endif ; read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140
 
 ; Macro to insert a table of repeating 1 byte values
 macro dbn(val, n)

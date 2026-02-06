@@ -33,7 +33,7 @@ handle_menu:
     ; Play the correct death song and set Exit animation time.
 if !exit_animation == 2
     lda.b #!death_time : sta $1496|!addr
-endif
+endif ; !exit_animation == 2
     
     ; Handle exit music differently if AMK is inserted or not.
     lda.l !rom_amk_byte : cmp #$5C : beq ..amk
@@ -46,15 +46,15 @@ endif
 if !death_jingle_alt != $FF
 if !exit_animation == 0
     lda !ram_hurry_up : beq +
-endif
+endif ; !exit_animation == 0
     lda.b #!death_jingle_alt : sta $1DFB|!addr
 +   rts
-endif
+endif ; !death_jingle_alt != $FF
 
 ..common:
 if !exit_animation == 0
     lda !ram_hurry_up : beq .skip
-endif
+endif ; !exit_animation == 0
     lda.l !rom_death_song : sta $1DFB|!addr
     rts
 
@@ -88,7 +88,7 @@ if !dim_screen
     lda $0DAE|!addr : and #$0F : cmp.b #!brightness+1 : bcc +
     dec : ora $00 : sta $0DAE|!addr
 +
-endif
+endif ; !dim_screen
     
     ; If the exit button is pressed, go to the exiting prompt phase.
     lda !exit_button_address : and.b #!exit_button : beq +
@@ -103,14 +103,14 @@ endif
     ; Otherwise, play the SFX and return the result.
 if !option_sfx != $00
     lda.b #!option_sfx : sta !option_sfx_addr|!addr
-endif
+endif ; !option_sfx != $00
     ldy $1B92|!addr
     stz $1B92|!addr
 
 if !dim_screen
     ; Also, reset the screen brightness to max.
     lda $0DAE|!addr : and #$F0 : ora #$0F : sta $0DAE|!addr
-endif
+endif ; !dim_screen
     rts
 
 .not_selected:
@@ -135,7 +135,7 @@ endif
     ; Otherwise, play the cursor SFX.
 if !cursor_sfx != $00
     lda.b #!cursor_sfx : sta !cursor_sfx_addr|!addr
-endif
+endif ; !cursor_sfx != $00
 
     ; Reset the cursor frame counter.
     stz $1B91|!addr
@@ -199,7 +199,7 @@ handle_box:
     ; If the box is disabled, just set the cooldown.
 if !prompt_cooldown != $00
     lda.b #!prompt_cooldown : sta !ram_update_window
-endif
+endif ; !prompt_cooldown != $00
 
     ; Otherwise, make sprites appear above the window.
     ; This fixes an issue when dying while the level end circle is covering the screen,
@@ -285,7 +285,7 @@ endmacro
 if defined("prompt_tile_index_line2")
     %_win_pos_calc(!__win_start,!prompt_tile_index_line2)
     !__win_pos_line2 #= !__win_pos
-endif
+endif ; defined("prompt_tile_index_line2")
 
 undef "__win_pos"
 
@@ -301,7 +301,7 @@ if defined("prompt_tile_index_line2")
     db $0D : db !window_x_pos,$100-!window_x_pos,$FF,$00
     db $4C : db $FF,$00,$FF,$00
     db $00
-endif
+endif ; defined("prompt_tile_index_line2")
 
 ; Windowing table to use when exit is disabled
 .window_no_exit:

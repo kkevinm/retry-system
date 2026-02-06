@@ -21,7 +21,7 @@
 ;=====================================
 if read1($00FFD5) == $23
     !retry_freeram = !retry_freeram_sa1
-endif
+endif ; read1($00FFD5) == $23
 
 macro retry_ram(name,offset)
     !ram_<name> #= !retry_freeram+<offset>

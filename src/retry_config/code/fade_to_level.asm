@@ -10,7 +10,7 @@ if !enter_level_sfx != $00
     lda.b #!enter_level_sfx : sta !enter_level_sfx_addr|!addr
     lda.b #!enter_level_delay : sta $0DB1|!addr
 +
-endif
+endif ; !enter_level_sfx != $00
 
     bra main
 
@@ -35,7 +35,7 @@ main:
 if !fast_transitions
     ; Reset the mosaic timer.
     stz $0DB1|!addr
-endif
+endif ; !fast_transitions
     
     ; If in the door animation, call the extra routine.
     lda $71 : cmp #$0D : bne .return

@@ -42,7 +42,7 @@ if !cursor_setting == 1
 elseif !cursor_setting == 2
     lda $1B91|!addr : lsr #!cursor_oscillate_speed : and #$07 : tax
     lda.w .cursor_x_offset,x : sta $02
-endif
+endif ; !cursor_setting
     ldx $1B92|!addr
     lda.w .hide_cursor_mask,x
 ++  sta $00
@@ -55,7 +55,7 @@ if !prompt_wave
     lda $1B92|!addr : bne +
     inc $03
 +
-endif
+endif ; !prompt_wave
     jsr oam_draw
     jsr handle_cursor
 
@@ -68,7 +68,7 @@ if !prompt_wave
     lda $1B92|!addr : beq +
     inc $03
 +
-endif
+endif ; !prompt_wave
     jsr oam_draw
     lsr $00
     jsr handle_cursor
@@ -92,7 +92,7 @@ endif
 if !cursor_setting == 2
 .cursor_x_offset:
     db -1,0,1,2,3,2,1,0
-endif
+endif ; !cursor_setting == 2
 
 ;===============================================================================
 ; handle_cursor routine
@@ -143,7 +143,7 @@ if !cursor_setting == 2
     ; Make the cursor 8x8.
     txa : lsr #2 : tax
     stz $0420|!addr,x
-endif
+endif ; !cursor_setting == 2
     rts
 
 .hide:
@@ -174,7 +174,7 @@ erase_tiles:
     lda $00 : clc : adc.b #(letters_box_end-letters_box)/5
 if !cursor_setting == 2
     inc
-endif
+endif ; !cursor_setting == 2
     sta $00
 +   
     ; Put all the tiles offscreen.
@@ -197,7 +197,7 @@ endif
 oam_draw:
 if !prompt_wave
     stz $0F
-endif
+endif ; !prompt_wave
     
     lda !ram_disable_box : sta $0C
     lda !ram_prompt_x_pos : sta $0D
@@ -229,7 +229,7 @@ if !prompt_wave
     plx
     inc $0F
 +
-endif
+endif ; !prompt_wave
     
     ; Store tile and properties.
     rep #$20
@@ -253,7 +253,7 @@ endif
 if !prompt_wave
 .y_offset:
     db -3,-2,-1,0,1,0,-1,-2
-endif
+endif ; !prompt_wave
 
 ; Get value in the variadic list at the specified index
 macro _arg_get(idx, ...)
@@ -269,11 +269,11 @@ macro _prompt_oam(x, y, ...)
     for i = 0..sizeof(...)
         if <...[!i]> == -1
             !__arg #= !prompt_tile_black
-        elseif defined("prompt_tiles_line2")
+        elseif defined("prompt_tiles_line2") ; && not(<...[!i]> == -1)
             %_arg_get(<...[!i]>,!prompt_tiles_line1,!prompt_tiles_line2)
-        else
+        else ; if not(<...[!i]> == -1 || defined("prompt_tiles_line2"))
             %_arg_get(<...[!i]>,!prompt_tiles_line1)
-        endif
+        endif ; <...[!i]> == -1
         db !__x                   ; X
         db <y>                    ; Y
         db !__arg                 ; Tile
@@ -302,7 +302,7 @@ letters:
 if defined("prompt_tile_index_line2")
     db $00,!exit_y_offset,!prompt_tile_cursor,props(!c_props,!prompt_tile_cursor),$00
     %_prompt_oam($10,!exit_y_offset,!prompt_tile_index_line2)
-endif
+endif ; defined("prompt_tile_index_line2")
 ..end:
     db $FF
 
@@ -314,14 +314,14 @@ endif
     endfor
     if (!text_x_pos-!window_x_pos)%$10 != 0
         db !window_x_pos-!text_x_pos,$10,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
-    endif
+    endif ; (!text_x_pos-!window_x_pos)%$10 != 0
 ..no_exit:
     for i = 0..(!text_x_pos-!window_x_pos)/$10
         db -(!i+1)*$10,$00,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
     endfor
     if (!text_x_pos-!window_x_pos)%$10 != 0
         db !window_x_pos-!text_x_pos,$00,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
-    endif
+    endif ; (!text_x_pos-!window_x_pos)%$10 != 0
 ..end:
     db $FF
 
@@ -397,4 +397,4 @@ defrag_oam:
     sep #$10
     rts
 
-endif
+endif ; not(!no_prompt_draw)

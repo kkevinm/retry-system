@@ -10,7 +10,7 @@ init:
     ; Reset frame counters and layer 1 and 2 X positions.
 if !reset_frame_counters
     stz $13
-endif
+endif ; !reset_frame_counters
     stz $1A
     stz $1E
     sep #$20
@@ -56,7 +56,7 @@ endif
     lda $1B95|!addr : bne +
 if !counterbreak_yoshi != 1 && !counterbreak_yoshi != 2
     lda $1B9B|!addr : bne +
-endif
+endif ; !counterbreak_yoshi != 1 && !counterbreak_yoshi != 2
     stz $0DC1|!addr
 +
     jsl level_transition_init

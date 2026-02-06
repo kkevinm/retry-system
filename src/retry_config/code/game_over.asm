@@ -9,7 +9,7 @@ init:
 if !sram_feature
     ; Reload the save file.
     jsl sram_load_game_over
-endif
+endif ; !sram_feature
     
     ; Call the extra routine.
     php : phb
@@ -19,7 +19,7 @@ endif
     ; If applicable, save the game.
 if !save_after_game_over
     jsr shared_save_game
-endif
+endif ; !save_after_game_over
 
 .return:
     rtl

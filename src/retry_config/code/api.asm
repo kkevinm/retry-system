@@ -60,7 +60,7 @@ if !sram_feature
     ; Restore DBR, P, X and Y.
     plp : ply : plx
     plb
-endif
+endif ; !sram_feature
     rtl
 
 ;===============================================================================
@@ -189,7 +189,7 @@ if !sprite_status_bar
     assert (!_stack-1)/2 == !ssb_elements_number, "Align configure_sprite_status_bar and \!ssb_elements_number!"
     undef "_stack"
     plb
-endif
+endif ; endif !sprite_status_bar
     ; Make sure the code returns at the right place
     rep #$20
     lda $01,s : clc : adc.w #2*!ssb_elements_number : sta $01,s
@@ -217,7 +217,7 @@ if !sprite_status_bar
     jsl cfg_ssb : %dwn(0,!ssb_elements_number)
     ; Make sure we don't upload anything
     lda #$00 : sta !ram_status_bar_force_upload
-endif
+endif ; !sprite_status_bar
     rtl
 
 ;===============================================================================
@@ -370,11 +370,11 @@ if !sram_feature
     lda $01,s : inc #3 : sta $01,s
     sep #$30
     rtl
-else
+else ; if not(!sram_feature)
     ; Make sure the code returns at the right place
     rep #$20
     lda $01,s : clc : adc #$0003 : sta $01,s
     ; Set carry (address not found)
     sep #$31
-endif
+endif ; !sram_feature
     rtl

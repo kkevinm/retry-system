@@ -22,7 +22,7 @@ pushpc
 if read1($00FFD8) < !sram_size
 org $00FFD8
     db !sram_size
-endif
+endif ; if read1($00FFD8) < !sram_size
 
 ; Hijack save game routine.
 org $009BCB
@@ -441,33 +441,29 @@ get_global_sram_addr:
     lda.w #!sram_addr_global+4
     rts
 
-else
+elseif not(!sram_plus) && not(!bwram_plus) ; && not(!sram_feature)
 
 ; Restore code, in case settings are changed.
-if not(!sram_plus) && not(!bwram_plus)
-
 pushpc
 
 if read1($00FFD8) == !sram_size
 org $00FFD8
     db $01
-endif
+endif ; read1($00FFD8) == !sram_size
 
 if read1($009BCB) == $5C
 org $009BCB
     plb
     ldx $010A|!addr
-endif
+endif ; read1($009BCB) == $5C
 
 if read1($009CF5) == $5C
 org $009CF5
     bne $2B
     phx
     stz $0109|!addr
-endif
+endif ; read1($009CF5) == $5C
 
 pullpc
 
-endif
-
-endif
+endif ; !sram_feature

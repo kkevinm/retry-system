@@ -4,14 +4,13 @@ checkpoint_effect:
 sfx_echo:
 if !default_sfx_echo
     %dbn($FF,$40)
-else
+else ; if not(!default_sfx_echo)
     %dbn($00,$40)
-endif
+endif ; !default_sfx_echo
 
-if !reset_rng < !reset_rng_type_min || !reset_rng > !reset_rng_type_max
-    error "Error: \!rng_reset value needs to be between !reset_rng_type_min and !reset_rng_type_max!"
-endif
-
+assert !reset_rng >= !reset_rng_type_min && !reset_rng <= !reset_rng_type_max,\
+    "Error: \!rng_reset value needs to be between !reset_rng_type_min and !reset_rng_type_max!"
+    
 reset_rng:
     %dbn(!reset_rng,$200)
 
@@ -22,9 +21,8 @@ lose_lives:
     %dbn($FF,$40)
 
 macro _check_level(level, macro_name)
-    if <level> < 0 || <level> > $1FF
-        error "Error: %<macro_name> level values needs to be between $000 and $1FF!"
-    endif
+    assert <level> >= 0 && <level> <= $1FF,\
+        "Error: %<macro_name> level value needs to be between $000 and $1FF!"
 endmacro
 
 macro _define_bitwise_index(level)
@@ -35,9 +33,8 @@ function _bitwise_table_value(level) = (1<<(7-((level)&7)))
 
 macro checkpoint(level, val)
     %_check_level(<level>, "checkpoint")
-    if <val> < !checkpoint_type_min || <val> > !checkpoint_type_max
-        error "Error: %checkpoint value needs to be between !checkpoint_type_min and !checkpoint_type_max!"
-    endif
+    assert <val> >= !checkpoint_type_min && <val> <= !checkpoint_type_max,\
+        "Error: %checkpoint value needs to be between !checkpoint_type_min and !checkpoint_type_max!"
 
     !__idx #= <level>
     !{_checkpoint_effect_!{__idx}} ?= 0
@@ -53,10 +50,9 @@ endmacro
 
 macro retry(level, val)
     %_check_level(<level>, "retry")
-    if <val> < !retry_type_min || <val> > !retry_type_max
-        error "Error: %retry value needs to be between !retry_type_min and !retry_type_max!"
-    endif
-    
+    assert <val> >= !retry_type_min && <val> <= !retry_type_max,\
+        "Error: %retry value needs to be between !retry_type_min and !retry_type_max!"
+
     !__idx #= <level>
     !{_checkpoint_effect_!{__idx}} ?= 0
     !{_checkpoint_effect_!{__idx}} #= !{_checkpoint_effect_!{__idx}}|((<val>)<<4)
@@ -76,10 +72,10 @@ macro sfx_echo(level)
 if !default_sfx_echo
     !{_sfx_echo_!{__idx}} ?= $FF
     !{_sfx_echo_!{__idx}} #= !{_sfx_echo_!{__idx}}&(_bitwise_table_value(<level>)^$FF)
-else
+else ; if not(!default_sfx_echo)
     !{_sfx_echo_!{__idx}} ?= 0
     !{_sfx_echo_!{__idx}} #= !{_sfx_echo_!{__idx}}|_bitwise_table_value(<level>)
-endif
+endif ; !default_sfx_echo
     
     pushpc
     
@@ -91,9 +87,8 @@ endmacro
 
 macro reset_rng(level, val)
     %_check_level(<level>, "reset_rng")
-    if <val> < !reset_rng_type_min || <val> > !reset_rng_type_max
-        error "Error: %rng_reset value needs to be between !reset_rng_type_min and !reset_rng_type_max!"
-    endif
+    assert <val> >= !reset_rng_type_min && <val> <= !reset_rng_type_max,\
+        "Error: %rng_reset value needs to be between !reset_rng_type_min and !reset_rng_type_max!"
 
     pushpc
     
@@ -142,12 +137,12 @@ macro settings(level, checkpoint, retry, sfx_echo, reset_rng, no_room_cp_sfx, no
     %checkpoint_retry(<level>, <checkpoint>, <retry>)
     if <sfx_echo> != 0
         %sfx_echo(<level>)
-    endif
+    endif ; <sfx_echo> != 0
     %reset_rng(<level>, <reset_rng>)
     if <no_room_cp_sfx> != 0
         %no_room_cp_sfx(<level>)
-    endif
+    endif ; <no_room_cp_sfx> != 0
     if <no_lose_lives> != 0
         %no_lose_lives(<level>)
-    endif
+    endif ; <no_lose_lives> != 0
 endmacro

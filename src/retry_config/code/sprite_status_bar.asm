@@ -61,7 +61,7 @@ if !8x8_item_box_tile
     lda.w #gfx_item_box : sta.w upload_dma($4302)
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
-else
+else ; if not(!8x8_item_box_tile)
     ; Upload the first row.
     %calc_vram() : sta $00 : sta $2116
     lda.w #gfx_item_box : sta.w upload_dma($4302)
@@ -73,7 +73,7 @@ else
     lda.w #gfx_item_box+$40 : sta.w upload_dma($4302)
     lda.w #gfx_size(2) : sta.w upload_dma($4305)
     sty $420B
-endif
+endif ; !8x8_item_box_tile
 ..no_item_box:
 
     ; Check if we need to upload the clock tile.
@@ -82,7 +82,7 @@ endif
     ; Signal "X" tile upload
 if !timer_X_enabled
     inc $04
-endif
+endif ; !timer_X_enabled
     ; Upload the clock tile.
     %calc_vram() : sta $2116
     lda.w #gfx_timer : sta.w upload_dma($4302)
@@ -96,7 +96,7 @@ endif
     ; Signal "X" tile upload
 if !coin_X_enabled
     inc $04
-endif
+endif ; !coin_X_enabled
     ; Upload the coin tiles.
     %calc_vram() : sta $2116
     lda.w #gfx_coins : sta.w upload_dma($4302)
@@ -110,7 +110,7 @@ endif
     ; Signal "X" tile upload
 if !lives_X_enabled
     inc $04
-endif
+endif ; !lives_X_enabled
     ; Upload the lives tile based on the current player.
     %calc_vram() : sta $2116
     lda.w #gfx_lives
@@ -127,7 +127,7 @@ endif
     ; Signal "X" tile upload
 if !bonus_stars_X_enabled
     inc $04
-endif
+endif ; !bonus_stars_X_enabled
     ; Upload the bonus stars tile.
     %calc_vram() : sta $2116
     lda.w #gfx_bonus_stars : sta.w upload_dma($4302)
@@ -141,7 +141,7 @@ endif
     ; Signal "X" tile upload
 if !death_X_enabled
     inc $04
-endif
+endif ; !death_X_enabled
     ; Upload the death tile.
     %calc_vram() : sta $2116
     lda.w #gfx_death : sta.w upload_dma($4302)
@@ -174,7 +174,7 @@ if !draw_retry_indicator
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 ..no_indicator:
-endif
+endif ; !draw_retry_indicator
 
 .counters:
     ; Check if we need to upload the timer digits.
@@ -494,7 +494,7 @@ if !draw_retry_indicator
     jsr draw_indicator
     inc $02
 .no_indicator:
-endif
+endif ; !draw_retry_indicator
     
     sep #$30
     plb
@@ -550,7 +550,7 @@ get_free_slot:
 draw_item_box:
 if not(!always_draw_box)
     lda $0DC2|!addr : beq .return
-endif
+endif ; not(!always_draw_box)
     ldy.w #.props-.pos-2
 .loop:
     jsr get_free_slot
@@ -562,9 +562,9 @@ endif
     sep #$20
 if !8x8_item_box_tile
     stz $0420|!addr,x
-else
+else ; if not(!8x8_item_box_tile)
     lda #$02 : sta $0420|!addr,x
-endif
+endif ; !8x8_item_box_tile
     plx
     inx #4
     dey #2 : bpl .loop
@@ -577,12 +577,12 @@ if !8x8_item_box_tile
     db $18+!item_box_x_pos,$08+!item_box_y_pos-1
     db $00+!item_box_x_pos,$10+!item_box_y_pos-1
     db $18+!item_box_x_pos,$10+!item_box_y_pos-1
-else
+else ; if not(!8x8_item_box_tile)
     db $00+!item_box_x_pos,$00+!item_box_y_pos-1
     db $10+!item_box_x_pos,$00+!item_box_y_pos-1
     db $00+!item_box_x_pos,$10+!item_box_y_pos-1
     db $10+!item_box_x_pos,$10+!item_box_y_pos-1
-endif
+endif ; !8x8_item_box_tile
 
 .props:
     dw $0000,$4000,$8000,$C000
@@ -631,7 +631,7 @@ draw_timer:
 if !timer_X_enabled
     ldy.w #!timer_X_index
     jsr draw_X
-endif
+endif ; !timer_X_enabled
 
     ; Draw the clock tile.
     ldy #$0000
@@ -643,13 +643,13 @@ endif
     lda #$80 : ora !ram_timer+0 : sta !ram_timer+0
 if !timer_counter_align_right
     iny #2
-endif
+endif ; !timer_counter_align_right
     bra ++
 +   lda !ram_is_respawning : beq +
     lda !ram_timer+0 : bpl +
 if !timer_counter_align_right
     iny #2
-endif
+endif ; !timer_counter_align_right
     bra ++
 +   lda.b #!timer_digit1_offset : sta $0E
     jsr .draw
@@ -661,13 +661,13 @@ endif
     lda #$80 : ora !ram_timer+1 : sta !ram_timer+1
 if !timer_counter_align_right
     iny #2
-endif
+endif ; !timer_counter_align_right
     bra ++
 +   lda !ram_is_respawning : beq +
     lda !ram_timer+1 : bpl +
 if !timer_counter_align_right
     iny #2
-endif
+endif ; !timer_counter_align_right
     bra ++
 +   lda.b #!timer_digit2_offset : sta $0E
     jsr .draw
@@ -707,7 +707,7 @@ draw_coins:
 if !coin_X_enabled
     ldy.w #!coin_X_index
     jsr draw_X
-endif
+endif ; !coin_X_enabled
 
     ; Draw the coin tile.
     ldy #$0000
@@ -718,7 +718,7 @@ endif
     lda $0DBF|!addr : cmp #10 : bcs +
 if !coin_counter_align_right
     iny #2
-endif
+endif ; !coin_counter_align_right
     bra ++
 +   lda.b #!coin_digit1_offset : sta $0E
     jsr .draw
@@ -761,7 +761,7 @@ if !draw_all_dc_collected
     ; If all DCs collected, calculate how many they were.
     jsr get_total_dc_amount
     bne .shared
-endif
+endif ; !draw_all_dc_collected
 
 .no_draw:
     rep #$10
@@ -814,7 +814,7 @@ draw_lives:
 if !lives_X_enabled
     ldy.w #!lives_X_index
     jsr draw_X
-endif
+endif ; !lives_X_enabled
 
     ; Draw the lives tile.
     ldy #$0000
@@ -825,7 +825,7 @@ endif
     lda $0DBE|!addr : inc : cmp #10 : bcs +
 if !lives_counter_align_right
     iny #2
-endif
+endif ; !lives_counter_align_right
     bra ++
 +   lda.b #!lives_digit1_offset : sta $0E
     jsr .draw
@@ -864,7 +864,7 @@ draw_bonus_stars:
 if !bonus_stars_X_enabled
     ldy.w #!bonus_stars_X_index
     jsr draw_X
-endif
+endif ; !bonus_stars_X_enabled
 
     ; Draw the bonus stars tile.
     ldy #$0000
@@ -879,7 +879,7 @@ endif
     plp : plx
 if !bonus_stars_counter_align_right
     iny #2
-endif
+endif ; !bonus_stars_counter_align_right
     bra ++
 +   plp : plx
     lda.b #!bonus_stars_digit1_offset : sta $0E
@@ -922,7 +922,7 @@ draw_death:
 if !death_X_enabled
     ldy.w #!death_X_index
     jsr draw_X
-endif
+endif ; !death_X_enabled
 
     ; Draw the death tile.
     ldy #$0000
@@ -936,7 +936,7 @@ endif
     lda !ram_death_counter+0 : bne +
 if !death_counter_align_right
     iny #2
-endif
+endif ; !death_counter_align_right
     bra ++
 +   lda.b #!death_digit1_offset : sta $0E
     jsr .draw
@@ -945,7 +945,7 @@ endif
     lda !ram_death_counter+1 : ora $04 : bne +
 if !death_counter_align_right
     iny #2
-endif
+endif ; !death_counter_align_right
     bra ++
 +   lda.b #!death_digit2_offset : sta $0E
     jsr .draw
@@ -954,7 +954,7 @@ endif
     lda !ram_death_counter+2 : ora $04 : bne +
 if !death_counter_align_right
     iny #2
-endif
+endif ; !death_counter_align_right
     bra ++
 +   lda.b #!death_digit3_offset : sta $0E
     jsr .draw
@@ -963,7 +963,7 @@ endif
     lda !ram_death_counter+3 : ora $04 : bne +
 if !death_counter_align_right
     iny #2
-endif
+endif ; !death_counter_align_right
     bra ++
 +   lda.b #!death_digit4_offset : sta $0E
     jsr .draw
@@ -1016,7 +1016,7 @@ draw_indicator:
     inx #4
     rts
 
-endif
+endif ; !draw_retry_indicator
 
 if !draw_all_dc_collected
 get_total_dc_amount:
@@ -1045,7 +1045,6 @@ get_total_dc_amount:
     ; If detection failed, load the default amount.
     lda.b #!default_dc_amount
     rts
-endif
+endif ; !draw_all_dc_collected
 
-
-endif
+endif ; !sprite_status_bar

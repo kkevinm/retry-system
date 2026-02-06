@@ -7,10 +7,10 @@
 ; If the death animation should show, set the times to the minimum possible
 if !retry_death_animation&1
     !show_prompt_time #= 2
-endif
+endif ; !retry_death_animation&1
 if !retry_death_animation&2
     !death_time #= 2
-endif
+endif ; !retry_death_animation&2
 
 main:
     ; Enable SFX echo if applicable.
@@ -61,7 +61,7 @@ if not(!always_start_select)
     lda !ram_disable_exit : bne +
     cpy.b #!retry_type_prompt_max+1 : bcc .not_dying
 +
-endif
+endif ; not(!always_start_select)
     
     ; If we're in the intro level, don't Start+Select.
     lda $0109|!addr : bne .not_dying
@@ -85,7 +85,7 @@ endif
     ; Disable camera Y scroll if applicable.
 if !death_camera_lock
     stz $1412|!addr
-endif
+endif ; !death_camera_lock
     
     ; Freeze the screen.
     jsr screen_freeze
@@ -97,7 +97,7 @@ if not(!infinite_lives)
     lda $0DBE|!addr : bpl +
     rtl
 +
-endif
+endif ; not(!infinite_lives)
 
     ; See what retry we have to use.
     jsr shared_get_prompt_type
@@ -122,7 +122,7 @@ if !title_death_behavior != 0
 
     ; ...and set the flag to reload the title screen.
     jmp ..reload_title_screen
-endif
+endif ; !title_death_behavior != 0
 
 ...return:
     rtl
@@ -137,7 +137,7 @@ if !exit_animation < 2
     stz $1496|!addr
     stz $76
     stz $7D
-endif
+endif ; !exit_animation < 2
 
     rtl
 
@@ -149,7 +149,7 @@ if !show_prompt_time > 2
     stz $7D
     stz $76
 +
-endif
+endif ; !show_prompt_time > 2
 
     ; If the prompt hasn't begun yet, check if it should.
     lda !ram_prompt_phase : beq ...check_box
@@ -184,13 +184,13 @@ if not(!fast_prompt)
 if not(!retry_death_animation&1)
     ; If fallen in a pit, show immediately.
     lda $81 : dec : bpl +
-endif
+endif ; not(!retry_death_animation&1)
 
     ; Check if it's time to show the prompt.
     lda $16 : ora $18 : bmi +
     lda $1496|!addr : cmp.b #!show_prompt_time : bcs ..return
 +
-endif
+endif ; not(!fast_prompt)
 
     ; Set letter transfer flag and change prompt phase.
     lda #$01 : sta !ram_update_request
@@ -212,7 +212,7 @@ endif
 if not(!retry_death_animation&2)
     ; If fallen offscreen, respawn immediately.
     lda $81 : dec : bpl ..respawn
-endif
+endif ; not(!retry_death_animation&2)
     
     ; Respawn after 4 frames so it shows the death pose.
     lda $1496|!addr : cmp.b #!death_time : bcs ..return
@@ -273,7 +273,7 @@ if !title_death_behavior != 0
     rtl
 
 ..reload_level:
-endif
+endif ; !title_death_behavior != 0
 
     ; Set the flag to reload the level.
     lda #$40 : sta !ram_is_dying
@@ -341,7 +341,7 @@ if !prompt_freeze
     lda $14 : and #$03 : bne +
     inc $18AC|!addr
 +
-else
+else ; if not(!prompt_freeze)
     ; Force sprites and animations to run.
     stz $9D
 
@@ -360,7 +360,7 @@ else
     cmp #$0C : bne ++
 +   stz $143E|!addr
 ++
-endif
+endif ; !prompt_freeze
 
     ; Skip Yoshi's hatch animation.
     stz $18E8|!addr
@@ -448,19 +448,19 @@ if !reset_boo_rings
     ; Reset vanilla Boo rings.
     stz $0FAE|!addr
     stz $0FB0|!addr
-endif
+endif ; !reset_boo_rings
 
 if !counterbreak_bonus_stars == 1 || !counterbreak_bonus_stars == 2
     ; Reset bonus stars counter.
     stz $0F48|!addr
-endif
+endif ; !counterbreak_bonus_stars == 1 || !counterbreak_bonus_stars == 2
 
 if !counterbreak_score == 1 || !counterbreak_score == 2
     ; Reset score counter.
     stz $0F34|!addr
     stz $0F36|!addr
     stz $0F38|!addr
-endif
+endif ; !counterbreak_score == 1 || !counterbreak_score == 2
 
     ; Reset timer to the original value.
     lda !ram_timer+0 : and #$0F0F : sta $0F31|!addr
@@ -470,22 +470,22 @@ endif
 if !counterbreak_powerup == 1 || !counterbreak_powerup == 2
     ; Reset powerup.
     stz $19
-endif
+endif ; !counterbreak_powerup == 1 || !counterbreak_powerup == 2
 
 if !counterbreak_item_box == 1 || !counterbreak_item_box == 2
     ; Reset item box.
     stz $0DC2|!addr
-endif
+endif ; !counterbreak_item_box == 1 || !counterbreak_item_box == 2
 
 if !counterbreak_coins == 1 || !counterbreak_coins == 2
     ; Reset coin counter.
     stz $0DBF|!addr
-endif
+endif ; !counterbreak_coins == 1 || !counterbreak_coins == 2
 
 if !counterbreak_lives == 1 || !counterbreak_lives == 2
     ; Reset lives.
     lda.b #!initial_lives-1 : sta $0DBE|!addr
-endif
+endif ; !counterbreak_lives == 1 || !counterbreak_lives == 2
 
     ; Reset green star block counter.
     lda.l !rom_green_star_block_count : sta $0DC0|!addr
@@ -603,7 +603,7 @@ end:
 if !sprite_status_bar
     ; Draw the sprite status bar.
     jsr sprite_status_bar_main
-endif
+endif ; !sprite_status_bar
 
     ; If Mario is dying, call the death routine.
     lda $71 : cmp #$09 : bne .no_death
@@ -629,7 +629,7 @@ if not(!no_prompt_draw)
 
 .draw_prompt:
     jsr prompt_oam
-endif
+endif ; not(!no_prompt_draw)
 
 .return:
     ; Restore DBR.

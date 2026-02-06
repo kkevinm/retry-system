@@ -3,7 +3,7 @@
 init:
 if !sprite_status_bar
     jsr ssb_tables_load
-endif
+endif ; !sprite_status_bar
 
     ; Reset the "play CP sfx" flag.
     lda #$00 : sta !ram_play_sfx
@@ -40,7 +40,7 @@ if !room_cp_sfx != $00
     and.l tables_disable_room_cp_sfx,x : bne ..no_sfx
     lda #$01 : sta !ram_play_sfx
 ..no_sfx:
-endif
+endif ; !room_cp_sfx != $00
 
     ; Set the checkpoint to the current entrance.
     rep #$20

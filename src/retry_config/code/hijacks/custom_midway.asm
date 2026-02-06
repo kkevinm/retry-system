@@ -131,7 +131,7 @@ custom_midway:
     pla : sta $59
     rts
 
-else
+else ; if not(!use_custom_midway_bar)
 
 ; Restore code, in case settings are changed.
 if read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C
@@ -144,6 +144,6 @@ org $0DA415
 
 pullpc
 
-endif
+endif ; read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C
 
-endif
+endif ; !use_custom_midway_bar

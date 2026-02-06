@@ -17,11 +17,11 @@ level:
 if !sprite_status_bar
     ; Update the sprite status bar graphics.
     jsr sprite_status_bar_nmi
-endif
+endif ; !sprite_status_bar
 
 if !no_prompt_draw
     rtl
-else
+else ; if not(!no_prompt_draw)
     ; Skip if it's not time to upload the tiles.
     lda !ram_update_request : bne .upload
     rtl
@@ -108,7 +108,7 @@ endmacro
 ..exit:
 if defined("prompt_gfx_index_line2")
     %_gfx_sizes(!prompt_gfx_index_line2)
-endif
+endif ; defined("prompt_gfx_index_line2")
 ..end:
 
 .dest:
@@ -116,7 +116,7 @@ endif
 ..exit:
 if defined("prompt_tiles_line2")
     %_vram_addrs(!prompt_tiles_line2)
-endif
+endif ; defined("prompt_tiles_line2")
 ..end:
 
-endif
+endif ; !no_prompt_draw

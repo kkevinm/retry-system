@@ -33,13 +33,11 @@ function __rtl(x) = \
 ;===============================================================================
 macro jsl_to_rts(routine)
     !__rtl = __rtl(bank(<routine>)&$7F)
-    if not(!__rtl)
-        error "jsl_to_rts not supported for bank $", hex(bank(<routine>)&$7F)
-    endif
-    if read1(!__rtl) != $6B
-        error "Found $", hex(read1(!__rtl)), " at ROM $", hex(!__rtl), ", expected $6B"
-    endif
-
+    assert !__rtl,\
+        "jsl_to_rts not supported for bank $", hex(bank(<routine>)&$7F)
+    assert read1(!__rtl) == $6B,\
+        "Found $", hex(read1(!__rtl)), " at ROM $", hex(!__rtl), ", expected $6B"
+    
     phk : pea.w (?+)-1
     pea.w !__rtl-1
     jml <routine>|!bank
@@ -64,9 +62,9 @@ endmacro
 macro lda_13BF()
 if !dynamic_ow_levels
     jsr shared_get_new_13BF
-else
+else ; if not(!dynamic_ow_levels)
     lda $13BF|!addr
-endif
+endif ; !dynamic_ow_levels
 endmacro
 
 ;===============================================================================
@@ -103,9 +101,9 @@ if !title_death_behavior < 2
     lda.b #!retry_type_vanilla
 elseif !title_death_behavior == 2
     lda.b #!retry_type_instant_death_sfx
-else
+else ; if not(!title_death_behavior < 2 && !title_death_behavior == 2)
     lda.b #!retry_type_instant_death_song
-endif
+endif ; !title_death_behavior < 2
     rts
 
 .level:
@@ -145,9 +143,9 @@ get_translevel:
     sep #$10
 if !dynamic_ow_levels
     jmp get_new_13BF_no_intro
-else
+else ; not(!dynamic_ow_levels)
     rts
-endif
+endif ; !dynamic_ow_levels
 
 ;===============================================================================
 ; Get correct $13BF value for current level (for patches that change level
@@ -168,7 +166,7 @@ get_new_13BF:
     cpy #$00 : beq +
     clc : adc #$24
 +   rts
-endif
+endif ; !dynamic_ow_levels
 
 ;===============================================================================
 ; Routine to save the current level's custom checkpoint value and set the midway
@@ -196,9 +194,9 @@ hard_save:
     plx
 if !save_on_checkpoint
     jmp save_game
-else
+else ; if not(!save_on_checkpoint)
     rts
-endif
+endif ; !save_on_checkpoint
 
 ;===============================================================================
 ; Routine to remove the current level's checkpoint.
@@ -286,9 +284,9 @@ dcsave:
     ; Call the dcsave routine.
 if !sa1
     %invoke_sa1(.jml)
-else
+else ; if not(!sa1)
     jsl .jml
-endif
+endif ; !sa1
     rts
 
 .midpoint:

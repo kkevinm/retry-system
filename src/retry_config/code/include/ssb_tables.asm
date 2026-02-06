@@ -1,22 +1,19 @@
 if !sprite_status_bar
 
 macro _build_status_bar_value(name)
-    if !default_<name>_palette > $0F
-        error "Error: \!default_<name>_palette is not valid!"
-    endif
-    if !default_<name>_tile > $1FF
-        error "Error: \!default_<name>_tile is not valid!"
-    endif
+    assert !default_<name>_palette <= $0F,\
+        "Error: \!default_<name>_palette is not valid!"
+    assert !default_<name>_tile <= $1FF,\
+        "Error: \!default_<name>_tile is not valid!"
 
     if !default_<name>_tile == 0 || !default_<name>_palette == 0
         !default_<name>_value #= 0
-    else
+    else ; if not(!default_<name>_tile == 0 || !default_<name>_palette == 0)
         !default_<name>_value #= ((!default_<name>_palette)<<12)|(!default_<name>_tile)
-    endif
+    endif ; !default_<name>_tile == 0 || !default_<name>_palette == 0
 
-    if !default_<name>_value != 0 && !default_<name>_value&$8000 < $8000
-        error "Error: \!default_<name>_palette is not valid!"
-    endif
+    assert !default_<name>_value == 0 || !default_<name>_value&$8000 >= $8000,\
+        "Error: \!default_<name>_palette is not valid!"
 
     !default_<name>_value #= !default_<name>_value&$7FFF
 endmacro
@@ -28,9 +25,8 @@ endmacro
 %_build_status_bar_value(bonus_stars)
 %_build_status_bar_value(death_counter)
 
-if !default_coin_counter_behavior > 2
-    error "Error: \!default_coin_counter_behavior is not valid!"
-endif
+assert !default_coin_counter_behavior <= 2,\
+    "Error: \!default_coin_counter_behavior is not valid!"
 !default_coin_counter_value #= !default_coin_counter_value|(!default_coin_counter_behavior<<9)
 
 item_box:
@@ -52,26 +48,22 @@ death:
     %dwn(!default_death_counter_value,$200)
 
 macro _ssb_config_shared(level, tile, pal, name)
-    if <level> < 0 || <level> > $1FF
-        error "Error: %ssb_config_<name> level values needs to be between $000 and $1FF!"
-    endif
-    if <tile> > $1FF
-        error "Error: %ssb_config_<name> tile is not valid!"
-    endif
-    if <pal> > $0F
-        error "Error: %ssb_config_<name> palette is not valid!"
-    endif
+    assert <level> >= 0 && <level> <= $1FF,\
+        "Error: %ssb_config_<name> level value needs to be between $000 and $1FF!"
+    assert <tile> <= $1FF,\
+        "Error: %ssb_config_<name> tile is not valid!"
+    assert <pal> <= $0F,\
+        "Error: %ssb_config_<name> palette is not valid!"
 
     if <tile> == 0 || <pal> == 0
         !_value #= 0
-    else
+    else ; if not(<tile> == 0 || <pal> == 0)
         !_value #= ((<pal>)<<12)|(<tile>)
-    endif
+    endif ; <tile> == 0 || <pal> == 0
 
-    if !_value != 0 && !_value&$8000 < $8000
-        error "Error: %ssb_config_<name> palette is not valid!"
-    endif
-
+    assert !_value == 0 || !_value&$8000 >= $8000,
+        "Error: %ssb_config_<name> palette is not valid!"
+    
     !_value #= !_value&$7FFF
 
     pushpc
@@ -93,9 +85,8 @@ macro ssb_config_timer(level, tile, pal)
 endmacro
 
 macro ssb_config_coins(level, tile, pal, beha)
-    if <beha> > 2
-        error "Error: %ssb_config_coins beha value is not valid!"
-    endif
+    assert <beha> <= 2,\
+        "Error: %ssb_config_coins beha value is not valid!"
 
     %_ssb_config_shared(<level>, <tile>, <pal>, coins)
 
@@ -104,7 +95,7 @@ macro ssb_config_coins(level, tile, pal, beha)
             org ssb_tables_coins+(<level>*2)
                 dw ((((<pal>)<<12)|(<tile>))&$7FFF)|((<beha>)<<9)
         pullpc
-    endif
+    endif ; <tile> != 0 && <pal> != 0
 endmacro
 
 macro ssb_config_lives(level, tile, pal)
@@ -174,7 +165,7 @@ load:
     plx
     rts
 
-else
+else ; if !use_legacy_tables
 
 ; Load the default sprite status bar config
 load:
@@ -189,9 +180,9 @@ load:
     plp
     rts
 
-endif
+endif ; not(!use_legacy_tables)
 
-else
+else ; if not(!sprite_status_bar)
 
 macro ssb_config_item_box(level, tile, pal)
 endmacro
@@ -238,4 +229,4 @@ endmacro
 load:
     rts
 
-endif
+endif ; !sprite_status_bar

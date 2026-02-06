@@ -38,7 +38,7 @@ if not(!sram_feature)
     %jsl_to_rts_db($009F06)
     ; Align checkpoint table with the initial OW flags
     jsr shared_set_checkpoints_from_initial_ow_flags
-endif
+endif ; not(!sram_feature)
 
     ; Initialize "No exit" flag.
     lda.b #!no_exit_option : sta.w !ram_disable_exit
@@ -56,7 +56,7 @@ endif
 if !sram_feature
     ; Initialize the SRAM global variables
     jsr sram_load_global
-endif
+endif ; !sram_feature
 
     plb
     rtl

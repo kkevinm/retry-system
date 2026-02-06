@@ -15,7 +15,7 @@ macro _prompt_file_size(...)
     for i = 0..sizeof(...)
         if <...[!i]> > !__size
             !__size = <...[!i]>
-        endif
+        endif ; <...[!i]> > !__size
     endfor
     ; Each tile is 32 bytes (+1 because the index starts from 0)
     !__size #= (!__size+1)*32
@@ -23,9 +23,9 @@ endmacro
 
 if defined("prompt_gfx_index_line2")
     %_prompt_file_size(!prompt_gfx_index_line1,!prompt_gfx_index_line2)
-else
+else ; if not(defined("prompt_gfx_index_line2"))
     %_prompt_file_size(!prompt_gfx_index_line1)
-endif
+endif ; defined("prompt_gfx_index_line2")
 
 prompt:
 .box:
@@ -62,13 +62,13 @@ death:
 item_box:
 if !8x8_item_box_tile
     %incgfx(item_box_8x8)
-else
+else ; if not(!8x8_item_box_tile)
     %incgfx(item_box_16x16)
-endif
+endif ; !8x8_item_box_tile
 
 if !draw_retry_indicator
 indicator:
     %incgfx(indicator)
-endif
+endif ; !draw_retry_indicator
 
-endif
+endif ; !sprite_status_bar
