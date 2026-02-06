@@ -99,7 +99,8 @@
 			<td><code>$0C</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
-			<td class="left-align">Holds the value for the current phase of the Retry prompt box. The values go as follows:
+			<td class="left-align">
+				Holds the value for the current phase of the Retry prompt box. The values go as follows:
 				<ul>
 					<li>$00: Retry prompt is off.</li>
 					<li>$01: box is expanding.</li>
@@ -123,7 +124,8 @@
 			<td><code>$0E</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
-			<td class="left-align">Flag set when Mario dies. It's used for a few processes that happen when Mario dies. Format: <code>srr----d</code>
+			<td class="left-align">
+				Flag set when Mario dies. It's used for a few processes that happen when Mario dies. Format: <code>srr----d</code>
 				<ul>
 					<li><code>s</code>: when not set but the <code>d</code> bit is set, the death sfx is played and this bit is set. This ensures the sfx is only played once.</li>
 					<li><code>rr</code>: when set to <code>10</code>, the current level is reloaded by switching to gamemode <code>$0F</code>. When set to <code>11</code>, the title screen is reloaded by switching to gamemode <code>$02</code>.</li>
@@ -165,11 +167,12 @@
 			<td><code>$13</code></td>
 			<td><code>$02</code></td>
 			<td>User</td>
-			<td class="left-align">This address functions as a simple way to set the checkpoint for the current level to a certain entrance, without having to worry about all the internal Retry mechanism that makes it work. It's mainly used by the vanilla/custom midway objects, but you can also write to it yourself if you're making your own midways or you need to change the checkpoint dynamically. It can be used in 3 ways:
+			<td class="left-align">
+				This address functions as a simple way to set the checkpoint for the current level to a certain entrance, without having to worry about all the internal Retry mechanism that makes it work. It's mainly used by the vanilla/custom midway objects, but you can also write to it yourself if you're making your own midways or you need to change the checkpoint dynamically. Normally the address contains <code>$FFFF</code>, which indicates it's not triggering anything, but you can change it in 3 ways:
 				<ul>
-					<li>If the low byte is set to any value other than <code>$FF</code> and <code>$80</code> (for example, <code>$00</code>), but you don't change the high byte, then a checkpoint will be triggered depending on this level's <code>checkpoint_effect</code> table settings. This would be the preferred way to use it if making a custom midway block/sprite.</li>
+					<li>If the low byte is set to <code>$80</code>, and you don't change the high byte, then the current level's checkpoint will be reset to the main level's entrance, effectively erasing the current checkpoint.</li>
+					<li>If the low byte is set to any value other than <code>$FF</code> and <code>$80</code> (for example, <code>$00</code>), and you don't change the high byte, then a checkpoint will be triggered depending on this level's <code>checkpoint_effect</code> table settings. This would be the preferred way to use it if making a custom midway block/sprite.</li>
 					<li>If the whole 16-bit value is set to an entrance value, following the format of <code>$7E19B8</code> and <code>$7E19D8</code>, then a checkpoint will be set using this entrance as the respawn destination. This can be used to have custom checkpoints that use any main/midway/secondary entrance as destination, similarly to Retry's custom midway objects.</li>
-					<li>If the low byte is set to <code>$80</code>, then the current level's checkpoint will be reset to the main level's entrance, effectively erasing the current checkpoint. In this case the high byte is ignored.</li>
 				</ul>
 			</td>
 		</tr>
