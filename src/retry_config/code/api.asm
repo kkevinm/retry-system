@@ -343,7 +343,7 @@ if !sram_feature
     ; Add the calculated offset to the SRAM address
     clc : adc $00 : sta $00
     sep #$20
-    lda.b #!sram_addr>>16 : sta $02
+    lda.b #!sram_bank : sta $02
     ; Clear carry (address found)
     clc
     bra .return

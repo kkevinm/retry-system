@@ -62,6 +62,9 @@ else
     !sram_addr_global #= $7002CB+143
 endif
 
+; SRAM bank for convenience
+!sram_bank = bank(!sram_addr)
+
 ; OW translevel number table.
 if !sa1
     !7ED000 = $40D000

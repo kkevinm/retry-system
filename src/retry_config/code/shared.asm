@@ -8,7 +8,7 @@
 ; Note: remember to PLB when finished!
 ;===============================================================================
 macro set_dbr(label)
-?-  pea.w (<label>>>16)|((?-)>>16<<8)
+?-  pea.w bank(<label>)|(bank(?-)<<8)
     plb
 endmacro
 
@@ -32,9 +32,9 @@ function __rtl(x) = \
 ; Macro to JSL to a routine that ends in RTS.
 ;===============================================================================
 macro jsl_to_rts(routine)
-    !__rtl = __rtl((<routine>>>16)&$7F)
+    !__rtl = __rtl(bank(<routine>)&$7F)
     if not(!__rtl)
-        error "jsl_to_rts not supported for bank $", hex((<routine>>>16)&$7F)
+        error "jsl_to_rts not supported for bank $", hex(bank(<routine>)&$7F)
     endif
     if read1(!__rtl) != $6B
         error "Found $", hex(read1(!__rtl)), " at ROM $", hex(!__rtl), ", expected $6B"

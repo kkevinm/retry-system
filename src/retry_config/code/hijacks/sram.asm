@@ -1,16 +1,15 @@
 ; This file handles expanding the normal SRAM and saving custom addresses to it.
 ; It works on both lorom (SRAM) and SA-1 (BW-RAM).
 
-; Bank byte of the SRAM/BW-RAM address.
-!sram_bank          = (!sram_addr>>16)
-!sram_defaults_bank = (tables_sram_defaults>>16)
+; Bank byte of the SRAM default table.
+!sram_defaults_bank = bank(tables_sram_defaults)
 
 ; Helper defines for size and index in the save table
-!save_table_size_local            = (tables_save_global-tables_save)
-!save_table_size_local_game_over  = (tables_save_not_game_over-tables_save)
-!save_table_size_global           = (tables_sram_defaults-tables_save_global)
-!save_table_size                  = !save_table_size_local+!save_table_size_global
-!save_table_index_global          = !save_table_size_local
+!save_table_size_local           = (tables_save_global-tables_save)
+!save_table_size_local_game_over = (tables_save_not_game_over-tables_save)
+!save_table_size_global          = (tables_sram_defaults-tables_save_global)
+!save_table_size                 = !save_table_size_local+!save_table_size_global
+!save_table_index_global         = !save_table_size_local
 
 ; Magic number to mark save areas in SRAM
 !sram_magic_number = $52544552 ; RETR
@@ -176,7 +175,7 @@ save_game:
 
     ; Save the magic number to the save file (-4 from the sram addr returned)
     ; Also set the code bank on the stack
--   pea.w (!sram_bank)|((-)>>16<<8) : plb
+-   %set_dbr(!sram_addr)
     sec : sbc #$0004 : sta $02
     lda.w #!sram_magic_number : sta ($02)
     ldy #$0002
@@ -273,7 +272,7 @@ load_file:
 
     ; Check the magic number in the save file (-4 from the sram addr returned)
     ; Also set the code bank on the stack
--   pea.w (!sram_bank)|((-)>>16<<8) : plb
+-   %set_dbr(!sram_addr)
     sec : sbc #$0004 : sta $02
     lda ($02) : cmp.w #!sram_magic_number : bne .fail
     ldy #$0002

@@ -267,7 +267,7 @@ update_window:
 ++  sta.w window_dma($4302)
     lda.w #$2604 : sta.w window_dma($4300)
     sep #$20
-    lda.b #.window>>16 : sta.w window_dma($4304)
+    lda.b #bank(.window) : sta.w window_dma($4304)
     rts
 
 ; Calculate window left position based on the amount of tiles in the variadic

@@ -1,4 +1,5 @@
-!gfx_bank = ((gfx_prompt>>16)&$FF)
+; Bank where all gfx files are stored, used externally
+!gfx_bank = bank(gfx_prompt)
 
 macro incgfx(file)
     incbin "../../gfx/<file>.bin"

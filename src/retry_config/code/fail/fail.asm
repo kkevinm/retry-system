@@ -167,7 +167,7 @@ setup:
     ; Layer 3 GFX at VRAM $4000
     lda #$04 : sta $210C
     ; Set DMA bank for all uploads
-    lda.b #setup>>16 : sta $4304
+    lda.b #bank(setup) : sta $4304
     ; Upload layer 3 GFX to VRAM $4000
     %_upload_gfx($4000, layer3_gfx)
     ; Upload sprite GFX to VRAM $6000
@@ -265,7 +265,7 @@ sprite_tilemap:
 finalize:
     ; Upload layer 3 tilemap tiles (X = src address)
     stx $4302
-    lda.b #finalize>>16 : sta $4304
+    lda.b #bank(finalize) : sta $4304
     stz $2115
     ldx.w #$5000 : stx $2116
     ldx.w #$1800 : stx $4300
