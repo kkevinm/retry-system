@@ -38,63 +38,63 @@
 			<th>Purpose</th>
 			<th>Description</th>
 		</tr>
-		<tr>
+		<tr id="timer">
 			<td><code>timer</code></td>
 			<td><code>$00</code></td>
 			<td><code>$03</code></td>
 			<td>Internal</td>
 			<td class="left-align">Used to hold the level's initial timer value, to reset it to the correct value when respawning. You can read it at any time during a level to know what the initial timer was.</td>
 		</tr>
-		<tr>
+		<tr id="respawn">
 			<td><code>respawn</code></td>
 			<td><code>$03</code></td>
 			<td><code>$02</code></td>
 			<td>Internal</td>
 			<td class="left-align">Destination value to go to when respawning. This value is written on level load depending on the current checkpoint and used when Retrying.<br>You can see the format at <code>$7E19B8</code> (low byte) and <code>$7E19D8</code> (high byte) in the SMWCentral RAM Map. Note that the high byte is always <code>ORA</code>d with <code>$04</code> (i.e. it always uses the Lunar Magic entrance system rather than vanilla).<br>Additionally, if the destination is a level's main entrance and the highest bit is set, then the entrance will act as a Yoshi Wings sublevel.</td>
 		</tr>
-		<tr>
+		<tr id="is_respawning">
 			<td><code>is_respawning</code></td>
 			<td><code>$05</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Flag set when a level is being reloaded by Retry after dying. It can be used to check if a room is being loaded by Retry or it's just a normal level entrance/transition.</td>
 		</tr>
-		<tr>
+		<tr id="music_to_play">
 			<td><code>music_to_play</code></td>
 			<td><code>$06</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Music number that has to be played after respawn. Only used when AddmusicK is patched. If <code>$FF</code>, the song's samples will be reloaded.</td>
 		</tr>
-		<tr>
+		<tr id="hurry_up">
 			<td><code>hurry_up</code></td>
 			<td><code>$07</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Flag set when the timer drops under 99 seconds and the music speeds up. When set, the death song will be played when dying even if it shouldn't, to reset the level's song's tempo.</td>
 		</tr>
-		<tr>
+		<tr id="door_dest">
 			<td><code>door_dest</code></td>
 			<td><code>$08</code></td>
 			<td><code>$02</code></td>
 			<td>Internal</td>
 			<td class="left-align">It holds the destination value for the current entrance, set when going to a sublevel via a door/pipe/etc. It's used to set the checkpoint to the current entrance when using the <code>$02</code> or <code>$03</code> option in the checkpoint table. It uses the same format as <code>respawn</code>.</td>
 		</tr>
-		<tr>
+		<tr id="music_backup">
 			<td><code>music_backup</code></td>
 			<td><code>$0A</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Holds the song number that was playing right before playing the death song. It's copied to <code>$0DDA</code> when dying, which prevents the samples to be reloaded if the same song is played again afterwards (for AddmusicK).</td>
 		</tr>
-		<tr>
+		<tr id="update_request">
 			<td><code>update_request</code></td>
 			<td><code>$0B</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Flag set when dying if the Retry prompt is active. It makes the NMI handler upload the prompt letters to VRAM. It's set to <code>$00</code> right after. You can set this mid-level if you need the letters GFX to be loaded for some reason.</td>
 		</tr>
-		<tr>
+		<tr id="prompt_phase">
 			<td><code>prompt_phase</code></td>
 			<td><code>$0C</code></td>
 			<td><code>$01</code></td>
@@ -112,14 +112,14 @@
 				</ul>
 			</td>
 		</tr>
-		<tr>
+		<tr id="update_window">
 			<td><code>update_window</code></td>
 			<td><code>$0D</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">The high bit is set during the Retry prompt handling to make the window change shape to properly show the options. Needed to avoid occasional flickering when updating it on the same frame it finished expanding.<br>Additionally used as a timer (<code>$00-$7F</code>) when the Retry prompt opens to disable pressing up/down to move the cursor (as specified by <code>!prompt_cooldown</code> in <code>settings.asm</code>).</td>
 		</tr>
-		<tr>
+		<tr id="is_dying">
 			<td><code>is_dying</code></td>
 			<td><code>$0E</code></td>
 			<td><code>$01</code></td>
@@ -134,35 +134,35 @@
 				</ul>
 			</td>
 		</tr>
-		<tr>
+		<tr id="gm_backup">
 			<td><code>gm_backup</code></td>
 			<td><code>$0F</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Contains a backup of the current gamemode (<code>$0100</code>), so that the <code>main</code> and <code>end</code> labels can run properly on the frame the gamemode is changed.</td>
 		</tr>
-		<tr>
+		<tr id="midway_powerup">
 			<td><code>midway_powerup</code></td>
 			<td><code>$10</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
 			<td class="left-align">This can be used to override the <code>!midway_powerup</code> setting in certain situations. If this is <code>$00</code>, then midways won't give a mushroom, otherwise they will. This is only initialized by Retry at startup based on the <code>!midway_powerup</code> setting, but you can change it at any time. Just remember that you'll need to change it back to the default value yourself if needed.</td>
 		</tr>
-		<tr>
+		<tr id="prompt_override">
 			<td><code>prompt_override</code></td>
 			<td><code>$11</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
 			<td class="left-align">This can be used to override the Retry settings of the current level or all levels depending on some condition (for example, if you want to let the player choose if to have instant Retry or not).<br>It follows the same format as the <code>%retry</code> setting in <u class="dir">settings_local.asm</u> (see <a href="./settings_local.html#retry">Local Settings - %retry</a> for details). If this is set to <code>$00</code>, the value in the local settings will be used instead, or the default value in <u class="dir">settings_global.asm</u> if there's no local setting for the current sublevel. It's only reset by Retry at startup, meaning that its effect will last until you set it back to <code>$00</code> yourself.</td>
 		</tr>
-		<tr>
+		<tr id="disable_exit">
 			<td><code>disable_exit</code></td>
 			<td><code>$12</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
 			<td class="left-align">If set to a value other than <code>$00</code>, the Retry prompt won't show the <code>EXIT</code> option. Retry sets it to <code>!disable_exit_option</code> from <code>settings_global.asm</code> at startup, but you can also change it at any time to remove the option in certain situations. Remember that you'll need to change it back to the default value yourself if needed.</td>
 		</tr>
-		<tr>
+		<tr id="set_checkpoint">
 			<td><code>set_checkpoint</code></td>
 			<td><code>$13</code></td>
 			<td><code>$02</code></td>
@@ -176,28 +176,28 @@
 				</ul>
 			</td>
 		</tr>
-		<tr>
+		<tr id="prompt_x_pos">
 			<td><code>prompt_x_pos</code></td>
 			<td><code>$15</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
 			<td class="left-align">Holds the X position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!text_x_pos</code> value in <code>settings_global.asm</code>). Changing this at runtime while having the prompt black box enabled is not recommended, as the black box is fixed in place regardless of this position.</td>
 		</tr>
-		<tr>
+		<tr id="prompt_y_pos">
 			<td><code>prompt_y_pos</code></td>
 			<td><code>$16</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
 			<td class="left-align">Holds the Y position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!text_y_pos</code> value in <code>settings_global.asm</code>). Changing this at runtime while having the prompt black box enabled is not recommended, as the black box is fixed in place regardless of this position.</td>
 		</tr>
-		<tr>
+		<tr id="disable_box">
 			<td><code>disable_box</code></td>
 			<td><code>$17</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
 			<td class="left-align">If set, the Retry prompt's black box will be disabled. Retry sets to <code>!no_prompt_box</code> from <code>settings_global.asm</code> at startup, but you can also change it at any time. Suggested to be set if also changing <code>prompt_x_pos</code> and <code>prompt_y_pos</code> during gameplay.</td>
 		</tr>
-		<tr>
+		<tr id="play_sfx">
 			<td><code>play_sfx</code></td>
 			<td><code>$18</code></td>
 			<td><code>$01</code></td>
@@ -210,7 +210,7 @@
 				</ul>
 			</td>
 		</tr>
-		<tr>
+		<tr id="midways_override">
 			<td><code>midways_override</code></td>
 			<td><code>$19</code></td>
 			<td><code>$01</code></td>
@@ -224,105 +224,105 @@
 				Note that this is only reset by Retry at startup, so it's up to you to set it back to <code>$00</code> when needed.
 			</td>
 		</tr>
-		<tr>
+		<tr id="coin_backup">
 			<td><code>coin_backup</code></td>
 			<td><code>$1A</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Keeps track of the last frame's coins value to check if it changed, to only upload the coin counter's sprite digits when necessary. Not used if <code>!sprite_status_bar = 0</code> in <code>settings.asm</code>.</td>
 		</tr>
-		<tr>
+		<tr id="lives_backup">
 			<td><code>lives_backup</code></td>
 			<td><code>$1B</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Keeps track of the last frame's lives values to check if it changed, to only upload the lives counter's sprite digits when necessary. Not used if <code>!sprite_status_bar = 0</code> in <code>settings.asm</code>.</td>
 		</tr>
-		<tr>
+		<tr id="bonus_stars_backup">
 			<td><code>bonus_stars_backup</code></td>
 			<td><code>$1C</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Keeps track of the last frame's bonus stars value to check if it changed, to only upload the bonus stars counter's sprite digits when necessary. Not used if <code>!sprite_status_bar = 0</code> in <code>settings.asm</code>.</td>
 		</tr>
-		<tr>
+		<tr id="status_bar_item_box_tile">
 			<td><code>status_bar_item_box_tile</code></td>
 			<td><code>$1D</code></td>
 			<td><code>$02</code></td>
 			<td>User</td>
 			<td class="left-align">Current sprite status bar item box tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
 		</tr>
-		<tr>
+		<tr id="status_bar_timer_tile">
 			<td><code>status_bar_timer_tile</code></td>
 			<td><code>$1F</code></td>
 			<td><code>$02</code></td>
 			<td>User</td>
 			<td class="left-align">Current sprite status bar timer tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
 		</tr>
-		<tr>
+		<tr id="status_bar_coins_tile">
 			<td><code>status_bar_coins_tile</code></td>
 			<td><code>$21</code></td>
 			<td><code>$02</code></td>
 			<td>User</td>
 			<td class="left-align">Current sprite status bar coin counter tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). Additionally bits 1 and 2 of $PT are used to prevent coins and dragon coins respectively from being drawn (if you just want either of those but not both). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
 		</tr>
-		<tr>
+		<tr id="status_bar_lives_tile">
 			<td><code>status_bar_lives_tile</code></td>
 			<td><code>$23</code></td>
 			<td><code>$02</code></td>
 			<td>User</td>
 			<td class="left-align">Current sprite status bar lives counter tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
 		</tr>
-		<tr>
+		<tr id="status_bar_bonus_stars_tile">
 			<td><code>status_bar_bonus_stars_tile</code></td>
 			<td><code>$25</code></td>
 			<td><code>$02</code></td>
 			<td>User</td>
 			<td class="left-align">Current sprite status bar bonus stars counter tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
 		</tr>
-		<tr>
+		<tr id="status_bar_death_tile">
 			<td><code>status_bar_death_tile</code></td>
 			<td><code>$27</code></td>
 			<td><code>$02</code></td>
 			<td>User</td>
 			<td class="left-align">Current sprite status bar death counter tile number and palette. Format: <code>$PTTT</code> (<code>P</code> = palette, <code>TTT</code> = tile number). See <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> for details.</td>
 		</tr>
-		<tr>
+		<tr id="status_bar_force_upload">
 			<td><code>status_bar_force_upload</code></td>
 			<td><code>$29</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">Flag that forces all visible elements of the status bar to be uploaded freshly in the sprite GFX (for 1 frame, it is reset after being used in NMI). Normally elements are only uploaded when changed (e.g. the frame when the timer ticks down) to not waste NMI time, but sometimes it is necessary to be uploaded regardless: on level load and when the status bar element got unhidden during the level. You can set it yourself, if writing to the other RAM addresses manually, but normally you should just use the API routines which handles this for you (see <a href="./api.html#configure_sprite_status_bar">API - Configure sprite status bar</a> and <a href="./api.html#hide_sprite_status_bar">API - Hide sprite status bar</a> for details).</td>
 		</tr>
-		<tr>
+		<tr id="canary">
 			<td><code>canary</code></td>
 			<td><code>$2A</code></td>
 			<td><code>$02</code></td>
 			<td>Internal</td>
 			<td class="left-align">Contains a fixed value and it is used to detect invalid game states (like if loading a bogus save state or if the memory gets corrupted). If the value is not the expected one, an error message will show in game when loading a level. You should never write to it unless you want to force the error message (which is basically a hardlock).</td>
 		</tr>
-		<tr>
+		<tr id="reserved">
 			<td><code>reserved</code></td>
 			<td><code>$2C</code></td>
 			<td><code>$0F</code></td>
 			<td>Internal</td>
 			<td class="left-align">Unused, but reserved for future expansion. Usage as freeram is not recommended.</td>
 		</tr>
-		<tr>
+		<tr id="death_counter">
 			<td><code>death_counter</code></td>
 			<td><code>$3B</code></td>
 			<td><code>$05</code></td>
 			<td>Internal</td>
 			<td class="left-align">Holds the amount of deaths occurred. Each byte holds the value of a digit in the counter (from left to right). Saved to SRAM/BW-RAM by default (if <code>!sram_feature = 1</code> in <code>settings.asm</code>).</td>
 		</tr>
-		<tr>
+		<tr id="checkpoint">
 			<td><code>checkpoint</code></td>
 			<td><code>$40</code></td>
 			<td><code>$C0</code></td>
 			<td>Internal</td>
 			<td class="left-align">Checkpoint data for each level (2 bytes per level). Holds the destination value of the latest checkpoint obtained in each level (using the same format as <code>respawn</code>). Note that entry <code>0</code> (the first 2 bytes) hold the checkpoint value for the intro level, but it won't be used after the intro. Saved to SRAM/BW-RAM by default (if <code>!sram_feature = 1</code> in <code>settings.asm</code>).</td>
 		</tr>
-		<tr>
+		<tr id="cust_obj_data">
 			<td><code>cust_obj_data</code></td>
 			<td><code>$100</code></td>
 			<td>Var.</td>
