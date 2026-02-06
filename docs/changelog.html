@@ -19,7 +19,7 @@
 		<li>Fixed "Midway point obtained" Overworld initial flag from Lunar Magic not working with Retry installed (thanks to LouisDoucet for reporting this).</li>
 		<li>Added !reset_frame_counters option in "settings_global.asm" to be able to disable resetting the frame counters on level load.</li>
 		<li>Fixed respawn_in_level API routine being broken (thanks to Ramon for reporting this).</li>
-		<li>Added %dbn, %dwn and %dln macros to more easily insert repeating values in the sram_defaults table.</li>
+		<li>Added %dbn, %dwn, %dln and %ddn macros to more easily insert repeating values in the sram_defaults table.</li>
 		<li>Added hide_sprite_status_bar API routine to hide the sprite status bar in specific levels.</li>
 		<li>Fixed Yoshi disappearing from the Overworld when using !counterbreak_yoshi = 0, parking it outside of a level with a No Yoshi intro, respawning inside of the level and then exiting the level (thanks to uriel2k3 for reporting this).</li>
 		<li>Added is_save_file_empty API routine.</li>
@@ -34,7 +34,7 @@
 		<li>Fixed !prompt_freeze = 0 shortening the death animation on the title screen and in levels using the Retry prompt.</li>
 		<li>Now if you load an invalid save file or save state by accident (one created before Retry was inserted), instead of crashing the game on level retry, it will display an helpful error message in game (thanks to Selicre for the suggestion).</li>
 		<li>Added missing hijack restore at $05B30E in "retry_unpatch.asm".</li>
-		<li>Fixed switch palace message sprites getting glitched or disappearing if the sprite status bar is enabled and having edited the Overworld in Lunar Magic (issue introduced in v0.7.1).</li>
+		<li>Fixed switch palace message sprites getting glitched or disappearing if the sprite status bar is enabled and the Overworld was edited in Lunar Magic (issue introduced in v0.7.1).</li>
 		<li>Fixed Retry loading addresses from SRAM with bogus values when getting a Game Over without having saved before. This was only an issue if !save_after_game_over = 1, at least an exit was gotten in the file and you chose "CONTINUE" after the Game Over, but it now also triggered the new SRAM validity check erroneously (thanks to Anorakun for reporting this).</li>
 		<li>Added option !exit_y_offset in "settings_global.asm" to allow to change the position of "EXIT" relative to "RETRY" (only for !no_prompt_box = 1, otherwise the prompt looks glitched).</li>
 		<li>Optimized prompt VRAM usage, so now the cursor + black tiles use three adjacent 8x8 tiles instead of two pairs of 8x8 tiles.</li>

@@ -45,7 +45,7 @@ a:hover {
 pre {
     font-size: 1em;
     padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(200, 200, 200, 0.20);
     color: rgba(255, 255, 255, 1.0);
     font-family: "Courier New", monospace;
     border-radius: 3px;
@@ -61,7 +61,7 @@ pre {
 u.dir, code {
     font-size: 1em;
     padding: 2px 3px;
-    background: rgba(255, 255, 255, 0.10);
+    background: rgba(200, 200, 200, 0.18);
     border-radius: 2px;
     font-family: "Courier New", monospace;
 }
@@ -92,12 +92,12 @@ table {
 }
 
 th {
-    background-color: rgba(255, 255, 255, .15);
+    background-color: rgba(64, 80, 96, 0.4);
     font-size: 0.93em;
 }
 
 td,th {
-    border: 1px solid rgba(255, 255, 255, .30);
+    border: 1px solid rgba(64, 80, 96, 0.7);
     padding: 4px 8px;
 }
 
@@ -128,7 +128,7 @@ ul li {
 }
 
 hr {
-    background: rgba(255, 255, 255, .3);
+    background: rgba(64, 80, 96, 0.8);
     height: 1px;
     border: none;
     margin: 2em 0;
@@ -196,7 +196,7 @@ h1, h2, h3, h4 {
 .menu-title {
     fill: white;
     padding: 10px 10px;
-    border: 1px solid rgba(255, 255, 255, .30);
+    border: 1px solid rgba(64, 80, 96, .50);
 }
 
 .menu-items {
@@ -204,7 +204,7 @@ h1, h2, h3, h4 {
     display: none;
     margin-top: -4px;
     font-size: 0.85em;
-    border: 1px solid rgba(255, 255, 255, .30);
+    border: 1px solid rgba(64, 80, 96, .50);
     color: white;
 }
 
@@ -231,7 +231,7 @@ h1, h2, h3, h4 {
     top: -1px;
     margin: 0px;
     padding: 0px;
-    border: 1px solid rgba(255, 255, 255, .30);
+    border: 1px solid rgba(64, 80, 96, .50);
 }
 
 .submenu-title:hover .submenu-items {
