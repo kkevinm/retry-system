@@ -35,14 +35,14 @@ else ; if not(!no_prompt_draw)
 
     ; Loop to upload all the tiles.
     ; If the exit option is disabled, we skip the second line tiles.
-    lda !ram_disable_exit : beq +
+    lda !ram_disable_prompt_exit : beq +
     lda #$01
 +   tay
     ldx.w .index,y
 
     ; Save GFX address depending on the box being enabled or not.
     ; Additionally the size to upload for the cursor is saved as well.
-    lda !ram_disable_box : beq +
+    lda !ram_disable_prompt_bg : beq +
     lda #$02
 +   tay
     rep #$20
@@ -83,7 +83,11 @@ else ; if not(!no_prompt_draw)
 
 ; Size to upload for the cursor when the prompt box is enabled/disabled
 .cursor_size:
+if !prompt_type == 0
     dw gfx_size(3)
+else ; if not(!prompt_type == 0)
+    dw gfx_size(2)
+endif ; !prompt_type == 0
     dw gfx_size(1)
 
 ; Index in the below tables to start from when the exit option is enabled/disabled.

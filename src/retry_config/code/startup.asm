@@ -41,14 +41,19 @@ if not(!sram_feature)
 endif ; not(!sram_feature)
 
     ; Initialize "No exit" flag.
-    lda.b #!no_exit_option : sta.w !ram_disable_exit
+    lda.b #!no_exit_option : sta.w !ram_disable_prompt_exit
 
     ; Initialize "No prompt box" flag.
-    lda.b #!no_prompt_box : sta.w !ram_disable_box
+    lda.b #!no_prompt_bg : sta.w !ram_disable_prompt_bg
 
     ; Initialize prompt position.
-    lda.b #!text_x_pos : sta.w !ram_prompt_x_pos
-    lda.b #!text_y_pos : sta.w !ram_prompt_y_pos
+if !prompt_type == 0
+    lda.b #!prompt_box_text_x_pos : sta.w !ram_prompt_x_pos
+    lda.b #!prompt_box_text_y_pos : sta.w !ram_prompt_y_pos
+else ; if not(!prompt_type == 0)
+    lda.b #!prompt_bar_text_x_pos : sta.w !ram_prompt_x_pos
+    lda.b #!prompt_bar_text_y_pos : sta.w !ram_prompt_y_pos
+endif ; !prompt_type == 0
 
     ; Initialize "midway powerup" flag.
     lda.b #!midway_powerup : sta.w !ram_midway_powerup

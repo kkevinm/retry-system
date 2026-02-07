@@ -58,7 +58,7 @@ if not(!always_start_select)
     jsr shared_get_prompt_type
     cmp.b #!retry_type_vanilla : bcs .not_dying
     tay
-    lda !ram_disable_exit : bne +
+    lda !ram_disable_prompt_exit : bne +
     cpy.b #!retry_type_prompt_max+1 : bcc .not_dying
 +
 endif ; not(!always_start_select)

@@ -1,4 +1,6 @@
-; Defines for miscellaneous values used by Retry
+; Static defines for miscellaneous values used by Retry
+; These are defined statically
+
 !retry_type_follow_global      #= $00
 !retry_type_prompt_death_song  #= $01
 !retry_type_prompt_death_sfx   #= $02
@@ -33,4 +35,6 @@
 
 !canary_value #= 42069
 
-!window_x_pos #= $38
+!box_window_x_pos #= $38
+
+!box_window_size #= 72

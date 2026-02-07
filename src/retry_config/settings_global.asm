@@ -1,33 +1,28 @@
-;==============================================================================;
-; Settings used by Retry. Feel free to change these.                           ;
-;==============================================================================;
-
-;=========================== Default Retry behavior ===========================;
+;=========================== Default Retry behavior ============================
 
 ; 0 = retry prompt & play the death song when players die (music restarts on every death).
 ; 1 = retry prompt & play only the death sfx when players die (music won't be interrupted).
 ; 2 = instant retry & play only the death sfx when players die (no prompt & music won't be interrupted)
 ; 3 = instant retry & play the death song when players die (no prompt & music restarts on every death)
 ; 4 = no retry prompt/respawn (vanilla death).
-; Note: you can override this per sublevel (see "settings_local.asm") and also at any point by setting a certain RAM address (see "docs/ram_map.html").
+; Note: you can override this per sublevel (see "settings_local.asm").
     !default_prompt_type = 1
 
-;=========================== QoL and Anti-Break ===============================;
+;=========================== QoL and Anti-Break ================================
 
 ; How many lives to start a new save file with.
     !initial_lives = 99
 
 ; If 1, lives won't decrement when dying.
-; Note: if 0, you can choose to have infinite lives in specific sublevels using the "no_lose_lives" option in "settings_local.asm".
+; Note: if 0, you can choose to have infinite lives in specific sublevels (see "settings_local.asm").
     !infinite_lives = 1
 
 ; 0 = midways won't give Mario a mushroom.
 ; 1 = vanilla midway powerup behavior.
-; Note: you can also change this on the fly (see "docs/ram_map.html").
     !midway_powerup = 0
 
 ; Counterbreak options reset the corresponding counters/items when the player dies and/or when going to the Overworld.
-; Useful for Kaizo and collab hacks. For lives, they will be reset to !initial_lives
+; Useful for Kaizo and collab hacks. For lives, they will be reset to !initial_lives.
 ; 0 = disabled, 1 = enabled for both respawning and going to the Overworld
 ; 2 = enabled just for respawning, 3 = enabled just for going to the Overworld
     !counterbreak_yoshi       = 1
@@ -38,7 +33,7 @@
     !counterbreak_score       = 0
     !counterbreak_lives       = 0
 
-;=========================== QoL fixes ========================================;
+;=========================== QoL fixes =========================================
 
 ; If 1, level transitions will be much faster than usual.
     !fast_transitions = 0
@@ -104,7 +99,7 @@
 ; 3 = instantly reload the title screen and play the death music (title screen music will restart)
     !title_death_behavior = 1
 
-;=========================== SFX ==============================================;
+;=========================== SFX ===============================================
 
 ; SFX to play when dying (!death_sfx = $00 -> no SFX).
 ; Only played if the death song is skipped (for example, it's not played if the level uses vanilla death).
@@ -143,7 +138,7 @@
 ; 1 = enabled in all levels except those toggled by %sfx_echo (note: this only works if !use_legacy_tables = 0)
     !default_sfx_echo = 0
 
-;=========================== Save and SRAM ====================================;
+;=========================== Save and SRAM =====================================
 
 ; If 1, a custom SRAM expansion patch will be inserted as well.
 ; By default, it will save the custom checkpoint status and death counter to SRAM.
@@ -160,7 +155,7 @@
 ; This ensures that they will be saved to SRAM when this happens.
     !save_after_game_over = 0
 
-;=========================== Custom Midways ===================================;
+;=========================== Custom Midways ====================================
 
 ; If 1, Retry will install a custom midway object in the ROM, insertable in levels by using object 2D.
 ; These objects allow you to have multiple midways in the same level, each with a different entrance.
@@ -172,7 +167,12 @@
 ; The more you set, the more free ram is needed (4 bytes for each).
     !max_custom_midway_num = 8
 
-;=========================== Retry Prompt =====================================;
+;=========================== Retry Prompt (general) ============================
+; These options apply for both type of Retry prompt
+
+; 0 = prompt box (box in the middle of the screen with vertical options)
+; 1 = prompt bar (customizable bar with horizontal options)
+    !prompt_type = 0
 
 ; If 1, the prompt will show up immediately after dying.
 ; Otherwise, it will show up halfway through (or right after, depending on !retry_death_animation)
@@ -188,9 +188,6 @@
 
 ; How many frames after dying the prompt shows up when using !fast_prompt = 0 and !retry_death_animation = 0
     !prompt_show_delay = $30
-
-; How fast the prompt expands/shrinks. It must evenly divide 72.
-    !prompt_speed = 6
 
 ; 0 = sprites and animations won't freeze when the prompt is shown.
 ; 1 = sprites and animations will freeze when the prompt is shown.
@@ -210,12 +207,11 @@
 
 ; Set to 1 if you don't want the "Exit" option in the prompt.
 ; This will also allow the player to Start+Select when having the prompt.
-; Note: you can also change this on the fly (see "docs/ram_map.html").
     !no_exit_option = 0
 
-; Set to 1 to remove the black box, but leave the options on screen.
-; Note: you can also change this on the fly (see "docs/ram_map.html").
-    !no_prompt_box = 0
+; Set to 1 to remove the prompt black bg, but leave the options on screen.
+; The options will be displayed vertically or horizontally depending on !prompt_type.
+    !no_prompt_bg = 0
 
 ; Set to 1 to dim the screen while the prompt is shown.
     !dim_screen = 0
@@ -232,19 +228,8 @@
 
 ; If 1, the Retry prompt won't be drawn to the screen (but still function normally).
 ; Use this for a minimalistic Retry, without having to use the instant option.
-; You should also use !no_prompt_box = 1 or the black box will still appear (also you probably want !no_exit_option = 1).
-; Note that this renders all the prompt options below useless (and no sprite GFX space needs to be reserved).
+; You should also use !no_prompt_bg = 1 or the black box will still appear (also you probably want !no_exit_option = 1).
     !no_prompt_draw = 0
-
-; X/Y position of the first tile in the prompt (the cursor on the first line).
-; If the black box is enabled, you should not change the Y position or it will look glitched, but you're free to change the X position down to $38.
-; Note: you can also change these on the fly (see "docs/ram_map.html").
-    !text_x_pos = $58
-    !text_y_pos = $70
-
-; Y offset of the prompt "EXIT" line from the "RETRY" line.
-; Only change this with !no_prompt_box = 1, or the prompt will look glitched.
-    !exit_y_offset = $10
 
 ; 0 = the cursor is static
 ; 1 = the cursor blinks like in vanilla menus
@@ -256,7 +241,7 @@
     !cursor_oscillate_speed = 2
 
 ; 1 = the letters in the option selected on the Retry prompt will wave up and down.
-; Note: this is incompatible with the black box (use !no_prompt_box = 1)
+; Note: this is incompatible with the black bg (use !no_prompt_bg = 1)
     !prompt_wave = 0
 
 ; How fast the letters wave (only used when !prompt_wave = 1)
@@ -268,10 +253,51 @@
 ; with the Retry prompt tiles instead of having to reserve sprite tiles for the prompt.
     !no_score_sprites_on_death = 0
 
-;=========================== Sprite Status Bar ================================;
+;=========================== Retry Prompt Box ==================================
+; These options only apply when !prompt_type = 0
+
+; X/Y position of the first tile in the prompt box (the cursor on the first line).
+; If the black box is enabled, you should not change the Y position or it will look glitched, but you're free to change the X position down to $38.
+    !prompt_box_text_x_pos = $58
+    !prompt_box_text_y_pos = $6F
+
+; Y offset of the prompt "EXIT" line from the "RETRY" line, when !prompt_type = 0.
+; Only change this with !no_prompt_bg = 1, or the prompt will look glitched.
+    !prompt_box_exit_y_offset = $10
+
+; Prompt box expansion/shrinking speed (it must evenly divide 72)
+    !prompt_box_speed = 6
+
+;=========================== Retry Prompt Bar ==================================
+; These options only apply when !prompt_type = 1
+
+; Where the prompt bar starts vertically
+    !prompt_bar_position = $C8
+
+; How tall is the prompt bar
+    !prompt_bar_size = $18
+
+; 0 = grow towards the bottom
+; 1 = grow towards the top
+    !prompt_bar_direction = 1
+
+; X/Y position of the first tile in the prompt bar (the left cursor).
+; If you move it vertically, make sure it is in the bar bounds (unless !no_prompt_bg = 1).
+; Note: avoid to put it at the very top or bottom of the screen (y pos $00 or $D8) or it won't be visible on some TVs.
+    !prompt_bar_text_x_pos = $40
+    !prompt_bar_text_y_pos = $D0
+
+; X offset of the prompt "EXIT" word from the "RETRY" word.
+    !prompt_bar_exit_x_offset = $50
+
+; Prompt bar expansion/shrinking speed (it must evenly divide !prompt_bar_size)
+    !prompt_bar_speed = 2
+
+;=========================== Sprite Status Bar =================================
 
 ; If 1, a sprite status bar will be installed allowing you to display the item box, coins, Yoshi coins,
 ; timer, lives and bonus stars using sprite tiles, which keeps layer 3 working properly.
+; If !sprite_status_bar = 0, you can ignore the other sprite status bar settings.
     !sprite_status_bar = 0
 
 ; If 1, it disables the original game's status bar (including the IRQ) which prevents layer 3 from messing up.
@@ -284,7 +310,6 @@
 ; Default sprite tile and palette to use for each element in the status bar.
 ; These settings can be overridden per-level by using the %ssb_config commands in "settings_local.asm".
 ; If !default_xxx_tile or !default_xxx_palette is $00, the item will be hidden by default.
-; These are only relevant if !sprite_status_bar = 1.
     ; Item box (this uses 4 8x8, arranged as a 16x16 box)
     !default_item_box_tile         = $80
     !default_item_box_palette      = $0B
@@ -308,7 +333,6 @@
 ; You can customize their position, including the icon and counter, independently,
 ; and also enable and position an "X" tile next to the element. You can also
 ; choose if to left or right align the counters (e.g. "0x1 " vs "0x 1").
-; These are only relevant if !sprite_status_bar = 1.
     ; Item box
     !item_box_x_pos                  = $70
     !item_box_y_pos                  = $08
@@ -369,16 +393,13 @@
 
 ; If 1, the item box will always be drawn (if set to be drawn for the specific level).
 ; Otherwise, it will only be drawn when having an item in reserve.
-; This is only relevant if !sprite_status_bar = 1.
     !always_draw_box = 1
 
 ; If 1, the item box will use an 8x8 tile instead of a 16x16 tile.
-; This is only relevant if !sprite_status_bar = 1.
     !8x8_item_box_tile = 0
 
 ; If 1, when collecting all DCs in a level they'll be displayed in the status bar.
 ; If 0, they won't be displayed (like in vanilla).
-; This is only relevant if !sprite_status_bar = 1.
     !draw_all_dc_collected = 0
 
 ; 0 = draw both coins and dragon coins by default (if _tile and _palette are valid)
@@ -388,16 +409,14 @@
 
 ; If !draw_retry_indicator = 1, an 8x8 indicator will be drawn on the sprite status bar
 ; in levels where Retry prompt or instant Retry is enabled. This could be useful for collabs.
-; The other settings control how and where it is drawn. The tile you choose will be
-; overwritten at runtime by the indicator tile when needed.
-; This is only relevant if !sprite_status_bar = 1.
+; The other settings control how and where it is drawn.
     !draw_retry_indicator    = 0
     !retry_indicator_tile    = $1D
     !retry_indicator_palette = $09
     !retry_indicator_x_pos   = $58
     !retry_indicator_y_pos   = $10
 
-;=========================== Death Counter ====================================;
+;=========================== Death Counter =====================================
 
 ; If 1, a death counter will replace the lives on the vanilla status bar.
     !status_death_counter = 0
@@ -422,7 +441,7 @@
 ; (it's assumed that the digits are stored in order from 0 to 9 in the GFX file).
     !ow_digit_0 = $22
 
-;=========================== Misc settings ====================================;
+;=========================== Misc settings =====================================
 
 ; If 1, the level-specific Retry settings will be loaded from the "legacy/tables.asm"
 ; file instead of the "settings_local.asm" file. Use this if you prefer the old table-based

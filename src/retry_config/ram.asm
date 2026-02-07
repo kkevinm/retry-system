@@ -52,11 +52,11 @@ endmacro
 %retry_ram(gm_backup,$0F)                   ; 1
 %retry_ram(midway_powerup,$10)              ; 1
 %retry_ram(prompt_override,$11)             ; 1
-%retry_ram(disable_exit,$12)                ; 1
+%retry_ram(disable_prompt_exit,$12)         ; 1
 %retry_ram(set_checkpoint,$13)              ; 2
 %retry_ram(prompt_x_pos,$15)                ; 1
 %retry_ram(prompt_y_pos,$16)                ; 1
-%retry_ram(disable_box,$17)                 ; 1
+%retry_ram(disable_prompt_bg,$17)           ; 1
 %retry_ram(play_sfx,$18)                    ; 1
 %retry_ram(midways_override,$19)            ; 1
 %retry_ram(coin_backup,$1A)                 ; 1

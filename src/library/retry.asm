@@ -21,12 +21,13 @@ empty:
 ;===============================================================================
 ; Load shared settings, defines and resources.
 ;===============================================================================
-    %incsrc(code/include,defines)
+    %incsrc(code/include,defines_static)
     %incsrc(code/include,misc)
     %incsrc(code/include,rom)
     %incsrc("",ram)
     %incsrc("",settings_global)
     %incsrc("",prompt_tilemap)
+    %incsrc(code/include,defines_dynamic)
     %incsrc(code/include,gfx)
     
 ;===============================================================================

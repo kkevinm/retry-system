@@ -14,6 +14,14 @@ function props(prop,tile) = ((prop)|((tile>>8)&1))
 ; The bg tiles are always uploaded next to the cursor
 !prompt_tile_black #= !prompt_tile_cursor+1
 
+; Set the cursor/black tile size depending on the prompt type.
+; This is only needed for bg enabled (otherwise it's always 8x8).
+if !prompt_type == 0
+    !bg_tile_size #= $02
+else ; if not(!prompt_type == 0)
+    !bg_tile_size #= $00
+endif ; !prompt_type == 0
+
 ;===============================================================================
 ; prompt_oam routine
 ;
@@ -60,7 +68,7 @@ endif ; !prompt_wave
     jsr handle_cursor
 
     ; Draw "EXIT" if exit is enabled
-    lda !ram_disable_exit : bne .no_exit
+    lda !ram_disable_prompt_exit : bne .no_exit
     sty $01
     ldx.b #letters_exit-letters
 if !prompt_wave
@@ -75,9 +83,9 @@ endif ; !prompt_wave
 
 .no_exit:
     ; Draw filler tiles if the box is enabled
-    lda !ram_disable_box : bne .no_box
+    lda !ram_disable_prompt_bg : bne .no_box
     ldx.b #letters_box-letters
-    lda !ram_disable_exit : beq +
+    lda !ram_disable_prompt_exit : beq +
     ldx.b #letters_box_no_exit-letters
 +   jsr oam_draw
 
@@ -110,10 +118,10 @@ endif ; !cursor_setting == 2
 handle_cursor:
     ; Set the OAM size.
     lda $01 : lsr #2 : tax
-    lda !ram_disable_box : beq +
+    lda !ram_disable_prompt_bg : beq +
     lda #$00
     bra ++
-+   lda #$02
++   lda.b #!bg_tile_size
 ++  sta $0420|!addr,x
     
     ; Hide and offset the cursor.
@@ -122,18 +130,18 @@ handle_cursor:
 
 if !cursor_setting == 2
     ; If the box is enabled...
-    lda !ram_disable_box : bne +
+    lda !ram_disable_prompt_bg : bne +
 
-    ; Draw an additional black tile under the cursor.
+    ; Draw an additional black tile under the cursor (to avoid cutoff).
     rep #$20
     lda $0200|!addr,x : sta $0200|!addr,y
     lda.w #(!l_props<<8)|(!prompt_tile_black) : sta $0202|!addr,y
     sep #$20
 
-    ; Make the black tile 16x16 and increase the OAM index.
+    ; Make the black tile 16x16 for box or 8x8 for bar and increase the OAM index.
     phy
     tya : lsr #2 : tay
-    lda #$02 : sta $0420|!addr,y
+    lda.b #!bg_tile_size : sta $0420|!addr,y
     ply
     iny #4
 +   
@@ -147,7 +155,7 @@ endif ; !cursor_setting == 2
     rts
 
 .hide:
-    lda !ram_disable_box : beq +
+    lda !ram_disable_prompt_bg : beq +
     lda #$F0 : sta $0201|!addr,x
     rts
 +   lda.b #!prompt_tile_black : sta $0202|!addr,x
@@ -167,10 +175,10 @@ erase_tiles:
     ; Find how many tiles we need to erase.
     lda.b #(letters_retry_end-letters_retry)/5 : sta $00
     
-    lda !ram_disable_exit : bne +
+    lda !ram_disable_prompt_exit : bne +
     lda $00 : clc : adc.b #(letters_exit_end-letters_exit)/5 : sta $00
 +   
-    lda !ram_disable_box : bne +
+    lda !ram_disable_prompt_bg : bne +
     lda $00 : clc : adc.b #(letters_box_end-letters_box)/5
 if !cursor_setting == 2
     inc
@@ -199,9 +207,9 @@ if !prompt_wave
     stz $0F
 endif ; !prompt_wave
     
-    lda !ram_disable_box : sta $0C
+    lda !ram_disable_prompt_bg : sta $0C
     lda !ram_prompt_x_pos : sta $0D
-    lda !ram_prompt_y_pos : dec : sta $0E
+    lda !ram_prompt_y_pos : sta $0E
 
 .loop:
     ; Return if we reached the $FF terminator.
@@ -294,14 +302,23 @@ endmacro
 letters:
 .retry:
     db $00,$00,!prompt_tile_cursor,props(!c_props,!prompt_tile_cursor),$00
+if !prompt_type != 0
+    db $08,$00,!prompt_tile_black,props(!c_props,!prompt_tile_cursor),$00
+endif ; !prompt_type != 0
     %_prompt_oam($10,$00,!prompt_tile_index_line1)
 ..end:
     db $FF
 
 .exit:
 if defined("prompt_tile_index_line2")
-    db $00,!exit_y_offset,!prompt_tile_cursor,props(!c_props,!prompt_tile_cursor),$00
-    %_prompt_oam($10,!exit_y_offset,!prompt_tile_index_line2)
+if !prompt_type == 0
+    db $00,!prompt_box_exit_y_offset,!prompt_tile_cursor,props(!c_props,!prompt_tile_cursor),$00
+    %_prompt_oam($10,!prompt_box_exit_y_offset,!prompt_tile_index_line2)
+else ; if not(!prompt_type == 0)
+    db !prompt_bar_exit_x_offset,$00,!prompt_tile_cursor,props(!c_props,!prompt_tile_cursor),$00
+    db !prompt_bar_exit_x_offset+$08,$00,!prompt_tile_black,props(!c_props,!prompt_tile_cursor),$00
+    %_prompt_oam(!prompt_bar_exit_x_offset+$10,$00,!prompt_tile_index_line2)
+endif ; !prompt_type == 0
 endif ; defined("prompt_tile_index_line2")
 ..end:
     db $FF
@@ -309,19 +326,30 @@ endif ; defined("prompt_tile_index_line2")
 ; These are the tiles used to hide the window holes to the left.
 ; We calculate how many tiles are needed based on the text x position.
 .box:
-    for i = 0..(!text_x_pos-!window_x_pos)/$10
+if !prompt_type == 0
+    for i = 0..(!prompt_box_text_x_pos-!box_window_x_pos)/$10
         db -(!i+1)*$10,$10,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
     endfor
-    if (!text_x_pos-!window_x_pos)%$10 != 0
-        db !window_x_pos-!text_x_pos,$10,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
-    endif ; (!text_x_pos-!window_x_pos)%$10 != 0
+    if (!prompt_box_text_x_pos-!box_window_x_pos)%$10 != 0
+        db !box_window_x_pos-!prompt_box_text_x_pos,$10,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
+    endif ; (!prompt_box_text_x_pos-!box_window_x_pos)%$10 != 0
 ..no_exit:
-    for i = 0..(!text_x_pos-!window_x_pos)/$10
+    for i = 0..(!prompt_box_text_x_pos-!box_window_x_pos)/$10
         db -(!i+1)*$10,$00,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
     endfor
-    if (!text_x_pos-!window_x_pos)%$10 != 0
-        db !window_x_pos-!text_x_pos,$00,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
-    endif ; (!text_x_pos-!window_x_pos)%$10 != 0
+    if (!prompt_box_text_x_pos-!box_window_x_pos)%$10 != 0
+        db !box_window_x_pos-!prompt_box_text_x_pos,$00,!prompt_tile_black,props(!l_props,!prompt_tile_black),$02
+    endif ; (!prompt_box_text_x_pos-!box_window_x_pos)%$10 != 0
+else ; if not(if !prompt_type == 0)
+    for i = 0..(!prompt_bar_exit_x_offset/$08)-!prompt_line1_length-2
+        db !prompt_bar_exit_x_offset-((!i+1)*$08),$00,!prompt_tile_black,props(!l_props,!prompt_tile_black),$00
+    endfor
+    if !prompt_bar_exit_x_offset%$08 != 0
+        db (2+!prompt_line1_length)*$08,$00,!prompt_tile_black,props(!l_props,!prompt_tile_black),$00
+    endif ; !prompt_bar_exit_x_offset%$08 != 0
+..no_exit:
+    ; No additional tiles to draw when the exit option is enabled
+endif ; !prompt_type == 0
 ..end:
     db $FF
 
