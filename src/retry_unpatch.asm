@@ -162,3 +162,15 @@ org $05B30E
 
 org $03BC72
     dey #4
+
+org $0086C7
+    rep #$30
+    ldx #$0062
+
+org $02827D
+    lda $1A
+    sta $188D|!addr
+
+org $02832C
+    lda $1884|!addr
+    cmp #$01

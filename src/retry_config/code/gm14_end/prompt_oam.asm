@@ -163,14 +163,15 @@ endif ; !cursor_setting == 2
     rts
 
 ;===============================================================================
-; erase_tiles routine
-;
-; This routine hides the Retry prompt tiles.
+; This routine hides the Retry prompt tiles if necessary in mode 7 boss rooms.
 ;===============================================================================
-erase_tiles:
+prompt_maybe_erase_tiles:
     ; Erase the prompt's OAM tiles when in Reznor/Morton/Roy/Ludwig's rooms.
     ; This avoids the BG from glitching out when the prompt disappears.
     lda $0D9B|!addr : cmp #$C0 : bne .return
+
+    ; If the prompt is enabled and it was activated, erase the tiles.
+    jsr shared_is_prompt_deployed : bcc .return
 
     ; Find how many tiles we need to erase.
     lda.b #(letters_retry_end-letters_retry)/5 : sta $00

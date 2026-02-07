@@ -621,10 +621,9 @@ endif ; !sprite_status_bar
 if not(!no_prompt_draw)
     ; Check if it's time to draw the tiles.
     lda !ram_prompt_phase : cmp #$02 : beq .draw_prompt
-                                       bcc .return
 
     ; In some cases it's needed to remove the prompt tiles from OAM after the option is chosen.
-    jsr erase_tiles
+    jsr prompt_maybe_erase_tiles
     bra .return
 
 .draw_prompt:

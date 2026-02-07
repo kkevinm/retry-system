@@ -417,8 +417,19 @@ main:
 
 .run:
     phb : phk : plb
+
+    ; Get start OAM index to search at
+    ; Normally it's 0, but it's higher if in a mode 7 boss room and prompt is deployed
+    ; The value is calculated kinda arbitrarily but I can't be arsed to make it
+    ; better for these shit bosses
+    lda $0D9B|!addr : cmp #$C0 : bne +
+    jsr shared_is_prompt_deployed : bcc +
     rep #$30
+    ldx.w #(!prompt_line1_length+!prompt_line2_length+20)*4
+    bra ++
++   rep #$30
     ldx #$0000
+++
     stz $02
 
     ; Draw the item box if applicable.

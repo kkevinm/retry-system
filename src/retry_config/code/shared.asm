@@ -490,3 +490,21 @@ reset_rng:
     stz $148D|!addr
     sep #$20
     rts
+
+;===============================================================================
+; idk what to call it
+; It checks if the prompt is active in the level and it was activated
+; Carry clear: no
+; Carry set: yes
+;===============================================================================
+is_prompt_deployed:
+    jsr shared_get_prompt_type
+    cmp.b #!retry_type_prompt_max+1 : bcs .no
+    lda !ram_is_respawning : bne .yes
+    lda !ram_prompt_phase : beq .no
+.yes:
+    sec
+    rts
+.no:
+    clc
+    rts

@@ -87,6 +87,6 @@ endif
     %incsrc(code/hijacks,initial_facing_fix)
     %incsrc(code/hijacks,item_box_fix)
     %incsrc(code/hijacks,remove_status_bar)
-    %incsrc(code/hijacks,vanilla_boss_gm13)
+    %incsrc(code/hijacks,mode7_bosses_fixes)
     %incsrc(code/hijacks,switch_palace_message_fix)
     %incsrc(code/hijacks,ow_no_reset_rng)
