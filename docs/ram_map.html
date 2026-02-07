@@ -155,12 +155,12 @@
 			<td>User</td>
 			<td class="left-align">This can be used to override the Retry settings of the current level or all levels depending on some condition (for example, if you want to let the player choose if to have instant Retry or not).<br>It follows the same format as the <code>%retry</code> setting in <u class="dir">settings_local.asm</u> (see <a href="./settings_local.html#retry">Local Settings - %retry</a> for details). If this is set to <code>$00</code>, the value in the local settings will be used instead, or the default value in <u class="dir">settings_global.asm</u> if there's no local setting for the current sublevel. It's only reset by Retry at startup, meaning that its effect will last until you set it back to <code>$00</code> yourself.</td>
 		</tr>
-		<tr id="disable_exit">
-			<td><code>disable_exit</code></td>
+		<tr id="disable_prompt_exit">
+			<td><code>disable_prompt_exit</code></td>
 			<td><code>$12</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
-			<td class="left-align">If set to a value other than <code>$00</code>, the Retry prompt won't show the <code>EXIT</code> option. Retry sets it to <code>!disable_exit_option</code> from <code>settings_global.asm</code> at startup, but you can also change it at any time to remove the option in certain situations. Remember that you'll need to change it back to the default value yourself if needed.</td>
+			<td class="left-align">If set to a value other than <code>$00</code>, the Retry prompt won't show the second option (<code>EXIT</code>). Retry sets it to <code>!disable_exit_option</code> from <code>settings_global.asm</code> at startup, but you can also change it at any time to remove the option in certain situations. Remember that you'll need to change it back to the default value yourself if needed.</td>
 		</tr>
 		<tr id="set_checkpoint">
 			<td><code>set_checkpoint</code></td>
@@ -181,21 +181,21 @@
 			<td><code>$15</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
-			<td class="left-align">Holds the X position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!text_x_pos</code> value in <code>settings_global.asm</code>). Changing this at runtime while having the prompt black box enabled is not recommended, as the black box is fixed in place regardless of this position.</td>
+			<td class="left-align">Holds the X position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!prompt_box_text_x_pos</code>/<code>!prompt_bar_text_x_pos</code> value in <code>settings_global.asm</code>, depending on <code>!prompt_type</code>). Changing this at runtime while having the prompt black background enabled is not recommended, as the black box/bar is fixed in place regardless of this position.</td>
 		</tr>
 		<tr id="prompt_y_pos">
 			<td><code>prompt_y_pos</code></td>
 			<td><code>$16</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
-			<td class="left-align">Holds the Y position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!text_y_pos</code> value in <code>settings_global.asm</code>). Changing this at runtime while having the prompt black box enabled is not recommended, as the black box is fixed in place regardless of this position.</td>
+			<td class="left-align">Holds the Y position at which the Retry prompt should appear at. You can write to it at any time. Note that this address is only reset by Retry at startup (to the <code>!prompt_box_text_y_pos</code>/<code>!prompt_bar_text_y_pos</code> value in <code>settings_global.asm</code>, depending on <code>!prompt_type</code>). Changing this at runtime while having the prompt black background enabled is not recommended, as the black box/bar is fixed in place regardless of this position.</td>
 		</tr>
-		<tr id="disable_box">
-			<td><code>disable_box</code></td>
+		<tr id="disable_prompt_bg">
+			<td><code>disable_prompt_bg</code></td>
 			<td><code>$17</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
-			<td class="left-align">If set, the Retry prompt's black box will be disabled. Retry sets to <code>!no_prompt_box</code> from <code>settings_global.asm</code> at startup, but you can also change it at any time. Suggested to be set if also changing <code>prompt_x_pos</code> and <code>prompt_y_pos</code> during gameplay.</td>
+			<td class="left-align">If set, the Retry prompt's black background will be disabled. Retry sets to <code>!no_prompt_bg</code> from <code>settings_global.asm</code> at startup, but you can also change it at any time. Suggested to be set if also changing <code>prompt_x_pos</code> and <code>prompt_y_pos</code> during gameplay.</td>
 		</tr>
 		<tr id="play_sfx">
 			<td><code>play_sfx</code></td>

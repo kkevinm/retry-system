@@ -418,12 +418,12 @@ assert !prompt_bar_size >= $08,\
 assert !prompt_bar_position+!prompt_bar_size <= $E0,\
     "Error: \!prompt_bar_position + \!prompt_bar_size must be <= $E0!"
 
-if !no_prompt_bg ; Avoid unexpected compilation errors, even if it might fail at runtime
+if not(!no_prompt_bg) ; Avoid unexpected compilation errors, even if it might fail at runtime
 assert !prompt_bar_text_y_pos >= !prompt_bar_position,\
     "Error: \!prompt_bar_text_y_pos must be >= \!prompt_bar_position!"
-assert !prompt_bar_text_y_pos <= !prompt_bar_position+!prompt_bar_size,\
-    "Error: \!prompt_bar_text_y_pos must be <= \!prompt_bar_position + \!prompt_bar_size!"
-endif ; !no_prompt_bg
+assert !prompt_bar_text_y_pos <= !prompt_bar_position+!prompt_bar_size-$08,\
+    "Error: \!prompt_bar_text_y_pos must be <= \!prompt_bar_position + \!prompt_bar_size! - 8"
+endif ; not(!no_prompt_bg)
 
 !__win_pos_line1 #= !prompt_bar_text_x_pos
 !__win_pos_line1_end #= !__win_pos_line1+$10+($08*!prompt_line1_length)

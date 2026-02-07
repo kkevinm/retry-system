@@ -65,7 +65,7 @@
     !pipe_entrance_freeze = 1
 
 ; If 1, Start+Select out of a level is always possible.
-; Otherwise, it's only possible with the instant Retry option, or with the Retry prompt with the "Exit" option disabled, or if the level is already beaten like vanilla.
+; Otherwise, it's only possible with the instant Retry option, or with the Retry prompt with the "EXIT" option disabled, or if the level is already beaten like vanilla.
     !always_start_select = 0
 
 ; If 1, the camera won't scroll vertically during Mario's death animation.
@@ -107,7 +107,7 @@
     !death_sfx      = $20
     !death_sfx_addr = $1DF9
 
-; The alternative death jingle which will be played after the !death_sfx when "Exit" is chosen in the prompt.
+; The alternative death jingle which will be played after the !death_sfx when "EXIT" is chosen in the prompt.
 ; $01-$FE: custom song number, $FF = do not use this feature.
 ; You can find a suitable alt death jingle inside "resources/amk/music" (to be paired with the custom sfx).
     !death_jingle_alt = $FF
@@ -168,7 +168,7 @@
     !max_custom_midway_num = 8
 
 ;=========================== Retry Prompt (general) ============================
-; These options apply for both type of Retry prompt
+; These options apply for both types of Retry prompt
 
 ; 0 = prompt box (box in the middle of the screen with vertical options)
 ; 1 = prompt bar (customizable bar with horizontal options)
@@ -193,19 +193,19 @@
 ; 1 = sprites and animations will freeze when the prompt is shown.
     !prompt_freeze = 1
 
-; Cooldown (max $7F) for disabling up/down when the prompt shows up, which prevents
-; selecting the "Exit" option for a few frames. Can be useful to prevent accidentally
-; pressing "Exit" when dying while pressing up/down. Set to $00 to disable this.
+; Cooldown (max $7F) for disabling directional inputs when the prompt shows up, which prevents
+; selecting the "EXIT" option for a few frames. Can be useful to prevent accidentally
+; pressing "EXIT" when dying while pressing other buttons. Set to $00 to disable this.
     !prompt_cooldown = $10
 
-; This controls what happens when hitting "Exit" on the Retry prompt:
+; This controls what happens when hitting "EXIT" on the Retry prompt:
 ; 0 = exit the level immediately and don't play the death music (except when the level music is sped up).
 ; 1 = exit the level immediately and play the death music (note that the vanilla song will be cut short).
 ; 2 = play the death animation and music, then exit the level.
 ; Note: when dying before going to Game Over, the vanilla animation will be always played regardless.
     !exit_animation = 2
 
-; Set to 1 if you don't want the "Exit" option in the prompt.
+; Set to 1 if you don't want the "EXIT" option in the prompt.
 ; This will also allow the player to Start+Select when having the prompt.
     !no_exit_option = 0
 
@@ -219,7 +219,7 @@
 ; Only used if !dim_screen = 1. Can go from 0 to 15, 15 = max brightness, 0 = black.
     !brightness = 8
 
-; This defines a button that will count as hitting "Exit" on the menu while the prompt is shown.
+; This defines a button that will count as hitting "EXIT" on the menu while the prompt is shown.
 ; It could be handy if you disabled the exit option, but still want a quick way of exiting the level.
 ; By default it's "Select", set !exit_button = $00 to disable this.
 ; For more information on these values, see $7E0016 on the SMWCentral RAM Map.
@@ -277,8 +277,8 @@
 ; How tall is the prompt bar
     !prompt_bar_size = $18
 
-; 0 = grow towards the bottom
-; 1 = grow towards the top
+; 0 = the bar grows towards the bottom
+; 1 = the bar grows towards the top
     !prompt_bar_direction = 1
 
 ; X/Y position of the first tile in the prompt bar (the left cursor).
