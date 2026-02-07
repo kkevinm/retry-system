@@ -1,3 +1,6 @@
+; Define used for some conditional compilation for exportable code
+!retry_source = 1
+
 ; Macro to load files and namespace them easily.
 ; This one inserts the file in the same bank.
 macro incsrc(folder,file)

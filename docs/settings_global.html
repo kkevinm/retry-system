@@ -565,7 +565,7 @@
 			</td>
 			<td>
 				X/Y position of the first tile in the prompt bar (the cursor on the left line).<br/>
-				Note: avoid to put it at the very top or bottom of the screen (<code>!prompt_bar_text_y_pos < $08</code> or <code>!prompt_bar_text_y_pos > $D0</code>) or the text won't be visible on some TVs.<br/>
+				Note: avoid to put it at the very top or bottom of the screen (<code>!prompt_bar_text_y_pos &lt; $08</code> or <code>!prompt_bar_text_y_pos &gt; $D0</code>) or the text won't be visible on some TVs.<br/>
 				Note: if using <code>!no_prompt_bg = 0</code>, make sure that the Y position is within the bounds of the bar (<code>!prompt_bar_text_y_pos</code> must be greater ot equal than <code>!prompt_bar_position</code> and less than or equal than <code>!prompt_bar_position + !prompt_bar_size - 8</code>).<br/>
 				Note: you can also change these on the fly (see <a href="./ram_map.html">RAM Map</a> page for details).
 			</td>

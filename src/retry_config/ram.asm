@@ -1,24 +1,11 @@
-;===============================================================================
-; RAM addresses used by retry.
-; You usually don't need to change these.
-;===============================================================================
+includeonce
 
-;===============================================================================
-; What freeram to use.
-; 257 + (!max_custom_midway_num*4) bytes are used.
+; What freeram Retry uses: 257 + (!max_custom_midway_num*4) bytes are used.
 ; On SA-1, only !retry_freeram_sa1 is used.
-;===============================================================================
 !retry_freeram     = $7FB400
 !retry_freeram_sa1 = $40A400
 
-;===============================================================================
-; What freeram is used by AMK. Shouldn't need to be changed usually.
-;===============================================================================
-!amk_freeram = $7FB000
-
-;===============================================================================
 ; Don't change from here.
-;===============================================================================
 if read1($00FFD5) == $23
     !retry_freeram = !retry_freeram_sa1
 endif ; read1($00FFD5) == $23
@@ -26,17 +13,20 @@ endif ; read1($00FFD5) == $23
 macro retry_ram(name,offset)
     !ram_<name> #= !retry_freeram+<offset>
     !retry_ram_<name> #= !ram_<name>
-
-    base !ram_<name>
-        global ram_<name>:
-    base off
+    if defined("retry_source")
+        base !ram_<name>
+            global ram_<name>:
+        base off
+    endif
 endmacro
 
 ; Use the same offsets as the retry patch to keep compatibility with other resources.
 ; The way to read these is: each row defines a Retry freeram address, where the name is the name to append to "!retry_ram_", and the number is the offset from !retry_freeram.
 ; For example, "%retry_ram(is_respawning,$05)" is defining "!retry_ram_is_respawning" as address "!retry_freeram+$05" (the "1" in the comment just means it's a 1 byte address).
 ; To use these in UberASM code, just use "retry_ram_is_respawning" (or whatever address you want), without the "!".
-; To use these in other codes (patch, sprites, etc.), copy paste this file's contents at the start of the patch/sprite/etc., then use "!retry_ram_is_respawning" (with "!") or "retry_ram_is_respawning" (without "!").
+; To use these in other codes (patch, sprites, etc.), copy this file in the block/patch/sprite folder, then add this line to the file where you want to use it:
+;    incsrc "ram.asm"
+; Then you can use them like "!retry_ram_is_respawning".
 
 %retry_ram(timer,$00)                       ; 3
 %retry_ram(respawn,$03)                     ; 2
@@ -74,3 +64,6 @@ endmacro
 %retry_ram(death_counter,$3B)               ; 5
 %retry_ram(checkpoint,$40)                  ; 192
 %retry_ram(cust_obj_data,$100)              ; 1+(!max_custom_midway_num*4)
+
+; What freeram is used by AddmusicK. Shouldn't need to be changed usually.
+!amk_freeram = $7FB000
