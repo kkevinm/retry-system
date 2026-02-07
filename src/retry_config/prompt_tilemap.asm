@@ -10,8 +10,9 @@
 ; Sprite tile numbers for the tiles used by the prompt ($00-$FF = SP1/SP2, $100-$1FF = SP3/SP4).
 ; !prompt_tile_cursor is the cursor and space tile, !prompt_tiles_line1 are the unique letters for the
 ; first line, !prompt_tiles_line2 are the unique letters for the second line.
-; Note: When the prompt black box is enabled, !prompt_tile_cursor uses three adjacent 8x8 tiles.
-;       When the prompt black box is disabled, !prompt_tile_cursor uses one 8x8 tile.
+; Note: When the prompt black bg is disabled, !prompt_tile_cursor uses one 8x8 tile.
+;       When the prompt black bg is enabled, !prompt_tile_cursor uses more than one 8x8 tile
+;         (3 if using the prompt box, 2 if using the prompt bar).
 ; Note: When the exit option is disabled, or the line2 list has all letters from the line1, the line2 list is unused.
     !prompt_tile_cursor = $20
     !prompt_tiles_line1 = $30,$31,$32,$33 ; RETY
