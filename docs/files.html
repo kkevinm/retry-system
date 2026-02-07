@@ -10,7 +10,7 @@
     <script defer src="./scripts/shared.js"></script>
 </head>
 <body>
-<div class="box">
+<div class="box-wide">
     <h1>Resources</h1>
 
     <h3>Contents</h3>
@@ -123,29 +123,40 @@
         <tr>
             <td rowspan="2">Blocks</td>
             <td><u class="dir">invisible_cp_normal.asm</u></td>
-            <td>This block will trigger a silent checkpoint when touched that will act as a vanilla midway. So, by default it will set the checkpoint to the midway entrance of the main level, but if using <code>%checkpoint(&lt;sublevel&gt;,1)</code> in Retry's <code>settings_local.asm</code>, it will set the checkpoint to the midway entrance of the current sublevel.
+            <td>
+                This is an example of using the <code>!retry_ram_set_checkpoint</code> RAM address.<br/>
+                This block will trigger a silent checkpoint when touched that will act as a vanilla midway. So, by default it will set the checkpoint to the midway entrance of the main level, but if using <code>%checkpoint(&lt;sublevel&gt;,1)</code> in Retry's <code>settings_local.asm</code>, it will set the checkpoint to the midway entrance of the current sublevel.
+            </td>
         </tr>
         <tr>
             <td><u class="dir">invisible_cp_custom.asm</u></td>
-            <td>This block will trigger a silent checkpoint when touched to the secondary exit defined by <code>!secondary_exit</code>.</td>
+            <td>
+                This is an example of using the <code>!retry_ram_set_checkpoint</code> RAM address.<br/>
+                This block will trigger a silent checkpoint when touched to the secondary exit defined by <code>!secondary_exit</code>.
+            </td>
         </tr>
         <tr>
-            <td rowspan="2">Patches</td>
+            <td rowspan="1">Patches</td>
             <td><u class="dir">prompt_type_title_select.asm</u></td>
-            <td>This patch will change the <code>1 PLAYER GAME</code>/<code>2 PLAYER GAME</code> options on the file select screen to <code>INSTANT RETRY</code>/<code>PROMPT RETRY</code>, to let the player choose which one they want. To customize it you can edit the tables at the bottom of the file.</td>
-        </tr>
-        <tr>
-            <td><u class="dir">.asm</u></td>
-            <td>test</td>
+            <td>
+                This is an example of using the <code>!retry_ram_prompt_override</code> RAM address.<br/>
+                This patch will change the <code>1 PLAYER GAME</code>/<code>2 PLAYER GAME</code> options on the file select screen to <code>INSTANT RETRY</code>/<code>PROMPT RETRY</code>, to let the player choose which one they want. To customize it you can edit the tables at the bottom of the file.
+            </td>
         </tr>
         <tr>
             <td rowspan="2">UberASM</td>
             <td><u class="dir">red_switch_remove_cps.asm</u></td>
-            <td>This is a level UberASM that will make so whenever a red switch (sprite C8) is pressed in the level, it will remove all the checkpoints in the game.</td>
+            <td>
+                This is an example of using the <code>retry_api_reset_all_cps</code> API routine.<br/>
+                This is a level UberASM that will make so whenever a red switch (sprite <code>C8</code>) is pressed in the level, it will remove all the checkpoints in the game.
+            </td>
         </tr>
         <tr>
-            <td><u class="dir">.asm</u></td>
-            <td>test</td>
+            <td><u class="dir">title_screen_items_icon.asm</u></td>
+            <td>
+                This is an example of using the <code>retry_api_get_sram_var</code> API routine.<br/>
+                This is a gamemode UberASM (to be inserted in gamemodes <code>8</code> and <code>9</code>) that will draw a tile next to the save files in the load/erase file menu on the title screen, if the corresponding save file has a certain number of items (by default, moons) collected. This only works if the item is saved in SRAM using Retry's save feature (see <a href="./sram_tables.html">SRAM Tables</a>).
+            </td>
         </tr>
     </table>
 </div>
