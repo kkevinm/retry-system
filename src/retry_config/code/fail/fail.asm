@@ -26,7 +26,7 @@ sram_fail_msg:
     db " This can be caused by:         "
     db " - Loading a save file that was "
     db "   created before inserting     "
-    db "   Retry in the hack            "
+    db "   Retry v2.0.0+ in the hack    "
     db " - SRAM corruption              "
     db "                                "
     db " Usually you can solve it by    "
@@ -41,7 +41,7 @@ sram_fail_msg:
     db " If you're a player and you are "
     db " reading this, let the hack     "
     db " creator know.                  "
-    db "                                "
+    db "                     - Kevin :) "
     db "                                "
 .end:
 
@@ -57,7 +57,7 @@ wram_fail_msg:
     db " This can be caused by:         "
     db " - Loading a save state that    "
     db "   was created before inserting "
-    db "   Retry in the hack            "
+    db "   Retry v2.0.0+ in the hack    "
     db " - RAM corruption               "
     db "                                "
     db " Usually you can solve it by    "
@@ -72,7 +72,7 @@ wram_fail_msg:
     db " If you're a player and you are "
     db " reading this, let the hack     "
     db " creator know.                  "
-    db "                                "
+    db "                     - Kevin :) "
     db "                                "
 .end:
 
