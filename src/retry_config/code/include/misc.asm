@@ -4,6 +4,9 @@
 ; Retry version number to write in ROM.
 !version = "2.0.0-beta"
 
+; Print version in the terminal
+print "    Retry System version: !version"
+
 ; What button exits the level while the game is paused (by default, select).
 !exit_level_buttons_addr = $16
 !exit_level_buttons_bits = $20
