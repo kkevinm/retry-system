@@ -272,8 +272,6 @@ assert !box_window_size%!prompt_box_speed == 0,\
 
 else ; if not(!prompt_type == 0)
 
-!_win_bar_start #= ($04A0|!addr)+(!prompt_bar_position*2)
-
     ; Start writing from the start to win the race with the beam
     rep #$30
     ldx.w #$0000
@@ -287,15 +285,16 @@ endif ; !prompt_bar_position != 0
 
     lda $1B89|!addr : and #$00FF : beq ..no_window
 if !prompt_bar_direction != 0
-    eor #$FFFF : clc : adc.w #!prompt_bar_size+2 ; +1 for 2s complement and +1 to check for 0 in the loop
+    eor #$FFFF : clc : adc.w #!prompt_bar_size+1 ; +1 for 2s complement
     tay
+    beq +
     lda #$FF00
 -   sta $04A0|!addr,x
     inx #2
     dey : bne -
-    lda $1B89|!addr : and #$00FF
++   lda $1B89|!addr : and #$00FF
 endif ; !prompt_bar_direction != 0
-    inc : tay
+    tay
     lda #$00FF
 -   sta $04A0|!addr,x
     inx #2
