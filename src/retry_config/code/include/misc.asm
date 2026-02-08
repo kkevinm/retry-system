@@ -2,7 +2,7 @@
 ; You usually shouldn't edit this file.
 
 ; Retry version number to write in ROM.
-!version = "2.0.0-dev"
+!version = "2.0.0-beta"
 
 ; What button exits the level while the game is paused (by default, select).
 !exit_level_buttons_addr = $16
@@ -14,17 +14,39 @@
 ; Read death time from ROM.
 !death_time #= read1($00F61C)
 
+; SRAM size in the ROM header. Actual size is (2^!sram_size) KB.
+; You can change it to expand the SRAM to bigger sizes.
+; On SA-1 it's not recommended to be changed as this value is not actually used:
+; the SRAM size is fixed to 128KB, but only 8KB are reserved for a custom SRAM
+; area. If you know what you're doing, you can edit the !file_size define
+; directly and also edit !sram_addr below if needed.
+!sram_size = $03
+
+; How big (in bytes) each save file is in SRAM/BW-RAM.
+; This is auto-calculated so that the SRAM can hold enough data for 3 of our
+; custom file size and $400 of the vanilla file size
+!file_size #= floor((((2**!sram_size)*1024)-$400)/3)
+
+; SRAM/BW-RAM address to save to.
+if !sa1
+    !sram_addr        #= $41A000
+    !sram_addr_global #= $41A000+(!file_size*3)
+else ; if not(!sa1)
+    !sram_addr        #= $700400
+    !sram_addr_global #= $7002CB+143
+endif ; !sa1
+
 ; Check which channel is used for windowing HDMA, for SA-1 v1.35 (H)DMA remap compatibility.
 ; It will be 7 on lorom or with SA-1 <1.35, and 1 with SA-1 >=1.35.
 !window_mask    #= read1($0092A1)
 !window_channel #= log2(!window_mask)
 
 ; DMA channel used to upload the GFX tiles.
-; You should never need to edit this.
+; This one should be fine for both lorom and SA-1, even if the DMA remap patch
+; is used.
 !upload_channel = 2
 
 ; Where in VRAM the prompt tiles will be uploaded to.
-; You should never need to edit this.
 !sprite_vram = $6000
 
 ; Default amount of Yoshi Coins per level, used for the sprite status bar.
@@ -37,24 +59,10 @@
 !stripe_index = $7F837B
 !stripe_table = $7F837D
 
-; SRAM size in the ROM header. Actual size is (2^!sram_size) KB.
-; Not used on SA-1 roms.
-!sram_size = $03
-
-; How big (in bytes) each save file is in SRAM/BW-RAM.
-!file_size #= floor((((2**!sram_size)*1024)-$400)/3)
-
-; Define the custom sprites load table address.
-%define_sprite_table(sprite_load_table, $7FAF00, $418A00)
-
-; SRAM/BW-RAM address to save to.
-if !sa1
-    !sram_addr = $41A000
-    !sram_addr_global #= $41A000+(!file_size*3)
-else ; if not(!sa1)
-    !sram_addr = $700400
-    !sram_addr_global #= $7002CB+143
-endif ; !sa1
+; Define the original and remapped sprites load table addresses.
+; Note that !sprite_load_table_orig should not have |!addr (lorom only).
+!sprite_load_table_orig = $1938
+%define_sprite_table(sprite_load_table_remapped, $7FAF00, $418A00)
 
 ; OW translevel number table.
 if !sa1

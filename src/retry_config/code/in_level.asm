@@ -417,16 +417,16 @@ reset_addresses:
     ; If SA-1 or PIXI's 255 sprite per level are used, the reset loop
     ; will use the remapped address and reset 256 entries instead of 128.
     ldx #$7E
-    lda.l !rom_sprite_load_orig : cmp #$1938 : beq .sprite_load_orig
+    lda.l !rom_sprite_load_orig : cmp.w #!sprite_load_table_orig : beq .sprite_load_orig
 .sprite_load_remap:
-    %set_dbr(!sprite_load_table)
--   stz.w !sprite_load_table,x
-    stz.w !sprite_load_table+$80,x
+    %set_dbr(!sprite_load_table_remapped)
+-   stz.w !sprite_load_table_remapped,x
+    stz.w !sprite_load_table_remapped+$80,x
     dex #2 : bpl -
     plb
     bra +
 .sprite_load_orig:
-    stz.w $1938,x
+    stz.w !sprite_load_table_orig,x
     dex #2 : bpl .sprite_load_orig
 +    
     ; Reset scroll sprites ($1446-$1455).
