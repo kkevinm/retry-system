@@ -22,15 +22,20 @@
 ; directly and also edit !sram_addr below if needed.
 !sram_size = $03
 
+; How many save files are in your hack. If you're using patches that reduce
+; them, you can change this to have more SRAM available for each one.
+!file_number = 3
+
 ; How big (in bytes) each save file is in SRAM/BW-RAM.
 ; This is auto-calculated so that the SRAM can hold enough data for 3 of our
-; custom file size and $400 of the vanilla file size
-!file_size #= floor((((2**!sram_size)*1024)-$400)/3)
+; custom file size and $400 of the vanilla file size (even though vanilla does
+; not use $400 bytes entirely, we use the unused area for the global variables).
+!file_size #= floor((((2**!sram_size)*1024)-$400)/!file_number)
 
 ; SRAM/BW-RAM address to save to.
 if !sa1
     !sram_addr        #= $41A000
-    !sram_addr_global #= $41A000+(!file_size*3)
+    !sram_addr_global #= !sram_addr+(!file_size*!file_number)
 else ; if not(!sa1)
     !sram_addr        #= $700400
     !sram_addr_global #= $7002CB+143
