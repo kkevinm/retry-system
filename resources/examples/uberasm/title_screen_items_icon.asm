@@ -1,4 +1,5 @@
-; This UberASM should be inserted as gamemode asm for gamemodes 8 and 9.
+; This UberASM should be normally inserted as gamemode asm for gamemodes 8 and 9,
+; but on gamemode A if you're using the "One File, One Player" patch.
 ; It will draw a tile next to the load/erase file menu for each save file that
 ; has at least a certain number of items collected (by default, moons).
 ; To make this work you need to save the items in SRAM by adding it to the Retry
