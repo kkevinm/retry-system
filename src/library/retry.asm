@@ -58,6 +58,7 @@ endif
     %incsrc(code,shared)
     %incsrc_ex("",extra)
     %incsrc(code,startup)
+    %incsrc(code,counterbreak)
     %incsrc(code,fade_to_level)
     %incsrc(code,level_init_1)
     %incsrc(code,level_init_2)

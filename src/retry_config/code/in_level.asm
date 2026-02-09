@@ -396,6 +396,9 @@ reset_addresses:
     php : phb
     jsl extra_reset
     plb : plp
+    
+    ; Apply counterbreak
+    jsr counterbreak_from_reset
 
     ; Reset collected Yoshi coins.
     stz $1420|!addr
@@ -450,42 +453,10 @@ if !reset_boo_rings
     stz $0FB0|!addr
 endif ; !reset_boo_rings
 
-if !counterbreak_bonus_stars == 1 || !counterbreak_bonus_stars == 2
-    ; Reset bonus stars counter.
-    stz $0F48|!addr
-endif ; !counterbreak_bonus_stars == 1 || !counterbreak_bonus_stars == 2
-
-if !counterbreak_score == 1 || !counterbreak_score == 2
-    ; Reset score counter.
-    stz $0F34|!addr
-    stz $0F36|!addr
-    stz $0F38|!addr
-endif ; !counterbreak_score == 1 || !counterbreak_score == 2
-
     ; Reset timer to the original value.
     lda !ram_timer+0 : and #$0F0F : sta $0F31|!addr
     sep #$20
     lda !ram_timer+2 : and #$0F : sta $0F33|!addr
-
-if !counterbreak_powerup == 1 || !counterbreak_powerup == 2
-    ; Reset powerup.
-    stz $19
-endif ; !counterbreak_powerup == 1 || !counterbreak_powerup == 2
-
-if !counterbreak_item_box == 1 || !counterbreak_item_box == 2
-    ; Reset item box.
-    stz $0DC2|!addr
-endif ; !counterbreak_item_box == 1 || !counterbreak_item_box == 2
-
-if !counterbreak_coins == 1 || !counterbreak_coins == 2
-    ; Reset coin counter.
-    stz $0DBF|!addr
-endif ; !counterbreak_coins == 1 || !counterbreak_coins == 2
-
-if !counterbreak_lives == 1 || !counterbreak_lives == 2
-    ; Reset lives.
-    lda.b #!initial_lives-1 : sta $0DBE|!addr
-endif ; !counterbreak_lives == 1 || !counterbreak_lives == 2
 
     ; Reset green star block counter.
     lda.l !rom_green_star_block_count : sta $0DC0|!addr

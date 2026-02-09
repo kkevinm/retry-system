@@ -25,6 +25,10 @@ endif ; !reset_frame_counters
     ; Check if we entered from the overworld.
     lda $141A|!addr : bne .skip
 
+.from_ow:
+    ; Apply counterbreak
+    jsr counterbreak_from_ow
+
     ; The game sets $13BF a bit later so we need to do it ourselves
     ; (unless it's right after a "No Yoshi" cutscene).
     lda $71 : cmp #$0A : bne +
