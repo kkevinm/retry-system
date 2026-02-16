@@ -152,3 +152,25 @@ org $009856
 org $00D0D8
     dec $0DBE|!addr
     bpl $09
+
+org $00A1B2
+    ldx.w #$07CE
+    db $9E ; stz.w $WWWW,x
+
+org $05B30E
+    dey #4
+
+org $03BC72
+    dey #4
+
+org $0086C7
+    rep #$30
+    ldx #$0062
+
+org $02827D
+    lda $1A
+    sta $188D|!addr
+
+org $02832C
+    lda $1884|!addr
+    cmp #$01

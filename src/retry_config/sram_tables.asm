@@ -19,15 +19,15 @@
 ; Note: for each address you add here, you need to add the default values in the sram_defaults table below.
 ; Note: if using SA-1, for addresses in $7E0100-$7E1FFF you must change them to $400100-$401FFF and for addresses $7E0000-$7E00FF you must change them to $003000-$0030FF.
 ;       Additionally, a lot of other addresses might be remapped to different locations (see SA-1 docs for more info).
-; Note: you can put up to 2389 bytes in the "save" and ".not_game_over" tables combined, and up to 162 bytes on lorom and 1021 bytes on SA-1 in the ".global" table.
+; Note: you can put up to 2385 bytes in the "save" and ".not_game_over" tables combined, and up to 162 bytes on lorom and 1021 bytes on SA-1 in the ".global" table.
 
 save:
-    dl !ram_checkpoint    : dw 192
+    dl !retry_ram_checkpoint    : dw 192
     ; Feel free to add your own stuff here.
     
 
 .not_game_over:
-    dl !ram_death_counter : dw 5
+    dl !retry_ram_death_counter : dw 5
     ; Feel free to add your own stuff here.
     
 
@@ -36,7 +36,9 @@ save:
     
 
 ; Here you specify the default values of the addresses you want to save, for when a new save file is started.
-; You can do "db $XX,$XX,..." for 1 byte values, "dw $XXXX,$XXXX,..." for 2 bytes values and "dl $XXXXXX,$XXXXXX,..." for 3 bytes values.
+; You can do "db $XX,$XX,..." for 1 byte values, "dw $XXXX,$XXXX,..." for 2 bytes values and "dl $XXXXXX,$XXXXXX,..." for 3 bytes values. If you need to insert a lot of repeating values in a row, you can use
+; %dbn($XX,n) for 1 byte values, %dwn($XXXX,n) for 2 byte values or %dln($XXXXXX,n) for 3 byte values, where n is
+; the amount of times the value is repeated (max 242).
 ; The amount of values of each entry should correspond to the dw $YYYY value in the save table
 ; (for example, the checkpoint values are 192, and the death counter values are 5).
 ; If you have some addresses after ".not_game_over" and ".global" in the save table, put their default values after
@@ -63,7 +65,7 @@ sram_defaults:
 
 .not_game_over:
     ; Initial death counter value (don't edit this!).
-    db $00,$00,$00,$00,$00
+    %dbn($00,5)
     ; Feel free to add your own stuff here.
     
 
