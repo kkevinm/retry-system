@@ -25,15 +25,15 @@ function generate() {
     chars1 = [...chars1];
     var chars = chars1.concat(chars2);
 
-    var tiles1 = "!prompt_tiles_line1 = <";
+    var tiles1 = "    !prompt_tiles_line1 = <";
     tiles1 += chars1.length;
     tiles1 += " values>\n";
     
     var tiles2;
     if (chars2.length === 0) {
-        tiles2 = ";!prompt_tiles_line2 =\n";
+        tiles2 = "    ;!prompt_tiles_line2 =\n";
     } else {
-        tiles2 = "!prompt_tiles_line2 = <";
+        tiles2 = "    !prompt_tiles_line2 = <";
         tiles2 += chars2.length;
         tiles2 += " values>";
     }
@@ -41,7 +41,7 @@ function generate() {
 
     var idx = 3; // Start after cursor
     
-    var gfx_index1 = "!prompt_gfx_index_line1  = ";
+    var gfx_index1 = "    !prompt_gfx_index_line1  = ";
     for (var i = 0; i < chars1.length; i++) {
         gfx_index1 += idx++;
         if (i < chars1.length - 1) gfx_index1 += ",";
@@ -49,16 +49,16 @@ function generate() {
 
     var gfx_index2;
     if (chars2.length === 0) {
-        gfx_index2 = ";!prompt_gfx_index_line2 =";
+        gfx_index2 = "    ;!prompt_gfx_index_line2 =";
     } else {
-        gfx_index2 = "!prompt_gfx_index_line2  = ";
+        gfx_index2 = "    !prompt_gfx_index_line2  = ";
         for (var i = 0; i < chars2.length; i++) {
             gfx_index2 += idx++;
             if (i < chars2.length - 1) gfx_index2 += ",";
         }
     }
 
-    var tile_index1 = "!prompt_tile_index_line1 = ";
+    var tile_index1 = "    !prompt_tile_index_line1 = ";
     for (var i = 0; i < line1.length; i++) {
         if (is_whitespace(line1[i]))
             tile_index1 += "-1";
@@ -69,9 +69,9 @@ function generate() {
 
     var tile_index2;
     if (line2.length === 0 || remove_whitespace(line2).length === 0) {
-        tile_index2 = ";!prompt_tile_index_line2 =";
+        tile_index2 = "    ;!prompt_tile_index_line2 =";
     } else {
-        tile_index2 = "!prompt_tile_index_line2 = ";
+        tile_index2 = "    !prompt_tile_index_line2 = ";
         for (var i = 0; i < line2.length; i++) {
             if (is_whitespace(line2[i]))
                 tile_index2 += "-1";
@@ -103,8 +103,8 @@ function generate() {
     tile_index2 += line2;
     tile_index2 += "\n";
 
-    out.innerHTML = "<pre>!prompt_tile_cursor = <1 value>\n" + tiles1 + tiles2 + "</pre>"
-                    + "<pre>!prompt_gfx_index_cursor = 0\n" + gfx_index1 + gfx_index2 + "</pre>"
+    out.innerHTML = "<pre>    !prompt_tile_cursor = <1 value>\n" + tiles1 + tiles2 + "</pre>"
+                    + "<pre>    !prompt_gfx_index_cursor = 0\n" + gfx_index1 + gfx_index2 + "</pre>"
                     + "<pre>" + tile_index1 + tile_index2 + "</pre>";
 
     chars = "\u25B6  ".concat(chars.join("")).replaceAll(" ", "\u2B1C");
