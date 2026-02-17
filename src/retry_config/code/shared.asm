@@ -130,7 +130,7 @@ get_translevel:
 .no_intro:
     ldy $0DD6|!addr
     lda $1F17|!addr,y : lsr #4 : sta $00
-    lda $1F19|!addr,y : and #$F0 : ora $00 : sta $00
+    lda $1F19|!addr,y : and #$F0 : tsb $00
     lda $1F1A|!addr,y : asl : sta $01
     lda $1F18|!addr,y : and #$01 : ora $01
     ldy $0DB3|!addr
