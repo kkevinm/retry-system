@@ -24,7 +24,9 @@ See [Documentation](https://kkevinm.github.io/retry-system/) for more details.
 
 ![alt text](screenshots/prompt_box.png "Retry prompt box in action")
 
-![alt text](screenshots/prompt_bar.png "Retry prompt bar in action")
+![alt text](screenshots/prompt_bar.png "Retry prompt bar (at the bottom) in action")
+
+![alt text](screenshots/prompt_bar_middle.png "Retry prompt bar (in the middle) in action")
 
 ![alt text](screenshots/prompt_minimal.png "Minimal Retry prompt in action")
 
