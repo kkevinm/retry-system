@@ -279,6 +279,7 @@
 
 ; 0 = the bar grows towards the bottom
 ; 1 = the bar grows towards the top
+; 2 = the bar grows from the middle in both directions
     !prompt_bar_direction = 1
 
 ; X/Y position of the first tile in the prompt bar (the left cursor).
@@ -290,7 +291,9 @@
 ; X offset of the prompt "EXIT" word from the "RETRY" word.
     !prompt_bar_exit_x_offset = $50
 
-; Prompt bar expansion/shrinking speed (it must evenly divide !prompt_bar_size)
+; Prompt bar expansion/shrinking speed
+; It must evenly divide !prompt_bar_size, and if !prompt_bar_direction is 2 it
+; must be even
     !prompt_bar_speed = 2
 
 ;=========================== Sprite Status Bar =================================

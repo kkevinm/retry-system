@@ -285,7 +285,11 @@ endif ; !prompt_bar_position != 0
 
     lda $1B89|!addr : and #$00FF : beq ..no_window
 if !prompt_bar_direction != 0
+if !prompt_bar_direction == 1
     eor #$FFFF : clc : adc.w #!prompt_bar_size+1 ; +1 for 2s complement
+else ; !prompt_bar_direction != 1
+    lsr : eor #$FFFF : clc : adc.w #(!prompt_bar_size/2)+1 ; +1 for 2s complement
+endif ; !prompt_bar_direction == 1
     tay
     beq +
     lda #$FF00
@@ -318,6 +322,13 @@ endif ; !prompt_bar_direction != 0
     ; Enable windowing.
     lda.b #!window_mask : tsb $0D9F|!addr
     rts
+
+if !prompt_bar_direction == 2
+
+assert !prompt_bar_speed%2 == 0,\
+    "Error: With \!prompt_bar_direction = 2, \!prompt_bar_speed must be even!"
+
+endif ; !prompt_bar_direction < 2
 
 assert !prompt_bar_size%!prompt_bar_speed == 0,\
     "Error: \!prompt_bar_speed must evenly divide \!prompt_bar_size!"
