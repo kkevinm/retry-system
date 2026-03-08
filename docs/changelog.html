@@ -92,6 +92,7 @@
 				<li>Changed the <code>retry_api_cfg_ssb</code> routine (ex <code>retry_api_configure_sprite_status_bar</code>) parameters number to also accept the death counter configuration. If you were using the routine, just add another parameter at the end (for example <code>$0000</code> to keep the death counter hidden).</code></li>
 				<li>Renamed <u class="dir">letter1.bin</u> and <u class="dir">letter2.bin</u> in <u class="dir">gfx</u> to <u class="dir">prompt1.bin</u> and <u class="dir">prompt2.bin</u>. Also their content changed: the tile order is different than before to account for the new prompt tilemap editing options, and their size is now 4KiB (to make it easier to add new tiles, but only what's needed is inserted in the ROM).</li>
 				<li>Changed the <u class="dir">extra.asm</u> routines to end with <code>RTL</code> and to not have the DBR set automatically upon being called. This means that if you're porting from an older version and you were using the extra routines, you'll need to change their <code>RTS</code> to <code>RTL</code> and add <code>PHK : PLB</code> at the start of those where the DBR is needed.</li>
+				<li>Removed custom midways with extension <code>2000-3FFF</code> (secondary entrance with water properties), since it's been obsolete since Lunar Magic 3.0 (you can just set the water property in the secondary exit menu). This means custom normal objects <code>20-3F</code> are free to be used with Objectool.</li>
 			</ul>
 		</li>
 	</ul>

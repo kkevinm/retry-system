@@ -30,38 +30,6 @@
 2D	1D	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field.
 2D	1E	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field.
 2D	1F	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field.
-2D	20	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	21	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	22	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	23	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	24	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	25	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	26	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	27	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	28	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	29	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	2A	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	2B	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	2C	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	2D	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	2E	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	2F	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	30	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	31	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	32	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	33	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	34	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	35	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	36	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	37	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	38	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	39	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	3A	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	3B	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	3C	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	3D	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	3E	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
-2D	3F	0	A custom Retry midway point tape. It will make the player respawn at the secondary entrance corresponding to the Extension field minus 2000, with water level properties enabled.
 2D	40	0	A custom Retry midway point tape. It will make the player respawn at the main entrance of the sublevel corresponding to the last 3 digits of the Extension field.
 2D	41	0	A custom Retry midway point tape. It will make the player respawn at the main entrance of the sublevel corresponding to the last 3 digits of the Extension field.
 2D	50	0	A custom Retry midway point tape. It will make the player respawn at the midway entrance of the sublevel corresponding to the last 3 digits of the Extension field.

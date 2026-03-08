@@ -21,14 +21,12 @@
 <h3>Respawn Location</h3>
 <p>To change where Mario will respawn after collecting this midway, you will set a 4-digit value in the <b>Extension Field</b>. The value put here will dictate the <b>entrance type</b> as well as either the <b>level number</b> or a <b>secondary entrance number</b> where Mario will respawn.</p>
 <ul>
-	<li><code>0000-1FFF</code> respawn at <b>secondary entrance</b>, this is just a valid 4-digit secondary entrance number (ranges 0000-1FFF)</li>
-	<li><code>2000-3FFF</code> respawn at <b>secondary entrance with water</b>, the value is 2000 + secondary entrance number.*</li>
-	<li><code>4000-41FF</code> respawn at <b>main</b> entrance, 4000 + 3-digit level number (ranges 000-1FF).</li>
-	<li><code>5000-51FF</code> respawn at <b>midway</b> entrance, 5000 + level number.</li>
+	<li><code>0000-1FFF</code>: respawn at a <b>secondary entrance</b> (you just put the 4-digit secondary entrance number).</li>
+	<li><code>4000-41FF</code>: respawn at a <b>main</b> entrance (you put <code>4000</code> + 3-digit sublevel number).</li>
+	<li><code>5000-51FF</code>: respawn at a <b>midway</b> entrance (you put <code>5000</code> + 3-digit sublevel number).</li>
 </ul>
-<small>*This is obsolete in Lunar Magic 3.00+</small>
 <p>Keep in mind some values will need leading zeroes to work correctly, e.g. respawning at secondary entrance 12C would be <code>012C</code> and not <code>12C</code>.</p>
-<blockquote>Note: some of these settings can be used to make a midway respawn a player in <b>any place</b> in the game not just within the same level or connected sublevels.</blockquote>
+<blockquote>Note: these settings can be used to make a midway respawn a player in <b>any place</b> in the game not just within the same level or connected sublevels.</blockquote>
 <p>Once inserted, it will appear in Lunar Magic as a green square, but will appear as the normal Midway Tape object in-game.</p>
 <img src="./img/midway_object.png">
 <p>Since Lunar Magic 3.60, you can also add useful tooltip information that will be displayed when hovering over the custom midway object. For more information, check out <a href="./files.html#lm_resources">Lunar Magic Resources</a>.
