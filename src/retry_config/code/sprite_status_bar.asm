@@ -196,17 +196,26 @@ endif ; !draw_retry_indicator
     jmp ..no_timer
 +
     ; Upload the first digit, unless it's 0.
-    lda $0F31|!addr : and #$00FF : beq +
+    lda $0F31|!addr : and #$00FF
+if not(!draw_leading_zeroes)
+    beq +
+endif ; not(!draw_leading_zeroes)
     %store_digit_addr()
     lda $00 : adc #$0010 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
 
+if not(!draw_leading_zeroes)
     ; In this case we need to upload the second digit even if 0.
     lda $0F32|!addr : and #$00FF : bra ++
 +   
+endif ; not(!draw_leading_zeroes)
+
     ; Upload the second digit, unless it's 0.
-    lda $0F32|!addr : and #$00FF : beq +
+    lda $0F32|!addr : and #$00FF
+if not(!draw_leading_zeroes)
+    beq +
+endif ; not(!draw_leading_zeroes)
 ++  %store_digit_addr()
     lda $00 : adc #$0100 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
@@ -243,7 +252,10 @@ endif ; !draw_retry_indicator
     jsr .rep20_and_waste_time_for_division
 
     ; Upload the first digit (unless it's 0).
-    lda $4214 : beq +
+    lda $4214
+if not(!draw_leading_zeroes)
+    beq +
+endif ; not(!draw_leading_zeroes)
     %store_digit_addr()
     lda $00 : adc #$0100 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
@@ -279,7 +291,10 @@ endif ; !draw_retry_indicator
     jsr .rep20_and_waste_time_for_division
 
     ; Upload the first digit (unless it's 0).
-    lda $4214 : beq +
+    lda $4214
+if not(!draw_leading_zeroes)
+    beq +
+endif ; not(!draw_leading_zeroes)
     %store_digit_addr()
     lda $00 : adc #$0100 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
@@ -316,7 +331,10 @@ endif ; !draw_retry_indicator
     jsr .rep20_and_waste_time_for_division
 
     ; Upload the first digit (unless it's 0).
-    lda $4214 : beq +
+    lda $4214
+if not(!draw_leading_zeroes)
+    beq +
+endif ; not(!draw_leading_zeroes)
     %store_digit_addr()
     lda $00 : adc #$0100 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
@@ -346,39 +364,66 @@ endif ; !draw_retry_indicator
     ldx $71 : cpx #$09 : beq +
     jmp ..no_death
 +
+
+if not(!draw_leading_zeroes)
     ; X = indicator that something was uploaded previously
     ldx #$00
+endif ; not(!draw_leading_zeroes)
 
     ; Upload the first digit (unless it's 0).
-    lda !ram_death_counter+0 : and #$00FF : beq +
+    lda !ram_death_counter+0 : and #$00FF
+if not(!draw_leading_zeroes)
+    beq +
+endif ; not(!draw_leading_zeroes)
     %store_digit_addr()
     lda $00 : adc #$0010 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
+if not(!draw_leading_zeroes)
     inx
 +
+endif ; not(!draw_leading_zeroes)
+
     ; Upload the second digit (unless it's 0 and didn't upload the first).
-    lda !ram_death_counter+1 : and #$00FF : bne +
+    lda !ram_death_counter+1 : and #$00FF
+if not(!draw_leading_zeroes)
+    bne +
     cpx #$00 : beq ++
-+   %store_digit_addr()
++   
+endif ; not(!draw_leading_zeroes)
+    %store_digit_addr()
     lda $00 : adc #$0020 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
+if not(!draw_leading_zeroes)
     inx
 ++
+endif ; not(!draw_leading_zeroes)
+
     ; Upload the third digit (unless it's 0 and didn't upload the first 2).
-    lda !ram_death_counter+2 : and #$00FF : bne +
+    lda !ram_death_counter+2 : and #$00FF
+if not(!draw_leading_zeroes)
+    bne +
     cpx #$00 : beq ++
-+   %store_digit_addr()
++
+endif ; not(!draw_leading_zeroes)
+    %store_digit_addr()
     lda $00 : adc #$0100 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
+if not(!draw_leading_zeroes)
     inx
 ++
+endif ; not(!draw_leading_zeroes)
+
     ; Upload the fourth digit (unless it's 0 and didn't upload the first 3).
-    lda !ram_death_counter+3 : and #$00FF : bne +
+    lda !ram_death_counter+3 : and #$00FF
+if not(!draw_leading_zeroes)
+    bne +
     cpx #$00 : beq ++
-+   %store_digit_addr()
++
+endif ; not(!draw_leading_zeroes)
+    %store_digit_addr()
     lda $00 : adc #$0110 : sta $2116
     lda.w #gfx_size(1) : sta.w upload_dma($4305)
     sty $420B
@@ -598,7 +643,6 @@ endif ; !8x8_item_box_tile
 .props:
     dw $0000,$4000,$8000,$C000
 
-
 assert !X_palette >= $08 && !X_palette <= $0F, "Error: \!X_palette should be between $08 and $0F."
 
 !X_tp #= (!X_tile&$1FF)|$3000|((!X_palette-8)<<9)
@@ -649,6 +693,7 @@ endif ; !timer_X_enabled
     sty $0E ;lda.b #!timer_icon_offset : sta $0E
     jsr .draw
     
+if not(!draw_leading_zeroes)
     ; Draw the first digit, unless it's 0.
     lda $0F31|!addr : bne +
     lda #$80 : ora !ram_timer+0 : sta !ram_timer+0
@@ -662,8 +707,13 @@ if !timer_counter_align_right
     iny #2
 endif ; !timer_counter_align_right
     bra ++
-+   lda.b #!timer_digit1_offset : sta $0E
++   
+endif ; not(!draw_leading_zeroes)
+
+    lda.b #!timer_digit1_offset : sta $0E
     jsr .draw
+
+if not(!draw_leading_zeroes)
     ; In this case we always need to draw the second digit.
     bra +
 ++
@@ -680,7 +730,10 @@ if !timer_counter_align_right
     iny #2
 endif ; !timer_counter_align_right
     bra ++
-+   lda.b #!timer_digit2_offset : sta $0E
++   
+endif ; not(!draw_leading_zeroes)
+
+    lda.b #!timer_digit2_offset : sta $0E
     jsr .draw
 ++
     ; Draw the third digit.
@@ -725,13 +778,17 @@ endif ; !coin_X_enabled
     sty $0E ;lda.b #!coin_icon_offset : sta $0E
     jsr .draw
 
+if not(!draw_leading_zeroes)
     ; Draw the first digit, unless it's 0.
     lda $0DBF|!addr : cmp #10 : bcs +
 if !coin_counter_align_right
     iny #2
 endif ; !coin_counter_align_right
     bra ++
-+   lda.b #!coin_digit1_offset : sta $0E
++
+endif ; not(!draw_leading_zeroes)
+
+    lda.b #!coin_digit1_offset : sta $0E
     jsr .draw
 ++
     ; Draw the second digit.
@@ -832,13 +889,17 @@ endif ; !lives_X_enabled
     sty $0E ;lda.b #!lives_icon_offset : sta $0E
     jsr .draw
 
+if not(!draw_leading_zeroes)
     ; Draw the first digit, unless it's 0.
     lda $0DBE|!addr : inc : cmp #10 : bcs +
 if !lives_counter_align_right
     iny #2
 endif ; !lives_counter_align_right
     bra ++
-+   lda.b #!lives_digit1_offset : sta $0E
++   
+endif ; not(!draw_leading_zeroes)
+
+    lda.b #!lives_digit1_offset : sta $0E
     jsr .draw
 ++
     ; Draw the second digit.
@@ -882,6 +943,7 @@ endif ; !bonus_stars_X_enabled
     sty $0E ;lda.b #!bonus_stars_icon_offset : sta $0E
     jsr .draw
 
+if not(!draw_leading_zeroes)
     ; Draw the first digit, unless it's 0.
     phx : php
     sep #$30
@@ -893,6 +955,8 @@ if !bonus_stars_counter_align_right
 endif ; !bonus_stars_counter_align_right
     bra ++
 +   plp : plx
+endif ; not(!draw_leading_zeroes)
+
     lda.b #!bonus_stars_digit1_offset : sta $0E
     jsr .draw
 ++
@@ -943,14 +1007,20 @@ endif ; !death_X_enabled
     ; $04 = indicator that something was uploaded previously
     stz $04
 
+if not(!draw_leading_zeroes)
     ; Draw the first digit, unless it's 0.
     lda !ram_death_counter+0 : bne +
 if !death_counter_align_right
     iny #2
 endif ; !death_counter_align_right
     bra ++
-+   lda.b #!death_digit1_offset : sta $0E
++   
+endif ; not(!draw_leading_zeroes)
+
+    lda.b #!death_digit1_offset : sta $0E
     jsr .draw
+
+if not(!draw_leading_zeroes)
 ++
     ; Draw the second digit, unless it's 0 and didn't draw the first.
     lda !ram_death_counter+1 : ora $04 : bne +
@@ -958,8 +1028,13 @@ if !death_counter_align_right
     iny #2
 endif ; !death_counter_align_right
     bra ++
-+   lda.b #!death_digit2_offset : sta $0E
++
+endif ; not(!draw_leading_zeroes)
+
+    lda.b #!death_digit2_offset : sta $0E
     jsr .draw
+
+if not(!draw_leading_zeroes)
 ++
     ; Draw the third digit, unless it's 0 and didn't draw the first 2.
     lda !ram_death_counter+2 : ora $04 : bne +
@@ -967,8 +1042,13 @@ if !death_counter_align_right
     iny #2
 endif ; !death_counter_align_right
     bra ++
-+   lda.b #!death_digit3_offset : sta $0E
++   
+endif ; not(!draw_leading_zeroes)
+
+    lda.b #!death_digit3_offset : sta $0E
     jsr .draw
+
+if not(!draw_leading_zeroes)
 ++
     ; Draw the fourth digit, unless it's 0 and didn't draw the first 3.
     lda !ram_death_counter+3 : ora $04 : bne +
@@ -976,7 +1056,10 @@ if !death_counter_align_right
     iny #2
 endif ; !death_counter_align_right
     bra ++
-+   lda.b #!death_digit4_offset : sta $0E
++
+endif ; not(!draw_leading_zeroes)
+
+    lda.b #!death_digit4_offset : sta $0E
     jsr .draw
 ++
     ; Draw the fifth digit.

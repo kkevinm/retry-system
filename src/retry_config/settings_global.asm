@@ -407,6 +407,9 @@
 ; 2 = don't draw dragon coins by default (only coins)
     !default_coin_counter_behavior = 0
 
+; If 1, leading zeroes in the counters will be drawn.
+    !draw_leading_zeroes = 0
+
 ; If !draw_retry_indicator = 1, an 8x8 indicator will be drawn on the sprite status bar
 ; in levels where Retry prompt or instant Retry is enabled. This could be useful for collabs.
 ; The other settings control how and where it is drawn.
