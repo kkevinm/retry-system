@@ -48,14 +48,20 @@ incsrc "ram.asm"
 			<td><code>$00</code></td>
 			<td><code>$03</code></td>
 			<td>Internal</td>
-			<td class="left-align">Used to hold the level's initial timer value, to reset it to the correct value when respawning. You can read it at any time during a level to know what the initial timer was.</td>
+			<td class="left-align">
+				Used to hold the level's initial timer value, to reset it to the correct value when respawning. You can read it at any time during a level to know what the initial timer was.<br/>
+				Note that the high bit in each byte is used as a flag to fix an error in the timer drawing during respawning, so you should do <code>AND #$0F</code> when reading the timer digits from these addresses.
+			</td>
 		</tr>
 		<tr id="respawn">
 			<td><code>respawn</code></td>
 			<td><code>$03</code></td>
 			<td><code>$02</code></td>
 			<td>Internal</td>
-			<td class="left-align">Destination value to go to when respawning. This value is written on level load depending on the current checkpoint and used when Retrying.<br>You can see the format at <code>$7E19B8</code> (low byte) and <code>$7E19D8</code> (high byte) in the SMWCentral RAM Map. Note that the high byte is always <code>ORA</code>d with <code>$04</code> (i.e. it always uses the Lunar Magic entrance system rather than vanilla).<br>Additionally, if the destination is a level's main entrance and the highest bit is set, then the entrance will act as a Yoshi Wings sublevel.</td>
+			<td class="left-align">
+				Destination value to go to when respawning. This value is written on level load depending on the current checkpoint and used when Retrying.<br/>
+				You can see the format at <code>$7E19B8</code> (low byte) and <code>$7E19D8</code> (high byte) in the SMWCentral RAM Map. Note that the high byte is always <code>ORA</code>d with <code>$04</code> (i.e. it always uses the Lunar Magic entrance system rather than vanilla).<br/>
+				Additionally, if the destination is a level's main entrance and the highest bit is set, then the entrance will act as a Yoshi Wings sublevel.</td>
 		</tr>
 		<tr id="is_respawning">
 			<td><code>is_respawning</code></td>
@@ -122,7 +128,9 @@ incsrc "ram.asm"
 			<td><code>$0D</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
-			<td class="left-align">The high bit is set during the Retry prompt handling to make the window change shape to properly show the options. Needed to avoid occasional flickering when updating it on the same frame it finished expanding.<br>Additionally used as a timer (<code>$00-$7F</code>) when the Retry prompt opens to disable pressing up/down to move the cursor (as specified by <code>!prompt_cooldown</code> in <code>settings.asm</code>).</td>
+			<td class="left-align">
+				The high bit is set during the Retry prompt handling to make the window change shape to properly show the options. Needed to avoid occasional flickering when updating it on the same frame it finished expanding.<br/>
+				Additionally used as a timer (<code>$00-$7F</code>) when the Retry prompt opens to disable pressing up/down to move the cursor (as specified by <code>!prompt_cooldown</code> in <code>settings.asm</code>).</td>
 		</tr>
 		<tr id="is_dying">
 			<td><code>is_dying</code></td>
@@ -158,7 +166,9 @@ incsrc "ram.asm"
 			<td><code>$11</code></td>
 			<td><code>$01</code></td>
 			<td>User</td>
-			<td class="left-align">This can be used to override the Retry settings of the current level or all levels depending on some condition (for example, if you want to let the player choose if to have instant Retry or not).<br>It follows the same format as the <code>%retry</code> setting in <u class="dir">settings_local.asm</u> (see <a href="./settings_local.html#retry">Local Settings - %retry</a> for details). If this is set to <code>$00</code>, the value in the local settings will be used instead, or the default value in <u class="dir">settings_global.asm</u> if there's no local setting for the current sublevel. It's only reset by Retry at startup, meaning that its effect will last until you set it back to <code>$00</code> yourself.</td>
+			<td class="left-align">
+				This can be used to override the Retry settings of the current level or all levels depending on some condition (for example, if you want to let the player choose if to have instant Retry or not).<br/>
+				It follows the same format as the <code>%retry</code> setting in <u class="dir">settings_local.asm</u> (see <a href="./settings_local.html#retry">Local Settings - %retry</a> for details). If this is set to <code>$00</code>, the value in the local settings will be used instead, or the default value in <u class="dir">settings_global.asm</u> if there's no local setting for the current sublevel. It's only reset by Retry at startup, meaning that its effect will last until you set it back to <code>$00</code> yourself.</td>
 		</tr>
 		<tr id="disable_prompt_exit">
 			<td><code>disable_prompt_exit</code></td>
@@ -207,7 +217,9 @@ incsrc "ram.asm"
 			<td><code>$18</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
-			<td class="left-align">Bitwise mask set on level load for different purposes.<br>Format: <code>e------s</code>.
+			<td class="left-align">
+				Bitwise mask set on level load for different purposes.<br/>
+				Format: <code>e------s</code>.
 				<ul>
 					<li><code>e</code>: set if using the <code>%sfx_echo</code> setting in <u class="dir">settings_local.asm</u> for the current sublevel (see <a href="./settings_local.html#sfx_echo">Local Settings - %sfx_echo</a>). Used to send the SFX echo command during level main. You can also set this manually in level init to enable SFX echo.</li>
 					<li><code>s</code>: Set if <code>!room_cp_sfx</code> is not <code>$00</code> and the current sublevel gives a room entrance checkpoint (unless using the <code>%no_room_cp_sfx</code> setting in <u class="dir">settings_local.asm</u>, see <a href="./settings_local.html#no_room_cp_sfx">Local Settings - %no_room_cp_sfx</a> for details). Used to play the midway SFX during level init.</li>
@@ -332,7 +344,9 @@ incsrc "ram.asm"
 			<td><code>$100</code></td>
 			<td>Var.</td>
 			<td>Internal</td>
-			<td class="left-align">Data for all the possible custom midway objects loaded in the current level, plus a counter for how many custom midways are in the level (used to prevent additional midways from spawning if reaching the <code>!max_custom_midway_num</code> value from <code>settings.asm</code>).<br>Each midway uses 4 bytes, so this uses <code>(4*!max_custom_midway_num)+1</code> bytes. For each object, there's a 2 bytes identifier (based on its index in the level's map16 data) and the destination value that this midway will set when grabbed (based on the object's extension).</td>
+			<td class="left-align">
+				Data for all the possible custom midway objects loaded in the current level, plus a counter for how many custom midways are in the level (used to prevent additional midways from spawning if reaching the <code>!max_custom_midway_num</code> value from <code>settings.asm</code>).<br/>
+				Each midway uses 4 bytes, so this uses <code>(4*!max_custom_midway_num)+1</code> bytes. For each object, there's a 2 bytes identifier (based on its index in the level's map16 data) and the destination value that this midway will set when grabbed (based on the object's extension).</td>
 		</tr>
 	</table>
 </div>
