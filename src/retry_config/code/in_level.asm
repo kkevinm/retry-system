@@ -432,11 +432,14 @@ reset_addresses:
     stz.w !sprite_load_table_orig,x
     dex #2 : bpl .sprite_load_orig
 +    
-    ; Reset scroll sprites ($1446-$1455).
+    ; Reset scroll sprites ($1446-$1455)
+    ; only if the Lunar Magic layer 2 autoscroll settings are not active
+    ; (or the layer 2 snaps when retrying)
+    lda $1413|!addr : and #$F0F0 : bne +
     ldx #$0E
 -   stz $1446|!addr,x
     dex #2 : bpl -
-
++
     ; Reset various timers and end-level addresses ($1492-$14AB).
     ldx #$18
 -   stz $1492|!addr,x
