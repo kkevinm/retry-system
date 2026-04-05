@@ -675,6 +675,23 @@ draw_X:
     db !bonus_stars_X_x_pos,!bonus_stars_X_y_pos-1
     db !death_X_x_pos,!death_X_y_pos-1
 
+; Shared routine used by the counters to draw the tile with position index Y
+; and tile number offset in $0E
+macro draw_routine()
+    jsr get_free_slot
+    rep #$20
+    lda.w .pos,y : sta $0200|!addr,x
+    lda $00 : clc : adc $0E : sta $0202|!addr,x
+    phx
+    txa : lsr #2 : tax
+    sep #$20
+    stz $0420|!addr,x
+    plx
+    inx #4
+    iny #2
+    rts
+endmacro
+
 ; Tiles offset from the timer tile in VRAM
 !timer_icon_offset   = $00
 !timer_digit1_offset = $01
@@ -742,18 +759,7 @@ endif ; not(!draw_leading_zeroes)
     ;rts
 
 .draw:
-    jsr get_free_slot
-    rep #$20
-    lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : clc : adc $0E : sta $0202|!addr,x
-    phx
-    txa : lsr #2 : tax
-    sep #$20
-    stz $0420|!addr,x
-    plx
-    inx #4
-    iny #2
-    rts
+    %draw_routine()
 
 .pos:
     db $00+!timer_icon_x_pos-1,!timer_icon_y_pos-1
@@ -797,18 +803,7 @@ endif ; not(!draw_leading_zeroes)
     ;rts
 
 .draw:
-    jsr get_free_slot
-    rep #$20
-    lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : clc : adc $0E : sta $0202|!addr,x
-    phx
-    txa : lsr #2 : tax
-    sep #$20
-    stz $0420|!addr,x
-    plx
-    inx #4
-    iny #2
-    rts
+    %draw_routine()
 
 .pos:
     db $00+!coin_icon_x_pos-1,!coin_icon_y_pos-1
@@ -908,18 +903,7 @@ endif ; not(!draw_leading_zeroes)
     ;rts
 
 .draw:
-    jsr get_free_slot
-    rep #$20
-    lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : clc : adc $0E : sta $0202|!addr,x
-    phx
-    txa : lsr #2 : tax
-    sep #$20
-    stz $0420|!addr,x
-    plx
-    inx #4
-    iny #2
-    rts
+    %draw_routine()
 
 .pos:
     db $00+!lives_icon_x_pos-1,!lives_icon_y_pos-1
@@ -966,18 +950,7 @@ endif ; not(!draw_leading_zeroes)
     ;rts
 
 .draw:
-    jsr get_free_slot
-    rep #$20
-    lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : clc : adc $0E : sta $0202|!addr,x
-    phx
-    txa : lsr #2 : tax
-    sep #$20
-    stz $0420|!addr,x
-    plx
-    inx #4
-    iny #2
-    rts
+    %draw_routine()
 
 .pos:
     db $00+!bonus_stars_icon_x_pos-1,!bonus_stars_icon_y_pos-1
@@ -1069,18 +1042,7 @@ endif ; not(!draw_leading_zeroes)
 
 .draw:
     inc $04
-    jsr get_free_slot
-    rep #$20
-    lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : clc : adc $0E : sta $0202|!addr,x
-    phx
-    txa : lsr #2 : tax
-    sep #$20
-    stz $0420|!addr,x
-    plx
-    inx #4
-    iny #2
-    rts
+    %draw_routine()
 
 .pos:
     db $00+!death_icon_x_pos-1,!death_icon_y_pos-1
