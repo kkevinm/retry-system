@@ -745,7 +745,7 @@ endif ; not(!draw_leading_zeroes)
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora $0E : sta $0202|!addr,x
+    lda $00 : clc : adc $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
@@ -800,7 +800,7 @@ endif ; not(!draw_leading_zeroes)
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora $0E : sta $0202|!addr,x
+    lda $00 : clc : adc $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
@@ -911,7 +911,7 @@ endif ; not(!draw_leading_zeroes)
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora $0E : sta $0202|!addr,x
+    lda $00 : clc : adc $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
@@ -969,7 +969,7 @@ endif ; not(!draw_leading_zeroes)
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora $0E : sta $0202|!addr,x
+    lda $00 : clc : adc $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
@@ -1072,7 +1072,7 @@ endif ; not(!draw_leading_zeroes)
     jsr get_free_slot
     rep #$20
     lda.w .pos,y : sta $0200|!addr,x
-    lda $00 : ora $0E : sta $0202|!addr,x
+    lda $00 : clc : adc $0E : sta $0202|!addr,x
     phx
     txa : lsr #2 : tax
     sep #$20
