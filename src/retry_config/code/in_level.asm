@@ -245,7 +245,6 @@ endif ; not(!retry_death_animation&2)
     bit #$0A : bne ...remove_yoshi
     and #$7F : sta $19D8|!addr,x
     lda #$02 : sta $1B95|!addr
-    dec : sta $0DC1|!addr
     bra +
 
     ; Remove Yoshi, but only if not set to go to the Yoshi Wings level.

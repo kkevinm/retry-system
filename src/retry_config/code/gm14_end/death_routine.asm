@@ -27,6 +27,10 @@ endif ; not(!infinite_lives)
     ; Make sure Mario's animation timer is 0.
     stz $1496|!addr
 
+    ; If set the go to the Yoshi wings level, make it spawn Yoshi.
+    lda $1B95|!addr : beq .reload
+    lda #$01 : sta $0DC1|!addr
+
 .reload:
 if !title_death_behavior != 0
     ; (Check if we need to reload a level or the title screen)

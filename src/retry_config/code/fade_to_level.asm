@@ -24,6 +24,7 @@ endif ; !enter_level_sfx != $00
     ; and set the Yoshi Wings flag in the checkpoint RAM).
     lda $1B95|!addr : beq +
     %jsl_to_rts_db($05DBAC)
+    jsr shared_get_screen_number
     lda $19D8|!addr,x : and #$FE : ora $010C|!addr : ora #$80
     bra ++
 +   jsr shared_get_screen_number
