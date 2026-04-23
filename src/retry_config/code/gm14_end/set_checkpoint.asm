@@ -14,9 +14,7 @@ if !save_on_checkpoint
     jsr shared_save_game
 endif ; !save_on_checkpoint
 
-    ; Always reload the samples, just to be safe.
-    lda #$FF : sta !ram_music_backup
-    bra .return
+    bra .backup_music
 
 .set:
     ; Save individual dcsave buffers.
@@ -41,12 +39,11 @@ endif ; !save_on_checkpoint
 
 ...main_midway:
     jsr calc_entrance
-    bra +
+    bra .save_and_return
+
 ...sub_midway:
     jsr calc_entrance_2
-+
-    lda $0DDA|!addr : sta !ram_music_backup
-    bra .return2
+    bra .save_and_return
 
 ..custom_destination:
     ; Set the checkpoint destination.
@@ -55,16 +52,26 @@ endif ; !save_on_checkpoint
     sep #$20
 
     ; If we're in the Yoshi Wings level, set the flag if applicable.
-    ldy $1B95|!addr : beq +
-    xba : bit #$0A : bne +
+    ldy $1B95|!addr : beq .save_and_return
+    xba : bit #$0A : bne .save_and_return
     ora #$80 : sta !ram_respawn+1
-+
-    ; Always reload the samples, just to be safe.
-    lda #$FF : sta !ram_music_backup
-    
-.return2:
+
+.save_and_return:
     ; Save the midway entrance as a checkpoint.
     jsr shared_hard_save
+
+.backup_music:
+    ; If the midway is a secondary entrance or not in the same sublevel
+    ; force to reload the samples to be safe.
+    ldy #$FF
+    rep #$20
+    lda !ram_respawn
+    bit #$0200 : bne +
+    and #$01FF : cmp $010B|!addr : bne +
+    ; Otherwise, backup the music to play.
+    ldy $0DDA|!addr
++   sep #$20
+    tya : sta !ram_music_to_play
 
 .return:
     ; Reset the set_checkpoint address.

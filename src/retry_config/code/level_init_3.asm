@@ -56,16 +56,17 @@ endif ; !reset_boo_rings == 2
     lda $0F31|!addr : sta !ram_timer+0
     sep #$20
     lda $0F33|!addr : sta !ram_timer+2
+    bra .ow_entrance_or_respawning_or_transition_midway
 
 .room_transition:
     ; If we're respawning, reset some stuff.
-    lda !ram_is_respawning : bne ..respawning
+    lda !ram_is_respawning : bne .ow_entrance_or_respawning_or_transition_midway
 
     ; If this just transition just triggered a room checkpoint, reset some stuff.
     lda !ram_respawn+1
     jsr shared_is_destination_a_checkpoint : bcc .normal
 
-..respawning:
+.ow_entrance_or_respawning_or_transition_midway:
     ; Fix issues with the "level ender" sprite.
     stz $1493|!addr
     stz $13C6|!addr

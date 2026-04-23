@@ -511,20 +511,29 @@ endif ; !reset_boo_rings
 ; Routine to reset music to make it play properly after respawning.
 ;=====================================
 reset_music:
+    ; Check if AddmusicK is inserted in the rom
     lda.l !rom_amk_byte : cmp #$5C : beq .amk
 
 .no_amk:
+    ; No AddmusicK: don't need to consider sample overhead
     lda $0DDA|!addr : bpl .return
     stz $0DDA|!addr
     rts
 
 .amk:
+    ; If music has been changed by the level ender, force music reset
+    ; (it does not update $0DDA properly)
     lda $13C6|!addr : bne .force_reset
+
+    ; If death, kaizo trap, ecc. happened, do more checks.
     lda $0DDA|!addr : cmp #$FF : beq .spec
-    lda !ram_music_to_play : cmp $0DDA|!addr : bne .return
-    bra .bypass
+
+    ; Normal case: $0DDA preserved
+    lda !ram_music_to_play : cmp $0DDA|!addr : beq .bypass
+    rts
 
 .spec:
+    ; Forse reset if the death song has been removed or it's not playing currently.
     lda.l !rom_death_song : beq .force_reset
     cmp $1DFB|!addr : beq .no_reset
 
@@ -533,16 +542,24 @@ reset_music:
     bra .return
 
 .no_reset:
+    ; If the music changed during the level, we need to reload the samples.
     lda !ram_music_to_play : cmp !ram_music_backup : bne .return
 
 .bypass:
     lda !ram_music_to_play : cmp #$FF : beq .return
-    jsr shared_get_prompt_type
-    cmp.b #!retry_type_prompt_death_song : beq ..reload_samples
-    cmp.b #!retry_type_instant_death_song : bne .return
 
-..reload_samples:
-    ; Make AMK reload the samples.
+    ; If Retry triggered the death song, don't reload the samples.
+    jsr shared_get_prompt_type
+    cmp.b #!retry_type_vanilla : beq .return ; Should never happen but just to be sure
+    cmp.b #!retry_type_prompt_death_song : beq ..dont_reload_samples
+    cmp.b #!retry_type_instant_death_song : beq ..dont_reload_samples
+
+    ; If not a Retry type that restarts the song, the death song can play
+    ; after the music hurry up effect.
+    lda !ram_hurry_up : beq .return
+
+..dont_reload_samples:
+    ; Make AMK not reload the samples.
     lda #$01 : sta !amk_freeram+1
 
 .return:
