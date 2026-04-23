@@ -457,8 +457,14 @@ main:
 .not_paused:
     ; Don't draw if on not in a level.
     lda $0100|!addr : cmp #$0B : bcc +
-    cmp #$15 : bcc .run
+    cmp #$15 : bcc .in_level
 +   rts
+
+.in_level:
+    ; Don't draw if a message box is displayed, except for the first frame.
+    lda $1426|!addr : beq .run
+    lda $1B89|!addr : beq .run
+    rts
 
 .run:
     phb : phk : plb
