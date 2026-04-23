@@ -99,20 +99,21 @@ custom_midway:
     ; Update the custom midway objects counter.
     inc : sta !ram_cust_obj_num
 
-    dec : asl : tax
+    ; (avoid doing DEC by loading addr-2,x later)
+    rep #$30
+    and #$00FF : asl : tax
     lda $57
-    rep #$20
     and #$00FF : clc : adc $6B
 
-    ; Store index to $7EC800.
-    sec : sbc #$C800 : sta !ram_cust_obj_data,x
+    ; Store index in $7EC800.
+    sec : sbc #$C800 : sta !ram_cust_obj_data-2,x
 
     ; Store entrance info.
-    lda $58 : sta !ram_cust_obj_entr,x
+    lda $58 : sta !ram_cust_obj_entr-2,x
 
     ; If this is the midway that triggered the current checkpoint, don't make it spawn.
     lda !ram_respawn : eor $58 : and #$FBFF
-    sep #$20
+    sep #$30
     beq .return
 
 .spawn_midway:

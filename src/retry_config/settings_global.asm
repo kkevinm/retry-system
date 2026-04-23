@@ -163,7 +163,7 @@
 ; Note: this can be used alongside ObjecTool, but you'll need to modify that patch a bit (see the "docs/objectool_info.html" file).
     !use_custom_midway_bar = 1
 
-; If !use_custom_midway_bar = 1, it determines how many custom midways you can have in the same sublevel.
+; If !use_custom_midway_bar = 1, it determines how many custom midways you can have in the same sublevel (max 255).
 ; The more you set, the more free ram is needed (4 bytes for each).
     !max_custom_midway_num = 8
 

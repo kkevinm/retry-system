@@ -1,6 +1,9 @@
 ; Dynamic defines for miscellaneous values used by Retry
 ; These are calculated at compile time depending on some other define
 
+assert !max_custom_midway_num < 256,\
+    "\!max_custom_midway_num must be less than 256!"
+
 ; Address for the custom midway amount.
 !ram_cust_obj_num = !ram_cust_obj_data+(!max_custom_midway_num*4)
 
