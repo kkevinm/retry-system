@@ -1,0 +1,19 @@
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Run tests
+      shell: cmd
+      run: |
+        cd tests
+        call .\test_uberasmtool_insert.bat
+        exit /b %errorlevel%

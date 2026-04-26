@@ -7,6 +7,7 @@ set "uber_dir=.\uber"
 set "retry_src=..\src"
 set "retry_install=..\retry_install.bat"
 set "uber_list=test_uberasmtool_list.txt"
+set "error=0"
 
 if not exist "%temp_dir%" (
     mkdir "%temp_dir%"
@@ -32,7 +33,7 @@ powershell -Command "(New-Object System.Net.WebClient).DownloadFile('%uber_url%'
 
 if %errorlevel% neq 0 (
     echo Download failed
-    goto :End
+    goto :Error
 )
 
 echo Download succeeded
@@ -45,7 +46,7 @@ powershell -Command "Expand-Archive -Path '%uber_dir%.zip' -DestinationPath '%ub
 
 if %errorlevel% neq 0 (
     echo Unzip failed
-    goto :End
+    goto :Error
 )
 
 echo Unzip succeeded
@@ -62,11 +63,15 @@ echo.
 
 if %errorlevel% neq 0 (
     echo Retry insertion failed
-    goto :End
+    goto :Error
 )
 
 echo Retry insertion succeeded
+goto :End
+
+:Error
+set error=1
 
 :End
 cd ..
-exit /b %errorlevel%
+exit /b %error%
