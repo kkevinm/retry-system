@@ -1,7 +1,12 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-set /p uber_folder="UberASM Tool folder where to install: "
+if "%~1"=="" (
+    set /p uber_folder="UberASM Tool folder where to install: "
+) else (
+    set uber_folder=%~1
+)
+
 set uber_folder=!uber_folder:"=!
 set retry_folder=.\src
 
@@ -11,7 +16,12 @@ if exist "!retry_folder!\gamemode" if exist "!retry_folder!\library" if exist "!
     goto :retry_exist
 )
 
-set /p retry_folder="Retry src folder to install: "
+if "%~2"=="" (
+    set /p retry_folder="Retry src folder to install: "
+) else (
+    set retry_folder=%~2
+)
+
 set retry_folder=!retry_folder:"=!
 
 if not exist "!retry_folder!" (
@@ -130,4 +140,6 @@ goto :install
 
 echo.
 
-pause
+if "%~1"=="" (
+    pause
+)

@@ -21,6 +21,7 @@ jobs:
           "README.md"
           "docs/_template.html"
           "screenshots"
+          "tests"
         )
 
         # Create args for rsync

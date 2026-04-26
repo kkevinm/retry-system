@@ -1,0 +1,10 @@
+deprecations: on
+verbose: debug
+level:
+overworld:
+gamemode:
+    * retry_gm.asm
+global: other/global_code.asm
+statusbar: other/status_code.asm
+macrolib: other/macro_library.asm
+freeram: $7FAC80
