@@ -47,7 +47,7 @@ endmacro
 %retry_ram(prompt_x_pos,$15)                ; 1
 %retry_ram(prompt_y_pos,$16)                ; 1
 %retry_ram(disable_prompt_bg,$17)           ; 1
-%retry_ram(play_sfx,$18)                    ; 1
+%retry_ram(misc_flags,$18)                  ; 1
 %retry_ram(midways_override,$19)            ; 1
 %retry_ram(coin_backup,$1A)                 ; 1
 %retry_ram(lives_backup,$1B)                ; 1
@@ -60,7 +60,8 @@ endmacro
 %retry_ram(status_bar_death_tile,$27)       ; 2
 %retry_ram(status_bar_force_upload,$29)     ; 1
 %retry_ram(canary,$2A)                      ; 2
-%retry_ram(reserved,$2C)                    ; 15 (reserved for future expansion)
+%retry_ram(0dda_backup_current_frame,$2C)   ; 1
+%retry_ram(reserved,$2D)                    ; 14 (reserved for future expansion)
 %retry_ram(death_counter,$3B)               ; 5
 %retry_ram(checkpoint,$40)                  ; 192
 %retry_ram(cust_obj_data,$100)              ; 1+(!max_custom_midway_num*4)

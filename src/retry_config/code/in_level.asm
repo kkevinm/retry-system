@@ -14,7 +14,7 @@ endif ; !retry_death_animation&2
 
 main:
     ; Enable SFX echo if applicable.
-    lda !ram_play_sfx : bpl +
+    lda !ram_misc_flags : bpl + ; and.b #!misc_flags_sfx_echo ($80)
     lda $1DFA|!addr : bne +
     ; Don't play every frame or AMK will ignore it
     ; when changing music in the middle of a level
@@ -31,6 +31,9 @@ main:
     ; If a message is running, skip.
     lda $1426|!addr : bne .return
 
+    ; Backup the current frame $0DDA for use in death_routine.
+    lda $0DDA|!addr : sta !ram_0dda_backup_current_frame
+
     ; If Mario is dying, handle it.
     lda $71 : cmp #$09 : beq .dying
 
@@ -38,9 +41,14 @@ main:
     ; Otherwise, reset the dying flag...
     lda #$00 : sta !ram_is_dying
     
-    ; ...and backup $0DDA for later.
-    lda $0DDA|!addr : sta !ram_music_backup
-
+    ; ...and backup $0DDA for later, unless a global song is playing and it
+    ; reset $0DDA to #$FF (like goal tape).
+    lda $0DDA|!addr : cmp #$FF : bne +
+    jsr shared_get_amk_global_song_count
+    cmp $1DFB|!addr : bcs ++
+    lda $0DDA|!addr
++   sta !ram_music_backup
+++
     ; If Mario is not dead but the prompt is displayed for some reason
     ; (for example, revive glitch with Yoshi)...
     lda !ram_prompt_phase : beq .return
@@ -539,28 +547,17 @@ reset_music:
 
 .force_reset:
     lda #$00 : sta !amk_freeram : sta $1DFB|!addr
-    bra .return
 
 .no_reset:
     ; If the music changed during the level, we need to reload the samples.
     lda !ram_music_to_play : cmp !ram_music_backup : bne .return
 
 .bypass:
-    lda !ram_music_to_play : cmp #$FF : beq .return
-
-    ; If Retry triggered the death song, don't reload the samples.
-    jsr shared_get_prompt_type
-    cmp.b #!retry_type_vanilla : beq .return ; Should never happen but just to be sure
-    cmp.b #!retry_type_prompt_death_song : beq ..dont_reload_samples
-    cmp.b #!retry_type_instant_death_song : beq ..dont_reload_samples
-
-    ; If not a Retry type that restarts the song, the death song can play
-    ; after the music hurry up effect.
-    lda !ram_hurry_up : beq .return
+    cmp #$FF : beq .return
 
 ..dont_reload_samples:
-    ; Make AMK not reload the samples.
-    lda #$01 : sta !amk_freeram+1
+    ; Set the flag to not reload the samples (it will be used in level_init_1).
+    lda !ram_misc_flags : ora.b #!misc_flags_no_sample_reload : sta !ram_misc_flags
 
 .return:
     rts

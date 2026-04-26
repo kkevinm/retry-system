@@ -212,17 +212,18 @@ incsrc "ram.asm"
 			<td>User</td>
 			<td class="left-align">If set, the Retry prompt's black background will be disabled. Retry sets to <code>!no_prompt_bg</code> from <code>settings_global.asm</code> at startup, but you can also change it at any time. Suggested to be set if also changing <code>prompt_x_pos</code> and <code>prompt_y_pos</code> during gameplay.</td>
 		</tr>
-		<tr id="play_sfx">
-			<td><code>play_sfx</code></td>
+		<tr id="misc_flags">
+			<td><code>misc_flags</code></td>
 			<td><code>$18</code></td>
 			<td><code>$01</code></td>
 			<td>Internal</td>
 			<td class="left-align">
-				Bitwise mask set on level load for different purposes.<br/>
-				Format: <code>e------s</code>.
+				Bitwise mask flags used for various purposes.<br/>
+				Format: <code>e-----ns</code>.
 				<ul>
 					<li><code>e</code>: set if using the <code>%sfx_echo</code> setting in <u class="dir">settings_local.asm</u> for the current sublevel (see <a href="./settings_local.html#sfx_echo">Local Settings - %sfx_echo</a>). Used to send the SFX echo command during level main. You can also set this manually in level init to enable SFX echo.</li>
-					<li><code>s</code>: Set if <code>!room_cp_sfx</code> is not <code>$00</code> and the current sublevel gives a room entrance checkpoint (unless using the <code>%no_room_cp_sfx</code> setting in <u class="dir">settings_local.asm</u>, see <a href="./settings_local.html#no_room_cp_sfx">Local Settings - %no_room_cp_sfx</a> for details). Used to play the midway SFX during level init.</li>
+					<li><code>n</code>: set when respawning in the level to signal that the music samples should not be reloaded if the song is reloaded. This is set where Retry can be sure that the music that will be reloaded will be the same as the last local song (so, excluding jingles and fanfares) that was playing before reloading the level. The flag is checked during gamemode 11 to set the AddmusicK "no sample reload" flag, which is when the level music is loaded. It is then reset during gamemode 12.</li>
+					<li><code>s</code>: set if <code>!room_cp_sfx</code> is not <code>$00</code> and the current sublevel gives a room entrance checkpoint (unless using the <code>%no_room_cp_sfx</code> setting in <u class="dir">settings_local.asm</u>, see <a href="./settings_local.html#no_room_cp_sfx">Local Settings - %no_room_cp_sfx</a> for details). Used to play the midway SFX during level init.</li>
 					<li><code>-</code>: currently unused.</li>
 				</ul>
 			</td>
@@ -318,10 +319,17 @@ incsrc "ram.asm"
 			<td>Internal</td>
 			<td class="left-align">Contains a fixed value and it is used to detect invalid game states (like if loading a bogus save state or if the memory gets corrupted). If the value is not the expected one, an error message will show in game when loading a level. You should never write to it unless you want to force the error message (which is basically a hardlock).</td>
 		</tr>
+		<tr id="0dda_backup_current_frame">
+			<td><code>0dda_backup_current_frame</code></td>
+			<td><code>$2C</code></td>
+			<td><code>$01</code></td>
+			<td>Internal</td>
+			<td class="left-align">It stores a backup of the value in <code>$0DDA</code> on every frame. The value is stored at the start of every frame, then it can be used during the death routine to restore it. This is needed because the vanilla routine sets <code>$0DDA</code> to <code>#$FF</code>, which is undesirable when Retry wants to disable the death music and its side effects.</td>
+		</tr>
 		<tr id="reserved">
 			<td><code>reserved</code></td>
-			<td><code>$2C</code></td>
-			<td><code>$0F</code></td>
+			<td><code>$2D</code></td>
+			<td><code>$0E</code></td>
 			<td>Internal</td>
 			<td class="left-align">Unused, but reserved for future expansion. Usage as freeram is not recommended.</td>
 		</tr>

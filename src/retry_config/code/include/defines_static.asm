@@ -38,3 +38,13 @@
 !box_window_x_pos #= $38
 
 !box_window_size #= 72
+
+; AMK header stuff in the ROM
+!amk_header_string     #= $4B4D4140 ; @AMK
+!amk_header_size       #= 32
+!amk_music_ptrs_offset #= 8
+
+; Flags used for !ram_misc_flags
+!misc_flags_sfx_echo         = $80
+!misc_flags_no_sample_reload = $40
+!misc_flags_no_room_cp_sfx   = $01

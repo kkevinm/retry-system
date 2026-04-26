@@ -16,7 +16,7 @@ endif ; !pipe_entrance_freeze < 2
 +   
     ; Play the silent checkpoint SFX if applicable.
 if !room_cp_sfx != $00
-    lda !ram_play_sfx : beq +
+    lda !ram_misc_flags : and.b #!misc_flags_no_room_cp_sfx : beq +
     lda.b #!room_cp_sfx : sta !room_cp_sfx_addr|!addr
 +
 endif ; !room_cp_sfx != $00
@@ -29,7 +29,7 @@ endif ; !room_cp_sfx != $00
     jsr shared_get_bitwise_mask
     and.l tables_sfx_echo,x : beq ++
     iny
-    lda !ram_play_sfx : ora #$80 : sta !ram_play_sfx
+    lda !ram_misc_flags : ora.b #!misc_flags_sfx_echo : sta !ram_misc_flags
 ++  sty $1DFA|!addr
 +
     ; Reset DSX sprites.

@@ -111,6 +111,7 @@ BEQ Okay
     STA !MusicBackup
 +                       ;<- add this
 </pre>
+    <p>Additionally, in old AddmusicK version it can happen that right after the line <code>STA !MusicBackup</code> there is a line <code>STA $0DDA|!SA1Addr2</code>: if so, remove the line <code>STA $0DDA|!SA1Addr2</code> (but keep the <code>+</code> you added earlier).</p>
 
     <hr>
 

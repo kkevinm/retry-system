@@ -22,6 +22,17 @@ endif ; !reset_frame_counters
     sta !ram_prompt_phase
     sta !ram_is_dying
 
+    ; Skip ahead if not respawning.
+    lda !ram_is_respawning : beq .not_respawning
+
+.respawning:
+    ; If respawning, set the AMK "no sample reload" flag.
+    ; We do it here because this frame the level song is actually loaded
+    ; otherwise AMK could reset the flag preemptively.
+    lda !ram_misc_flags : and.b #!misc_flags_no_sample_reload : beq .not_respawning
+    sta !amk_freeram+1
+
+.not_respawning:
     ; Check if we entered from the overworld.
     lda $141A|!addr : bne .skip
 

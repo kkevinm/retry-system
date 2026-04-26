@@ -508,3 +508,54 @@ is_prompt_deployed:
 .no:
     clc
     rts
+
+;===============================================================================
+; Returns the amount of global songs inserted with AddmusicK in A.
+; If AddmusicK is not inserted, it returns 0.
+; It may count more songs than actually present if someone omits the first local
+; song(s) from the AddmusicK list, but it's not an issue for what we're using
+; this for.
+;===============================================================================
+get_amk_global_song_count:
+    lda.l !rom_amk_byte : cmp #$5C : beq .amk
+.no_amk:
+    sep #$20
+    lda #$00
+    rts
+.amk:
+    ; Get pointer to the AMK header data
+    lda.l !rom_amk_byte+3 : sta $02
+    rep #$20
+    lda.l !rom_amk_byte+1 : sec : sbc.w #!amk_header_size : sta $00
+    ldy #$00
+
+    ; Check if the @AMK is present where we expect
+    lda [$00],y : cmp.w #!amk_header_string : bne .no_amk
+    iny #2
+    lda [$00],y : cmp.w #!amk_header_string>>16 : bne .no_amk
+
+    ; Set data bank to the music pointers table bank
+    phb
+    ldy.b #!amk_music_ptrs_offset+1
+    lda [$00],y : pha : plb : plb
+
+    ; Get pointer to the music pointers table
+    dey
+    lda [$00],y : sta $00
+
+    ; Count all the starting NULL pointers
+    ; (the first is for song 0 that does not count towards the total)
+    rep #$30
+    ldy #$0003
+    ldx #$0000
+-   lda ($00),y
+    iny
+    ora ($00),y : bne +
+    inx
+    iny #2
+    bra -
++   
+    plb
+    sep #$30
+    txa
+    rts

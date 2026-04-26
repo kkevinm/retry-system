@@ -131,7 +131,7 @@ endif ; !no_score_sprites_on_death
 
     ; Undo the $0DDA change.
     ; This ensures the song won't be reloaded if it's the same after respawning.
-    lda !ram_music_backup : sta $0DDA|!addr
+    lda !ram_0dda_backup_current_frame : sta $0DDA|!addr
 
     ; Only play the death SFX once per death.
     lda !ram_is_dying : bmi .return
