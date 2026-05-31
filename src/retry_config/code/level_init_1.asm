@@ -33,8 +33,10 @@ endif ; !reset_frame_counters
     sta !amk_freeram+1
 
 .not_respawning:
-    ; Check if we entered from the overworld.
-    lda $141A|!addr : bne .skip
+    ; Check if we entered from the overworld, or the bonus game flag is set
+    lda $141A|!addr
+    ora $1425|!addr
+    bne .skip
 
 .from_ow:
     ; Apply counterbreak
