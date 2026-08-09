@@ -48,3 +48,7 @@
 !misc_flags_sfx_echo         = $80
 !misc_flags_no_sample_reload = $40
 !misc_flags_no_room_cp_sfx   = $01
+
+; Custom midway feature ROM signature
+!custom_midway_interface_magic_word #= $1337
+!custom_midway_interface_version    #= 1
