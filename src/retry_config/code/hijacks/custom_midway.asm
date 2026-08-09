@@ -22,6 +22,8 @@ endif ; read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
 
 pullpc
 
+if read2(!rom_ari_objectool_check_addr) != !rom_ari_objectool_check_word
+
 new_norm_objects:
     sep #$30
 
@@ -72,6 +74,8 @@ new_norm_objects:
 
     ; Jump back to an rts.
     jml $0DA53C|!bank
+
+endif ; read2(!rom_ari_objectool_check_addr) != !rom_ari_objectool_check_word
 
 ; Bytes that can read from ROM to check the presence of Retry's custom midway
 ; feature (if read1($0DA104) == $5C && read2(read3($0DA104+1)-3) == $1337)
