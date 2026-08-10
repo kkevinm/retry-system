@@ -153,10 +153,14 @@ custom_midway:
 else ; if not(!use_custom_midway_bar)
 
 ; Restore code, in case settings are changed.
-if read1($0DA104) == $5C && read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
+if read1($0DA104) == $5C
 
 org $0DA104
+if read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
+    rtl : nop #3
+else
     db $A1,$6B,$E2,$30
+endif ; read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
 
 endif ; read1($0DA104) == $5C
 
