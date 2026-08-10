@@ -118,6 +118,25 @@ else ; if not(read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3
     !maxtile = 0
 endif ; read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140
 
+; Check if the LM Overworld Levels Expansion feature is inserted.
+if or(equal(read4($03BBD8),$FFFFFFFF), and(equal(read3($03BBD8),$BE80BD), equal(read1($05B1A3),$22)))
+    !more_ow_levels  #= 0
+    !ow_levels_count #= $60
+    !dc_flags        #= $1F2F|!addr
+    !ow_submap       #= $1F11|!addr
+    !ow_x_pos        #= $1F17|!addr
+    !ow_y_pos        #= $1F19|!addr
+else
+    !more_ow_levels  #= 1
+    !ow_levels_count #= $100
+    !dc_flags        #= read2($00F355)
+    !ow_submap       #= read2($0096D3)
+    !ow_x_pos        #= read2($04854E)
+    !ow_y_pos        #= read2($04855B)
+endif
+
+!ow_flags_sram_buffer #= read2($009BDE)
+
 ; Macro to insert a table of repeating 1 byte values
 macro dbn(val, n)
     fillbyte <val> : fill <n>

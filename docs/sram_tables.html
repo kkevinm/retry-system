@@ -26,15 +26,18 @@
     <p>This table can be used to save custom values to SRAM, so they can persist when the console is turned off. By default it saves the custom checkpoint ram (so multiple midways will save properly) and the death counter.</p>
 <pre>
 save:
-    dl !retry_ram_checkpoint    : dw 192
+    dl !retry_ram_checkpoint    : dw !ow_levels_count
     ; Feel free to add your own stuff here.
+    
 
 .not_game_over:
     dl !retry_ram_death_counter : dw 5
     ; Feel free to add your own stuff here.
+    
 
 .global:
     ; Feel free to add your own stuff here.
+    
 
 </pre>
     <p>Each line is formatted as follows:</p>
@@ -60,33 +63,26 @@ save:
 <pre>
 sram_defaults:
     ; Default checkpoint values (don't edit this!).
-    dw $0000,$0001,$0002,$0003,$0004,$0005,$0006,$0007
-    dw $0008,$0009,$000A,$000B,$000C,$000D,$000E,$000F
-    dw $0010,$0011,$0012,$0013,$0014,$0015,$0016,$0017
-    dw $0018,$0019,$001A,$001B,$001C,$001D,$001E,$001F
-    dw $0020,$0021,$0022,$0023,$0024,$0101,$0102,$0103
-    dw $0104,$0105,$0106,$0107,$0108,$0109,$010A,$010B
-    dw $010C,$010D,$010E,$010F,$0110,$0111,$0112,$0113
-    dw $0114,$0115,$0116,$0117,$0118,$0119,$011A,$011B
-    dw $011C,$011D,$011E,$011F,$0120,$0121,$0122,$0123
-    dw $0124,$0125,$0126,$0127,$0128,$0129,$012A,$012B
-    dw $012C,$012D,$012E,$012F,$0130,$0131,$0132,$0133
-    dw $0134,$0135,$0136,$0137,$0138,$0139,$013A,$013B
+    for i = 0..!ow_levels_count
+        dw select(greater(!i,$24),!i+$DC,!i)
+    endfor
     ; Feel free to add your own stuff here.
+    
 
 .not_game_over:
     ; Initial death counter value (don't edit this!).
     %dbn($00,5)
-
     ; Feel free to add your own stuff here.
+
 
 .global:
     ; Feel free to add your own stuff here.
+    
 
 </pre>
     <p>You can do <code>db $XX,$XX,...</code> for 1 byte values, <code>dw $XXXX,$XXXX,...</code> for 2 bytes values and <code>dl $XXXXXX,$XXXXXX,...</code> for 3 bytes values.</p>
     <p>If you need to insert a lot of repeating values in a row, you can use <code>%dbn($XX,n)</code> for 1 byte values, <code>%dwn($XXXX,n)</code> for 2 byte values or <code>%dln($XXXXXX,n)</code> for 3 byte values, where <code>n</code> is the amount of times the value is repeated (max 242).</p>
-    <p>The amount of values of each entry should correspond to the <code>dw $YYYY</code> value in the save table (for example, the checkpoint values are 192, and the death counter values are 5).</p>
+    <p>The amount of values of each entry should correspond to the <code>dw $YYYY</code> value in the save table (for example, the death counter values are 5).</p>
     <p>Remember, if you have some addresses after <code>.not_game_over</code> and <code>.global</code> in the <code>save:</code> table, put their default values after <code>.not_game_over</code> and <code>.global</code> here also, in the same order.</p>
     <p>Regarding the <code>.global</code> values, they will be initialized on game startup rather than on a new save file.</p>
     <br/>

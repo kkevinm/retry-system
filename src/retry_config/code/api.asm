@@ -96,22 +96,23 @@ reset_all_cps:
 %deprecated(reset_all_checkpoints)
     ; A/X/Y 8 bits
     phx : phy : php
-    sep #$30
-
+    
     ; Initialize the checkpoint ram table.
-    ldx #$BE
-    ldy #$5F
--   tya : cmp #$25 : bcc +
-    clc : adc #$DC
+    rep #$30
+    ldx.w #2*(!ow_levels_count-1)
+    ldy.w #!ow_levels_count-1
+-   tya : cmp.w #$0025 : bcc +
+    clc : adc.w #$00DC
 +   sta !ram_checkpoint,x
-    lda #$00 : adc #$00 : sta !ram_checkpoint+1,x
-    lda $1EA2|!addr,y : and #~$40 : sta $1EA2|!addr,y
+    lda $1EA2|!addr,y : and.w #~$0040 : sta $1EA2|!addr,y
     dex #2
     dey : bpl -
+    sep #$30
 
     ; Initialize respawn RAM in case it's called inside a level.
-    %lda_13BF() : asl : tax
-    rep #$20
+    %lda_13BF()
+    rep #$30
+    and #$00FF : asl : tax
     lda !ram_checkpoint,x : sta !ram_respawn
 
     ; Initialize "set checkpoint" handle to $FFFF.
