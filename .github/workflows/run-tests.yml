@@ -1,3 +1,5 @@
+name: Run tests on commit
+
 on:
   push:
   workflow_dispatch:
