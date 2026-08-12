@@ -8,7 +8,7 @@
 print "    Retry System version: !version"
 
 ; What button exits the level while the game is paused (by default, select).
-!exit_level_buttons_addr = $16
+!exit_level_buttons_addr = $15
 !exit_level_buttons_bits = $20
 
 ; Level number of the intro level (automatically adjusted to $01C5 when necessary).
