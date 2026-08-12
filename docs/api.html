@@ -27,6 +27,7 @@
 		<li><a href="#get_retry_type">Get Retry type</a></li>
 		<li><a href="#is_save_file_empty">Is save file empty</a></li>
 		<li><a href="#get_sram_variable_address">Get SRAM variable address</a></li>
+		<li><a href="#erase_file">Erase file</a></li>
 	</ul>
 	<br/>
 
@@ -232,6 +233,27 @@ empty_file:
 </pre>
 		</li>
 	</ul>
+
+	<h3 id="erase_file">Erase file</h3>
+	<p><code>JSL retry_api_erase_file</code></p>
+	<p>Routine to erase a save file.</p>
+	<ul>
+		<li>Inputs: <code>A = index of save file to erase</code> (<code>0</code> = save file 1, <code>1</code> = save file 2, <code>2</code> = save file 3, <code>$FF</code> = all save files).</li>
+		<li>Outputs: <code>N/A</code>
+		</li>
+		<li>Preconditions: <code>A/X/Y 8 bit</code></li>
+		<li>Postconditions: <code>A/X/Y 8 bit and clobbered, DB preserved</code></li>
+		<li>Usage (example):
+<pre>
+    LDA #$02 ; Erase save file 3
+    JSL retry_api_erase_file
+
+    LDA $010A|!addr ; Erase currently loaded save file
+    JSL retry_api_erase_file
+</pre>
+		</li>
+	</ul>
+	<br/>
 </div>
 </body>
 </html>

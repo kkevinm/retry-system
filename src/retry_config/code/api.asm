@@ -378,3 +378,33 @@ else ; if not(!sram_feature)
     sep #$31
 endif ; !sram_feature
     rtl
+
+;===============================================================================
+; Routine to erase a save file.
+;
+; Inputs: A = index of save file to erase (0 = save file 1, 1 = save file
+;         2, 2 = save file 3, $FF = all save files)
+; Outputs: N/A
+; Pre: A/X/Y 8 bits
+; Post: A/X/Y 8 bit and clobbered, DB preserved
+; Examples:
+;         LDA #$02 ; Erase save file 3
+;         JSL retry_api_erase_file
+;
+;         LDA $010A|!addr ; Erase currently loaded save file
+;         JSL retry_api_erase_file
+;===============================================================================
+erase_file:
+    ; Get the correct value for $0DDE (bitmask of which files to erase)
+    bpl +
+    lda #$03
++   tax
+    lda.l .0dde_val,x : sta $0DDE|!addr
+    ; Call the vanilla erase file routine (it clobbers $0100 so we preserve it)
+    lda $0100|!addr : pha
+    %jsl_to_rts_db($009B41)
+    pla : sta $0100|!addr
+    rtl
+
+.0dde_val:
+    db $04,$02,$01,$07
