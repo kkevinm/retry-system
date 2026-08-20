@@ -34,7 +34,7 @@ endif ; !reset_frame_counters
 
 .not_respawning:
     ; Check if we entered from the overworld.
-    lda $141A|!addr : bne .skip
+    lda $141A|!addr : ora $1425|!addr : bne .skip
 
 .from_ow:
     ; Apply counterbreak
