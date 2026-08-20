@@ -43,7 +43,11 @@ empty:
 ;===============================================================================
     %incsrc(code/include,ssb_tables)
 if !use_legacy_tables
+if getfilestatus("../retry_config/tables.asm") == 0
+    %incsrc("",tables)
+else
     %incsrc(legacy,tables)
+    endif
 else
     %incsrc(code/include,tables)
     %incsrc("",settings_local)

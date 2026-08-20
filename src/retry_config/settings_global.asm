@@ -463,5 +463,6 @@
 
 ; If 1, the level-specific Retry settings will be loaded from the "legacy/tables.asm"
 ; file instead of the "settings_local.asm" file. Use this if you prefer the old table-based
-; approach rather than the new macro-based approach.
+; approach rather than the new macro-based approach. You can also move the "tables.asm"
+; file to the "retry_config" folder for convenience.
     !use_legacy_tables = 0
