@@ -55,7 +55,7 @@ else
 endif
 endif
 
-if read1($0DA415) == $5C && read1($0DA106) != $5C && read2($0DA100) != $544F
+if read1($0DA415) == $5C && read1($0DA106) != $5C
 org $0DA415
     sep #$30
     lda $1931|!addr

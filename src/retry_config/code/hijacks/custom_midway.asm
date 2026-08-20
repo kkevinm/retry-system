@@ -8,6 +8,22 @@ if !use_custom_midway_bar
 
 pushpc
 
+; This restores vanilla code at $0DA415, specifically when either Retry's
+; custom objects are not used or when they're used together with Arinsu's
+; ObjecTool. This removed a game crash if patching the tool on a ROM that
+; already had Retry inserted, and then reinserting Retry.
+if read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C
+
+pushpc
+
+org $0DA415
+    sep #$30
+    lda $1931|!addr
+
+pullpc
+
+endif ; read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C
+
 if read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
 
 org $0DA104
@@ -163,17 +179,5 @@ else
 endif ; read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
 
 endif ; read1($0DA104) == $5C
-
-if read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C && read2(!rom_ari_objectool_check_addr) != !rom_ari_objectool_check_word
-
-pushpc
-
-org $0DA415
-    sep #$30
-    lda $1931|!addr
-
-pullpc
-
-endif ; read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C && read2(!rom_ari_objectool_check_addr) != !rom_ari_objectool_check_word
 
 endif ; !use_custom_midway_bar
