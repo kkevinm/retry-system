@@ -53,6 +53,7 @@ if read2($0DA100) == $544F
 else
     db $A1,$6B,$E2,$30
 endif
+endif
 
 if read1($0DA415) == $5C && read1($0DA106) != $5C && read2($0DA100) != $544F
 org $0DA415
