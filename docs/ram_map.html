@@ -15,7 +15,7 @@
 	<p>This documents serves as a detailed reference on the purpose of the RAM addresses used by Retry, and how you can use them.</p>
 
 <h3 id="overview">Overview</h3>
-	<p>Retry uses a chunk of RAM at <code>$7FB400</code> (<code>$40A400</code> on SA-1 roms) by default. The size of this area is <code>257 + (4*!max_custom_midway_num)</code> bytes (where <code>!max_custom_midway_num</code> is defined in <code>settings.asm</code>).</p>
+	<p>Retry uses a chunk of RAM at <code>$7FB400</code> (<code>$40A400</code> on SA-1 roms) by default. The size of this area is <code>257 + (4*!max_custom_midway_num)</code> bytes (where <code>!max_custom_midway_num</code> is defined in <code>settings.asm</code>). If Lunar Magic's Overworld Level Number Expansion feature is used, Retry will use an additional <code>320</code> bytes.</p>
 	<p>The default address should be fine in most cases, but if you want to change it because of some freeram conflict, open <code>ram.asm</code> and edit <code>!retry_freeram</code> (<code>!retry_freeram_sa1</code> if you're using SA-1).</p>
 	<p>In the <code>ram.asm</code> file you can also see the name for the different addresses, defined as <code>%retry_ram(name,$XX)</code>, where <code>$XX</code> specifies the offset from the base <code>!retry_freeram</code> address. The full address name is resolved to <code>!ram_name</code> and <code>!retry_ram_name</code>.</p>
 	<p>At the end of the file you'll also find the <code>!amk_freeram</code> define that's used to interact with AddmusicK. The default value is the same as what's used in AddmusicK by default, so you'll only need to change it if you also changed it in the tool.</p>
@@ -343,9 +343,12 @@ incsrc "ram.asm"
 		<tr id="checkpoint">
 			<td><code>checkpoint</code></td>
 			<td><code>$40</code></td>
-			<td><code>$C0</code></td>
+			<td><code>$C0</code> or <code>$200</code></td>
 			<td>Internal</td>
-			<td class="left-align">Checkpoint data for each level (2 bytes per level). Holds the destination value of the latest checkpoint obtained in each level (using the same format as <code>respawn</code>). Note that entry <code>0</code> (the first 2 bytes) hold the checkpoint value for the intro level, but it won't be used after the intro. Saved to SRAM/BW-RAM by default (if <code>!sram_feature = 1</code> in <code>settings.asm</code>).</td>
+			<td class="left-align">
+				Checkpoint data for each level (2 bytes per level). Holds the destination value of the latest checkpoint obtained in each level (using the same format as <code>respawn</code>). Note that entry <code>0</code> (the first 2 bytes) hold the checkpoint value for the intro level, but it won't be used after the intro. Saved to SRAM/BW-RAM by default (if <code>!sram_feature = 1</code> in <code>settings.asm</code>).<br/>
+				Note that this area is <code>192</code> (<code>$C0</code>) bytes long normally, but it is <code>512</code> (<code>$200</code>) bytes if Lunar Magic's Overworld Level Number Expansion feature is used.
+			</td>
 		</tr>
 		<tr id="cust_obj_data">
 			<td><code>cust_obj_data</code></td>
@@ -354,7 +357,8 @@ incsrc "ram.asm"
 			<td>Internal</td>
 			<td class="left-align">
 				Data for all the possible custom midway objects loaded in the current level, plus a counter for how many custom midways are in the level (used to prevent additional midways from spawning if reaching the <code>!max_custom_midway_num</code> value from <code>settings.asm</code>).<br/>
-				Each midway uses 4 bytes, so this uses <code>(4*!max_custom_midway_num)+1</code> bytes. For each object, there's a 2 bytes identifier (based on its index in the level's map16 data) and the destination value that this midway will set when grabbed (based on the object's extension).</td>
+				Each midway uses 4 bytes, so this uses <code>(4*!max_custom_midway_num)+1</code> bytes. For each object, there's a 2 bytes identifier (based on its index in the level's map16 data) and the destination value that this midway will set when grabbed (based on the object's extension).
+			</td>
 		</tr>
 	</table>
 </div>

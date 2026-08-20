@@ -96,22 +96,23 @@ reset_all_cps:
 %deprecated(reset_all_checkpoints)
     ; A/X/Y 8 bits
     phx : phy : php
-    sep #$30
-
+    
     ; Initialize the checkpoint ram table.
-    ldx #$BE
-    ldy #$5F
--   tya : cmp #$25 : bcc +
-    clc : adc #$DC
+    rep #$30
+    ldx.w #2*(!ow_levels_count-1)
+    ldy.w #!ow_levels_count-1
+-   tya : cmp.w #$0025 : bcc +
+    clc : adc.w #$00DC
 +   sta !ram_checkpoint,x
-    lda #$00 : adc #$00 : sta !ram_checkpoint+1,x
-    lda $1EA2|!addr,y : and #~$40 : sta $1EA2|!addr,y
+    lda $1EA2|!addr,y : and.w #~$0040 : sta $1EA2|!addr,y
     dex #2
     dey : bpl -
+    sep #$30
 
     ; Initialize respawn RAM in case it's called inside a level.
-    %lda_13BF() : asl : tax
-    rep #$20
+    %lda_13BF()
+    rep #$30
+    and #$00FF : asl : tax
     lda !ram_checkpoint,x : sta !ram_respawn
 
     ; Initialize "set checkpoint" handle to $FFFF.
@@ -378,3 +379,33 @@ else ; if not(!sram_feature)
     sep #$31
 endif ; !sram_feature
     rtl
+
+;===============================================================================
+; Routine to erase a save file.
+;
+; Inputs: A = index of save file to erase (0 = save file 1, 1 = save file
+;         2, 2 = save file 3, $FF = all save files)
+; Outputs: N/A
+; Pre: A/X/Y 8 bits
+; Post: A/X/Y 8 bit and clobbered, DB preserved
+; Examples:
+;         LDA #$02 ; Erase save file 3
+;         JSL retry_api_erase_file
+;
+;         LDA $010A|!addr ; Erase currently loaded save file
+;         JSL retry_api_erase_file
+;===============================================================================
+erase_file:
+    ; Get the correct value for $0DDE (bitmask of which files to erase)
+    bpl +
+    lda #$03
++   tax
+    lda.l .0dde_val,x : sta $0DDE|!addr
+    ; Call the vanilla erase file routine (it clobbers $0100 so we preserve it)
+    lda $0100|!addr : pha
+    %jsl_to_rts_db($009B41)
+    pla : sta $0100|!addr
+    rtl
+
+.0dde_val:
+    db $04,$02,$01,$07

@@ -48,9 +48,13 @@ endif ; !reset_boo_rings == 2
     ; Reset timer frame counter
     lda.l !rom_timer_ticks : sta $0F30|!addr
 
+    ; If in the bonus game, backup the timer value.
+    lda $1425|!addr : bne .ow_entrace_or_bonus_game
+
     ; If not entering from the overworld, skip.
     lda $141A|!addr : bne .room_transition
 
+.ow_entrace_or_bonus_game:
     ; Backup the timer value.
     rep #$20
     lda $0F31|!addr : sta !ram_timer+0

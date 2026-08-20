@@ -8,6 +8,18 @@
 ; Note: you can override this per sublevel (see "settings_local.asm").
     !default_prompt_type = 1
 
+; 0 = vanilla checkpoint behavior (midway in a sublevel will lead to the main level's midway entrance).
+; 1 = the midway in a sublevel will lead to the sublevel's midway entrance.
+; 2 = any main/midway/secondary entrance to a sublevel will trigger a checkpoint.
+; 3 = both effects of 1 and 2.
+; 4 = any main/midway entrance to a sublevel will trigger a checkpoint.
+; 5 = both effects of 1 and 4.
+; 6 = any secondary entrance to a sublevel will trigger a checkpoint.
+; 7 = both effects of 1 and 6.
+; Note: you can override this per sublevel (see "settings_local.asm").
+; Note: this option does nothing if !use_legacy_tables = 1.
+    !default_checkpoint_type = 0
+
 ;=========================== QoL and Anti-Break ================================
 
 ; How many lives to start a new save file with.
@@ -451,5 +463,6 @@
 
 ; If 1, the level-specific Retry settings will be loaded from the "legacy/tables.asm"
 ; file instead of the "settings_local.asm" file. Use this if you prefer the old table-based
-; approach rather than the new macro-based approach.
+; approach rather than the new macro-based approach. You can also move the "tables.asm"
+; file to the "retry_config" folder for convenience.
     !use_legacy_tables = 0

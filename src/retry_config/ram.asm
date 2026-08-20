@@ -1,6 +1,8 @@
 includeonce
 
-; What freeram Retry uses: 257 + (!max_custom_midway_num*4) bytes are used.
+; Retry's freeram normally uses 257 + (!max_custom_midway_num*4) bytes.
+; If Lunar Magic's Overworld level number expansion feature is used, Retry will
+; use an additional 320 bytes.
 ; On SA-1, only !retry_freeram_sa1 is used.
 !retry_freeram     = $7FB400
 !retry_freeram_sa1 = $40A400
@@ -9,6 +11,13 @@ includeonce
 if read1($00FFD5) == $23
     !retry_freeram = !retry_freeram_sa1
 endif ; read1($00FFD5) == $23
+
+; Checkpoint table size depending on Overworld levels number
+if or(equal(read4($03BBD8),$FFFFFFFF), and(equal(read3($03BBD8),$BE80BD), equal(read1($05B1A3),$22)))
+    !_cp_size #= 2*$60
+else
+    !_cp_size #= 2*$100
+endif
 
 macro retry_ram(name,offset)
     !ram_<name> #= !retry_freeram+<offset>
@@ -63,8 +72,8 @@ endmacro
 %retry_ram(0dda_backup_current_frame,$2C)   ; 1
 %retry_ram(reserved,$2D)                    ; 14 (reserved for future expansion)
 %retry_ram(death_counter,$3B)               ; 5
-%retry_ram(checkpoint,$40)                  ; 192
-%retry_ram(cust_obj_data,$100)              ; 1+(!max_custom_midway_num*4)
+%retry_ram(checkpoint,$40)                  ; 192 / 512
+%retry_ram(cust_obj_data,$40+!_cp_size)     ; 1+(!max_custom_midway_num*4)
 
 ; What freeram is used by AddmusicK. Shouldn't need to be changed usually.
 !amk_freeram = $7FB000

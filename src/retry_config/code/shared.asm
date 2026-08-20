@@ -129,12 +129,12 @@ get_translevel:
     rts
 .no_intro:
     ldy $0DD6|!addr
-    lda $1F17|!addr,y : lsr #4 : sta $00
-    lda $1F19|!addr,y : and #$F0 : tsb $00
-    lda $1F1A|!addr,y : asl : sta $01
-    lda $1F18|!addr,y : and #$01 : ora $01
+    lda.w !ow_x_pos,y : lsr #4 : sta $00
+    lda.w !ow_y_pos,y : and #$F0 : tsb $00
+    lda.w !ow_y_pos+1,y : asl : sta $01
+    lda.w !ow_x_pos+1,y : and #$01 : ora $01
     ldy $0DB3|!addr
-    ldx $1F11|!addr,y : beq +
+    ldx.w !ow_submap,y : beq +
     clc : adc #$04
 +   sta $01
     rep #$10
@@ -225,15 +225,17 @@ save_game:
     phx
     phy
 
-    ; Set up vanilla SRAM buffer.
+if !ow_flags_sram_buffer != $1EA2|!addr
+    ; Set up vanilla SRAM buffer if needed.
     phb
     rep #$30
     ldx.w #$1EA2|!addr
-    ldy.w #$1F49|!addr
+    ldy.w #!ow_flags_sram_buffer
     lda.w #$008C
     mvn $00,$00
     sep #$30
     plb
+endif
 
     ; Save to SRAM/BW-RAM.
     jsl $009BC9|!bank
@@ -466,16 +468,19 @@ is_destination_a_checkpoint:
 set_checkpoints_from_initial_ow_flags:
     php
     sep #$30
-    ldy #$5F
+    ldy.b #!ow_levels_count-1
 .loop:
     ; Skip if the "Midway point obtained" flag is not set
-    lda $1F49|!addr,y : and #$40 : beq ..next
+    lda.w !ow_flags_sram_buffer,y : and #$40 : beq ..next
     ; X = 2*Y (for checkpoint table)
-    tya : asl : tax
+    rep #$30
+    tya : and #$00FF : asl : tax
+    sep #$20
     ; Skip if the checkpoint is for a secondary exit (just to be sure)
     lda !ram_checkpoint+1,x : bit #$02 : bne ..next
     ; Set the midway bit in the checkpoint
     ora #$08 : sta !ram_checkpoint+1,x
+    sep #$10
 ..next:
     dey : bpl .loop
     plp

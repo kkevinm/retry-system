@@ -8,7 +8,7 @@
 print "    Retry System version: !version"
 
 ; What button exits the level while the game is paused (by default, select).
-!exit_level_buttons_addr = $16
+!exit_level_buttons_addr = $15
 !exit_level_buttons_bits = $20
 
 ; Level number of the intro level (automatically adjusted to $01C5 when necessary).
@@ -29,20 +29,25 @@ print "    Retry System version: !version"
 ; them, you can change this to have more SRAM available for each one.
 !file_number = 3
 
-; How big (in bytes) each save file is in SRAM/BW-RAM.
-; This is auto-calculated so that the SRAM can hold enough data for 3 of our
-; custom file size and $400 of the vanilla file size (even though vanilla does
-; not use $400 bytes entirely, we use the unused area for the global variables).
-!file_size #= floor((((2**!sram_size)*1024)-$400)/!file_number)
+; Size reserved for global variables in SRAM. You can increase this at the cost
+; of less space for the save file variables.
+!global_sram_size #= $80
 
 ; SRAM/BW-RAM address to save to.
 if !sa1
-    !sram_addr        #= $41A000
-    !sram_addr_global #= !sram_addr+(!file_size*!file_number)
+    !sram_reserved #= 0
+    !sram_addr     #= $41A000
 else ; if not(!sa1)
-    !sram_addr        #= $700400
-    !sram_addr_global #= $7002CB+143
+    ; Would be $400 in vanilla, but this accounts for "SRAM expansion" patches
+    !sram_reserved #= $800
+    !sram_addr     #= $700000+!sram_reserved
 endif ; !sa1
+
+; How big (in bytes) each save file is in SRAM/BW-RAM.
+!file_size #= floor((((2**!sram_size)*1024)-!global_sram_size-!sram_reserved)/!file_number)
+
+; Address of global variables in SRAM.
+!sram_addr_global #= !sram_addr+(!file_size*!file_number)
 
 ; Check which channel is used for windowing HDMA, for SA-1 v1.35 (H)DMA remap compatibility.
 ; It will be 7 on lorom or with SA-1 <1.35, and 1 with SA-1 >=1.35.
@@ -117,6 +122,25 @@ if read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140
 else ; if not(read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140)
     !maxtile = 0
 endif ; read1($00FFD5) == $23 && read3($0084C0) == $5A123 && read1($0084C3) >= 140
+
+; Check if the LM Overworld Levels Expansion feature is inserted.
+if or(equal(read4($03BBD8),$FFFFFFFF), and(equal(read3($03BBD8),$BE80BD), equal(read1($05B1A3),$22)))
+    !more_ow_levels  #= 0
+    !ow_levels_count #= $60
+    !dc_flags        #= $1F2F|!addr
+    !ow_submap       #= $1F11|!addr
+    !ow_x_pos        #= $1F17|!addr
+    !ow_y_pos        #= $1F19|!addr
+else
+    !more_ow_levels  #= 1
+    !ow_levels_count #= $100
+    !dc_flags        #= read2($00F355)
+    !ow_submap       #= read2($0096D3)
+    !ow_x_pos        #= read2($04854E)
+    !ow_y_pos        #= read2($04855B)
+endif
+
+!ow_flags_sram_buffer #= read2($009BDE)
 
 ; Macro to insert a table of repeating 1 byte values
 macro dbn(val, n)
