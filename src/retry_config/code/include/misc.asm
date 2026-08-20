@@ -2,7 +2,7 @@
 ; You usually shouldn't edit this file.
 
 ; Retry version number to write in ROM.
-!version = "2.1.0-dev"
+!version = "2.1.0"
 
 ; Print version in the terminal
 print "    Retry System version: !version"
