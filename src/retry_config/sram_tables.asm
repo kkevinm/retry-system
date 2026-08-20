@@ -19,10 +19,11 @@
 ; Note: for each address you add here, you need to add the default values in the sram_defaults table below.
 ; Note: if using SA-1, for addresses in $7E0100-$7E1FFF you must change them to $400100-$401FFF and for addresses $7E0000-$7E00FF you must change them to $003000-$0030FF.
 ;       Additionally, a lot of other addresses might be remapped to different locations (see SA-1 docs for more info).
-; Note: you can put up to 2385 bytes in the "save" and ".not_game_over" tables combined, and up to 162 bytes on lorom and 1021 bytes on SA-1 in the ".global" table.
+; Note: in the "save" and ".not_game_over" tables combined you can put up to 2688 bytes on SA-1, and up to 2005 bytes on lorom.
+;       In the ".global" table you can put up to 124 bytes.
 
 save:
-    dl !retry_ram_checkpoint    : dw 192
+    dl !retry_ram_checkpoint    : dw 2*!ow_levels_count
     ; Feel free to add your own stuff here.
     
 
@@ -40,27 +41,17 @@ save:
 ; %dbn($XX,n) for 1 byte values, %dwn($XXXX,n) for 2 byte values or %dln($XXXXXX,n) for 3 byte values, where n is
 ; the amount of times the value is repeated (max 242).
 ; The amount of values of each entry should correspond to the dw $YYYY value in the save table
-; (for example, the checkpoint values are 192, and the death counter values are 5).
+; (for example, the death counter values are 5).
 ; If you have some addresses after ".not_game_over" and ".global" in the save table, put their default values after
 ; ".not_game_over" and ".global" here too (in the same order as the other table, of course).
 ; Regarding the ".global" values, they will be initialized on game startup rather than on a new save file.
 
 sram_defaults:
     ; Default checkpoint values (don't edit this!).
-    dw $0000,$0001,$0002,$0003,$0004,$0005,$0006,$0007
-    dw $0008,$0009,$000A,$000B,$000C,$000D,$000E,$000F
-    dw $0010,$0011,$0012,$0013,$0014,$0015,$0016,$0017
-    dw $0018,$0019,$001A,$001B,$001C,$001D,$001E,$001F
-    dw $0020,$0021,$0022,$0023,$0024,$0101,$0102,$0103
-    dw $0104,$0105,$0106,$0107,$0108,$0109,$010A,$010B
-    dw $010C,$010D,$010E,$010F,$0110,$0111,$0112,$0113
-    dw $0114,$0115,$0116,$0117,$0118,$0119,$011A,$011B
-    dw $011C,$011D,$011E,$011F,$0120,$0121,$0122,$0123
-    dw $0124,$0125,$0126,$0127,$0128,$0129,$012A,$012B
-    dw $012C,$012D,$012E,$012F,$0130,$0131,$0132,$0133
-    dw $0134,$0135,$0136,$0137,$0138,$0139,$013A,$013B
+    for i = 0..!ow_levels_count
+        dw select(greater(!i,$24),!i+$DC,!i)
+    endfor
     ; Feel free to add your own stuff here.
-    
     
 
 .not_game_over:
@@ -71,4 +62,4 @@ sram_defaults:
 
 .global:
     ; Feel free to add your own stuff here.
-
+    

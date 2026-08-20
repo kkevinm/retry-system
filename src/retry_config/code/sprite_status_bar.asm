@@ -824,7 +824,7 @@ draw_yoshi_coins:
     lda $13BF|!addr : and #$07 : tay
     lda.w .mask,y : sta $02
     lda $13BF|!addr : lsr #3 : tay
-    lda $1F2F|!addr,y : and $02 : beq .not_all
+    lda.w !dc_flags,y : and $02 : beq .not_all
 
 if !draw_all_dc_collected
     ; If all DCs collected, calculate how many they were.

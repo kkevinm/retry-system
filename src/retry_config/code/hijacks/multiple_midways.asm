@@ -43,8 +43,9 @@ mmp_main:
 
 ..midway:
     ; Set to load level 0.
-    ldx #$00
-    ldy #$00
+    rep #$10
+    ldx #$0000
+    ldy #$0000
     bra .midway
 
 ..return:
@@ -60,8 +61,11 @@ mmp_main:
 
     ; Get current translevel number.
     jsr shared_get_translevel
+    rep #$30
+    and #$00FF
     tay
     asl : tax
+    sep #$20
 
     ; If no midway was gotten, return.
     lda $1EA2|!addr,y : and #$40 : beq .return
@@ -80,11 +84,11 @@ mmp_main:
     rep #$20
     lda !ram_checkpoint,x : and #$01FF : sta $0E
 
-    ; Return to level loading routine, after sta $0E/$0F.
+    ; Return to level loading routine, after sta $0E/$0F (no need to SEP #$30).
     jml $05D8B7|!bank
 
 .return:
-    ; Return to the beginning of level loading routine.
+    ; Return to the beginning of level loading routine (no need to SEP #$30).
     jml $05D847|!bank
 
 .secondary_exit:
@@ -95,6 +99,7 @@ mmp_main:
     stz $97
 
     ; Return to sublevel loading routine.
+    sep #$30
     jml $05D7B3|!bank
 
 midway_entrance:
@@ -112,8 +117,11 @@ endif ; !dynamic_ow_levels
 .checkpoint:
     ; Check if the checkpoint destination is a midway entrance.
     phx
-    txa : asl : tax
+    rep #$30
+    txa : and #$00FF : asl : tax
+    sep #$20
     lda.l !ram_checkpoint+1,x
+    sep #$10
     plx
     and #$0A : cmp #$08 : beq .midway
 

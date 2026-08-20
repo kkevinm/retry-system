@@ -46,6 +46,15 @@ org $00F2D8
     lda $13CD|!addr
     nop #2 ; LM edit.
 
+if read1($0DA104) == $5C
+org $0DA104
+if read2($0DA100) == $544F
+    rtl : nop #3
+else
+    db $A1,$6B,$E2,$30
+endif
+endif
+
 if read1($0DA415) == $5C && read1($0DA106) != $5C
 org $0DA415
     sep #$30

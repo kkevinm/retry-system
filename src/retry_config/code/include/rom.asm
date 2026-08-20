@@ -21,3 +21,5 @@
 !rom_dc_amount_cmp_byte            #= $00F349|!bank
 !rom_dc_perlevel_patch_byte        #= $00F346|!bank
 !rom_lm_midway_entrance_hack_byte  #= $05D9E3|!bank
+!rom_ari_objectool_check_addr      #= $0DA100
+!rom_ari_objectool_check_word      #= $544F
