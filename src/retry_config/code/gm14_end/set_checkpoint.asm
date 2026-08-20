@@ -93,16 +93,17 @@ calc_entrance:
 
 .no_intro:
     ; Convert $13BF value to sublevel number.
-    cmp #$25 : bcc +
-    clc : adc #$DC
-+   sta !ram_respawn
-    lda #$00 : adc #$00
-..store_entrance_high:
-    sta !ram_respawn+1
+    rep #$20
+    and #$00FF : cmp.w #$0025 : bcc ..store_entrance
+    clc : adc.w #$00DC
+..store_entrance:
+    sta !ram_respawn
 
 .check_midway:
     ; If the midway flag is not set, return.
-    lda $1EA2|!addr,x : and #$40 : bne ..midway
+    lda $1EA2|!addr,x : and.w #$0040
+    sep #$20
+    bne ..midway
     lda $13CE|!addr : beq .return
 
 ..midway:
@@ -117,5 +118,6 @@ calc_entrance:
     %lda_13BF() : tax
 
     ; Set current sublevel number as the respawn point.
-    lda $010B|!addr : sta !ram_respawn
-    lda $010C|!addr : bra .no_intro_store_entrance_high
+    rep #$20
+    lda $010B|!addr
+    bra .no_intro_store_entrance

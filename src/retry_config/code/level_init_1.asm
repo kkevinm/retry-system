@@ -40,29 +40,29 @@ endif ; !reset_frame_counters
     ; Apply counterbreak
     jsr counterbreak_from_ow
 
-    ; The game sets $13BF a bit later so we need to do it ourselves
-    ; (unless it's right after a "No Yoshi" cutscene).
-    lda $71 : cmp #$0A : bne +
-    %lda_13BF()
-    bra ++
-+   jsr shared_get_translevel
-++  asl : tax
-
     ; Don't trigger Yoshi init.
     lda #$00 : sta !ram_is_respawning
 
     ; Reset hurry up flag.
     sta !ram_hurry_up
 
+    ; The game sets $13BF a bit later so we need to do it ourselves
+    ; (unless it's right after a "No Yoshi" cutscene).
+    lda $71 : cmp #$0A : bne +
+    %lda_13BF()
+    bra ++
++   jsr shared_get_translevel
+++  
+    ; Set the destination from the level's checkpoint value.
+    rep #$30
+    and #$00FF : asl : tax
+    lda !ram_checkpoint,x : sta !ram_respawn
+    sep #$30
+
     ; Call the custom reset routine.
     phx : php : phb
     jsl extra_reset
     plb : plp : plx
-
-    ; Set the destination from the level's checkpoint value.
-    rep #$20
-    lda !ram_checkpoint,x : sta !ram_respawn
-    sep #$20
 
 .skip:
     ; Reset Yoshi, but only if respawning, not during the Yoshi Wings entrance

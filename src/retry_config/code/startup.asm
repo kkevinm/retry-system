@@ -17,8 +17,8 @@ init:
     lda #$FFFF : sta.w !ram_set_checkpoint
 
     ; Initialize the checkpoint ram table.
-    ldx #$00BE
-    ldy #$005F
+    ldx.w #2*(!ow_levels_count-1)
+    ldy.w #!ow_levels_count-1
 -   tya : cmp #$0025 : bcc +
     clc : adc #$00DC
 +   sta.w !ram_checkpoint,x
