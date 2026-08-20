@@ -12,7 +12,15 @@
 <body>
 <div class="box">
 <h1>ObjecTool Information</h1>
-<p>If you want to insert custom objects using the ObjecTool patch, and you're using Retry's Custom Midway Object feature (<code>!use_custom_midway_bar = 1</code> in the settings) you'll need to make an edit before inserting the patch.</p>
+<p>If you're using Retry's Custom Midway Object feature (<code>!use_custom_midway_bar = 1</code> in the settings) and you want to insert other custom objects with ObjecTool, you may need to do some preparation steps depending on which ObjecTool you're using (see info below).</p>
+
+<p>One thing to keep in mind in any case is that Retry will use slots <code>00-1F</code>, <code>40-41</code> and <code>50-51</code> of the Custom Normal Objects (i.e., objects with id <code>2D</code>) for its custom midway bars, meaning that you can't use them in ObjecTool. You're free to use Custom Normal Objects <code>20-3F</code>, <code>42-4F</code> and <code>52-FF</code>, as well as all Custom Extended Objects available.</p>
+
+<h3>Arinsu's ObjecTool</h3>
+<p>If you're using <a href="https://github.com/arinsuwu/objectool">Arinsu's ObjecTool</a>, you don't need to do anything else, it should just work out of the box. Just make sure you inserting Retry after having inserted ObjecTool at least once. If Retry's custom midways don't spawn, reinsert ObjecTool again.</p>
+
+<h3>imamelia's ObjecTool</h3>
+<p>If you're using <a href="https://www.smwcentral.net/?p=section&a=details&id=40964">imamelia's ObjecTool</a>, you need to modify its asm file a bit to make it work properly with Retry.</p>
 <p>Open <u class="dir">objectool.asm</u> and remove these lines (they're towards the top of the file):</p>
 
 <pre>
@@ -23,10 +31,7 @@ org $0DA415|!bank                   ; x6A615 (hijack normal object loading routi
 
 <p>After doing this, just patch <u class="dir">objectool.asm</u>.</p>
 
-<p>One thing to keep in mind is that Retry will use slots <code>00-1F</code>, <code>40-41</code> and <code>50-51</code> of the Custom Normal Objects (i.e., objects with id <code>2D</code>) for its custom midway bars, meaning that you can't use them in ObjecTool.</p>
-<p>You're free to use Custom Normal Objects <code>20-3F</code>, <code>42-4F</code> and <code>52-FF</code>, as well as all Custom Extended Objects available.</p>
-
-<p>Additionally, if you want to remove Retry's custom midway bar while keeping ObjecTool, you'll need to place back the code that you removed in <u class="dir">objectool.asm</u> (and make sure you run Retry with <code>!use_custom_midway_bar = 0</code>).</p>
+<p>If you want to remove Retry's Custom Midway Object feature while keeping ObjecTool, you'll need to place back the code that you removed in <u class="dir">objectool.asm</u> (and make sure you run Retry with <code>!use_custom_midway_bar = 0</code>).</p>
 </div>
 </body>
 </html>

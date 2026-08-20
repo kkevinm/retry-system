@@ -8,10 +8,37 @@ if !use_custom_midway_bar
 
 pushpc
 
+; This restores vanilla code at $0DA415, specifically when either Retry's
+; custom objects are not used or when they're used together with Arinsu's
+; ObjecTool. This removed a game crash if patching the tool on a ROM that
+; already had Retry inserted, and then reinserting Retry.
+if read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C
+
+pushpc
+
+org $0DA415
+    sep #$30
+    lda $1931|!addr
+
+pullpc
+
+endif ; read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C
+
+if read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
+
+org $0DA104
+    jml custom_midway
+
+else
+
 org $0DA415
     jml new_norm_objects
 
+endif ; read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
+
 pullpc
+
+if read2(!rom_ari_objectool_check_addr) != !rom_ari_objectool_check_word
 
 new_norm_objects:
     sep #$30
@@ -58,17 +85,25 @@ new_norm_objects:
     jml [$0000|!dp]
 
 .no_objectool:
-    ; If midways are overridden, don't spawn it.
-    lda !ram_midways_override : and #$7F : bne .return
+    ; Process custom midway
+    jsl custom_midway
 
-    ; We only care about object 2D.
-    jsr custom_midway
-
-.return:
     ; Jump back to an rts.
     jml $0DA53C|!bank
 
+endif ; read2(!rom_ari_objectool_check_addr) != !rom_ari_objectool_check_word
+
+; Bytes that can read from ROM to check the presence of Retry's custom midway
+; feature (if read1($0DA104) == $5C && read2(read3($0DA104+1)-3) == $1337)
+dw !custom_midway_interface_magic_word
+db !custom_midway_interface_version
+
 custom_midway:
+    ; If midways are overridden, don't spawn it.
+    lda !ram_midways_override : and #$7F : beq .spawn
+    rtl
+
+.spawn:
     ; Backup $59 ($58-$59 used for entrance info).
     lda $59 : pha
 
@@ -77,6 +112,7 @@ custom_midway:
               cmp #$41 : beq .main_entrance
               cmp #$50 : beq .midway_entrance
               cmp #$51 : beq .midway_entrance
+              ; Objects $20-$3F would be free but have no use for now
               cmp #$20 : bcs .return
 
 .secondary_entrance:
@@ -128,21 +164,20 @@ custom_midway:
 .return:
     ; Restore $59.
     pla : sta $59
-    rts
+    rtl
 
 else ; if not(!use_custom_midway_bar)
 
 ; Restore code, in case settings are changed.
-if read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C
+if read1($0DA104) == $5C
 
-pushpc
+org $0DA104
+if read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
+    rtl : nop #3
+else
+    db $A1,$6B,$E2,$30
+endif ; read2(!rom_ari_objectool_check_addr) == !rom_ari_objectool_check_word
 
-org $0DA415
-    sep #$30
-    lda $1931|!addr
-
-pullpc
-
-endif ; read1($0DA415) == $5C && read1(!rom_objectool_byte) != $5C
+endif ; read1($0DA104) == $5C
 
 endif ; !use_custom_midway_bar
