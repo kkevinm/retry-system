@@ -1,5 +1,5 @@
 checkpoint_effect:
-    %dbn($00,$200)
+    %dbn(!default_checkpoint_type,$200)
 
 sfx_echo:
 if !default_sfx_echo
