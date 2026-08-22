@@ -140,7 +140,7 @@ else
     !ow_y_pos        #= read2($04855B)
 endif
 
-!ow_flags_sram_buffer #= read2($009BDE)
+!ow_flags_sram_buffer #= read2($009BDF)
 
 ; Macro to insert a table of repeating 1 byte values
 macro dbn(val, n)
