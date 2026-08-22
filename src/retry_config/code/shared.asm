@@ -433,7 +433,7 @@ is_destination_a_checkpoint:
 
     ; Get the current sublevel checkpoint setting.
     jsr shared_get_checkpoint_value
-    and.b #~!checkpoint_type_midway_bar
+    and.b #~(!checkpoint_type_midway_bar|!checkpoint_type_temporary_flag)
 
     ; If room checkpoint is disabled, return no.
     beq .no

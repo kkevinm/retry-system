@@ -14,6 +14,7 @@
 ;       5 = both effects of 1 and 4
 ;       6 = any secondary entrance to this sublevel will trigger a checkpoint
 ;       7 = both effects of 1 and 6
+;     If you add 8 to this value, the checkpoints obtained this way will only persist while being in the level, so they will be gone when leaving it (like with Start+Select or with prompt "EXIT").
 ;
 ;   %retry(level, value)
 ;     Configure the Retry type in the level, depending on value:

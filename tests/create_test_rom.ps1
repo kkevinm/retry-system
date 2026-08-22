@@ -1,4 +1,3 @@
-$rom_name = "./test.smc"
 $smc_header_size = 0x200
 $rom_header_offset = $smc_header_size + 0x7FC0
 $lm_header_offset = $smc_header_size+0x7F0A0
@@ -48,6 +47,18 @@ for ($i = 0; $i -lt $rtl_snes_addr.Count; $i++) {
     $data[(snes_to_pc_simple($rtl_snes_addr[$i]))] = $rtl_value
 }
 
-# Write the rom data to file
-$rom_name = "./test.smc"
+# Write the LOROM rom data to file
+$rom_name = "./test-lorom.smc"
+[System.IO.File]::WriteAllBytes($rom_name, $data)
+
+# Update the ROM header for SA-1
+$rom_header[21] = 0x23
+$rom_header[22] = 0x35
+
+for ($i = 0; $i -lt $rom_header.Count; $i++) {
+    $data[$rom_header_offset + $i] = $rom_header[$i]
+}
+
+# Write the SA-1 rom data to file
+$rom_name = "./test-sa1.smc"
 [System.IO.File]::WriteAllBytes($rom_name, $data)

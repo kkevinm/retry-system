@@ -54,10 +54,10 @@ echo Unzip succeeded
 :: Install Retry
 echo "%uber_dir%\n..\%retry_src%" | call "..\%retry_install%" "%uber_dir%" "..\%retry_src%"
 
-:: Insert Retry
-echo Inserting Retry...
+:: Insert Retry on LOROM
+echo Inserting Retry on LOROM...
 
-".\%uber_dir%\UberASMTool.exe" -p "..\..\%uber_list%" "..\test.smc"
+".\%uber_dir%\UberASMTool.exe" -p "..\..\%uber_list%" "..\test-lorom.smc"
 
 echo.
 
@@ -67,6 +67,21 @@ if %errorlevel% neq 0 (
 )
 
 echo Retry insertion succeeded
+
+:: Insert Retry on SA-1
+echo Inserting Retry on SA-1...
+
+".\%uber_dir%\UberASMTool.exe" -p "..\..\%uber_list%" "..\test-sa1.smc"
+
+echo.
+
+if %errorlevel% neq 0 (
+    echo Retry insertion failed
+    goto :Error
+)
+
+echo Retry insertion succeeded
+
 goto :End
 
 :Error

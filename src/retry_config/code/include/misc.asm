@@ -2,7 +2,7 @@
 ; You usually shouldn't edit this file.
 
 ; Retry version number to write in ROM.
-!version = "2.1.0"
+!version = "2.2.0"
 
 ; Print version in the terminal
 print "    Retry System version: !version"
@@ -140,7 +140,7 @@ else
     !ow_y_pos        #= read2($04855B)
 endif
 
-!ow_flags_sram_buffer #= read2($009BDE)
+!ow_flags_sram_buffer #= read2($009BDF)
 
 ; Macro to insert a table of repeating 1 byte values
 macro dbn(val, n)

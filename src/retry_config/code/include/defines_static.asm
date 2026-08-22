@@ -21,8 +21,9 @@
 !checkpoint_type_midway_bar_main_midway_entrance #= $05
 !checkpoint_type_secondary_entrance              #= $06
 !checkpoint_type_midway_bar_secondary_entrance   #= $07
+!checkpoint_type_temporary_flag                  #= $08
 !checkpoint_type_min                             #= !checkpoint_type_vanilla
-!checkpoint_type_max                             #= !checkpoint_type_midway_bar_secondary_entrance
+!checkpoint_type_max                             #= !checkpoint_type_midway_bar_secondary_entrance|!checkpoint_type_temporary_flag
 
 !reset_rng_type_never    #= $00
 !reset_rng_type_ow       #= $01

@@ -79,16 +79,18 @@ macro draw_for_file(n)
 ?load:
     %begin_stripe()
     %write_tile(3, !x_pos, !y_pos+(<n>*2), #!tile, #$20|(!pal<<2)|(!page&1))
-    %end_stripe()
-    bra ?end
+    bra ?shared
 ?erase:
+    lda $0DDE|!addr : and.b #4>><n> : bne ?end
     %begin_stripe()
     %write_tile(3, !x_pos+3, !y_pos+(<n>*2), #!tile, #$20|(!pal<<2)|(!page&1))
+?shared:
     %end_stripe()
 ?end:
 endmacro
 
 init:
+main:
     lda $010A|!addr : pha
     for i = 0..!save_file_num
         %draw_for_file(!i)

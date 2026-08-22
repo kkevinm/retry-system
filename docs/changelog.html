@@ -13,6 +13,14 @@
 <div class="box">
 	<h1>Retry System Changelog</h1>
 
+	<h2 id="v2.2.0">v2.2.0</h2>
+	<ul>
+		<li>Fixed example code <u class="dir">resources/examples/uberasm/title_screen_items_icon.asm</u> breaking during the erase file screen (thanks to CroNo486 for reporting this).</li>
+		<li>Added example code <u class="dir">resources/examples/uberasm/game_over_reset.asm</u> to reset the save file after a game over.</li>
+		<li>Fixed typo that caused the wrong Overworld flags (levels beaten, midways, etc.) to be saved to the save file (issue introduced in v2.1.0).</li>
+		<li>Added option to set temporary checkpoints in certain sublevels (that don't persist when leaving the level). Check out <u class="dir">settings_local.asm</u> for more info.</li>
+	</ul>
+
 	<h2 id="v2.1.0">v2.1.0</h2>
 	<ul>
 		<li>Added compatibility with <a href="https://github.com/arinsuwu/objectool">Arinsu's Objectool</a> (thanks to Arinsu for the help).</li>
