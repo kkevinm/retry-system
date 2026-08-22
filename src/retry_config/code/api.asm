@@ -397,7 +397,7 @@ endif ; !sram_feature
 ;===============================================================================
 erase_file:
     ; Get the correct value for $0DDE (bitmask of which files to erase)
-    bpl +
+    cmp #$FF : bne +
     lda #$03
 +   tax
     lda.l .0dde_val,x : sta $0DDE|!addr

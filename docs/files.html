@@ -143,7 +143,7 @@
             </td>
         </tr>
         <tr>
-            <td rowspan="2">UberASM</td>
+            <td rowspan="3">UberASM</td>
             <td><u class="dir">red_switch_remove_cps.asm</u></td>
             <td>
                 This is an example of using the <code>retry_api_reset_all_cps</code> API routine.<br/>
@@ -155,6 +155,13 @@
             <td>
                 This is an example of using the <code>retry_api_get_sram_var</code> API routine.<br/>
                 This is a gamemode UberASM (to be inserted in gamemodes <code>8</code> and <code>9</code> if using the vanilla title screen menu, or gamemode <code>A</code> if using the <a href="https://smwc.me/s/40641">One File, One Player</a> patch) that will draw a tile next to the save files in the load/erase file menu on the title screen, if the corresponding save file has a certain number of items (by default, moons) collected. This only works if the item is saved in SRAM using Retry's save feature (see <a href="./sram_tables.html">SRAM Tables</a>).
+            </td>
+        </tr>
+        <tr>
+            <td><u class="dir">game_over_reset.asm</u></td>
+            <td>
+                This is an example of using the <code>retry_api_erase_file</code> API routine.<br/>
+                This is a gamemode UberASM (to be inserted in gamemode <code>17</code>) that will make so when getting a game over, after the animation is over the save file will be erased and the game will be reset to the title screen (effectively making game overs a permanent reset).
             </td>
         </tr>
     </table>
