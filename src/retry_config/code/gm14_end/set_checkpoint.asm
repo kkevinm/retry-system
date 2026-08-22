@@ -33,16 +33,24 @@ endif ; !save_on_checkpoint
     cmp.b #!intro_level+$24 : bne .return
 
 ...no_intro:
-    ; Check if this midway sets the midway entrance for the sublevel or the main level.
     jsr shared_get_checkpoint_value
+    
+    ; Save temporary flag for later.
+    bit.b #!checkpoint_type_temporary_flag : php
+    
+    ; Check if this midway sets the midway entrance for the sublevel or the main level.
     and.b #!checkpoint_type_midway_bar : bne ...sub_midway
 
 ...main_midway:
     jsr calc_entrance
-    bra .save_and_return
+    bra ...shared
 
 ...sub_midway:
     jsr calc_entrance_2
+
+...shared:
+    ; If the temporary flag is set, don't save the checkpoint.
+    plp : bne .backup_music
     bra .save_and_return
 
 ..custom_destination:

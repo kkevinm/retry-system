@@ -14,6 +14,7 @@
 ;       5 = both effects of 1 and 4
 ;       6 = any secondary entrance to this sublevel will trigger a checkpoint
 ;       7 = both effects of 1 and 6
+;     If you add 8 to this, the checkpoint obtained this way will only persist while in the level.
 ;
 ;   %retry(level, value)
 ;     Configure the Retry type in the level, depending on value:

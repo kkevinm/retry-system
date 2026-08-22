@@ -47,9 +47,11 @@ endif ; !room_cp_sfx != $00
     lda !ram_door_dest : sta !ram_respawn
     sep #$20
 
-    ; Update the checkpoint value.
+    ; If the temporary flag is not set, save the checkpoint.
+    jsr shared_get_checkpoint_value
+    bit.b #!checkpoint_type_temporary_flag : bne +
     jsr shared_hard_save
-
++
     ; Call the custom checkpoint routine.
     php : phb
     jsl extra_room_checkpoint
